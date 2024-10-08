@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.shoppingmall.dao.TestDAO">
+	<!-- namespace와 인터페이스 이름이 일치해야 자동으로 구현된다. -->
+	<select id="selectToday" resultType="date">
+		select sysdate from dual
+	</select>
+</mapper>  
