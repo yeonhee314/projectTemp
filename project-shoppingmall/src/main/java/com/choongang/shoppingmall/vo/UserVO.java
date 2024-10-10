@@ -51,14 +51,16 @@ public class UserVO implements UserDetails{
 	private String name;		//이름
 	private String email;		//이메일
 	private String phone;		//핸드폰
+	private Date regdate;		//회원가입일
 	private String news_email;	//이메일수신여부
 	private String gender;		//성별
+	private Date birth_date;	//생년월일
 	private String signout;		//회원탈퇴
 	private String user_role;	//계정권한
 	private String user_level;	//등급
 	private int user_point;		//포인트
-	private Date regdate;		//회원가입일
-	private Date birth_date;	//생년원일
+	
+	
 	
 	
 	@Override
@@ -79,6 +81,10 @@ public class UserVO implements UserDetails{
 	@Override
 	public String getUsername() {
 		return username;
+	}
+	@Override
+	public String getPassword() {
+		return password;
 	}
 	@Override
 	public boolean isAccountNonExpired() {	//계정이 만료되지 않았는지 리턴한다(true:만료안됨)
