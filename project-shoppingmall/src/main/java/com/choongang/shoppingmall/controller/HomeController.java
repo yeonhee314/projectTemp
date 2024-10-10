@@ -1,15 +1,32 @@
 package com.choongang.shoppingmall.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.vo.PagingVO;
+import com.choongang.shoppingmall.vo.ProductPagingVO;
+import com.choongang.shoppingmall.vo.ProductVO;
 
 @Controller
 @Configuration
 public class HomeController {
 	
+	@Autowired
+	private ProductService productService;
+	
 	@GetMapping("/index.html")
-	public String index() {
+	public String index(@ModelAttribute ProductPagingVO productPagingVO, Model model) {
+		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
+		model.addAttribute("pv", pv);
+		model.addAttribute("ppv", productPagingVO);
+		model.addAttribute("newLine", "\n" );
+		model.addAttribute("br", "<br>" );
+		
 		return "index";
 	}
 	@GetMapping("/about.html")

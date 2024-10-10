@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.shoppingmall.dao.ProductDAO">
+	<!-- 갯수 세기 -->
+	<select id="selectProductCount" resultType="int">
+		select count(*) from product
+	</select>
+	<!-- id로 한개 얻기 -->
+	<select id="selectByProductId" parameterType="int" resultType="ProductVO">
+		select * from product where product_id=#{product_id}
+	</select>
+	<!-- 한 페이지 얻기 -->
+	<select id="selectProductList" parameterType="hashmap" resultType="ProductVO">
+		<![CDATA[
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from product order by product_id desc) Q
+			where
+				rownum<=#{endNo}
+		) R
+		where
+			rnum >= #{startNo}
+		]]>
+	</select>
+</mapper>  
