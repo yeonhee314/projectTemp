@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -57,10 +58,18 @@ public class HomeController {
 	public String product() {
 		return "product";
 	}
+	
 	@GetMapping("/product-detail.html")
-	public String productDetail() {
+	public String productDetail(
+			@RequestParam("product_id") int product_id,
+			@RequestParam("category_id") int category_id, 
+			Model model) {
+		ProductVO productVO = productService.selectByProductId(product_id);
+		model.addAttribute("vo", productVO);
+		
 		return "product-detail";
 	}
+	
 	@GetMapping("/shoping-cart.html")
 	public String shopingCart() {
 		return "shoping-cart";
