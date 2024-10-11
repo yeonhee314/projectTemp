@@ -38,10 +38,15 @@ public class ProductServiceImpl implements ProductService{
 		return pv;
 	}
 	
-	
-	// TODO : ID로 찾기 기능 추가 시
 	@Override
 	public ProductVO selectByProductId(int id) {
-		return null;
+		ProductVO productVO = null;
+		try {
+			productVO = productDAO.selectByProductId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return productVO;
 	}
 }

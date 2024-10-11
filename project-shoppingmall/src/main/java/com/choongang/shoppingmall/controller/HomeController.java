@@ -1,5 +1,7 @@
 package com.choongang.shoppingmall.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
@@ -19,12 +23,18 @@ public class HomeController {
 	
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	@GetMapping("/index.html")
-	public String index(@ModelAttribute ProductPagingVO productPagingVO, Model model) {
+	public String index(
+						@ModelAttribute ProductPagingVO productPagingVO,
+						Model model) {
 		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
+		List<CategoryVO> categorylist= categoryService.selectCategory();
 		model.addAttribute("pv", pv);
 		model.addAttribute("ppv", productPagingVO);
+		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("newLine", "\n" );
 		model.addAttribute("br", "<br>" );
 		
@@ -65,7 +75,7 @@ public class HomeController {
 			@RequestParam("category_id") int category_id, 
 			Model model) {
 		ProductVO productVO = productService.selectByProductId(product_id);
-		model.addAttribute("vo", productVO);
+		model.addAttribute("productvo", productVO);
 		
 		return "product-detail";
 	}
