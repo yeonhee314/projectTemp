@@ -74,13 +74,13 @@ li {
 				<a href="/admin" >ADMIN</a>
 			</div>
 			<div class="admin-users">
-				<a href="users">회원관리</a>
+				<a href="/admin/users">회원관리</a>
 			</div>
 			<div class="admin-products">
-				<a href="products">상품관리</a>
+				<a href="/admin/products">상품관리</a>
 			</div>
 			<div class="admin-qna">
-				<a href="qna">문의관리</a>
+				<a href="/admin/qna">문의관리</a>
 			</div>
 		</div>
 			<table class="admin-main">
@@ -93,14 +93,15 @@ li {
 			</table>
 			<div class="info" >
 				<ul>
-					<li>아이디</li>
-					<li>닉네임</li>
-					<li>이름:</li>
-					<li>생년월일</li>
-					<li>이메일</li>
-					<li>핸드폰</li>
-					<li>등급</li>
-					<li>가입일</li>
+					<li>유저번호 : [[${details.user_id}]]</li>
+					<li>유저ID : [[${details.username}]]</li>
+					<li>닉네임: [[${details.nickname}]]</li>
+					<li>이름: [[${details.name}]]</li>
+					<li>생년월일 : [[${#dates.format(details.birth_date,'yyyy-MM-dd')}]]</li>
+					<li>이메일 : [[${details.email}]]</li>
+					<li>핸드폰 : [[${details.phone}]]</li>
+					<li>등급 : [[${details.user_level}]]</li>
+					<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
 				</ul>
 			</div>
 	</div>

@@ -39,17 +39,17 @@
 					<th>아이디</th>
 					<th>닉네임</th>
 					<th>이메일</th>
-					<th>가입일</th>
 					<th>등급</th>
+					<th>가입일</th>
 				</tr>
 				<th:block>
 					<tr th:each="vo: ${list}" class="list">
-						<td>[[${vo.user_id}]]</td>
-						<td><a th:href="@{/admin/users/details/(id=${vo.user_id})}" th:text="${vo.user_id}">[[${vo.username}]]</a></td>
+						<td th:text="${vo.user_id}">[[${vo.user_id}]]</td>
+						<td><a th:href="@{/admin/user/details(user_id=${vo.user_id})}">[[${vo.username}]]</a></td>
 						<td>[[${vo.nickname}]]</td>
 						<td>[[${vo.email}]]</td>
-						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 						<td>[[${vo.user_level}]]</td>
+						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
 				</th:block>
 			</table>
