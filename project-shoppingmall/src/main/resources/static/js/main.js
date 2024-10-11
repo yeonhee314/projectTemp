@@ -216,14 +216,22 @@
     [ +/- num product ]*/
     $('.btn-num-product-down').on('click', function(){
         var numProduct = Number($(this).next().val());
-        if(numProduct > 0) $(this).next().val(numProduct - 1);
+		if(numProduct == 1){
+			alert("구매 수량은 최소 1개 이상입니다.");
+		}
+        if(numProduct > 1) $(this).next().val(numProduct - 1);
     });
 
     $('.btn-num-product-up').on('click', function(){
         var numProduct = Number($(this).prev().val());
-        $(this).prev().val(numProduct + 1);
+		if(numProduct == $(this).prev().attr('max')){
+			alert("최대 수량입니다.");
+		}
+		else{
+			$(this).prev().val(numProduct + 1);
+		}
     });
-
+	
     /*==================================================================
     [ Rating ]*/
     $('.wrap-rating').each(function(){

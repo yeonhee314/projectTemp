@@ -27,6 +27,18 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		return categoryList;
 	}
+
+	@Override
+	public CategoryVO selectCategoryId(int id) {
+		CategoryVO categoryVO = null;
+		try {
+			categoryVO = categoryDAO.selectCategoryId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return categoryVO;
+	}
 	
 	
 }

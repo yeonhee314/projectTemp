@@ -75,7 +75,9 @@ public class HomeController {
 			@RequestParam("category_id") int category_id, 
 			Model model) {
 		ProductVO productVO = productService.selectByProductId(product_id);
+		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
 		model.addAttribute("productvo", productVO);
+		model.addAttribute("categoryvo", categoryVO);
 		
 		return "product-detail";
 	}

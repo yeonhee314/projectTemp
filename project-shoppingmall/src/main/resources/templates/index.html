@@ -752,8 +752,20 @@
 								</div>
 								<div class="block2-txt flex-w flex-t p-t-14">
 									<div class="block2-txt-child1 flex-col-l ">
-										<a th:href="@{product-detail.html(product_id=${vo.product_id}, category_id=${vo.category_id})}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" th:text="${vo.product_name}"></a>
-										<span class="stext-105 c13" th:text="${#numbers.formatInteger(vo.product_price, 3, 'COMMA') + ' ₩'}"></span>
+										<!-- product_stoc(재고)가 0일 경우 [품절] 텍스트를 활성화한다. -->
+										<th:block th:if="${vo.product_stock <= 0}">
+											<a th:href="@{product-detail.html(product_id=${vo.product_id}, category_id=${vo.category_id})}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" th:text="'[품절] ' + ${vo.product_name}"></a>
+										</th:block>
+										<th:block th:if="${vo.product_stock > 0}">
+											<a th:href="@{product-detail.html(product_id=${vo.product_id}, category_id=${vo.category_id})}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" th:text="${vo.product_name}"></a>
+										</th:block>
+										<th:block th:if="${vo.discount != 0}">
+											<span class="stext-105 c13 strikethrough" th:text="${#numbers.formatInteger(vo.product_price, 3, 'COMMA') + ' ₩'}"></span>
+											<span class="stext-105 c13" th:text="'  ↪ [' + ${vo.discount} + '% 할인] ' + ${#numbers.formatInteger(vo.getDiscountPrice(vo.product_price, vo.discount), 3, 'COMMA') + ' ₩'}"></span>
+										</th:block>
+										<th:block th:if="${vo.discount == 0}">
+											<span class="stext-105 c13" th:text="${#numbers.formatInteger(vo.product_price, 3, 'COMMA') + ' ₩'}"></span>
+										</th:block>
 									</div>
 									<div class="block2-txt-child2 flex-r p-t-3">
 										<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">

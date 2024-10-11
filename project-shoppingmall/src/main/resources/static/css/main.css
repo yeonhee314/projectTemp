@@ -3330,3 +3330,16 @@ input.num-product::-webkit-inner-spin-button {
   }
 
 }
+
+
+/* Custom CSS */
+button:disabled{
+	background-color: #ccc; /* 비활성화 상태 배경색 */
+    color: #666; 			/* 비활성화 상태 텍스트 색상 */
+    cursor: not-allowed; 	/* 커서를 비활성화 모양으로 변경 */
+}
+
+/* 텍스트 빗금처리 */
+.strikethrough{
+	text-decoration: line-through;
+}
