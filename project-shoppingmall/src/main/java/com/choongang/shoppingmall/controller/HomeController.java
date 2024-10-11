@@ -84,4 +84,12 @@ public class HomeController {
 	public String shopingCart() {
 		return "shoping-cart";
 	}
+	@GetMapping("/orders.html")
+	public String orders() {
+		return "orders";
+	}
+	@GetMapping("/orderComplete.html")
+	public String orderComplete() {
+		return "orderComplete";
+	}
 }

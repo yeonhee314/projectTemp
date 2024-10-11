@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.choongang.shoppingmall.dao.OrderDAO">
+	
+	<!-- 주문서 작성 -->
+		<insert id="insertOrders" parameterType="com.choongang.shoppingmall.vo.OrdersVO">
+			INSERT INTO orders(order_id, user_id, order_date)
+			VALUES (#{order_id}, #{user_id}, #{order_date})
+		</insert>
+	<!-- 주문서 상세 작성-->
+		<insert id="insertOrder_Detail" parameterType="com.choongang.shoppingmall.vo.Order_DetailVO">
+			INSERT INTO orders(order_detail_id, order_id, product_id, quantity, total_price)
+			VALUES (#{order_detail_id}, #{order_id}, #{product_id}, #{quantity}, #{total_price})
+		</insert>
+	<!-- 주문 조회 -->
+		<select id="selectOrders" parameterType="com.choongang.shoppingmall.vo.OrdersVO">
+			SELECT order_id, user_id, order_date 
+			FROM orders
+			WHERE order_id = #{order_id}
+		</select>
+		
+		
+</mapper>
+

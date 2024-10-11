@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주문서 작성</title>
+<link rel="stylesheet" href="styles.css">
+<!-- 필요시 CSS 링크 추가 -->
+<style>
+textarea {
+	resize: none; /* 크기 조절 비활성화 */
+}
+</style>
+</head>
+<body>
+	<h1>주문 / 결제</h1>
+	<form action="/order" method="post">
+		<!-- 주문 제출을 위한 URL -->
+		<label for="zipcode">우편번호:</label> <input type="text" id="zipcode"
+			name="zipcode" required><br>
+		<br> <label for="addr">주소:</label> <input type="text" id="addr"
+			name="addr" required><br>
+		<br> <label for="addr_detail">상세 주소:</label> <input type="text"
+			id="addr_detail" name="addr_detail" required><br>
+		<br> <label for="req">요청사항:</label>
+		<textarea id="req" name="req" rows="4" cols="30" required></textarea>
+		<br>
+		<br>
+
+
+		<!-- 상품 정보 -->
+		<div class="product-info">
+			<label for="thumb">상품 썸네일 URL:</label> <input type="text" id="thumb"
+				name="thumb" required readonly> <label for="product_name">상품
+				이름:</label> <input type="text" id="product_name" name="product_name"
+				required readonly> <label for="quantity">수량:</label> <input
+				type="number" id="quantity" name="quantity" required readonly>
+
+			<label for="product_price">상품 가격:</label> <input type="number"
+				id="product_price" name="product_price" required readonly> <br>
+			<br> <label for="discount">할인가 :</label> <input type="number"
+				id="discount" name="discount" min="0" max="100" value="0" readonly><br>
+			<br> <label for="total_price">총 결제 금액:</label> <input
+				type="number" id="total_price" name="total_price" required readonly><br>
+			<br>
+		</div>
+
+		<input type="submit" value="결제하기">
+	</form>
+
+	<script>
+		const quantityInput = document.getElementById('quantity');
+		const productPriceInput = document.getElementById('product_price');
+		const discountInput = document.getElementById('discount');
+		const totalPriceInput = document.getElementById('total_price');
+
+		// 고정된 할인율 (예: 10%)
+		const fixedDiscount = 10;
+		discountInput.value = fixedDiscount; // 할인율 고정
+
+		// 수량 또는 가격 변경 시 총 결제 금액 계산
+		function calculateTotalPrice() {
+			const quantity = parseInt(quantityInput.value) || 0;
+			const price = parseInt(productPriceInput.value) || 0;
+			const discount = fixedDiscount; // 고정 할인율
+
+			const total = quantity * price;
+			const discountedTotal = total - (total * (discount / 100));
+			totalPriceInput.value = discountedTotal.toFixed(2); // 소수점 2자리로 표시
+		}
+
+		// 이벤트 리스너 추가
+		quantityInput.addEventListener('input', calculateTotalPrice);
+		productPriceInput.addEventListener('input', calculateTotalPrice);
+	</script>
+</body>
+</html>
