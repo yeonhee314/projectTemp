@@ -1,0 +1,59 @@
+.bg {
+	background-color: white;
+	border: 1px solid black;
+	width: 1100px;
+	height: 600px;
+	
+}
+
+.menu-bar {
+	position: fixed;
+	border: 1px solid black;
+	width: 100px;
+	height: 600px;
+	text-align: center;
+	font-weight: bold;
+	
+}
+.menu-bar div {
+	
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 50px;
+	background-color: lightblue;
+}
+.admin-main {
+	border: 1px solid black;
+	width: 1000px;
+	position: fixed; left: 100px;
+}
+.main {
+	height: 80px;
+	
+	text-align: center;
+	font-weight: bold;
+	font-size: 2rem;
+}
+.total {
+	height: 20px;
+	text-align: right;
+}
+.index {
+	height: 5px;
+	font-size: 0.7rem;
+	border-bottom: 1px solid black;
+}
+.list {
+	height: 10px;
+	font-size: 0.7rem;
+}
+
+a {
+	text-decoration:none; 
+}
+a:link {
+	color: black;
+}
+a:visited {
+	color: black;
+}
