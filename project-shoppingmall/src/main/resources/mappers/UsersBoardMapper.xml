@@ -4,20 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.shoppingmall.dao.UsersBoardDAO">
  	<!-- 목록보기 -->
- 	<!-- 1. 전체 개수 -->
+ 	<!-- 1. 유저 전체 수 -->
  	<select id="selectCount" resultType="int">
  		select count(*) from users
  	</select>
- 	<!-- 2. 전체  얻기 -->
- 	<select id="selectAll" parameterType="hashmap" resultType="UserVO">
- 		select * from users
+ 	<!-- 2. 전체  유저 목록 -->
+ 	<select id="selectAll"  resultType="UserVO">
+ 		select * from users order by user_id desc
  	</select>
- 	<!--  3. 1개 얻기 
- 	
+ 	<!--  3. 회원 고유번호로 찾기  	-->
  	<select id="selectByID" parameterType="int" resultType="UserVO">
  		select * from users where user_id = #{user_id}
  	</select>
- 	-->
+ 	
  	<!-- 게시글 저장 
  	<insert id="insert" parameterType="UserVO">
 		insert into 

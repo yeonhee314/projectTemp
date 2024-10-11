@@ -1,10 +1,12 @@
 package com.choongang.shoppingmall.service;
 
-import com.choongang.shoppingmall.vo.PagingVO;
+import java.util.List;
+
 import com.choongang.shoppingmall.vo.UserVO;
 
 
 public interface UsersBoardService {
-	PagingVO<UserVO> getList(int currentPage, int sizeOfPage, int sizeOfBlock);
 	int selectCount();
+	UserVO selectByID(int user_id);
+	List<UserVO> selectAll();
 }

@@ -32,7 +32,7 @@
 					<td colspan="6" class="main">회원 관리 화면</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="total">전체사용자: [[${pv.totalCount}]]  명</td>
+					<td colspan="6" class="total">전체사용자: [[${count}]]  명</td>
 				</tr>
 				<tr class="index">
 					<th>No</th>
@@ -43,15 +43,14 @@
 					<th>등급</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo:${pv.list}" class="list">
+					<tr th:each="vo: ${list}" class="list">
 						<td>[[${vo.user_id}]]</td>
-						<td><a href="user/details">[[${vo.username}]]</a></td>
+						<td><a th:href="@{/admin/users/details/(id=${vo.user_id})}" th:text="${vo.user_id}">[[${vo.username}]]</a></td>
 						<td>[[${vo.nickname}]]</td>
 						<td>[[${vo.email}]]</td>
 						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 						<td>[[${vo.user_level}]]</td>
 					</tr>
-					
 				</th:block>
 			</table>
 	</div>

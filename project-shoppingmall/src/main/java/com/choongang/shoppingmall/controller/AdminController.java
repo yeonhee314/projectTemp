@@ -5,37 +5,35 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.choongang.shoppingmall.service.UsersBoardService;
-import com.choongang.shoppingmall.vo.CommVO;
-import com.choongang.shoppingmall.vo.PagingVO;
-import com.choongang.shoppingmall.vo.UserVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Configuration
-
+@Slf4j
 public class AdminController {
 	@Autowired
 	private UsersBoardService usersBoardService;
-	
+
 	
 	@GetMapping("/admin")
 	public String admin() {
 		return "admin";
 	}
+
 	@GetMapping(value =  "/admin/users")
-	public String users(@ModelAttribute CommVO cv, Model model) {
-		PagingVO<UserVO> pv = usersBoardService.getList(cv.getCurrentPage(), cv.getSizeOfPage(), cv.getSizeOfBlock());
-		model.addAttribute("pv",pv);
-		model.addAttribute("cv",cv);
+	public String users(Model model) {
+		model.addAttribute("list",usersBoardService.selectAll());
+		model.addAttribute("count",usersBoardService.selectCount());
 		return "admin-users";
 	}
+	
+	// 회원 상세 조회
 	@GetMapping("/admin/user/details")
-	public String adminUserDetails(@ModelAttribute CommVO cv, Model model) {
-		PagingVO<UserVO> pv = usersBoardService.getList(cv.getCurrentPage(), cv.getSizeOfPage(), cv.getSizeOfBlock());
-		model.addAttribute("pv",pv);
-		model.addAttribute("cv",cv);
+	public String adminUserDetails(int user_id, Model model) {
+		
 		return "admin-userdetails";
 	}
 	

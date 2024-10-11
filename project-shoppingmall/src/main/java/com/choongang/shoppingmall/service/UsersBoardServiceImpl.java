@@ -1,13 +1,12 @@
 package com.choongang.shoppingmall.service;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.UsersBoardDAO;
-import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,28 +23,20 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 	@Autowired
 	private UsersBoardDAO usersBoardDAO;
 	
-	
+	// 전체 회원 리스트
 	@Override
-	public PagingVO<UserVO> getList(int currentPage, int sizeOfPage, int sizeOfBlock) {
-		log.info("getList 인수 : {},{},{}",currentPage,sizeOfPage,sizeOfBlock);
-		PagingVO<UserVO> pv = null;
+	public List<UserVO> selectAll() {
+		List<UserVO> list = null;
 		try {
-			int totalCount = usersBoardDAO.selectCount();
-			pv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock); // 계산완료
-			if(totalCount>0) {
-				HashMap<String, Integer> map = new HashMap<>();
-				map.put("startNo", pv.getStartNo());
-				map.put("endNo", pv.getEndNo());
-				pv.setList(usersBoardDAO.selectAll(map));
-			}
+			list = usersBoardDAO.selectAll();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		log.info("getList 결과 : {} ",pv);
-		return pv;
+		log.info("list 인수 : {}",list);
+		return list;
 	}
 	
+	// 총 회원 수
 	@Override
 	public int selectCount() {
 		int count = 1;
@@ -55,5 +46,16 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 			e.printStackTrace();
 		}
 		return count;
+	}
+	// 회원 정보 상세
+	@Override
+	public UserVO selectByID(int user_id) {
+		UserVO userVO = null;
+		try {
+			userVO = usersBoardDAO.selectByID(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userVO;
 	}
 }
