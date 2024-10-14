@@ -3333,13 +3333,83 @@ input.num-product::-webkit-inner-spin-button {
 
 
 /* Custom CSS */
+
+/* 비활성화 */
 button:disabled{
-	background-color: #ccc; /* 비활성화 상태 배경색 */
-    color: #666; 			/* 비활성화 상태 텍스트 색상 */
-    cursor: not-allowed; 	/* 커서를 비활성화 모양으로 변경 */
+	background-color: #ccc; /* 비활성화 상태 배경색 		   */
+    color: #666; 			  /* 비활성화 상태 텍스트 색상	   */
+    cursor: not-allowed; 	  /* 커서를 비활성화 모양으로 변경 */
 }
 
-/* 텍스트 빗금처리 */
+/* Review */
+.review-title{
+	text-align:center;
+	margin-top: 50px;
+}
+
+/* Table Review */
+.wrap-table-review {
+  width:100%;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+}
+
+.table-review {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1000px;
+}
+
+.table-review tr {
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.table-review .column-1 {
+  width: 133px;
+  padding-left: 50px;
+}
+
+.table-review .column-2 {
+  width: 220px;
+  font-size: 15px;
+}
+
+.table-review .column-3 {
+  width: 120px;
+  font-size: 16px;
+}
+
+.table-review .column-4 {
+  width: 145px;
+  text-align: right;
+}
+
+.table-review .column-5 {
+  width: 172px;
+  padding-right: 50px;
+  text-align: right;
+  font-size: 16px;
+}
+
+.how-review {
+  width: 100px;
+  position: relative;
+  margin-right: 20px;
+}
+
+.how-review img {
+  width: 100%;
+}
+
+
+/* text decoration */
+.td-none{
+	text-decoration: none;
+}
+.td-ul{
+	text-decoration: underline;
+}
 .strikethrough{
 	text-decoration: line-through;
 }

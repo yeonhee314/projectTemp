@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
+import com.choongang.shoppingmall.vo.ReviewVO;
 
 @Controller
 @Configuration
@@ -26,6 +28,8 @@ public class HomeController {
 	private ProductService productService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private ReviewService reviewService;
 	
 	@GetMapping("/index.html")
 	public String index(
@@ -80,6 +84,25 @@ public class HomeController {
 		model.addAttribute("categoryvo", categoryVO);
 		
 		return "product-detail";
+	}
+	
+	
+	@GetMapping("/product-review.html")
+	public String productReview(
+			@ModelAttribute CommVO commVO, 
+			@RequestParam("product_id") int product_id,
+			@RequestParam("category_id") int category_id, 
+			Model model
+			) {
+		PagingVO<ReviewVO> pv = reviewService.getReviewList(product_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
+		ProductVO productVO = productService.selectByProductId(product_id);
+		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
+		
+		model.addAttribute("pv", pv);
+		model.addAttribute("productvo", productVO);
+		model.addAttribute("categoryvo", categoryVO);
+		
+		return "product-review";
 	}
 	
 	@GetMapping("/shoping-cart.html")
