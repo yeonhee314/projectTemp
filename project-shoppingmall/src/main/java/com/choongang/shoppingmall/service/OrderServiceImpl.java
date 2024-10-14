@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.OrderDAO;
-import com.choongang.shoppingmall.vo.Order_DetailVO;
+import com.choongang.shoppingmall.vo.Order_CompleteVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +30,10 @@ public class OrderServiceImpl implements OrderService{
 	}
 	// 주문서 작성
 	@Override
-	public void createOrder_Detail(Order_DetailVO order_DetailVO) throws SQLException {
-		log.info("주문서 작성 시작 : {} ", order_DetailVO);
-		orderDAO.insertOrderDetailVO(order_DetailVO);
-		log.info("주문서 작성 완료 : {} ", order_DetailVO);
+	public void createOrder_Complete(Order_CompleteVO order_CompleteVO) throws SQLException {
+		log.info("주문서 작성 시작 : {} ", order_CompleteVO);
+		orderDAO.insertOrderCompleteVO(order_CompleteVO);
+		log.info("주문서 작성 완료 : {} ", order_CompleteVO);
 		
 		
 	}
@@ -48,8 +48,8 @@ public class OrderServiceImpl implements OrderService{
 		return ordersVO;
 	}
 	@Override
-	public List<Order_DetailVO> getOrderDetailsByOrderId(int orderId) {
-		// TODO Auto-generated method stub
+	public List<Order_CompleteVO> getOrderCompleteByOrderId(int orderId) {
+
 		return null;
 	}
 	

@@ -5,9 +5,9 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Order_DetailVO {
+public class Order_CompleteVO {
 
-	private int order_detail_id;	// 주문상세 고유번호
+	private int order_complete_id;	// 주문완료 고유번호
 	private Date paid_date;			// 결제날짜
 	private int total_price;		// 총 결제 가격
 	private int quantity;			// 상품 수량
@@ -20,7 +20,7 @@ public class Order_DetailVO {
 	private String product_status;	// 상품 옵션
 	private int product_price; 		// 상품 가격
 	private int discount;			// 할인율
-	private String pay_method;		// 결제 수단
+	private String pay_ment;		// 결제 수단
 	
 	// 외래키 
 	private int order_id; 			// 주문 번호

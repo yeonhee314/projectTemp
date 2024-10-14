@@ -9,7 +9,7 @@
 			VALUES (#{order_id}, #{user_id}, #{order_date})
 		</insert>
 	<!-- 주문서 상세 작성-->
-		<insert id="insertOrder_Detail" parameterType="com.choongang.shoppingmall.vo.Order_DetailVO">
+		<insert id="insertOrder_Complete" parameterType="com.choongang.shoppingmall.vo.Order_CompleteVO">
 			INSERT INTO orders(order_detail_id, order_id, product_id, quantity, total_price)
 			VALUES (#{order_detail_id}, #{order_id}, #{product_id}, #{quantity}, #{total_price})
 		</insert>

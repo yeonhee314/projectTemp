@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.shoppingmall.service.OrderService;
-import com.choongang.shoppingmall.vo.Order_DetailVO;
+import com.choongang.shoppingmall.vo.Order_CompleteVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
@@ -25,7 +25,7 @@ public class OrderCompleteController {
     @GetMapping("templates/orderComplete")
     public String showOrderCompletePage(@RequestParam int orderId, Model model) {
         try {
-            List<Order_DetailVO> items = orderService.getOrderDetailsByOrderId(orderId);
+            List<Order_CompleteVO> items = orderService.getOrderCompleteByOrderId(orderId);
             OrdersVO order = orderService.getOrderByid(orderId);
             
             // 사용자 정보 임시 객체

@@ -4,74 +4,255 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주문서 작성</title>
-<link rel="stylesheet" href="styles.css">
-<!-- 필요시 CSS 링크 추가 -->
+<link rel="stylesheet"
+	href="//static.wconcept.co.kr/web/css/wconcept.desktop.min.css?v=beefdcd1bf664f32a2ba9651bd004981">
+<script
+	src="//static.wconcept.co.kr/web/js/wconcept.desktop.min.js?v=beefdcd1bf664f32a2ba9651bd004981"></script>
+<link rel="stylesheet"
+	href="//pg.cnspay.co.kr/dlp/css/pc/cnspay.css?v=beefdcd1bf664f32a2ba9651bd004981"
+	type="text/css" />
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- 포트원 결제 -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<!-- 포트원 결제 -->
+<script>
+					// ** 배송지 정보 우편번호 다음 api **
+	function execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+				// 검색 결과에서 주소와 우편번호를 가져와서 해당 input 필드에 값으로 설정
+				document.getElementById('zipcode').value = data.zonecode; // 우편번호 입력
+				document.getElementById('addr').value = data.address; // 기본 주소 입력
+
+				// 주소 선택 후 상세주소 입력 칸에 포커스 설정
+				document.getElementById('addr_detail').focus();
+			}
+		}).open();
+	}
+					// 포트원 결제 
+	  const IMP = window.IMP; // 생략 가능
+	  IMP.init("가맹점 식별코드"); // 예: imp00000000a
+</script>
 <style>
-textarea {
-	resize: none; /* 크기 조절 비활성화 */
+body {
+	font-family: Arial, sans-serif;
+	padding: 40px;
+	background-color: #f7f7f7;
+	overflow-y: scroll;
+	max-width: 800px;
+	margin: auto;
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 30px;
+	font-size: 40px; /* 주문/결제 제목 크기 줄임 */
+	font-weight: bold; /* 주문/결제 제목 굵게 */
+}
+
+.form-group {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	width: 120px;
+	margin-right: 10px;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+	flex: 1;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.textarea-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.textarea-group textarea {
+	resize: none;
+	height: 40px; /* 요청사항 텍스트 박스 세로 절반 줄임 */
+}
+
+.shipping-info {
+	margin-top: 20px;
+	padding: 15px;
+	border-top: 2px solid black; /* 위쪽 경계선 검정색 */
+	border-bottom: 2px solid black; /* 아래쪽 경계선 검정색 */
+	position: relative;
+}
+
+.shipping-info h3 {
+	position: absolute;
+	top: -20px; /* 네모 박스 위로 이동 */
+	left: 0;
+	font-size: 20px; /* 배송지정보 제목 크기 증가 */
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+	background-color: #f7f7f7; /* 제목과 경계선 간 여백 부여 */
+	padding-right: 10px;
+}
+
+.product-info {
+	margin-top: 30px;
+	padding: 15px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.discount, .payment-method {
+	margin-top: 30px;
+	padding-top: 15px;
+}
+
+hr {
+	border: 1px solid #ddd;
+	margin: 30px 0;
+}
+
+.total-price {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.submit-btn {
+	display: block;
+	width: auto;
+	padding: 12px 25px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 30px auto;
+	font-size: 18px;
+}
+
+.submit-btn:hover {
+	background-color: #0056b3;
+}
+
+.breadcrumb {
+	text-align: center;
+	font-size: 12px; /* 카트, 주문결제, 주문완료 글씨 크기 작게 */
+	margin-top: 20px;
+	color: #aaa; /* 카트와 주문완료 색상 회색 */
+}
+
+.highlight {
+	color: black; /* 주문결제 글씨 색상 검정으로 변경 */
+	font-size: 14px; /* 주문결제 글씨 크기 */
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media ( max-width : 600px) {
+	.form-group {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.form-group label {
+		margin-bottom: 5px;
+	}
+	.form-group input, .form-group textarea, .form-group select {
+		width: 100%;
+	}
 }
 </style>
 </head>
 <body>
-	<h1>주문 / 결제</h1>
+	<h1>주문/결제</h1>
+
+	<div class="breadcrumb">
+		<span>카트 > <span class="highlight">주문결제</span> > 주문완료
+		</span>
+	</div>
+
 	<form action="/order" method="post">
-		<!-- 주문 제출을 위한 URL -->
-		<label for="zipcode">우편번호:</label> <input type="text" id="zipcode"
-			name="zipcode" required><br>
-		<br> <label for="addr">주소:</label> <input type="text" id="addr"
-			name="addr" required><br>
-		<br> <label for="addr_detail">상세 주소:</label> <input type="text"
-			id="addr_detail" name="addr_detail" required><br>
-		<br> <label for="req">요청사항:</label>
-		<textarea id="req" name="req" rows="4" cols="30" required></textarea>
-		<br>
-		<br>
+		<div class="shipping-info">
+			<h3>배송지정보</h3>
+			<hr style="border: none; margin: 0;">
+			<!-- 제목 아래 구분선 제거 -->
+			
+			<!-- 다음 우편번호 api -->
+			<div class="form-group">
+				<label for="zipcode">우편번호:</label> <input type="text" id="zipcode"
+					name="zipcode" required readonly>
+				<button type="button" onclick="execDaumPostcode()">우편번호 찾기</button>
+				<!-- 우편번호 팝업 호출 버튼 -->
+			</div>
+			<div class="form-group">
+				<label for="addr">주소:</label> <input type="text" id="addr"
+					name="addr" required>
+			</div>
+			<div class="form-group">
+				<label for="addr_detail">상세 주소:</label> <input type="text"
+					id="addr_detail" name="addr_detail" required>
+			</div>
+			<div class="textarea-group">
+				<label for="req">요청사항:</label>
+				<textarea id="req" name="req" maxlength="100"></textarea>
 
 
-		<!-- 상품 정보 -->
-		<div class="product-info">
-			<label for="thumb">상품 썸네일 URL:</label> <input type="text" id="thumb"
-				name="thumb" required readonly> <label for="product_name">상품
-				이름:</label> <input type="text" id="product_name" name="product_name"
-				required readonly> <label for="quantity">수량:</label> <input
-				type="number" id="quantity" name="quantity" required readonly>
-
-			<label for="product_price">상품 가격:</label> <input type="number"
-				id="product_price" name="product_price" required readonly> <br>
-			<br> <label for="discount">할인가 :</label> <input type="number"
-				id="discount" name="discount" min="0" max="100" value="0" readonly><br>
-			<br> <label for="total_price">총 결제 금액:</label> <input
-				type="number" id="total_price" name="total_price" required readonly><br>
-			<br>
+			</div>
 		</div>
 
-		<input type="submit" value="결제하기">
+		<hr>
+
+		<div class="product-info">
+			<h3>주문 상품</h3>
+			<div class="form-group">
+				<label for="thumb">상품 썸네일:</label> <input type="text" id="thumb"
+					name="thumb" required readonly>
+			</div>
+			<div class="form-group">
+				<label for="product_name">상품 이름:</label> <input type="text"
+					id="product_name" name="product_name" required readonly>
+			</div>
+			<div class="form-group">
+				<label for="quantity">수량:</label> <input type="number" id="quantity"
+					name="quantity" required readonly>
+			</div>
+			<div class="form-group">
+				<label for="product_price">상품 가격:</label> <input type="number"
+					id="product_price" name="product_price" required readonly>
+			</div>
+			<div class="form-group">
+				<label for="total_price">총 상품 금액:</label> <input type="number"
+					id="total_price" name="total_price" class="total-price" required
+					readonly>
+			</div>
+			<div class="discount">
+			<!-- 할인율 위 검정색 선 -->
+			<label for="discount">할인율:</label> <input type="number" id="discount"
+				name="discount" min="0" max="100" value="0" readonly>
+		</div>
+		</div>
+
+		<hr>
+		<hr>
+
+		<button id="payment" style="
+		display: block; 
+		margin: 30px auto; 
+		background-color: #007bff; 
+		color: white; 
+		padding: 12px 25px; 
+		border: none; 
+		border-radius: 5px; 
+		cursor: pointer;">결제하기</button>
+
+    	<script src="payment.js"></script>
 	</form>
 
-	<script>
-		const quantityInput = document.getElementById('quantity');
-		const productPriceInput = document.getElementById('product_price');
-		const discountInput = document.getElementById('discount');
-		const totalPriceInput = document.getElementById('total_price');
-
-		// 고정된 할인율 (예: 10%)
-		const fixedDiscount = 10;
-		discountInput.value = fixedDiscount; // 할인율 고정
-
-		// 수량 또는 가격 변경 시 총 결제 금액 계산
-		function calculateTotalPrice() {
-			const quantity = parseInt(quantityInput.value) || 0;
-			const price = parseInt(productPriceInput.value) || 0;
-			const discount = fixedDiscount; // 고정 할인율
-
-			const total = quantity * price;
-			const discountedTotal = total - (total * (discount / 100));
-			totalPriceInput.value = discountedTotal.toFixed(2); // 소수점 2자리로 표시
-		}
-
-		// 이벤트 리스너 추가
-		quantityInput.addEventListener('input', calculateTotalPrice);
-		productPriceInput.addEventListener('input', calculateTotalPrice);
-	</script>
 </body>
 </html>

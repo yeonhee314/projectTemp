@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.shoppingmall.service.OrderService;
-import com.choongang.shoppingmall.vo.Order_DetailVO;
+import com.choongang.shoppingmall.vo.Order_CompleteVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +33,13 @@ public class OrderController {
 		try {
 			// 주문 정보 저장
 			orderService.createOrder(ordersVO);
-			// 주문 상세 정보 저장
-			Order_DetailVO orderDetail = new Order_DetailVO();
-			orderDetail.setOrder_id(ordersVO.getOrder_id()); // 주문 ID 설정
-			orderDetail.setQuantity(ordersVO.getCount()); // 수량 설정
-			orderDetail.setTotal_price(ordersVO.getPrice()); // 총 가격 설정
+			// 주문 완료 페이지 저장
+			Order_CompleteVO ordercomplete = new Order_CompleteVO();
+			ordercomplete.setOrder_id(ordersVO.getOrder_id()); // 주문 ID 설정
+			ordercomplete.setQuantity(ordersVO.getCount()); // 수량 설정
+			ordercomplete.setTotal_price(ordersVO.getPrice()); // 총 가격 설정
 
-			orderService.createOrder_Detail(orderDetail); // 주문 상세 저장
+			orderService.createOrder_Complete(ordercomplete); // 주문완료 페이지 저장
 
 			log.info("주문서 작성 요청 성공: {}", ordersVO); // 성공 로그
 			return new ResponseEntity<>("주문서 작성 성공", HttpStatus.CREATED);
