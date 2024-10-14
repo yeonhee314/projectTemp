@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.vo.CategoryVO;
+import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
@@ -28,12 +29,11 @@ public class HomeController {
 	
 	@GetMapping("/index.html")
 	public String index(
-						@ModelAttribute ProductPagingVO productPagingVO,
+						@ModelAttribute CommVO commVO, 
 						Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
+		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
 		List<CategoryVO> categorylist= categoryService.selectCategory();
 		model.addAttribute("pv", pv);
-		model.addAttribute("ppv", productPagingVO);
 		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("newLine", "\n" );
 		model.addAttribute("br", "<br>" );

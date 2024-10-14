@@ -30,8 +30,8 @@ public class PagingVO<T> {
 	private void calc() {
 		if(totalCount>0) {
 			if(currentPage<=0) currentPage = 1;
-			if(sizeOfPage<=0) sizeOfPage = 10;
-			if(sizeOfBlock<=1) sizeOfBlock = 10;
+			if(sizeOfPage<=0) sizeOfPage = 8;
+			if(sizeOfBlock<=1) sizeOfBlock = 8;
 			
 			totalPage = (totalCount-1)/sizeOfPage + 1;
 			if(currentPage>totalPage) currentPage = 1;
@@ -111,13 +111,13 @@ public class PagingVO<T> {
 				if(i==currentPage) {
 					sb.append("<li class='page-link page-item active' aria-current='page'>" + i + "</li>");
 				}else {
-					sb.append("<li class='page-item'><a class='page-link' href='?p=" + i + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "'>" + i + "</a></li>");
+					sb.append("<li class='page-item'><a class='page-link' href='?p=" + i + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "#target-section'>" + i + "</a></li>");
 				}
 			}
 			// 이후 : 끝페이지 번호가 전체 페이지 번호보다 적을 때만 이후를 표시한다.
 			if(endPage<totalPage) {
 				sb.append("<li class='page-item'>");
-				sb.append("<a class='page-link' href='?p=" + (endPage+1) + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "' aria-label='Next'>");
+				sb.append("<a class='page-link' href='?p=" + (endPage+1) + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "#target-section' aria-label='Next'>");
 				sb.append("<span aria-hidden='true'>&raquo;</span>");
 				sb.append("</a>");
 				sb.append("</li>");

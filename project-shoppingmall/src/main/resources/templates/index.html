@@ -500,7 +500,7 @@
 	<section class="bg0 p-t-23 p-b-140">
 		<div class="container">
 			<div class="p-b-10">
-				<h3 class="ltext-103 cl5">
+				<h3 class="ltext-103 cl5" id="target-section">
 					Product Overview
 				</h3>
 			</div>
@@ -734,6 +734,8 @@
 			</div>
 
 			<div class="row">
+			<!-- TODO : css 수정 -->
+			<div class="block2-txt-child2 flex-w flex-r-m p-b-35 ">[[${pv.pageInfo}]]</div>
 				<th:block th:if="${pv.totalCount<=0}">
 					<span class="mtext-111">등록된 상품이 없습니다.</span>
 				</th:block>
@@ -777,7 +779,11 @@
 							</div>
 						</div>
 					</th:block>
+				<tr>
+					<td colspan="5" class="sub-title">[(${pv.pageList})]</td>
+				</tr>
 				</th:block>
+				
 			</div></section>
 
 	<!-- Footer -->
@@ -1185,6 +1191,19 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				ps.update();
 			})
 		});
+		
+		$(document).ready(function() {
+		    // 해시가 있는 경우 해당 위치로 스크롤
+		    if (window.location.hash) {
+		        var target = $(window.location.hash);
+		        if (target.length) {
+		            $('html, body').animate({
+		                scrollTop: target.offset().top
+		            });
+		        }
+		    }
+		});
+
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
