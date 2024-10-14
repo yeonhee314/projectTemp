@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +34,12 @@ CREATE TABLE users(
 	user_level VARCHAR2(20) DEFAULT '기본등급' NOT NULL,
 	user_point NUMBER DEFAULT 0 NOT NULL
 );
+ALTER TABLE users
+ADD (
+    postcode VARCHAR2(20) DEFAULT '00000' NOT NULL,  -- 우편번호 기본값
+    address VARCHAR2(300) DEFAULT '미입력' NOT NULL,  -- 기본 주소 기본값
+    address_detail VARCHAR2(300) DEFAULT '미입력' NOT NULL  -- 상세 주소 기본값
+);
 ---------------------------------------------------------참고
  */
 
@@ -54,11 +61,16 @@ public class UserVO implements UserDetails{
 	private Date regdate;		//회원가입일
 	private String news_email;	//이메일수신여부
 	private String gender;		//성별
-	private Date birth_date;	//생년월일
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birth_date;;	//생년월일
 	private String signout;		//회원탈퇴
 	private String user_role;	//계정권한
 	private String user_level;	//등급
 	private int user_point;		//포인트
+	private String postcode;	//우편번호
+	private String address;		//기본주소
+	private String address_detail;	//상세주소
 	
 	
 	
