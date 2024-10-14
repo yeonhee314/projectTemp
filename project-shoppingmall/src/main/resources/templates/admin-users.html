@@ -9,7 +9,7 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="../css/admin.css">
+<link rel="stylesheet" type="text/css" href="../css/admin/admin.css">
 </head>
 <body>
 	<div class="bg">
@@ -32,7 +32,7 @@
 					<td colspan="6" class="main">회원 관리 화면</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="total">전체사용자: [[${count}]]  명</td>
+					<td colspan="6" class="total">[[${pv.pageInfo}]]</td>
 				</tr>
 				<tr class="index">
 					<th>No</th>
@@ -43,14 +43,33 @@
 					<th>가입일</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${list}" class="list">
-						<td th:text="${vo.user_id}">[[${vo.user_id}]]</td>
+					<tr th:each="vo: ${pv.list}" class="list" onmouseover="this.style.backgroundColor='mistyrose'" onmouseout="this.style.backgroundColor='white'">
+						<td>[[${vo.user_id}]]</td>
 						<td><a th:href="@{/admin/user/details(user_id=${vo.user_id})}">[[${vo.username}]]</a></td>
 						<td>[[${vo.nickname}]]</td>
 						<td>[[${vo.email}]]</td>
 						<td>[[${vo.user_level}]]</td>
 						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
+					<tr>
+						<td colspan="6">[(${pv.pageList})]</td>
+					</tr>
+					<tr>
+					<td colspan="6" style="border: none; text-align: center;">
+					<form th:action="@{/admin/users}" method="get">
+						<input type="hidden" name="p" th:value="${upv.p}" />
+						<input type="hidden" name="s" th:value="${upv.s}" />
+						<input type="hidden" name="b" th:value="${upv.b}" />
+						<select name="field" id="field">
+							<option value="username">아이디</option>
+							<option value="nickname">닉네임</option>
+							<option value="email">이메일</option>
+						</select>
+						<input type="text" name="search" id="search"/>
+						<input type="submit" value="검색"/>
+					</form>
+				</td>
+			</tr>
 				</th:block>
 			</table>
 	</div>

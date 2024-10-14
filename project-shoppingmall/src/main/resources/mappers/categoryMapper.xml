@@ -7,6 +7,10 @@
 	<select id="selectCategory" resultType="CategoryVO">
 		select * from category
 	</select>
+	<!-- 카테고리이름 모두 가져오기 -->
+	<select id="selectCategoryName" resultType="String">
+		select category_name from category
+	</select>
 	
 	<!-- id로 카테고리 가져오기 -->
 	<select id="selectCategoryId" parameterType="int" resultType="CategoryVO">

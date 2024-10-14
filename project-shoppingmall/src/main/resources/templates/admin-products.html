@@ -9,7 +9,7 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="../css/admin.css">
+<link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
 </head>
 <body>
 	<div class="bg">
@@ -27,9 +27,60 @@
 				<a href="qna">문의관리</a>
 			</div>
 		</div>
-		<section>
-			<div class="admin-main">상품 관리 화면</div>
-		</section>
+			<table class="admin-main">
+				
+				<tr>
+					<td colspan="6" class="main">상품 관리 화면</td>
+				</tr>
+				<tr>
+					<td colspan="1" class="total">[[${pv.pageInfo}]]</td>
+				</tr>
+				<tr class="index">
+					<th>No</th>
+					<th>상품명</th>
+					<th>판매가</th>
+					<th>카테고리</th>
+					<th>재고</th>
+					<th>상태</th>
+					<th>등록일</th>
+				</tr>
+				<th:block>
+					<tr th:each="vo: ${pv.list}" class="list" onmouseover="this.style.backgroundColor='mistyrose'" onmouseout="this.style.backgroundColor='white'">
+						<td><input type="checkbox" /> [[${vo.product_id}]]</td>
+						<td><a th:href="@{/admin/user/details(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
+						<td>[[${vo.product_price}]]</td>
+						<td>[[${vo.category_id}]]</td>
+						<td>[[${vo.product_stock}]]</td>
+						<td>[[${vo.product_status}]]</td>
+						<td>[[${#dates.format(vo.product_regDate,'yy-MM-dd(E) HH:mm')}]]</td>
+					</tr>
+					<tr>
+						<td colspan="6">[(${pv.pageList})]</td>
+					</tr>
+					<th:block>
+					<tr th:each="cvv:${cv}" class="categoryList">
+						<td>[[${cvv.category_id}]]</td>
+						<td>[[${cvv.category_name}]]</td>
+					</tr>
+				</th:block>
+					<tr>
+					<td colspan="6" style="border: none; text-align: center;">
+					<form th:action="@{/admin/users}" method="get">
+						<input type="hidden" name="p" th:value="${upv.p}" />
+						<input type="hidden" name="s" th:value="${upv.s}" />
+						<input type="hidden" name="b" th:value="${upv.b}" />
+						<select name="field" id="field">
+							<option value="username">아이디</option>
+							<option value="nickname">닉네임</option>
+							<option value="email">이메일</option>
+						</select>
+						<input type="text" name="search" id="search"/>
+						<input type="submit" value="검색"/>
+					</form>
+				</td>
+			</tr>
+				</th:block>
+			</table>
 	</div>
 </body>
 </html>

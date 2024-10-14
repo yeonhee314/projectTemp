@@ -7,6 +7,11 @@
  	<!-- 1. 유저 전체 수 -->
  	<select id="selectCount" resultType="int">
  		select count(*) from users
+ 		<where>
+			<if test="search != null">
+				${field} Like '%${search}%'
+			</if>
+		</where>
  	</select>
  	<!-- 2. 전체  유저 목록 -->
  	<select id="selectAll"  resultType="UserVO">
@@ -16,7 +21,33 @@
  	<select id="selectByID" parameterType="int" resultType="UserVO">
  		select * from users where user_id = #{user_id}
  	</select>
- 	
+ 	<!-- 전페 유저목록 페이지 얻기 -->
+	<select id="selectUserList" parameterType="hashmap" resultType="UserVO">
+		
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from users 
+				<where>
+					<if test="search != null">
+						${field} like '%${search}%'
+					</if>
+				</where>
+				order by user_id desc) Q
+			where
+			<![CDATA[
+				rownum<=#{endNo}
+				]]>
+		) R
+		where
+		<![CDATA[
+			rnum >= #{startNo}
+		]]>
+	</select>
  	<!-- 게시글 저장 
  	<insert id="insert" parameterType="UserVO">
 		insert into 

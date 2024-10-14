@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
-		
+		log.info("pv 리턴 : {}",pv);
 		return pv;
 	}
 	

@@ -9,19 +9,19 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="../static/css/admin.css">
+<link rel="stylesheet" type="text/css" href="../static/css/admin/adminUserDetails.css">
 <style type="text/css">
 .bg {
-	background-color: white;
-	border: 1px solid black;
-	width: 1100px;
+	background-color: rgb(227, 255, 255, 0.3);
+	border: 0px solid black;
+	width: 1200px;
 	height: 600px;
 	
 }
 
 .menu-bar {
 	position: fixed;
-	border: 1px solid black;
+	border: 0px solid black;
 	width: 100px;
 	height: 600px;
 	text-align: center;
@@ -36,13 +36,12 @@
 	background-color: lightblue;
 }
 .admin-main {
-	border: 1px solid black;
+	border: 0px solid black;
 	width: 1000px;
-	position: fixed; left: 100px;
+	position: fixed; left: 150px;
 }
 .main {
 	height: 60px;
-	
 	text-align: center;
 	font-weight: bold;
 	font-size: 2rem;
@@ -60,10 +59,36 @@ li {
 	list-style-type: none;
 }
 .info {
-	border: 1px solid black;
-	width: 350px; height: 400px;
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 250px;
 	position: fixed; left: 100px; top: 80px;
 	margin: 50px;
+	background-color: white;
+}
+.email {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 50px; line-height: 50px;
+	position: fixed; left: 100px; top: 350px;
+	margin: 50px;
+	background-color: white;
+}
+.history {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 180px;
+	position: fixed; left: 600px; top: 80px;
+	margin: 50px;
+	background-color: white;
+}
+.point {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 180px;
+	position: fixed; left: 600px; top: 280px;
+	margin: 50px;
+	background-color: white;
+}
+.back:hover{
+	font-weight: bold;
+	cursor: pointer;
 }
 </style>
 </head>
@@ -85,25 +110,53 @@ li {
 		</div>
 			<table class="admin-main">
 				<tr>
-					<td colspan="6" class="main">회원 관리</td>
+					<td colspan="6" class="main">회원상세정보</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="">회원상세정보</td>
+					<td onClick="location.href='/admin/users'" class="back"><i class="bi bi-arrow-left-circle">회원 목록</i></td>
 				</tr>
 			</table>
 			<div class="info" >
 				<ul>
 					<li>유저번호 : [[${details.user_id}]]</li>
-					<li>유저ID : [[${details.username}]]</li>
+					<li> &nbsp; </li>
+					<li>ID : [[${details.username}]]</li>
 					<li>닉네임: [[${details.nickname}]]</li>
 					<li>이름: [[${details.name}]]</li>
 					<li>생년월일 : [[${#dates.format(details.birth_date,'yyyy-MM-dd')}]]</li>
 					<li>이메일 : [[${details.email}]]</li>
 					<li>핸드폰 : [[${details.phone}]]</li>
-					<li>등급 : [[${details.user_level}]]</li>
-					<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
+					<li>회원등급 : [[${details.user_level}]]</li>
 				</ul>
 			</div>
+			<div class="history" >
+				<ul>
+					<li>활동정보</li>
+					<li> &nbsp; </li>
+					<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
+					<li>최근접속일 : </li>
+					<li>&nbsp;</li>
+					<li>후기 : (n)</li>
+					<li>문의 : (n)</li>
+				</ul>
+			</div>
+			<div class="point" >
+				<ul>
+					<li>포인트</li>
+					<li> &nbsp; </li>
+					<li>보유 포인트 : [[${details.user_point}]]</li>
+					<li>포인트 지급/차감</li>
+					<li>(지급/차감 기능 들어가는 자리)</li>
+					<li>포인트 적립내역</li>
+					<li>(적립내역 들어가는 자리)</li>
+				</ul>
+			</div>
+			<div class="email" >
+				<ul>
+					<li>이메일 수신여부 : [[${details.news_email}]]</li>
+				</ul>
+			</div>
+			
 	</div>
 </body>
 </html>
