@@ -10,8 +10,8 @@
 		</insert>
 	<!-- 주문서 상세 작성-->
 		<insert id="insertOrder_Complete" parameterType="com.choongang.shoppingmall.vo.Order_CompleteVO">
-			INSERT INTO orders(order_detail_id, order_id, product_id, quantity, total_price)
-			VALUES (#{order_detail_id}, #{order_id}, #{product_id}, #{quantity}, #{total_price})
+			INSERT INTO orders(order_complete_id, order_id, product_id, quantity, total_price)
+			VALUES (#{order_complete_id}, #{order_id}, #{product_id}, #{quantity}, #{total_price})
 		</insert>
 	<!-- 주문 조회 -->
 		<select id="selectOrders" parameterType="com.choongang.shoppingmall.vo.OrdersVO">
