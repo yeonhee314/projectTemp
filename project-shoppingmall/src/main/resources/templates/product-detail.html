@@ -372,7 +372,22 @@
 				</div>
 				
 				<div class="col-md-6 col-lg-5 p-b-30">
-					<div class="p-r-50 p-t-5 p-lr-0-lg">
+					<div class="p-r-50 p-lr-0-lg">
+					<!-- Review -->
+					<!-- TODO : 별점 계산해서 띄우기  -->
+						<a th:href="@{product-review.html(product_id=${productvo.product_id}, category_id=${categoryvo.category_id})}" class="trans-04 td-none">
+							<span class="fs-18 cl11">
+								<i class="item-rating zmdi zmdi-star-outline"></i>
+								<i class="item-rating zmdi zmdi-star-outline"></i>
+								<i class="item-rating zmdi zmdi-star-outline"></i>
+								<i class="item-rating zmdi zmdi-star-outline"></i>
+								<i class="item-rating zmdi zmdi-star-outline"></i>
+							</span>
+							<!-- TODO : 리뷰 개수 -->
+							<span class="stext-101 cl3 p-t-23">4.9</span>
+							<span class="stext-107 cl3 p-t-23 td-ul">&nbsp<b>100</b>개 리뷰 ></span>
+						</a>
+						
 						<h4 class="mtext-105 cl2 js-name-detail p-b-14">
 							[[${productvo.product_name}]]
 						</h4>

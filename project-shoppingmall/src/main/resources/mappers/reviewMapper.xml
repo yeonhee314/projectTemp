@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.shoppingmall.dao.ReviewDAO">
+	<!-- 1. 상품 id로 리뷰 가져오기 -->
+	<select id="selectReviewId" parameterType="int" resultType="ReviewVO">
+		select * from review where product_id=#{product_id}
+	</select>
+	
+	<!-- 2. 평균 별점 계산해서 가져오기 -->
+	
+	
+	<!-- 3. 상품 id별 리뷰 개수 -->
+	<select id="selectReviewCount" parameterType="int" resultType="int">
+		select count(*) from review where product_id=#{product_id}
+	</select>
+	
+	<!-- 4. 상품 id별 리뷰 리스트 -->
+	<select id="selectReviewList" parameterType="hashmap" resultType="ReviewVO">
+		<![CDATA[
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from review order by product_id desc) Q
+			where
+				rownum<=#{endNo}
+		) R
+		where
+			rnum >= #{startNo} and product_id=#{product_id}
+		]]>
+	</select>
+</mapper>  
