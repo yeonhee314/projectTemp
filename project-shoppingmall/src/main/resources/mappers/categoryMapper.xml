@@ -3,6 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.shoppingmall.dao.CategoryDAO">
+	<!-- 갯수 세기 -->
+	<select id="selectCategoryCount" resultType="int">
+		select count(*) from category
+	</select>
 	<!-- 카테고리 모두 가져오기 -->
 	<select id="selectCategory" resultType="CategoryVO">
 		select * from category
@@ -15,5 +19,23 @@
 	<!-- id로 카테고리 가져오기 -->
 	<select id="selectCategoryId" parameterType="int" resultType="CategoryVO">
 		select * from category where category_id=#{category_id}
+	</select>
+	<!-- 1페이지 얻기 -->
+	<select id="selectCategoryList" parameterType="hashmap" resultType="CategoryVO">
+		<![CDATA[
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from category order by category_id desc) Q
+			where
+				rownum<=#{endNo}
+		) R
+		where
+			rnum >= #{startNo}
+		]]>
 	</select>
 </mapper>  

@@ -41,8 +41,8 @@ public class AdminController {
 	}
 	// 유저목록 페이징
 	@GetMapping(value =  "/admin/users")
-	public String adminUsers(@RequestParam (value = "field", required = false) String field,
-						@RequestParam (value = "search", required = false) String search,
+	public String adminUsers(@RequestParam (required = false) String field,
+						@RequestParam (required = false) String search,
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
 		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), userPagingVO.getField(), userPagingVO.getSearch());
@@ -74,12 +74,12 @@ public class AdminController {
 		model.addAttribute("details", usersBoardService.selectByID(user_id));
 		return "admin-userdetails";
 	}
-	// 상품 관리
+	// 상품 목록 페이징
 	@GetMapping("/admin/products")
 	public String adminProducts(@ModelAttribute UserPagingVO userPagingVO ,Model model) {
 		PagingVO<ProductVO> pv = productService.getProductList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
 		// 카테고리 페이징
-		List<CategoryVO> cv = categoryService.selectCategory(); 
+		PagingVO<CategoryVO> cv = categoryService.getCategoryList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", cv);
 		model.addAttribute("upv", userPagingVO);

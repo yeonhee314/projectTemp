@@ -54,15 +54,10 @@
 						<td>[[${vo.product_status}]]</td>
 						<td>[[${#dates.format(vo.product_regDate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
+					
 					<tr>
 						<td colspan="6">[(${pv.pageList})]</td>
 					</tr>
-					<th:block>
-					<tr th:each="cvv:${cv}" class="categoryList">
-						<td>[[${cvv.category_id}]]</td>
-						<td>[[${cvv.category_name}]]</td>
-					</tr>
-				</th:block>
 					<tr>
 					<td colspan="6" style="border: none; text-align: center;">
 					<form th:action="@{/admin/users}" method="get">
