@@ -364,8 +364,8 @@
 									<th:block th:each="vo:${pv.list}">
 										<tr class="table_row">
 											<td class="column-1">
-												<!-- TODO : 유저정보, 유저별 구매 옵션 -->
 												<div class="how-review p-t-30 p-b-30">
+												<!-- TODO : 유저정보, 유저별 구매 옵션 -->
 													<span class="fs-18 cl11" th:utext="${productvo.getStarRating(vo.review_rating)}"></span>
 													<span class="stext-101 cl3 p-t-23">[[${vo.review_rating}]]</span>
 													<img th:src="@{'images/review-imgs/' + ${vo.review_img}}" alt="IMG-REVIEW">
@@ -375,7 +375,7 @@
 												<div>
 													<span class="stext-109 ta-r">구매옵션 : 화이트</span><br>
 													<span class="stext-108 flex-w flex-r-m" th:text="${#dates.format(vo.review_date, 'yyyy-MM-dd')}+'&nbsp&nbsp'"></span>
-													<span class="stext-109 flex-w flex-r-m" th:text="${userVO.} + '&nbsp&nbsp'"></span>
+													<span class="stext-109 flex-w flex-r-m" text="'&nbsp&nbsp'"></span>
 												</div>
 												<span class="mtext-103 cl3 p-b-100" th:text="${vo.review_title}"></span><br><br>
 												<span class="stext-117 cl3 p-b-50" th:text="${vo.review_text}"></span>

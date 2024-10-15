@@ -97,18 +97,15 @@ public class HomeController {
 			@ModelAttribute CommVO commVO, 
 			@RequestParam("product_id") int product_id,
 			@RequestParam("category_id") int category_id, 
-			@RequestParam("user_id") int user_id,
 			Model model
 			) {
 		PagingVO<ReviewVO> pv = reviewService.getReviewList(product_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
-		UserVO userVO = reviewService.selectUserId(user_id);
 		
 		model.addAttribute("pv", pv);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
-		model.addAttribute("uservo", userVO);
 		
 		return "product-review";
 	}
