@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.CategoryDAO;
+import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
-import com.choongang.shoppingmall.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,13 +53,14 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		return categoryVO;
 	}
+	// 카테고리 페이징
 	@Override
-	public PagingVO<CategoryVO> getCategoryList(int currentPage, int sizeOfPage, int sizeOfBlock) {
-		PagingVO<CategoryVO> cv =null;
+	public AdminCategoryPagingVO<CategoryVO> getCategoryList(int currentPage, int sizeOfPage, int sizeOfBlock) {
+		AdminCategoryPagingVO<CategoryVO> cv =null;
 		
 		try {
 			int totalCount = categoryDAO.selectCategoryCount();
-			cv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			cv = new AdminCategoryPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
 			if(totalCount > 0) {
 				HashMap<String, Integer> map = new HashMap<>();
 				map.put("startNo", cv.getStartNo());
@@ -72,6 +73,23 @@ public class CategoryServiceImpl implements CategoryService{
 		log.info("cv 리턴 : {}",cv);
 		return cv;
 	}
-	
-	
+	@Override
+	public int selectCountByCategoryName(String category_name) {
+		int count = 1;
+		try {
+			count = categoryDAO.selectCountByCategoryName(category_name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	@Override
+	public void insert(CategoryVO categoryVO) {
+		try {
+			categoryDAO.insert(categoryVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("categoryVO 리턴 : {}",categoryVO);
+	}
 }

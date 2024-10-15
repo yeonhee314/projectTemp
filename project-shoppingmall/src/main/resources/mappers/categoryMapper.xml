@@ -15,7 +15,10 @@
 	<select id="selectCategoryName" resultType="String">
 		select category_name from category
 	</select>
-	
+	<!-- 카테고리 이름 개수 세기  -->
+	<select id="selectCountByCategoryName" parameterType="string" resultType="int">
+		select count(*) from category where category_name=#{category_name}
+	</select>
 	<!-- id로 카테고리 가져오기 -->
 	<select id="selectCategoryId" parameterType="int" resultType="CategoryVO">
 		select * from category where category_id=#{category_id}
@@ -38,4 +41,11 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
+	<!-- 카테고리 저장 -->
+ 	<insert id="insert" parameterType="CategoryVO">
+		insert into 
+			category
+		values 
+			(category_id_seq.nextval, #{category_name})
+	</insert>
 </mapper>  

@@ -9,13 +9,19 @@
  		select count(*) from users
  		<where>
 			<if test="search != null">
-				${field} Like '%${search}%'
+				#{field} like '%#{search}%'
 			</if>
 		</where>
  	</select>
  	<!-- 2. 전체  유저 목록 -->
  	<select id="selectAll"  resultType="UserVO">
- 		select * from users order by user_id desc
+ 		select * from users 
+ 		<where>
+			<if test="search != null">
+				#{field} like '%#{search}%'
+			</if>
+		</where>
+ 		order by user_id desc
  	</select>
  	<!--  3. 회원 고유번호로 찾기  	-->
  	<select id="selectByID" parameterType="int" resultType="UserVO">
@@ -34,7 +40,7 @@
 				(select * from users 
 				<where>
 					<if test="search != null">
-						${field} like '%${search}%'
+						#{field} like '%#{search}%'
 					</if>
 				</where>
 				order by user_id desc) Q

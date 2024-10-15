@@ -16,6 +16,7 @@
 	
 }
 .menu-bar div {
+	
 	height: 40px;
 	line-height: 40px;
 	margin-bottom: 50px;
@@ -27,30 +28,11 @@
 	position: fixed; left: 150px;
 }
 .main {
-	height: 80px;
+	height: 60px;
 	text-align: center;
 	font-weight: bold;
 	font-size: 2rem;
 }
-.total {
-	height: 20px;
-	text-align: right;
-}
-.index {
-	height: 5px;
-	font-size: 0.7rem;
-	border-bottom: 1px solid black;
-	text-indent: 30px;
-}
-.list {
-	background-color: white;
-	height: 10px;
-	line-height:20px;
-	font-size: 0.7rem;
-	border-bottom: 1px solid #ebebeb;
-	text-indent: 30px;
-}
-
 a {
 	text-decoration:none; 
 }
@@ -59,4 +41,39 @@ a:link {
 }
 a:visited {
 	color: black;
+}
+li {
+	list-style-type: none;
+}
+.info {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 250px;
+	position: fixed; left: 100px; top: 80px;
+	margin: 50px;
+	background-color: white;
+}
+.email {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 50px; line-height: 50px;
+	position: fixed; left: 100px; top: 350px;
+	margin: 50px;
+	background-color: white;
+}
+.history {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 180px;
+	position: fixed; left: 600px; top: 80px;
+	margin: 50px;
+	background-color: white;
+}
+.point {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 180px;
+	position: fixed; left: 600px; top: 280px;
+	margin: 50px;
+	background-color: white;
+}
+.back:hover{
+	font-weight: bold;
+	cursor: pointer;
 }

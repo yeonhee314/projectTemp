@@ -16,9 +16,12 @@ public interface CategoryDAO {
 	List<CategoryVO> selectCategory() throws Exception;
 	// 카테고리 이름 모두 가져오기
 	List<CategoryVO> selectCategoryName() throws Exception;
+	// 카테고리 이름 세기(중복확인)
+	int selectCountByCategoryName(String category_name) throws Exception;
 	// id로 카테고리 가져오기
 	CategoryVO selectCategoryId(int id) throws Exception;
 	// 한 페이지 얻기
 	List<CategoryVO> selectCategoryList(HashMap<String, Integer> map) throws SQLException;
-		
+	
+	void insert(CategoryVO categoryVO) throws SQLException;
 }

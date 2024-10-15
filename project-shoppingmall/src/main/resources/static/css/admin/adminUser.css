@@ -1,37 +1,4 @@
-.bg {
-	background-color: rgb(227, 255, 255, 0.3);
-	border: 0px solid black;
-	width: 1200px;
-	height: 600px;
-	
-}
 
-.menu-bar {
-	position: fixed;
-	border: 0px solid black;
-	width: 100px;
-	height: 600px;
-	text-align: center;
-	font-weight: bold;
-	
-}
-.menu-bar div {
-	height: 40px;
-	line-height: 40px;
-	margin-bottom: 50px;
-	background-color: lightblue;
-}
-.admin-main {
-	border: 0px solid black;
-	width: 1000px;
-	position: fixed; left: 150px;
-}
-.main {
-	height: 80px;
-	text-align: center;
-	font-weight: bold;
-	font-size: 2rem;
-}
 .total {
 	height: 20px;
 	text-align: right;
@@ -50,13 +17,7 @@
 	border-bottom: 1px solid #ebebeb;
 	text-indent: 30px;
 }
+.list:hover {
+	background-color: whitesmoke;
+}
 
-a {
-	text-decoration:none; 
-}
-a:link {
-	color: black;
-}
-a:visited {
-	color: black;
-}

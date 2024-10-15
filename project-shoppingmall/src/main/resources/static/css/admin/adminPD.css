@@ -3,65 +3,178 @@
 	border: 0px solid black;
 	width: 1250px;
 	height: 600px;
-	
 }
 
 .menu-bar {
 	position: fixed;
 	border: 0px solid black;
+	border-right: 1px solid #ebebeb;
 	width: 100px;
 	height: 600px;
 	text-align: center;
-	font-weight: bold;
-	
+	background-color: white;
 }
+
 .menu-bar div {
 	height: 40px;
 	line-height: 40px;
 	margin-bottom: 50px;
-	background-color: lightblue;
+	
+}
+.menu-bar div:hover {
+	background-color: #ebebeb;
 }
 .admin-main {
 	border: 0px solid black;
 	width: 900px;
-	position: fixed; left: 300px;
+	position: fixed;
+	left: 300px;
 }
+
 .main {
 	height: 60px;
 	text-align: center;
 	font-weight: bold;
 	font-size: 1.5rem;
 }
+
 .total {
 	height: 20px;
 	text-align: left;
 }
+
 .index {
 	height: 5px;
 	font-size: 0.7rem;
 	border-bottom: 1px solid black;
 	text-indent: 30px;
 }
+
 .list {
 	background-color: white;
 	height: 10px;
-	line-height:40px;
+	line-height: 30px;
 	font-size: 0.7rem;
 	border-bottom: 1px solid #ebebeb;
 	text-indent: 30px;
 }
+
+.list:hover {
+	background-color: whitesmoke;
+}
+
 .categoryList {
-	position: fixed; left: 150px; top: 100px;
-	width: 100px;
-	height: 300px;
-	border: 1px solid red;
+	position: fixed;
+	left: 150px;
+	top: 70px;
+	width: 120px;
+	background-color: white;
 }
+
+.categorySet {
+	font-size: 0.7rem;
+	text-align: right;
+	height: 25px;
+}
+
+.categorySet:hover {
+	cursor: pointer;
+}
+
+.categoryName {
+	border: 0px solid black;
+	height: 30px;
+	text-align: center;
+	font-size: 0.7rem;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.categoryName:hover {
+	cursor: pointer;
+	background-color: whitesmoke;
+}
+
 a {
-	text-decoration:none; 
+	text-decoration: none;
 }
+
 a:link {
 	color: black;
 }
+
 a:visited {
 	color: black;
+}
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  padding: 20px;
+
+  /* 트랜지션 효과 */
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+
+  /* 화면 전체를 덮게하는 코드 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* 중앙에 오게하는 코드 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 350px;
+  height: 450px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  /* 트랜지션 효과 */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: scale(0.8);
+}
+
+.modal.show {
+  /* 모달이 열렸을 때 보여지게 하는 코드 */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal.show .modal-content {
+  /* 모달이 열렸을 때 보여지게 하는 코드 */
+  opacity: 1;
+  transform: scale(1);
+}
+.modalBtn {
+	text-align: right;
+}
+.modalCategoryList {
+	width: 100px; height:500px;
+	background-color: white;
+}
+.modalCategoryName {
+	border: 0px solid black;
+	height: 30px;
+	text-align: center;
+	font-size: 0.7rem;
+	border-bottom: 1px solid #ebebeb;
+}
+.modalCategoryName:hover {
+	cursor: pointer;
+	background-color: whitesmoke;
+}
+.form-control {
+	width: 180px;
+	height: 25px;
+}
+
+#message {
+	font-size: 0.6rem;
 }

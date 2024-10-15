@@ -32,6 +32,21 @@ public class UserPagingVO {
 		this.sizeOfPage = s;
 		this.sizeOfBlock = b;
 	}	
+	public UserPagingVO(int p, int s, int b, int idx, int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
+		super();
+		this.p = p;
+		this.s = s;
+		this.b = b;
+		this.idx = idx;
+		this.currentPage = currentPage;
+		this.sizeOfPage = sizeOfPage;
+		this.sizeOfBlock = sizeOfBlock;
+		this.currentPage = p;
+		this.sizeOfPage = s;
+		this.sizeOfBlock = b;
+		this.field = field;
+		this.search = search;
+	}	
 
 	
 	public void setP(int p) {

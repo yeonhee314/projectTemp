@@ -8,8 +8,62 @@
 <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
+
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
+<script type="text/javascript">
+//HTML 문서의 로딩이 완료되었을 때, 해당 함수를 실행
+document.addEventListener("DOMContentLoaded", function () {
+ 
+  var modalBtn = document.getElementById("categorySet");
+  var modal = document.getElementById("myModal");
+  var closeBtn = document.getElementById("closeBtn");
+
+  function toggleModal() {
+    modal.classList.toggle("show");
+  }
+  closeBtn.addEventListener("click", toggleModal);
+
+  modalBtn.addEventListener("click", function () {
+      toggleModal();
+  });
+});
+//카테고리 중복확인하는 함수
+function categoryCheck(){
+	const category_name = $("#category_name").val(); // 입력한 카테고리읽기
+	if(category_name.length>=3){ // 길이가 3자 이상때만
+		if(category_name.indexOf(" ")!=-1){ // 아이디에 공백이 있다면
+			$("#message").html("공백은 포함할수 없어요").css('color','red');
+		}else{
+			// Ajax를 호출하여 처리 한다.
+			axios.get('/test/categoryCheck?category_name='+category_name)
+			  .then(function (response) {
+			    // 성공 핸들링
+			    console.log("넘어온값 : " + JSON.stringify(response));
+			    console.log("넘어온 결과 : " + response.data);
+			    // alert(response.data);
+			    if(response.data*1==0){
+			    	$("#message").html("사용가능한 아이디입니다.").css('color','blue');
+			    }else{
+			    	$("#message").html("사용 불가능한 아이디입니다.").css('color','red');
+			    }
+			  })
+			  .catch(function (error) {
+			    // 에러 핸들링
+			    console.log(error);
+			  })
+			  .finally(function () {
+			    // 항상 실행되는 영역
+			  });
+		}
+	}else{
+		$("#message").html("").css('color','black');
+	}
+}
+function categoryEdit(){
+	
+}
+</script>
 </head>
 <body>
 	<div class="bg">
@@ -27,13 +81,23 @@
 				<a href="qna">문의관리</a>
 			</div>
 		</div>
+		<table class="categoryList">
+			<tr>
+				<td class="categorySet" id="categorySet">카테고리관리<i class="bi bi-gear-fill"></i></td>
+			</tr>
+			<tr>
+				<td style="color: blue; text-align: center; font-size: 0.9rem;">전체 카테고리</td>
+			</tr>
+			<tr th:each="co: ${cv.list}">
+				<td class="categoryName">[[${co.category_name}]]</td>
+			</tr>
+		</table>
 			<table class="admin-main">
-				
 				<tr>
 					<td colspan="6" class="main">상품 관리 화면</td>
 				</tr>
 				<tr>
-					<td colspan="1" class="total">[[${pv.pageInfo}]]</td>
+					<td colspan="3" class="total">[[${pv.pageInfo}]]</td>
 				</tr>
 				<tr class="index">
 					<th>No</th>
@@ -45,8 +109,8 @@
 					<th>등록일</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${pv.list}" class="list" onmouseover="this.style.backgroundColor='mistyrose'" onmouseout="this.style.backgroundColor='white'">
-						<td><input type="checkbox" /> [[${vo.product_id}]]</td>
+					<tr th:each="vo: ${pv.list}" class="list">
+						<td><input type="checkbox"/> [[${vo.product_id}]]</td>
 						<td><a th:href="@{/admin/user/details(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${vo.product_price}]]</td>
 						<td>[[${vo.category_id}]]</td>
@@ -60,14 +124,13 @@
 					</tr>
 					<tr>
 					<td colspan="6" style="border: none; text-align: center;">
-					<form th:action="@{/admin/users}" method="get">
+					<form th:action="@{/admin/products}" method="get">
 						<input type="hidden" name="p" th:value="${upv.p}" />
 						<input type="hidden" name="s" th:value="${upv.s}" />
 						<input type="hidden" name="b" th:value="${upv.b}" />
 						<select name="field" id="field">
-							<option value="username">아이디</option>
-							<option value="nickname">닉네임</option>
-							<option value="email">이메일</option>
+							<option value="product_name">상품명</option>
+							<option value="category_name">카테고리</option>
 						</select>
 						<input type="text" name="search" id="search"/>
 						<input type="submit" value="검색"/>
@@ -77,5 +140,33 @@
 				</th:block>
 			</table>
 	</div>
+	<!-- 카테고리 관리 모달팝업창 -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div style="text-align: right;">
+    	<button type="button" class="btn btn-outline-primary btn-sm">추가</button>
+    </div>
+    <table class="modalCategoryList" style="text-align: left;">
+		<tr>
+			<td style="color: blue; text-align: center; font-size: 0.9rem;">카테고리</td>
+		</tr>
+		<tr th:each="co: ${cv.list}">
+			<td class="modalCategoryName">[[${co.category_name}]]</td>
+		</tr>
+	</table>
+	<form th:action="@{/categoryOk}" method="POST">
+	  <div>
+	    <input name="category_name" id="category_name" type="text" th:onkeyup="categoryCheck()" class="form-control" autofocus="autofocus" style="margin-top: 100px; "/>
+	  </div>
+	  <div>
+	    <span id="message">(중복확인 메시지)</span>
+	  </div>
+		<div class="modalBtn">
+		    <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">취소</button>
+		    <button type="submit" class="btn btn-success btn-sm">저장</button>
+	    </div>
+	</form>
+  </div>
+</div>
 </body>
 </html>

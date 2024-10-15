@@ -2,7 +2,7 @@ package com.choongang.shoppingmall.vo;
 
 import java.util.List;
 
-public class AdminUsersPagingVO<T> {
+public class AdminCategoryPagingVO<T> {
 	// 페이징한 데이터 목록
 	private List<T> list;
 	
@@ -12,7 +12,6 @@ public class AdminUsersPagingVO<T> {
 	private int sizeOfPage;		// 페이지당 글수
 	private int sizeOfBlock;	// 하단 페이지 목록 개수
 	
-	
 	// 계산해서 만들 변수
 	private int totalPage;	// 전체 페이지수
 	private int startNo;	// 시작 글번호
@@ -20,7 +19,7 @@ public class AdminUsersPagingVO<T> {
 	private int startPage;	// 시작 페이지 번호
 	private int endPage;	// 끝 페이지 번호
 	
-	public AdminUsersPagingVO(int totalCount, int currentPage, int sizeOfPage, int sizeOfBlock) {
+	public AdminCategoryPagingVO(int totalCount, int currentPage, int sizeOfPage, int sizeOfBlock) {
 		this.totalCount = totalCount;
 		this.currentPage = currentPage;
 		this.sizeOfPage = sizeOfPage;
@@ -31,8 +30,8 @@ public class AdminUsersPagingVO<T> {
 	private void calc() {
 		if(totalCount>0) {
 			if(currentPage<=0) currentPage = 1;
-			if(sizeOfPage<=0) sizeOfPage = 10;
-			if(sizeOfBlock<=1) sizeOfBlock = 10;
+			if(sizeOfPage<=0) sizeOfPage = 8;
+			if(sizeOfBlock<=1) sizeOfBlock = 8;
 			
 			totalPage = (totalCount-1)/sizeOfPage + 1;
 			if(currentPage>totalPage) currentPage = 1;
@@ -89,7 +88,7 @@ public class AdminUsersPagingVO<T> {
 	
 	// 페이지 상단에 "전체 : ??개(현재페이지/전체페이지 Page)"을 출력해주는 메서드
 	public String getPageInfo() {
-		return "전체 : " + totalCount + "명 " + (totalCount>0 ? "(" + currentPage + "/ " + totalPage + "Page)" : "");
+		return "전체 : " + totalCount;
 	}
 
 	// 목록 상/하단에 페이지 번호를 출력해주는 메서드
@@ -112,13 +111,13 @@ public class AdminUsersPagingVO<T> {
 				if(i==currentPage) {
 					sb.append("<li class='page-link page-item active' aria-current='page'>" + i + "</li>");
 				}else {
-					sb.append("<li class='page-item'><a class='page-link' href='?p=" + i + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "'>" + i + "</a></li>");
+					sb.append("<li class='page-item'><a class='page-link' href='?p=" + i + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "#target-section'>" + i + "</a></li>");
 				}
 			}
 			// 이후 : 끝페이지 번호가 전체 페이지 번호보다 적을 때만 이후를 표시한다.
 			if(endPage<totalPage) {
 				sb.append("<li class='page-item'>");
-				sb.append("<a class='page-link' href='?p=" + (endPage+1) + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "' aria-label='Next'>");
+				sb.append("<a class='page-link' href='?p=" + (endPage+1) + "&s=" + sizeOfPage + "&b=" + sizeOfBlock + "#target-section' aria-label='Next'>");
 				sb.append("<span aria-hidden='true'>&raquo;</span>");
 				sb.append("</a>");
 				sb.append("</li>");

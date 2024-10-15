@@ -29,4 +29,12 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
+	<!-- 저장하기 -->
+	<insert id="insert" parameterType="ProductVO">
+		insert into product
+		values
+		(product_id_seq, #{CATEGORY_ID},#{PRODUCT_NAME},#{DESCRIPTION},#{PRODUCT_PRICE},
+		#{img_count},#{product_stock},#{discount},#{product_regDate},#{product_status},
+		#{product_option})
+	</insert>
 </mapper>  

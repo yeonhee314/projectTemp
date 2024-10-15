@@ -8,11 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.UsersBoardService;
+import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -79,7 +82,7 @@ public class AdminController {
 	public String adminProducts(@ModelAttribute UserPagingVO userPagingVO ,Model model) {
 		PagingVO<ProductVO> pv = productService.getProductList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
 		// 카테고리 페이징
-		PagingVO<CategoryVO> cv = categoryService.getCategoryList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
+		AdminCategoryPagingVO<CategoryVO> cv = categoryService.getCategoryList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", cv);
 		model.addAttribute("upv", userPagingVO);
@@ -88,6 +91,25 @@ public class AdminController {
 		
 		return "admin-products";
 	}
+	
+	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
+		@GetMapping(value = "/test/categoryCheck", produces = "text/plain;charset=UTF-8")
+		@ResponseBody
+		public String categoryCheck(@RequestParam(required = false, defaultValue = "cg")String category_name) {
+			return categoryService.selectCountByCategoryName(category_name)+"";
+		}
+		
+	// Get방식일 경우 상품관리로 보내기
+		@GetMapping("/categoryOk")
+		public String categoryOkGet() {
+			return "redirect:/admin/products";
+		}
+	// Post전송일때만 저장
+		@PostMapping("/categoryOk")
+		public String categoryOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+			categoryService.insert(vo); // 저장
+			return "redirect:/admin/products";
+		}
 	// 문의 관리
 	@GetMapping("/admin/qna")
 	public String adminQna() {

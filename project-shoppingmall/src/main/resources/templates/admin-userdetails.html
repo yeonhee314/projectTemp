@@ -9,7 +9,7 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="../static/css/admin/adminUserDetails.css">
+<link rel="stylesheet" type="text/css" href="./css/admin/adminUserDetails.css">
 <style type="text/css">
 .bg {
 	background-color: rgb(227, 255, 255, 0.3);
@@ -22,18 +22,19 @@
 .menu-bar {
 	position: fixed;
 	border: 0px solid black;
+	border-right: 1px solid #ebebeb;
 	width: 100px;
 	height: 600px;
 	text-align: center;
-	font-weight: bold;
-	
+	background-color: white;
 }
 .menu-bar div {
-	
 	height: 40px;
 	line-height: 40px;
 	margin-bottom: 50px;
-	background-color: lightblue;
+}
+.menu-bar div:hover {
+	background-color: #ebebeb;
 }
 .admin-main {
 	border: 0px solid black;

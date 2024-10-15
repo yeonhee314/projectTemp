@@ -3,24 +3,25 @@
 	border: 0px solid black;
 	width: 1200px;
 	height: 600px;
-	
 }
-
 .menu-bar {
 	position: fixed;
 	border: 0px solid black;
+	border-right: 1px solid #ebebeb;
 	width: 100px;
 	height: 600px;
 	text-align: center;
-	font-weight: bold;
-	
+	background-color: white;
 }
 .menu-bar div {
 	height: 40px;
 	line-height: 40px;
 	margin-bottom: 50px;
-	background-color: lightblue;
 }
+.menu-bar div:hover {
+	background-color: #ebebeb;
+}
+
 .admin-main {
 	border: 0px solid black;
 	width: 1000px;
@@ -30,27 +31,8 @@
 	height: 80px;
 	text-align: center;
 	font-weight: bold;
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
-.total {
-	height: 20px;
-	text-align: right;
-}
-.index {
-	height: 5px;
-	font-size: 0.7rem;
-	border-bottom: 1px solid black;
-	text-indent: 30px;
-}
-.list {
-	background-color: white;
-	height: 10px;
-	line-height:20px;
-	font-size: 0.7rem;
-	border-bottom: 1px solid #ebebeb;
-	text-indent: 30px;
-}
-
 a {
 	text-decoration:none; 
 }
