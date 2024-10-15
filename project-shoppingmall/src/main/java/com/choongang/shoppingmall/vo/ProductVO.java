@@ -22,6 +22,31 @@ public class ProductVO {
 	public int getDiscountPrice(int price, int discount) {
 		return price - (price * discount / 100);
 	}
+	
+	//상품 별점 계산
+	public String getStarRating(double rating) {
+		StringBuffer sb = new StringBuffer();
+		int fullStar = (int)Math.floor(rating);
+		boolean hasHalfStar = (rating - fullStar) >= 0.5;
+		int emptyStar = 5 - (int)fullStar - (hasHalfStar ? 1 : 0);
+		
+		for(int i = 0; i < fullStar; i++) {
+			sb.append("<i class='zmdi zmdi-star'>");
+			sb.append("</i>");
+		}
+		
+		if(hasHalfStar) {
+			sb.append("<i class='zmdi zmdi-star-half'>");
+			sb.append("</i>");
+		}
+		
+		for(int i = 0; i < emptyStar; i++) {
+			sb.append("<i class='zmdi zmdi-star-outline'>");
+			sb.append("</i>");
+		}
+		
+		return sb.toString();
+	}
 }
 
 

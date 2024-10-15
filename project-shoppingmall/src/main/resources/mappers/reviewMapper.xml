@@ -9,7 +9,9 @@
 	</select>
 	
 	<!-- 2. 평균 별점 계산해서 가져오기 -->
-	
+	<select id="selectRating" parameterType="int" resultType="double">
+		select avg(review_rating) from review where product_id=#{product_id}
+	</select>
 	
 	<!-- 3. 상품 id별 리뷰 개수 -->
 	<select id="selectReviewCount" parameterType="int" resultType="int">
@@ -33,5 +35,10 @@
 		where
 			rnum >= #{startNo} and product_id=#{product_id}
 		]]>
+	</select>
+	
+	<!-- 5. user_id로 유저정보 가져오기 -->
+	<select id="selectUserId" parameterType="int" resultType="UserVO">
+		select * from users where user_id = (select user_id from review where user_id=#{user_id})
 	</select>
 </mapper>  

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.choongang.shoppingmall.vo.ReviewVO;
+import com.choongang.shoppingmall.vo.UserVO;
 
 @Mapper
 public interface ReviewDAO {
@@ -17,4 +18,10 @@ public interface ReviewDAO {
 	
 	// 상품 id별 리스트 가져오기
 	List<ReviewVO> selectReviewList(HashMap<String, Integer> map) throws Exception;
+	
+	// 평균 별점 계산해서 가져오기
+	double selectRating(int id) throws Exception;
+	
+	// user id로 유저 정보 가져오기
+	UserVO selectUserId(int id) throws Exception;
 }

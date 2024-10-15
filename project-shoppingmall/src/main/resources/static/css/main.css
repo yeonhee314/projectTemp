@@ -3355,7 +3355,6 @@ button:disabled{
 }
 
 .table-review {
-  border-collapse: collapse;
   width: 100%;
   min-width: 1000px;
 }
@@ -3366,30 +3365,13 @@ button:disabled{
 }
 
 .table-review .column-1 {
-  width: 133px;
+  width: 230px;
   padding-left: 50px;
 }
 
 .table-review .column-2 {
-  width: 220px;
+  width: 770px;
   font-size: 15px;
-}
-
-.table-review .column-3 {
-  width: 120px;
-  font-size: 16px;
-}
-
-.table-review .column-4 {
-  width: 145px;
-  text-align: right;
-}
-
-.table-review .column-5 {
-  width: 172px;
-  padding-right: 50px;
-  text-align: right;
-  font-size: 16px;
 }
 
 .how-review {
@@ -3412,4 +3394,7 @@ button:disabled{
 }
 .strikethrough{
 	text-decoration: line-through;
+}
+.ta-r{
+	text-align: right;
 }

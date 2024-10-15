@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.shoppingmall.dao.ReviewDAO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
+import com.choongang.shoppingmall.vo.UserVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,6 +59,30 @@ public class ReviewServiceImpl implements ReviewService{
 		}
 		
 		return pv;
+	}
+
+	@Override
+	public double selectRating(int id) {
+		double avg = 0.;
+		
+		try {
+			avg = selectReviewCount(id) != 0 ? reviewDAO.selectRating(id) : 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return avg;
+	}
+
+	@Override
+	public UserVO selectUserId(int id) {
+		UserVO vo = null;
+		try {
+			vo = reviewDAO.selectUserId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
 	}
 	
 }
