@@ -70,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
-		log.info("cv 리턴 : {}",cv);
+		//log.info("cv 리턴 : {}",cv);
 		return cv;
 	}
 	@Override
@@ -90,6 +90,16 @@ public class CategoryServiceImpl implements CategoryService{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		log.info("categoryVO 리턴 : {}",categoryVO);
+		log.info("카테고리 저장 리턴 : {}",categoryVO);
+	}
+	@Override
+	public void update(CategoryVO categoryVO) {
+		try {
+			categoryDAO.update(categoryVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("카테고리 업데이트 리턴 : {}",categoryVO);
+		
 	}
 }

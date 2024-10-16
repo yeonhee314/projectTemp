@@ -95,7 +95,7 @@ public class AdminController {
 	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
 		@GetMapping(value = "/test/categoryCheck", produces = "text/plain;charset=UTF-8")
 		@ResponseBody
-		public String categoryCheck(@RequestParam(required = false, defaultValue = "cg")String category_name) {
+		public String categoryCheck(@RequestParam(required = false)String category_name) {
 			return categoryService.selectCountByCategoryName(category_name)+"";
 		}
 		
@@ -110,6 +110,18 @@ public class AdminController {
 			categoryService.insert(vo); // 저장
 			return "redirect:/admin/products";
 		}
+		
+		@GetMapping("/updateOk")
+		public String categoryUpdateOkGet() {
+			return "redirect:/admin/products";
+		}
+		@PostMapping("/updateOk")
+		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+			categoryService.update(vo); // 저장
+			return "redirect:/admin/products";
+		}
+		
+		
 	// 문의 관리
 	@GetMapping("/admin/qna")
 	public String adminQna() {

@@ -17,4 +17,5 @@ public interface CategoryService {
 	// 한 페이지 얻기
 	AdminCategoryPagingVO<CategoryVO> getCategoryList(int currentPage, int sizeOfPage, int sizeOfBlock);
 	void insert(CategoryVO categoryVO);
+	void update(CategoryVO categoryVO);
 }

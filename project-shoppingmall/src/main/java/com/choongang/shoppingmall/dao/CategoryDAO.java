@@ -24,4 +24,5 @@ public interface CategoryDAO {
 	List<CategoryVO> selectCategoryList(HashMap<String, Integer> map) throws SQLException;
 	
 	void insert(CategoryVO categoryVO) throws SQLException;
+	void update(CategoryVO categoryVO) throws SQLException;
 }

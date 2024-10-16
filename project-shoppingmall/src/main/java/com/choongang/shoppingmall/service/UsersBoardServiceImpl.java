@@ -39,7 +39,7 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
-		log.info("pv 리턴 : {}",pv);
+		//log.info("pv 리턴 : {}",pv);
 		return pv;
 	}
 	

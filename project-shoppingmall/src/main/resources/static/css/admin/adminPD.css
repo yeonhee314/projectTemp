@@ -156,8 +156,10 @@ a:visited {
 	text-align: right;
 }
 .modalCategoryList {
-	width: 100px; height:500px;
+	position: fixed;
+	width: 100px; height:300px;
 	background-color: white;
+	border: 1px solid black;
 }
 .modalCategoryName {
 	border: 0px solid black;
@@ -171,10 +173,37 @@ a:visited {
 	background-color: whitesmoke;
 }
 .form-control {
-	width: 180px;
-	height: 25px;
+	width: 100px;
+	height: 30px;
 }
-
+#closeBtn{
+	position: fixed;
+	width: 70px;
+	bottom: 10px; right: 10px;
+}
+#category_name {
+	position: fixed;
+	top: 250px; left:30px;
+	display: none;
+}
 #message {
 	font-size: 0.6rem;
+}
+#addCloseBtn {
+	display: none;
+}
+#updateBtn {
+	display: none;
+	position: fixed;
+	width: 70px;
+	bottom: 10px; right: 95px;
+}
+#updateCloseBtn {
+	display: none;
+}
+#saveBtn {
+	display: none;
+	position: fixed;
+	width: 70px;
+	bottom: 10px; right: 95px;
 }

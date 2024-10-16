@@ -48,4 +48,8 @@
 		values 
 			(category_id_seq.nextval, #{category_name})
 	</insert>
+	<!-- 카테고리 수정 -->
+	<update id="update" parameterType="CategoryVO">
+		update category set category_name=#{category_name} where category_id=#{category_id}
+	</update>
 </mapper>  
