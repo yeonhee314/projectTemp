@@ -33,12 +33,13 @@ public class SecurityConfig{
 		http.authorizeHttpRequests((authorize)->{
 			authorize
 			// 지정 주소에 대한 권한 설정 : permitAll()은 누구나 접근 가능하다.
-			.requestMatchers("/","/join","/login", "/index","/index.html","/test","/test/userIdCheck","/terms").permitAll() // 인증 없이 접근 허용
-			.requestMatchers("/home","/home.html").permitAll() // 인증 없이 접근 허용
-			.requestMatchers("/auth/send-verification-code", "/auth/verify-code").permitAll()  // 인증 없이 접근 허용
-            .requestMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/vendor/**").permitAll()
-            .requestMatchers("/error/**").permitAll()
-            .requestMatchers("/admin","/admin/**").hasAnyRole("ADMIN")
+			//.requestMatchers("/","/join","/login", "/index","/index.html","/test","/test/userIdCheck","/terms").permitAll() // 인증 없이 접근 허용
+			//.requestMatchers("/home","/home.html").permitAll() // 인증 없이 접근 허용
+			//.requestMatchers("/auth/send-verification-code", "/auth/verify-code").permitAll()  // 인증 없이 접근 허용
+            //.requestMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/vendor/**").permitAll()
+            //.requestMatchers("/error/**").permitAll()
+            //.requestMatchers("/admin","/admin/**").hasAnyRole("ADMIN")
+			.requestMatchers("*/**").permitAll()
 			.anyRequest().authenticated();  // 그 외 모든 요청은 인증 필요
 		});
 		// 사용자가 만든 로그인 폼을 사용하겠다.
