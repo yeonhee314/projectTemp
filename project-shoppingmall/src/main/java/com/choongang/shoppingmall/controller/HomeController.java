@@ -35,9 +35,14 @@ public class HomeController {
 	@GetMapping("/index.html")
 	public String index(
 						@ModelAttribute CommVO commVO, 
+						@RequestParam(value = "category_id", defaultValue = "0") int category_id,
 						Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
+		PagingVO<ProductVO> pv = null;
 		List<CategoryVO> categorylist= categoryService.selectCategory();
+		
+		pv = category_id == 0 ? productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock()) :
+			 productService.getFilterProductList(category_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
+		
 		model.addAttribute("pv", pv);
 		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("newLine", "\n" );

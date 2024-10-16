@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,27 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 		return productVO;
+	}
+
+	@Override
+	public PagingVO<ProductVO> getFilterProductList(int categoryId, int currentPage, int sizeOfPage, int sizeOfBlock) {
+		PagingVO<ProductVO> pv = null;
+		
+		try {
+			int totalCount = productDAO.selectFilterProductCount(categoryId);
+			pv = new PagingVO<>(categoryId, totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			if(totalCount > 0) {
+				HashMap<String, Integer> map = new HashMap<>();
+				map.put("startNo", pv.getStartNo());
+				map.put("endNo", pv.getEndNo());
+				map.put("category_id", categoryId);
+				pv.setList(productDAO.selectFilterProductList(map));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return pv;
 	}
 }
