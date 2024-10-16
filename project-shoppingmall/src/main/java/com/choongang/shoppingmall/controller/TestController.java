@@ -14,7 +14,7 @@ public class TestController {
 	@Autowired
 	private TestService testService;
 	
-	@GetMapping("/")
+	@GetMapping("/test")
 	public String test(Model model) {
 		model.addAttribute("today", testService.getToday());
 		return "test";
