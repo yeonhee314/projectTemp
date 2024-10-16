@@ -12,6 +12,8 @@ public class PagingVO<T> {
 	private int sizeOfPage;		// 페이지당 글수
 	private int sizeOfBlock;	// 하단 페이지 목록 개수
 	
+	private int category_id;	// 카테고리 id
+	
 	// 계산해서 만들 변수
 	private int totalPage;	// 전체 페이지수
 	private int startNo;	// 시작 글번호
@@ -24,6 +26,15 @@ public class PagingVO<T> {
 		this.currentPage = currentPage;
 		this.sizeOfPage = sizeOfPage;
 		this.sizeOfBlock = sizeOfBlock;
+		calc();
+	}
+	
+	public PagingVO(int category_id, int totalCount, int currentPage, int sizeOfPage, int sizeOfBlock) {
+		this.totalCount = totalCount;
+		this.currentPage = currentPage;
+		this.sizeOfPage = sizeOfPage;
+		this.sizeOfBlock = sizeOfBlock;
+		this.category_id = category_id;
 		calc();
 	}
 	
@@ -79,13 +90,15 @@ public class PagingVO<T> {
 		return endPage;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "PaingVO [list=" + list + ", totalCount=" + totalCount + ", currentPage=" + currentPage + ", sizeOfPage="
-				+ sizeOfPage + ", sizeOfBlock=" + sizeOfBlock + ", totalPage=" + totalPage + ", startNo=" + startNo
-				+ ", endNo=" + endNo + ", startPage=" + startPage + ", endPage=" + endPage + "]";
+		return "PagingVO [list=" + list + ", totalCount=" + totalCount + ", currentPage=" + currentPage
+				+ ", sizeOfPage=" + sizeOfPage + ", sizeOfBlock=" + sizeOfBlock + ", category_id=" + category_id
+				+ ", totalPage=" + totalPage + ", startNo=" + startNo + ", endNo=" + endNo + ", startPage=" + startPage
+				+ ", endPage=" + endPage + "]";
 	}
-	
+
 	// 페이지 상단에 "전체 : ??개(현재페이지/전체페이지 Page)"을 출력해주는 메서드
 	public String getPageInfo() {
 		return "전체 : " + totalCount + "개" + (totalCount>0 ? "(" + currentPage + "/ " + totalPage + "Page)" : "");

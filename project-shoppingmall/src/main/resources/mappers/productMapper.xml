@@ -7,6 +7,10 @@
 	<select id="selectProductCount" resultType="int">
 		select count(*) from product
 	</select>
+	<!-- 필터링된 상품 갯수 세기 -->
+	<select id="selectFilterProductCount" parameterType="int" resultType="int">
+		select count(*) from product where category_id=#{category_id}
+	</select>
 	<!-- id로 한개 얻기 -->
 	<select id="selectByProductId" parameterType="int" resultType="ProductVO">
 		select * from product where product_id=#{product_id}
@@ -29,6 +33,24 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
+	<!-- 카테고리 id로 필터링한 상품 한 페이지 얻기 -->
+	<select id="selectFilterProductList" parameterType="hashmap" resultType="ProductVO">
+		<![CDATA[
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from product where category_id=#{category_id} order by product_id desc) Q
+			where
+				rownum<=#{endNo}
+		) R
+		where
+			rnum >= #{startNo}
+		]]>
+	</select>
 	<!-- 저장하기 -->
 	<insert id="insert" parameterType="ProductVO">
 		insert into product
@@ -37,4 +59,5 @@
 		#{img_count},#{product_stock},#{discount},#{product_regDate},#{product_status},
 		#{product_option})
 	</insert>
+	
 </mapper>  

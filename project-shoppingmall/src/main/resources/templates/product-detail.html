@@ -72,7 +72,7 @@
 				<nav class="limiter-menu-desktop container">
 					
 					<!-- Logo desktop -->		
-					<a href="#" class="logo">
+					<a href="index.html" class="logo">
 						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
 					</a>
 
@@ -81,11 +81,6 @@
 						<ul class="main-menu">
 							<li>
 								<a href="index.html">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
 							</li>
 
 							<li>
@@ -374,7 +369,6 @@
 				<div class="col-md-6 col-lg-5 p-b-30">
 					<div class="p-r-50 p-lr-0-lg">
 					<!-- Review -->
-					<!-- TODO : 별점 계산해서 띄우기  -->
 						<a th:href="@{product-review.html(product_id=${productvo.product_id}, category_id=${categoryvo.category_id})}" class="trans-04 td-none">
 							
 							<span class="fs-18 cl11" th:utext="${productvo.getStarRating(avgrating)}"></span>
@@ -477,11 +471,11 @@
 						<li class="nav-item p-b-10">
 							<a class="nav-link" data-toggle="tab" href="#information" role="tab">Additional information</a>
 						</li>
- 						 -->
+ 						 
 						<li class="nav-item p-b-10">
 							<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews (1)</a>
 						</li>
-						
+						-->
 					</ul>
 
 					<!-- Tab panes -->
