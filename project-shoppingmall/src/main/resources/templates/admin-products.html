@@ -63,7 +63,7 @@ function categoryCheck(){
 	}
 }
 function updateCheck(){
-	const category_name2 = $("#cc").val(); // 입력한 카테고리읽기
+	const category_name2 = $("#update").val(); // 입력한 카테고리읽기
 	if(category_name2.length>=2){ // 길이가 3자 이상때만
 		if(category_name2.indexOf(" ")!=-1){ // 아이디에 공백이 있다면
 			$("#message").html("공백은 포함할수 없어요").css('color','red');
@@ -122,6 +122,9 @@ $(function(){
 		$("#addCloseBtn").hide();
 		$("#category_name").hide();
 	})
+	$(".m").click(function(){
+		$("#update").val($(this).val());
+	})
 	$("#updateCloseBtn").click(function(){
 		$("#addBtn").show();
 		$("#updateBtn").hide();
@@ -130,7 +133,6 @@ $(function(){
 		$("#saveBtn").hide();
 	})
 })
-
 
 </script>
 </head>
@@ -216,24 +218,28 @@ $(function(){
     	<button type="button" id="addBtn" class="btn btn-outline-primary btn-sm">카테고리추가</button>
     	<button type="button" class="btn btn-secondary btn-sm" id="addCloseBtn">취소</button>
     </div>
-		<form th:action="@{/updateOk}" method="POST">
+		
 		    <table class="modalCategoryList" style="text-align: left;">
 				<tr>
 					<td style="color: blue; text-align: center; font-size: 0.9rem; height: 30px;">카테고리</td>
 				</tr>
 				<tr th:each="co: ${cv.list}">
 					<td class="categorydiv">
-						<input type="text" id="cc" class="modalCategoryName" th:value="${co.category_name}" onkeyup="updateCheck()"></input>
+						<input type="number" class="s" name="category_id" readonly="readonly" th:value="${co.category_id}"/>
+						<input type="text" class="m" th:value="${co.category_name}" readonly="readonly"></input>
 					</td>
 				</tr>
 			</table>
-			<div class="modalBtn">
-			    <button type="submit" id="updateBtn" class="btn btn-success btn-sm">수정</button>
-			    <button type="button" id="updateCloseBtn" class="btn btn-secondary btn-sm">취소</button>
-	    	</div>
-		</form>
+			<form th:action="@{/updateOk}" method="POST">t
+				<input type="hidden" name="category_id" id="updateId"/>
+				<input type="text" name="category_name" id="update" onkeyup="updateCheck()"/>
+				<div class="modalBtn">
+				    <button type="submit" id="updateBtn" class="btn btn-success btn-sm">수정</button>
+				    <button type="button" id="updateCloseBtn" class="btn btn-secondary btn-sm">취소</button>
+		    	</div>
+		 	</form>
 		<form th:action="@{/categoryOk}" method="POST">
-			<input id="category_name" type="text" onkeyup="categoryCheck()" class="form-control" autofocus="autofocus" style="margin-top: 100px; "/>
+			<input name="category_name" id="category_name" type="text" onkeyup="categoryCheck()" class="form-control" autofocus="autofocus" style="margin-top: 100px; "/>
 		  <div style="text-align: right;">
 		    <span id="message">msg</span>
 		  </div>

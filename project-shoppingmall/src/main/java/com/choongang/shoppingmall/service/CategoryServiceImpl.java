@@ -94,6 +94,7 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 	@Override
 	public void update(CategoryVO categoryVO) {
+		log.info("카테고리 업데이트 요청 : {}",categoryVO);
 		try {
 			categoryDAO.update(categoryVO);
 		} catch (SQLException e) {

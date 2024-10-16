@@ -88,6 +88,7 @@ public class AdminController {
 		model.addAttribute("upv", userPagingVO);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
+		model.addAttribute("cvo", new CategoryVO());
 		
 		return "admin-products";
 	}
@@ -117,6 +118,7 @@ public class AdminController {
 		}
 		@PostMapping("/updateOk")
 		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+			
 			categoryService.update(vo); // 저장
 			return "redirect:/admin/products";
 		}

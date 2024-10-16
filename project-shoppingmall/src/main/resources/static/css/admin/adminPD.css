@@ -161,12 +161,15 @@ a:visited {
 	background-color: white;
 	border: 1px solid black;
 }
-.modalCategoryName {
+.m {
 	border: 0px solid black;
 	height: 30px;
 	text-align: center;
 	font-size: 0.7rem;
 	border-bottom: 1px solid #ebebeb;
+}
+.s {
+	width: 10px; height: 20px;
 }
 .modalCategoryName:hover {
 	cursor: pointer;
@@ -206,4 +209,10 @@ a:visited {
 	position: fixed;
 	width: 70px;
 	bottom: 10px; right: 95px;
+}
+#update {
+	position: fixed;
+	width: 100px;
+	top: 90px; right: 60px;
+	
 }
