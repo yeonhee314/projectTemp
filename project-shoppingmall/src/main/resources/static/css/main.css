@@ -479,6 +479,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 .wrap-icon-header {
   flex-grow: 1;
+  padding-left: 330px;
+  /* border: 1px solid black; */
 }
 
 .icon-header-item {
@@ -3333,13 +3335,25 @@ input.num-product::-webkit-inner-spin-button {
 
 
 /* Custom CSS */
-
+a {
+    text-decoration: none !important;/* 밑줄 제거 */
+}
 /* 비활성화 */
 button:disabled{
 	background-color: #ccc; /* 비활성화 상태 배경색 		   */
     color: #666; 			  /* 비활성화 상태 텍스트 색상	   */
     cursor: not-allowed; 	  /* 커서를 비활성화 모양으로 변경 */
 }
+
+/* Header-icon */
+.header-icon-text{
+	display: flex;
+	flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: center;    /* 아이콘과 텍스트를 중앙 정렬 */
+    text-align: center;     /* 텍스트 중앙 정렬 */
+    margin-top: 15px;
+}
+
 
 /* Review */
 .review-title{

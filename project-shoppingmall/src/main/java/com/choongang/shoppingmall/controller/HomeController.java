@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +34,14 @@ public class HomeController {
 	private CategoryService categoryService;
 	@Autowired
 	private ReviewService reviewService;
+	
+	
+	// 사용자 인증상태 확인(로그인 여부 확인)
+	public boolean isUserLoggedin() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// 실제 로그인한 사용자인지 확인한다.
+		return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+	}
 	
 	@GetMapping("/index.html")
 	public String index(
@@ -113,6 +124,12 @@ public class HomeController {
 		model.addAttribute("categoryvo", categoryVO);
 		
 		return "product-review";
+	}
+	
+	@GetMapping("/whishlist.html")
+	public String wishList() {
+		
+		return "wishlist";
 	}
 	
 	@GetMapping("/shoping-cart.html")
