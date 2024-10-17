@@ -18,4 +18,6 @@ public interface CategoryService {
 	AdminCategoryPagingVO<CategoryVO> getCategoryList(int currentPage, int sizeOfPage, int sizeOfBlock);
 	void insert(CategoryVO categoryVO);
 	void update(CategoryVO categoryVO);
+	void deleteById(CategoryVO categoryVO);
+	void deleteByName(CategoryVO categoryVO);
 }

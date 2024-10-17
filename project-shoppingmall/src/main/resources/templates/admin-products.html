@@ -29,20 +29,21 @@ document.addEventListener("DOMContentLoaded", function () {
   modalBtn.addEventListener("click", function () {
       toggleModal();
   });
+ 
 });
 //카테고리 중복확인하는 함수
 function categoryCheck(){
-	const category_name = $("#category_name").val(); // 입력한 카테고리읽기
-	if(category_name.length>=2){ // 길이가 3자 이상때만
-		if(category_name.indexOf(" ")!=-1){ // 아이디에 공백이 있다면
+	const category_name = $("#insertText").val(); // 입력한 카테고리읽기
+	if(category_name.length>=1){ // 길이가 1자 이상때만
+		if(category_name.indexOf(" ")!=-1){ // 공백이 있다면
 			$("#message").html("공백은 포함할수 없어요").css('color','red');
 		}else{
 			// Ajax를 호출하여 처리 한다.
 			axios.get('/test/categoryCheck?category_name='+category_name)
 			  .then(function (response) {
 			    // 성공 핸들링
-			    console.log("넘어온값 : " + JSON.stringify(response));
-			    console.log("넘어온 결과 : " + response.data);
+			   // console.log("넘어온값 : " + JSON.stringify(response));
+			   // console.log("넘어온 결과 : " + response.data);
 			    // alert(response.data);
 			    if(response.data*1==0){
 			    	$("#message").html("").css('color','blue');
@@ -51,7 +52,6 @@ function categoryCheck(){
 			    }
 			  })
 			  .catch(function (error) {
-			    // 에러 핸들링
 			    console.log(error);
 			  })
 			  .finally(function () {
@@ -64,17 +64,16 @@ function categoryCheck(){
 }
 function updateCheck(){
 	const category_name2 = $("#update").val(); // 입력한 카테고리읽기
-	if(category_name2.length>=2){ // 길이가 3자 이상때만
-		if(category_name2.indexOf(" ")!=-1){ // 아이디에 공백이 있다면
+	if(category_name2.length>=1){ // 길이가 1자 이상때만
+		if(category_name2.indexOf(" ")!=-1){ // 카테고리명에 공백이 있다면
 			$("#message").html("공백은 포함할수 없어요").css('color','red');
 		}else{
 			// Ajax를 호출하여 처리 한다.
 			axios.get('/test/categoryCheck?category_name='+category_name2)
 			  .then(function (response) {
 			    // 성공 핸들링
-			    console.log("넘어온값 : " + JSON.stringify(response));
-			    console.log("넘어온 결과 : " + response.data);
-			    // alert(response.data);
+			  //  console.log("넘어온값 : " + JSON.stringify(response));
+			  //  console.log("넘어온 결과 : " + response.data);
 			    if(response.data*1==0){
 			    	$("#message").html("").css('color','blue');
 			    }else{
@@ -82,7 +81,6 @@ function updateCheck(){
 			    }
 			  })
 			  .catch(function (error) {
-			    // 에러 핸들링
 			    console.log(error);
 			  })
 			  .finally(function () {
@@ -94,25 +92,31 @@ function updateCheck(){
 	}
 }
 $(function(){
+
+
 	$("#addBtn").click(function(){
-		$("#category_name").show().focus();
+		$("#insertText").show().focus();
 		$("#addCloseBtn").show();
 		$("#addBtn").hide();
 		$("#updateBtn").hide();
 		$("#saveBtn").show();
+		$("#message").show();
 	})
 	$("#closeBtn").click(function(){
-		$("#category_name").hide();
+		$("#insertText").hide();
 		$("#addCloseBtn").hide();
 		$("#addBtn").show();
 		$("#updateBtn").hide();
 		$("#updateCloseBtn").hide();
+		$("#update").hide();
+		$("#message").hide();
 	})
 	$("#addCloseBtn").click(function(){
 		$("#addBtn").show();
 		$("#addCloseBtn").hide();
-		$("#category_name").hide();
+		$("#insertText").hide();
 		$("#saveBtn").hide();
+		$("#message").hide();
 	})
 	$(".categorydiv").click(function(){
 		$("#updateBtn").show();
@@ -120,10 +124,12 @@ $(function(){
 		$("#saveBtn").hide();
 		$("#addBtn").hide();
 		$("#addCloseBtn").hide();
-		$("#category_name").hide();
-	})
-	$(".m").click(function(){
-		$("#update").val($(this).val());
+		$("#insertText").hide();
+		$("#update").show().focus();
+		$("#updateId").val($(this).find(".category_id").val());
+		$("#update").val($(this).find(".category_name").val());
+		$("#deleteBtn").show();
+		$("#message").show();
 	})
 	$("#updateCloseBtn").click(function(){
 		$("#addBtn").show();
@@ -131,7 +137,34 @@ $(function(){
 		$("#updateCloseBtn").hide();
 		$("#saveBtn").show();
 		$("#saveBtn").hide();
+		$("#update").hide();
+		$("#message").hide();
 	})
+	$(".categorydiv > button").click(function(){
+		$("#update").hide();
+	})
+	 $(function(){
+			$(".insertForm").submit(function(){
+				var value1 = $("#insertText").val();
+				if(value1==null || value1.trim().length==0){
+					alert('입력된 정보가 없습니다');
+					$("#insertText").val("");	
+					$("#insertText").focus();
+					return false;
+				}
+			});
+	  });
+	  $(function(){
+			$(".updateForm").submit(function(){
+				var value2 = $("#update").val();
+				if(value2==null || value2.trim().length==0){
+					alert('입력된 정보가 없습니다');
+					$("#category_name").val("");	
+					$("#category_name").focus();
+					return false;
+				}
+			});
+	  });
 })
 
 </script>
@@ -200,7 +233,7 @@ $(function(){
 						<input type="hidden" name="s" th:value="${upv.s}" />
 						<input type="hidden" name="b" th:value="${upv.b}" />
 						<select name="field" id="field">
-							<option value="product_name">상품명</option>
+							<option value="product_name">상품</option>
 							<option value="category_name">카테고리</option>
 						</select>
 						<input type="text" name="search" id="search"/>
@@ -213,42 +246,47 @@ $(function(){
 	</div>
 	<!-- 카테고리 관리 모달팝업창 -->
 <div id="myModal" class="modal">
+  <div class="modal-dialog">
   <div class="modal-content">
     <div style="text-align: right;">
     	<button type="button" id="addBtn" class="btn btn-outline-primary btn-sm">카테고리추가</button>
     	<button type="button" class="btn btn-secondary btn-sm" id="addCloseBtn">취소</button>
     </div>
-		
-		    <table class="modalCategoryList" style="text-align: left;">
-				<tr>
-					<td style="color: blue; text-align: center; font-size: 0.9rem; height: 30px;">카테고리</td>
-				</tr>
-				<tr th:each="co: ${cv.list}">
-					<td class="categorydiv">
-						<input type="number" class="s" name="category_id" readonly="readonly" th:value="${co.category_id}"/>
-						<input type="text" class="m" th:value="${co.category_name}" readonly="readonly"></input>
-					</td>
-				</tr>
-			</table>
-			<form th:action="@{/updateOk}" method="POST">t
-				<input type="hidden" name="category_id" id="updateId"/>
-				<input type="text" name="category_name" id="update" onkeyup="updateCheck()"/>
-				<div class="modalBtn">
-				    <button type="submit" id="updateBtn" class="btn btn-success btn-sm">수정</button>
-				    <button type="button" id="updateCloseBtn" class="btn btn-secondary btn-sm">취소</button>
-		    	</div>
-		 	</form>
-		<form th:action="@{/categoryOk}" method="POST">
-			<input name="category_name" id="category_name" type="text" onkeyup="categoryCheck()" class="form-control" autofocus="autofocus" style="margin-top: 100px; "/>
+	    <table class="modalCategoryList" style="text-align: left;">
+			<tr>
+				<td style="color: blue; text-align: center; font-size: 0.9rem; height: 30px;">카테고리</td>
+			</tr>
+			<tr th:each="co: ${cv.list}">
+				<td class="categorydiv">
+					<form th:action="@{/deleteOk}" method="POST" class="deleteForm">
+						<input type="hidden" class="category_id" name="category_id" th:value="${co.category_id}"/>
+						<input type="text" class="category_name" th:value="${co.category_name}" readonly="readonly"/>
+						<button type="submit" id="deleteBtn" class="btn btn-outline-danger">X</button>
+			 		</form>
+				</td>
+			</tr>
+		</table>
+		<form th:action="@{/categoryOk}" method="POST" class="insertForm">
+			<input name="category_name" id="insertText" type="text" onkeyup="categoryCheck()" class="form-control" autocomplete="off" style="margin-top: 100px;"/>
 		  <div style="text-align: right;">
-		    <span id="message">msg</span>
+		    <span id="message"></span>
 		  </div>
-		<div class="modalBtn">
+			<div class="modalBtn">
 		    <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">나가기</button>
 		    <button type="submit" id="saveBtn" class="btn btn-success btn-sm">저장</button>
 	    </div>
-	</form>
+		</form>
+		<form th:action="@{/updateOk}" method="POST" class="updateForm">
+			<input type="hidden" name="category_id" id="updateId"/>
+			<input type="text" name="category_name" id="update" class="form-control" onkeyup="updateCheck()"/>
+			<div class="modalBtn">
+			    <button type="submit" id="updateBtn" class="btn btn-success btn-sm">수정</button>
+			    <button type="button" id="updateCloseBtn" class="btn btn-secondary btn-sm">취소</button>
+	    	</div>
+	 	</form>
   </div>
 </div>
+</div>
+
 </body>
 </html>

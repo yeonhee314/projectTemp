@@ -25,4 +25,6 @@ public interface CategoryDAO {
 	
 	void insert(CategoryVO categoryVO) throws SQLException;
 	void update(CategoryVO categoryVO) throws SQLException;
+	void deleteById(int category_id) throws SQLException;
+	void deleteByName(String category_name) throws SQLException;
 }

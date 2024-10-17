@@ -1,8 +1,10 @@
+
 .bg {
 	background-color: rgb(227, 255, 255, 0.3);
 	border: 0px solid black;
 	width: 1250px;
 	height: 600px;
+	overflow: hidden;
 }
 
 .menu-bar {
@@ -106,21 +108,19 @@ a:visited {
 	color: black;
 }
 .modal {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   pointer-events: none;
   padding: 20px;
-
   /* 트랜지션 효과 */
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.05s ease-in-out;
   opacity: 0;
-
+	z-index:-10;
   /* 화면 전체를 덮게하는 코드 */
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
-
   /* 중앙에 오게하는 코드 */
   display: flex;
   justify-content: center;
@@ -145,6 +145,7 @@ a:visited {
   /* 모달이 열렸을 때 보여지게 하는 코드 */
   opacity: 1;
   pointer-events: auto;
+  z-index: 10;
 }
 
 .modal.show .modal-content {
@@ -157,39 +158,51 @@ a:visited {
 }
 .modalCategoryList {
 	position: fixed;
-	width: 100px; height:300px;
+	top:50px; left: 100px;
+	width: 130px; height:300px;
 	background-color: white;
-	border: 1px solid black;
+	
 }
-.m {
+.categorydiv {
+	height: 10px;
+	border-bottom: 1px solid #ebebeb;
+	position: relative;
+	display: flex;
+}
+.categorydiv input{
+	width: 100%;
+}
+.categorydiv:hover .category_name{
+	background-color: #ebebeb;
+	cursor: pointer;
+}
+.category_name {
 	border: 0px solid black;
 	height: 30px;
+	line-height: 30px;
 	text-align: center;
 	font-size: 0.7rem;
-	border-bottom: 1px solid #ebebeb;
 }
-.s {
-	width: 10px; height: 20px;
-}
+
 .modalCategoryName:hover {
 	cursor: pointer;
 	background-color: whitesmoke;
 }
-.form-control {
+#insertText {
+	position: fixed;
 	width: 100px;
 	height: 30px;
+	top: 270px; left:120px;
+	display: none;
 }
 #closeBtn{
 	position: fixed;
 	width: 70px;
 	bottom: 10px; right: 10px;
 }
-#category_name {
-	position: fixed;
-	top: 250px; left:30px;
-	display: none;
-}
 #message {
+	position: fixed;
+	top: 390px; left:220px;
 	font-size: 0.6rem;
 }
 #addCloseBtn {
@@ -213,6 +226,12 @@ a:visited {
 #update {
 	position: fixed;
 	width: 100px;
-	top: 90px; right: 60px;
-	
+	top: 360px; left:120px;
+	display: none;
+}
+#deleteBtn {
+	position: absolute;
+	width: 8px; height: 25px;
+	border-radius:100px;
+	font-size: 10px;
 }
