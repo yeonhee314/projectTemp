@@ -87,6 +87,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script>
+    
+    	//이메일인증여부
+    	let emailVerified = false;
+    
         function findPostcode() {	//다음우편API
             new daum.Postcode({
                 oncomplete: function(data) {
@@ -133,12 +137,23 @@
                 contentType: "application/json",
                 success: function() {
                     alert('이메일 인증이 완료되었습니다!');
+                    emailVerified = true;	//이메일 인증이 완료됨
                 },
                 error: function() {
                     alert('인증번호가 일치하지 않습니다.');
                 }
             });
         }
+        
+        //이메일 인증여부
+        $(document).ready(function() {
+            $('form').on('submit', function(event) {
+                if (!emailVerified) {		//이메일 인증 안했을때
+                    event.preventDefault();
+                    alert('이메일 인증은 필수입니다.');
+                }
+            });
+        });
         
      // 아이디 중복확인하는 함수
         function useridCheck() {

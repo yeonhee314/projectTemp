@@ -39,7 +39,7 @@ public class SecurityConfig{
             //.requestMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/vendor/**").permitAll()
             //.requestMatchers("/error/**").permitAll()
             //.requestMatchers("/admin","/admin/**").hasAnyRole("ADMIN")
-			.requestMatchers("*/**").permitAll()
+			.requestMatchers("*/**","/").permitAll()
 			.anyRequest().authenticated();  // 그 외 모든 요청은 인증 필요
 		});
 		// 사용자가 만든 로그인 폼을 사용하겠다.
@@ -48,7 +48,7 @@ public class SecurityConfig{
 	        form.loginPage("/login").permitAll()
 	            .usernameParameter("username")
 	            .passwordParameter("password")
-	            .defaultSuccessUrl("/home")
+	            .defaultSuccessUrl("/")
 	            .failureUrl("/login?error=true")
 	        	.successHandler(new LoginSuccessHandler());
 	    });
@@ -57,7 +57,7 @@ public class SecurityConfig{
 			// 로그아웃에 누구나 접근 가능
 			 logout.permitAll()
 			// 로그아웃 후 이동할 주소
-			.logoutSuccessUrl("/home")
+			.logoutSuccessUrl("/")
 			// 세션정보를 지울것인지 지정
 			.invalidateHttpSession(true);
 		});
