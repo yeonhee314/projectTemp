@@ -1,258 +1,208 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>주문서 작성</title>
-<link rel="stylesheet"
-	href="//static.wconcept.co.kr/web/css/wconcept.desktop.min.css?v=beefdcd1bf664f32a2ba9651bd004981">
-<script
-	src="//static.wconcept.co.kr/web/js/wconcept.desktop.min.js?v=beefdcd1bf664f32a2ba9651bd004981"></script>
-<link rel="stylesheet"
-	href="//pg.cnspay.co.kr/dlp/css/pc/cnspay.css?v=beefdcd1bf664f32a2ba9651bd004981"
-	type="text/css" />
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<!-- 포트원 결제 -->
-    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-    <!-- jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-    <!-- iamport.payment.js -->
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<!-- 포트원 결제 -->
-<script>
-					// ** 배송지 정보 우편번호 다음 api **
-	function execDaumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				// 검색 결과에서 주소와 우편번호를 가져와서 해당 input 필드에 값으로 설정
-				document.getElementById('zipcode').value = data.zonecode; // 우편번호 입력
-				document.getElementById('addr').value = data.address; // 기본 주소 입력
+    <meta charset="UTF-8">
+    <title>주문 결제 페이지</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-weight: 400;
+            font-size: 36px;
+        }
+        .navigation {
+            text-align: center;
+            font-size: 12px;
+            color: gray;
+            margin: 10px 0;
+        }
+        .section {
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        h2 {
+            margin-bottom: 10px;
+            color: black;
+            font-weight: 150;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
 
-				// 주소 선택 후 상세주소 입력 칸에 포커스 설정
-				document.getElementById('addr_detail').focus();
-			}
-		}).open();
-	}
-					// 포트원 결제 
-	  const IMP = window.IMP; // 생략 가능
-	  IMP.init("가맹점 식별코드"); // 예: imp00000000a
-</script>
-<style>
-body {
-	font-family: Arial, sans-serif;
-	padding: 40px;
-	background-color: #f7f7f7;
-	overflow-y: scroll;
-	max-width: 800px;
-	margin: auto;
-}
-
-h1 {
-	text-align: center;
-	margin-bottom: 30px;
-	font-size: 40px; /* 주문/결제 제목 크기 줄임 */
-	font-weight: bold; /* 주문/결제 제목 굵게 */
-}
-
-.form-group {
-	display: flex;
-	align-items: center;
-	margin-bottom: 20px;
-}
-
-.form-group label {
-	width: 120px;
-	margin-right: 10px;
-}
-
-.form-group input, .form-group textarea, .form-group select {
-	flex: 1;
-	padding: 10px;
-	font-size: 16px;
-}
-
-.textarea-group {
-	display: flex;
-	flex-direction: column;
-}
-
-.textarea-group textarea {
-	resize: none;
-	height: 40px; /* 요청사항 텍스트 박스 세로 절반 줄임 */
-}
-
-.shipping-info {
-	margin-top: 20px;
-	padding: 15px;
-	border-top: 2px solid black; /* 위쪽 경계선 검정색 */
-	border-bottom: 2px solid black; /* 아래쪽 경계선 검정색 */
-	position: relative;
-}
-
-.shipping-info h3 {
-	position: absolute;
-	top: -20px; /* 네모 박스 위로 이동 */
-	left: 0;
-	font-size: 20px; /* 배송지정보 제목 크기 증가 */
-	margin: 0;
-	padding: 0;
-	font-weight: bold;
-	background-color: #f7f7f7; /* 제목과 경계선 간 여백 부여 */
-	padding-right: 10px;
-}
-
-.product-info {
-	margin-top: 30px;
-	padding: 15px;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-}
-
-.discount, .payment-method {
-	margin-top: 30px;
-	padding-top: 15px;
-}
-
-hr {
-	border: 1px solid #ddd;
-	margin: 30px 0;
-}
-
-.total-price {
-	font-weight: bold;
-	font-size: 18px;
-}
-
-.submit-btn {
-	display: block;
-	width: auto;
-	padding: 12px 25px;
-	background-color: #007bff;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin: 30px auto;
-	font-size: 18px;
-}
-
-.submit-btn:hover {
-	background-color: #0056b3;
-}
-
-.breadcrumb {
-	text-align: center;
-	font-size: 12px; /* 카트, 주문결제, 주문완료 글씨 크기 작게 */
-	margin-top: 20px;
-	color: #aaa; /* 카트와 주문완료 색상 회색 */
-}
-
-.highlight {
-	color: black; /* 주문결제 글씨 색상 검정으로 변경 */
-	font-size: 14px; /* 주문결제 글씨 크기 */
-}
-
-/* 반응형 디자인을 위한 미디어 쿼리 */
-@media ( max-width : 600px) {
-	.form-group {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-	.form-group label {
-		margin-bottom: 5px;
-	}
-	.form-group input, .form-group textarea, .form-group select {
-		width: 100%;
-	}
-}
-</style>
+        #paymentButton {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #paymentButton:hover {
+            background-color: darkblue;
+        }
+       
+        .small-text {
+            font-size: 12px; /* 글씨 크기 */
+            color: gray;     /* 글씨 색상 */
+        }
+    </style>
 </head>
 <body>
-	<h1>주문/결제</h1>
 
-	<div class="breadcrumb">
-		<span>카트 > <span class="highlight">주문결제</span> > 주문완료
-		</span>
-	</div>
+	
 
-	<form action="/order" method="post">
-		<div class="shipping-info">
-			<h3>배송지정보</h3>
-			<hr style="border: none; margin: 0;">
-			<!-- 제목 아래 구분선 제거 -->
-			
-			<!-- 다음 우편번호 api -->
-			<div class="form-group">
-				<label for="zipcode">우편번호:</label> <input type="text" id="zipcode"
-					name="zipcode" required readonly>
-				<button type="button" onclick="execDaumPostcode()">우편번호 찾기</button>
-				<!-- 우편번호 팝업 호출 버튼 -->
-			</div>
-			<div class="form-group">
-				<label for="addr">주소:</label> <input type="text" id="addr"
-					name="addr" required>
-			</div>
-			<div class="form-group">
-				<label for="addr_detail">상세 주소:</label> <input type="text"
-					id="addr_detail" name="addr_detail" required>
-			</div>
-			<div class="textarea-group">
-				<label for="req">요청사항:</label>
-				<textarea id="req" name="req" maxlength="100"></textarea>
+    <div class="container">
+        <h1>주문/결제</h1>
+        
+        <div class="navigation">
+            쇼핑백 > <span style="color: black;">주문결제</span> > 주문완료
+        </div>
 
+        <h2>배송지 정보</h2>
+        <div class="section">
+            <p>
+                이름: <span th:text="${user != null ? user.name : '정보 없음'}"></span>
+                
+                우편번호: <span th:text="${user != null ? user.zipcode : '정보 없음'}"></span>
+            
+                주소: <span th:text="${user != null ? user.addr : '정보 없음'}"></span>
+            
+                상세 주소: <span th:text="${user != null ? user.addr_detail : '정보 없음'}"></span>
+           
+                전화번호: <span th:text="${user != null ? user.phone : '정보 없음'}"></span>
+            </p>
+            <p>
+                배송 요청사항: 
+                <select id="ordermemo" name="ordermemo" onchange="showInputField(this)">
+                    <option value="">배송 요청 사항을 선택해 주세요.</option>
+                    <option value="1">부재 시 경비실에 맡겨주세요.</option>
+                    <option value="2">부재 시 전화 또는 문자 주세요.</option>
+                    <option value="3">배송 전 연락주세요.</option>
+                    <option value="4">택배함에 넣어주세요.</option>
+                    <option value="5">파손위험 상품.배송 주의해주세요.</option>
+                    <option value="6">직접입력</option>
+                </select> 
+                <input type="text" id="customOrderMemo" name="customOrderMemo" placeholder="내용을 입력해주세요. (20자 이내)" maxlength="20" style="display: none;">
+            </p>
+            <hr>
+        </div>
 
-			</div>
-		</div>
+        <h2>주문 상품 목록</h2>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>상품정보</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                        <th>총 상품 금액</th>
+                        <th>배송비</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cartItems}">
+				  <!--  <td th:text="${item.product_name}"></td> 사진 변수명 확인후 기입 -->                         
+                        <td th:text="${item.product_name}"></td>
+                        <td th:text="${item.cart_count}"></td>
+                        <td th:text="${item.product_price}"></td>
+                        <td th:text="${item.cart_price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <p class="small-text">* 제주/도서산간 지역의 경우 추가 배송비가 발생할 수 있습니다.</p>
+        </div>
+        
+        <!-- 할인 섹션 -->
+        <h2>할인</h2>
+        <div class="section">
+            <p>쿠폰 적용: <input type="text" id="couponCode" placeholder="쿠폰 코드를 입력하세요."></p>
+            <p>적용된 할인 금액: <span id="discountAmount">0원</span></p>
+            <hr>
+        </div>
 
-		<hr>
+        <!-- 결제수단 섹션 -->
+        <h2>결제수단</h2>
+        <div class="section">
+            <p>
+                <input type="radio" id="card" name="paymentMethod" value="card" checked>
+                <label for="card">신용카드</label>
+            </p>
+            <p>
+                <input type="radio" id="bank" name="paymentMethod" value="bank">
+                <label for="bank">무통장 입금</label>
+            </p>
+            <p>
+                <input type="radio" id="kakaopay" name="paymentMethod" value="kakaopay">
+                <label for="kakaopay">카카오페이</label>
+            </p>
+            <hr>
+        </div>
+        
+        <button id="paymentButton" onclick="requestPayment()">결제하기</button>
+    </div>
 
-		<div class="product-info">
-			<h3>주문 상품</h3>
-			<div class="form-group">
-				<label for="thumb">상품 썸네일:</label> <input type="text" id="thumb"
-					name="thumb" required readonly>
-			</div>
-			<div class="form-group">
-				<label for="product_name">상품 이름:</label> <input type="text"
-					id="product_name" name="product_name" required readonly>
-			</div>
-			<div class="form-group">
-				<label for="quantity">수량:</label> <input type="number" id="quantity"
-					name="quantity" required readonly>
-			</div>
-			<div class="form-group">
-				<label for="product_price">상품 가격:</label> <input type="number"
-					id="product_price" name="product_price" required readonly>
-			</div>
-			<div class="form-group">
-				<label for="total_price">총 상품 금액:</label> <input type="number"
-					id="total_price" name="total_price" class="total-price" required
-					readonly>
-			</div>
-			<div class="discount">
-			<!-- 할인율 위 검정색 선 -->
-			<label for="discount">할인율:</label> <input type="number" id="discount"
-				name="discount" min="0" max="100" value="0" readonly>
-		</div>
-		</div>
+    <script>
+        function showInputField(select) {
+            const inputField = document.getElementById('customOrderMemo');
+            if (select.value === "6") { // '직접입력'이 선택되었을 때
+                inputField.style.display = 'block';
+                inputField.placeholder = '내용을 입력해주세요.'; // 플레이스홀더 텍스트 설정
+            } else {
+                inputField.style.display = 'none';
+            }
+        }
 
-		<hr>
-		<hr>
+        function requestPayment() {
+            const IMP = window.IMP;
+            IMP.init('imp13623334'); // 가맹점 키로 초기화
 
-		<button id="payment" style="
-		display: block; 
-		margin: 30px auto; 
-		background-color: #007bff; 
-		color: white; 
-		padding: 12px 25px; 
-		border: none; 
-		border-radius: 5px; 
-		cursor: pointer;">결제하기</button>
+            IMP.request_pay({
+                pg : 'nice_v2',
+                pay_method : 'card',
+                merchant_uid : `mid_${new Date().getTime()}`,
+                name : document.getElementById("product_name").value,
+                amount : document.getElementById("total_price").value,
+                buyer_email : 'buyer@example.com',
+                buyer_name : '홍길동',
+                buyer_tel : '010-0000-0000',
+                buyer_addr : document.getElementById("addr").value,
+                buyer_postcode : document.getElementById("zipcode").value,
+            }, function(response) {
+                if (response.success) {
+                    alert("결제 완료! 고유번호: " + response.imp_uid);
+                    window.location.href = 'orderComplete.html';
+                } else {
+                    alert("결제 실패: " + response.error_msg);
+                }
+            });
+        }
 
-    	<script src="payment.js"></script>
-	</form>
-
+    </script>
 </body>
 </html>
