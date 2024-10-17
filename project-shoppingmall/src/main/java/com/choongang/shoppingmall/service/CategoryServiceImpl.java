@@ -103,4 +103,22 @@ public class CategoryServiceImpl implements CategoryService{
 		log.info("카테고리 업데이트 리턴 : {}",categoryVO);
 		
 	}
+	@Override
+	public void deleteById(CategoryVO categoryVO) {
+		try {
+			categoryDAO.deleteById(categoryVO.getCategory_id());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("카테고리(id) 삭제 리턴 : {}",categoryVO.getCategory_id());
+	}
+	@Override
+	public void deleteByName(CategoryVO categoryVO) {
+		try {
+			categoryDAO.deleteByName(categoryVO.getCategory_name());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("카테고리 삭제(name) 리턴 : {}",categoryVO.getCategory_name());
+	}
 }

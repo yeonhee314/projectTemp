@@ -33,7 +33,7 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select * from category order by category_id desc) Q
+				(select * from category order by category_id asc) Q
 			where
 				rownum<=#{endNo}
 		) R
@@ -52,4 +52,13 @@
 	<update id="update" parameterType="CategoryVO">
 		update category set category_name=#{category_name} where category_id=#{category_id}
 	</update>
+	<!-- 카테고리 번호로 삭제 -->
+	<delete id="deleteById" parameterType="int">
+		delete from category where category_id=#{category_id}
+	</delete>
+	<!-- 카테고리 이름으로 삭제 -->
+	<delete id="deleteByName" parameterType="string">
+		delete from category where category_name=#{category_name}
+	</delete>
+	
 </mapper>  

@@ -118,8 +118,18 @@ public class AdminController {
 		}
 		@PostMapping("/updateOk")
 		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
-			
 			categoryService.update(vo); // 저장
+			return "redirect:/admin/products";
+		}
+		
+		@GetMapping("/deleteOk")
+		public String categoryDeleteOkGet() {
+			return "redirect:/admin/products";
+		}
+		@PostMapping("/deleteOk")
+		public String categoryDeleteOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+			
+			categoryService.deleteById(vo);
 			return "redirect:/admin/products";
 		}
 		
