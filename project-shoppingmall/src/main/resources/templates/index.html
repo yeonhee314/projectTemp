@@ -111,8 +111,8 @@
 						</ul>
 					</div>	
 
-					<!-- TODO : Icon header -->
-					<!-- 로그인 하지 않은 경우 Join Login -->
+					<!-- Icon header -->
+					<!-- 로그인 하지 않은 경우 -->
 					<div th:if="${#authorization.expression('!isAuthenticated()')}">
 						<div class="wrap-icon-header flex-w flex-r-m">
 							<!-- 회원가입 -->
@@ -128,7 +128,7 @@
 						</div>
 					</div>
 					
-					<!-- 로그인 한 경우 Logout wishlist mypage cart -->
+					<!-- 로그인 한 경우 -->
 					<div th:if="${#authorization.expression('isAuthenticated()')}">
 						<div class="wrap-icon-header flex-w flex-r-m">
 						 	<!-- 로그아웃 -->
@@ -782,13 +782,13 @@
 										</th:block>
 									</div>
 									<!-- TODO : 위시리시트 -->
-									<!-- TODO : 로그인 된 상태인지 확인하고 로그인되어있지 않으면 alert 메시지를 띄운다. -->
 									<div class="block2-txt-child2 flex-r p-t-3">
 										<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
 											<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"> 
 											<img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
 										</a>
 									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -1152,12 +1152,30 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script>
+	
+	<script th:inline="javascript">
+		<!-- wish 버튼 클릭 시 -->
+		/*<![CDATA[*/
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
-		});
+			let isLogin = /*[[${isLogin}]]*/;
+			console.log(isLogin);
+			if (!isLogin){
+				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
+				if(result){
+					window.location.href= '/login';
+				}
+			}else{
+				var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+				swal(nameProduct, '상품을 찜 목록에 담았습니다!', 'success');
 
-		$('.js-addwish-b2').each(function(){
+				$(this).addClass('js-addedwish-b2');
+				$(this).off('click');
+			}
+		});
+		/*]]>*/
+		
+		/* $('.js-addwish-b2').each(function(){
 			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
 			$(this).on('click', function(){
 				swal(nameProduct, "상품을 찜 목록에 담았습니다!", "success");
@@ -1165,7 +1183,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				$(this).addClass('js-addedwish-b2');
 				$(this).off('click');
 			});
-		});
+		}); */
 
 		$('.js-addwish-detail').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();

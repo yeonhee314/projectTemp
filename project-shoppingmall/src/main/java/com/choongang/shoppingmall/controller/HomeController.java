@@ -35,14 +35,6 @@ public class HomeController {
 	@Autowired
 	private ReviewService reviewService;
 	
-	
-	// 사용자 인증상태 확인(로그인 여부 확인)
-	public boolean isUserLoggedin() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		// 실제 로그인한 사용자인지 확인한다.
-		return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
-	}
-	
 	@GetMapping("/index.html")
 	public String index(
 						@ModelAttribute CommVO commVO, 
