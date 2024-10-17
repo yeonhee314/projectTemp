@@ -354,7 +354,7 @@
 									<div class="item-slick3" th:data-thumb="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 										<div class="wrap-pic-w pos-relative">
 											<img th:src="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'" alt="IMG-PRODUCT">
-										
+											
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" th:href="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 												<i class="fa fa-expand"></i>
 											</a>
@@ -435,9 +435,21 @@
    								 		<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>
 									</th:block>
 									<th:block th:if="${productvo.product_stock > 0}">
+									
+									<!--  기존 버튼 -->
 										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
 											Add to cart
 										</button>
+									<!--  기존 버튼 -->
+									
+									<!--  장바구니 버튼 테스트 -->
+										<form action="/cart/add" method="post">
+									    <input type="hidden" name="productId" th:value="${productvo.product_id}"/>
+									    <input type="number" name="cartCount" value="1" min="1"/>
+									    <button type="submit">장바구니 추가</button>
+									</form>
+									<!--  장바구니 버튼 테스트 -->
+										
 									</th:block>
 									
 								</div>
