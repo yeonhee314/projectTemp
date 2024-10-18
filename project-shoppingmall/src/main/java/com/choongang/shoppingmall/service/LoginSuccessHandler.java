@@ -20,7 +20,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		log.info("로그인 성공 : " + authentication.getPrincipal());
 		// 세션에 저장하고 싶다.
 		request.getSession().setAttribute("user", authentication.getPrincipal());
-		response.sendRedirect("/");
+		response.sendRedirect("/index.html");
 	}
-
 }

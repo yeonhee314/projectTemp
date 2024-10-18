@@ -85,7 +85,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script>
     
     	//이메일인증여부
@@ -153,6 +152,17 @@
                     alert('이메일 인증은 필수입니다.');
                 }
             });
+            
+            //비밀번호 확인
+            $('#confirm_password').on('keyup', function() {
+                const password = $('#password').val();
+                const confirmPassword = $('#confirm_password').val();
+                if (password !== confirmPassword) {
+                	$("#password_message").html("비밀번호가 일치하지 않습니다.").css('color', 'red').show();
+                } else {
+                	$("#password_message").html("비밀번호가 일치합니다.").css('color', 'blue').show();
+                }
+            });
         });
         
      // 아이디 중복확인하는 함수
@@ -190,6 +200,7 @@
             	$("#message").hide();
             }
         }
+     
     </script>
 </head>
 <body>
@@ -202,6 +213,9 @@
 
             <label for="password">비밀번호:</label>
             <input type="password" id="password" name="password" required>
+            <label for="confirm_password">비밀번호 확인:</label>
+			<input type="password" id="confirm_password" name="confirm_password" required>
+			<span id="password_message" style="color: red; display: none;"></span>
 
             <label for="nickname">닉네임:</label>
             <input type="text" id="nickname" name="nickname" required>
