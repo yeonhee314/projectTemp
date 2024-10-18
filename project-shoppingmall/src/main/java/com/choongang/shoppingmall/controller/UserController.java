@@ -1,14 +1,7 @@
 package com.choongang.shoppingmall.controller;
 
-
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.shoppingmall.service.CategoryService;
-import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.UserService;
-import com.choongang.shoppingmall.vo.CategoryVO;
-import com.choongang.shoppingmall.vo.CommVO;
-import com.choongang.shoppingmall.vo.PagingVO;
-import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,33 +71,4 @@ public class UserController {
     public String home() {
     	return "home";
     }
-    
-    @Autowired
-	private ProductService productService;
-	@Autowired
-	private CategoryService categoryService;
-	
-	// 사용자 인증상태 확인(로그인 여부 확인)
-	public boolean isUserLoggedin() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		// 실제 로그인한 사용자인지 확인한다.
-		return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
-	}
-    
-    @GetMapping(value = {"/"})
-	public String index(
-						@ModelAttribute CommVO commVO, 
-						Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
-		List<CategoryVO> categorylist= categoryService.selectCategory();
-		boolean isLogin = isUserLoggedin();
-		
-		model.addAttribute("isLogin", isLogin);
-		model.addAttribute("pv", pv);
-		model.addAttribute("categorylist", categorylist);
-		model.addAttribute("newLine", "\n" );
-		model.addAttribute("br", "<br>" );
-		
-		return "index";
-	}
 }

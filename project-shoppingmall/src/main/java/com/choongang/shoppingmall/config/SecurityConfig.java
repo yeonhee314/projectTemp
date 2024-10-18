@@ -48,7 +48,7 @@ public class SecurityConfig{
 	        form.loginPage("/login").permitAll()
 	            .usernameParameter("username")
 	            .passwordParameter("password")
-	            .defaultSuccessUrl("/")
+	            .defaultSuccessUrl("/index.html")
 	            .failureUrl("/login?error=true")
 	        	.successHandler(new LoginSuccessHandler());
 	    });
@@ -57,7 +57,7 @@ public class SecurityConfig{
 			// 로그아웃에 누구나 접근 가능
 			 logout.permitAll()
 			// 로그아웃 후 이동할 주소
-			.logoutSuccessUrl("/")
+			.logoutSuccessUrl("/index.html")
 			// 세션정보를 지울것인지 지정
 			.invalidateHttpSession(true);
 		});

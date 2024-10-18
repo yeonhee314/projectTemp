@@ -137,12 +137,12 @@
 						    <span class="stext-109"><b>LOGOUT</b></span>
 							</a>
 							<!-- 마이페이지 -->
-							<a th:href="@{whishlist.html}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+							<a th:href="@{wishlist.html}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
 								<i class="zmdi zmdi-account"></i>
 								<span class="stext-109"><b>MY PAGE</b></span>
 							</a>
 							<!-- 위시리스트 -->
-						 	<a th:href="@{whishlist.html}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0" >
+						 	<a th:href="@{wishlist.html(u=${uservo.user_id})}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0" >
 								<i class="zmdi zmdi-favorite-outline"></i>
 								<span class="stext-109"><b>WISH</b></span>
 							</a>
@@ -783,7 +783,7 @@
 									</div>
 									<!-- TODO : 위시리시트 -->
 									<div class="block2-txt-child2 flex-r p-t-3">
-										<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+										<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" th:data-product-id="${vo.product_id}">
 											<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON"> 
 											<img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
 										</a>
@@ -1154,37 +1154,50 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	
 	<script th:inline="javascript">
-		<!-- wish 버튼 클릭 시 -->
-		/*<![CDATA[*/
+	<!-- 찜 버튼 클릭 시 -->
+	/*<![CDATA[*/
+	function addToWishList(productId, event, element){
+		event.preventDefault();
+		var userId = /*[[${uservo.user_id}]]*/;
+		
+		fetch('/addWish', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json',
+	        },
+	        
+	        body: JSON.stringify({ user_id: userId, product_id: productId }),
+	    })
+	    .then(response => response.text())
+	    .then(data => {
+	    	var nameProduct = $(element).parent().parent().find('.js-name-b2').html();
+			swal(nameProduct, '상품을 찜 목록에 담았습니다!', 'success');
+	    })
+	    .catch(error => {
+	        console.error('Error:', 'Error : 찜 목록에 담지 못했습니다.');
+	    });
+		
+		$(this).addClass('js-addedwish-b2');
+		$(this).off('click');	
+	}
+	
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
 			let isLogin = /*[[${isLogin}]]*/;
-			console.log(isLogin);
+			//console.log('로그인 상태 : ' + isLogin);
 			if (!isLogin){
 				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
 				if(result){
 					window.location.href= '/login';
 				}
 			}else{
-				var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-				swal(nameProduct, '상품을 찜 목록에 담았습니다!', 'success');
-
-				$(this).addClass('js-addedwish-b2');
-				$(this).off('click');
+				var productId = $(this).data('product-id');
+				// console.log('productId : ' + productId);
+				addToWishList(productId, e, this);
 			}
 		});
 		/*]]>*/
 		
-		/* $('.js-addwish-b2').each(function(){
-			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "상품을 찜 목록에 담았습니다!", "success");
-
-				$(this).addClass('js-addedwish-b2');
-				$(this).off('click');
-			});
-		}); */
-
 		$('.js-addwish-detail').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
 

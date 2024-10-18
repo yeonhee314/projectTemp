@@ -1,9 +1,11 @@
 package com.choongang.shoppingmall.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,18 +13,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
+import com.choongang.shoppingmall.service.UserService;
+import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
-import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
+import com.choongang.shoppingmall.vo.WishVO;
 
 @Controller
 @Configuration
@@ -34,18 +40,40 @@ public class HomeController {
 	private CategoryService categoryService;
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private WishService wishService;
+	@Autowired 
+	private UserService userService;
 	
-	@GetMapping("/index.html")
+	// 로그인 여부 확인
+	public boolean isUserLoggedin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+	}
+	
+	// 사용자 정보 가져오기
+	public UserVO getUserInfo() {
+		UserVO vo = new UserVO();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isLogin = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+		if(isLogin) {
+			String username = authentication.getName();
+			vo = userService.selectByUsername(username);
+		}
+		return vo;
+	}
+    
+    @GetMapping("/index.html")
 	public String index(
 						@ModelAttribute CommVO commVO, 
-						@RequestParam(value = "category_id", defaultValue = "0") int category_id,
 						Model model) {
-		PagingVO<ProductVO> pv = null;
+		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
 		List<CategoryVO> categorylist= categoryService.selectCategory();
+		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
 		
-		pv = category_id == 0 ? productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock()) :
-			 productService.getFilterProductList(category_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
-		
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("uservo", userVO);
 		model.addAttribute("pv", pv);
 		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("newLine", "\n" );
@@ -53,6 +81,20 @@ public class HomeController {
 		
 		return "index";
 	}
+    
+    @PostMapping("/addWish")
+    public ResponseEntity<String> addToWishList(@RequestBody Map<String, Integer> request){
+    	WishVO vo = new WishVO();
+    	int user_id = request.get("user_id");
+    	int product_id = request.get("product_id");
+    	vo.setUser_id(user_id);
+    	vo.setProduct_id(product_id);
+    	
+    	wishService.addToWishList(vo);
+    	return ResponseEntity.ok("상품을 찜 목록에 담았습니다!");
+    }
+	
+	
 	@GetMapping("/about.html")
 	public String about() {
 		return "about";
@@ -118,12 +160,12 @@ public class HomeController {
 		return "product-review";
 	}
 	
-	@GetMapping("/whishlist.html")
+	@GetMapping("/wishlist.html")
 	public String wishList() {
 		
 		return "wishlist";
 	}
-	
+
 	@GetMapping("/shoping-cart.html")
 	public String shopingCart() {
 		return "shoping-cart";
