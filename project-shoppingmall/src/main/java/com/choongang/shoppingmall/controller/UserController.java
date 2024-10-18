@@ -97,7 +97,7 @@ public class UserController {
 		return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
 	}
     
-    @GetMapping(value = {"/","/index.html"})
+    @GetMapping(value = {"/"})
 	public String index(
 						@ModelAttribute CommVO commVO, 
 						Model model) {
