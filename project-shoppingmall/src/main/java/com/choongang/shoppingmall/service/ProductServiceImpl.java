@@ -2,7 +2,6 @@ package com.choongang.shoppingmall.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,5 +70,42 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 		return pv;
+	}
+
+	@Override
+	public boolean insert(ProductVO productVO) {
+		boolean result = false;
+		try {
+			productDAO.insert(productVO);
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("상품등록 리턴 : {}", productVO);
+		return result;
+	}
+
+	@Override
+	public boolean update(ProductVO productVO) {
+		boolean result = false;
+		try {
+			productDAO.update(productVO);
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean delete(ProductVO productVO) {
+		boolean result = false;
+		try {
+			productDAO.delete(productVO.getProduct_id());
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

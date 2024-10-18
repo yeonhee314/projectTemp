@@ -54,10 +54,21 @@
 	<!-- 저장하기 -->
 	<insert id="insert" parameterType="ProductVO">
 		insert into product
+		(product_id, category_id, product_name, description, product_price,
+		img_count, product_stock, discount, product_regDate, product_status, product_option
+		)
 		values
-		(product_id_seq, #{CATEGORY_ID},#{PRODUCT_NAME},#{DESCRIPTION},#{PRODUCT_PRICE},
-		#{img_count},#{product_stock},#{discount},#{product_regDate},#{product_status},
+		(product_id_seq.nextval, #{category_id},#{product_name},#{description},#{product_price},
+		#{img_count},#{product_stock},#{discount},sysdate,#{product_status},
 		#{product_option})
 	</insert>
-	
+	<update id="update" parameterType="ProductVO">
+		update product set category_id=#{category_id}, product_name=#{product_name},
+		description=#{description}, product_price=#{product_price}, img_count=#{img_count},
+		product_stock=#{product_stock}, discount=#{discount}, product_regdate=sysdate,
+		product_status=#{product_status},product_option=#{product_option} where product_id=#{product_id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from product where product_id=#{product_id}
+	</delete>
 </mapper>  

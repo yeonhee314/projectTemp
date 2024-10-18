@@ -44,7 +44,11 @@
 	height: 20px;
 	text-align: left;
 }
-
+.pdAdd {
+	position: fixed;
+	right: 80px; top:50px;
+	text-align: right;
+}
 .index {
 	height: 5px;
 	font-size: 0.7rem;
@@ -202,7 +206,7 @@ a:visited {
 }
 #message {
 	position: fixed;
-	top: 390px; left:220px;
+	top: 390px; left:240px;
 	font-size: 0.6rem;
 }
 #addCloseBtn {

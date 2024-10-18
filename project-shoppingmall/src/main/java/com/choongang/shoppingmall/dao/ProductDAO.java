@@ -21,4 +21,8 @@ public interface ProductDAO {
 	List<ProductVO> selectProductList(HashMap<String, Integer> map) throws SQLException;
 	// 5. 카테고리 id로 필터링한 상품 한 페이지 얻기
 	List<ProductVO> selectFilterProductList (HashMap<String, Integer> map) throws SQLException;
+	
+	void insert(ProductVO productVO) throws SQLException;
+	void update(ProductVO productVO) throws SQLException;
+	void delete(int product_id) throws SQLException;
 }
