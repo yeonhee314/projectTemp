@@ -9,7 +9,7 @@
  		select count(*) from users
  		<where>
 			<if test="search != null">
-				#{field} like '%#{search}%'
+				#{field} like #{search}
 			</if>
 		</where>
  	</select>
@@ -18,7 +18,7 @@
  		select * from users 
  		<where>
 			<if test="search != null">
-				#{field} like '%#{search}%'
+				#{field} like #{search}
 			</if>
 		</where>
  		order by user_id desc
@@ -40,7 +40,7 @@
 				(select * from users 
 				<where>
 					<if test="search != null">
-						#{field} like '%#{search}%'
+						#{field} like #{search}
 					</if>
 				</where>
 				order by user_id desc) Q
@@ -54,30 +54,5 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
- 	<!-- 게시글 저장 
- 	<insert id="insert" parameterType="UserVO">
-		insert into 
-			cboard
-		values 
-			(cboard_seq.nextval, #{name}, #{password}, #{subject}, #{content}, SYSDATE, 0 , #{ipAddress})
-	</insert>
- 	-->
-	
-	<!--  
- 	<update id="update" parameterType="UserVO">
-		update
-			cboard
-		set
-			subject=#{subject}, content=#{content}, regDate=SYSDATE, ipAddress=#{ipAddress}
-		where
-			id=#{id}
-	</update>
-	-->
-	<!-- 6. 삭제
-	
-	<delete id="delete" parameterType="int">
-		delete from cboard where id=#{id}
-	</delete>
-	 -->
  	
 </mapper>

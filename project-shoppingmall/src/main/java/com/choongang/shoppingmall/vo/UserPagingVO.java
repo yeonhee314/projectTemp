@@ -10,13 +10,13 @@ import lombok.ToString;
 public class UserPagingVO {
 	private int p=1, s=15, b=10, idx=-1;
 	private int currentPage, sizeOfPage, sizeOfBlock;
-	private String field, search;
+	private String field;
+	private String search;
 	
 	public UserPagingVO() {
 		this.currentPage = p;
 		this.sizeOfPage = s;
 		this.sizeOfBlock = b;
-	
 	}
 	
 	public UserPagingVO(int p, int s, int b, int idx, int currentPage, int sizeOfPage, int sizeOfBlock) {
@@ -31,6 +31,20 @@ public class UserPagingVO {
 		this.currentPage = p;
 		this.sizeOfPage = s;
 		this.sizeOfBlock = b;
+	}	
+	public UserPagingVO(int p, int s, int b, int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
+		super();
+		this.p = p;
+		this.s = s;
+		this.b = b;
+		this.currentPage = currentPage;
+		this.sizeOfPage = sizeOfPage;
+		this.sizeOfBlock = sizeOfBlock;
+		this.currentPage = p;
+		this.sizeOfPage = s;
+		this.sizeOfBlock = b;
+		this.field = field;
+		this.search = search;
 	}	
 	public UserPagingVO(int p, int s, int b, int idx, int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
 		super();

@@ -31,12 +31,11 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 	@Autowired
 	private UsersBoardService usersBoardService;
-	
 	@Autowired
 	private ProductService productService;
-
 	@Autowired
 	private CategoryService categoryService;
+	
 	// 관리자 페이지 접근
 	@GetMapping("/admin")
 	public String admin() {
@@ -48,7 +47,7 @@ public class AdminController {
 						@RequestParam (required = false) String search,
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
-		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), userPagingVO.getField(), userPagingVO.getSearch());
+		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), field, search);
 		List<UserVO> list= usersBoardService.selectAll();
 		model.addAttribute("pv", pv);
 		model.addAttribute("upv", userPagingVO);
@@ -57,18 +56,8 @@ public class AdminController {
 		model.addAttribute("list", list);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
-		
 		return "admin-users";
 	}
-	/*
-	// 전체 회원 목록
-	@GetMapping(value =  "/admin/users")
-	public String users(Model model) {
-		model.addAttribute("list",usersBoardService.selectAll());
-		model.addAttribute("count",usersBoardService.selectCount());
-		return "admin-users";
-	}
-	*/
 	
 	// 회원 상세 조회
 	@GetMapping(value = "/admin/user/details")
@@ -89,7 +78,6 @@ public class AdminController {
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
 		model.addAttribute("cvo", new CategoryVO());
-		
 		return "admin-products";
 	}
 	
@@ -108,7 +96,7 @@ public class AdminController {
 	// Post전송일때만 저장
 		@PostMapping("/categoryOk")
 		public String categoryOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
-			categoryService.insert(vo); // 저장
+			categoryService.insert(vo);
 			return "redirect:/admin/products";
 		}
 		
@@ -118,7 +106,7 @@ public class AdminController {
 		}
 		@PostMapping("/updateOk")
 		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
-			categoryService.update(vo); // 저장
+			categoryService.update(vo);
 			return "redirect:/admin/products";
 		}
 		
@@ -128,12 +116,27 @@ public class AdminController {
 		}
 		@PostMapping("/deleteOk")
 		public String categoryDeleteOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
-			
 			categoryService.deleteById(vo);
 			return "redirect:/admin/products";
 		}
-		
-		
+		// 상품 등록 페이지
+		@GetMapping("/admin/products/form")
+		public String productForm(Model model) {
+			List<CategoryVO> list = categoryService.selectCategory();
+			model.addAttribute("list", list);
+			return "admin-product-form";
+		}
+		// 상품등록 처리
+		@GetMapping("/pdAddOk")
+		public String pdAddOkGet() {
+			return "redirect:/admin/products";
+		}
+		@PostMapping("/pdAddOk")
+		public String pdAddOkPost(@ModelAttribute(value = "vo") ProductVO productVO,
+				@ModelAttribute CategoryVO vo) {
+			productService.insert(productVO);
+			return "redirect:/admin/products";
+		}
 	// 문의 관리
 	@GetMapping("/admin/qna")
 	public String adminQna() {

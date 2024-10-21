@@ -203,6 +203,11 @@ $(function(){
 				<tr>
 					<td colspan="3" class="total">[[${pv.pageInfo}]]</td>
 				</tr>
+				<tr>
+					<td colspan="7" class="pdAdd">
+						<input type="button" value="추가" class="btn btn-info btn-sm" onclick="location.href='/admin/products/form'"/>
+					</td>
+				</tr>
 				<tr class="index">
 					<th>No</th>
 					<th>상품명</th>
@@ -214,8 +219,8 @@ $(function(){
 				</tr>
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">
-						<td><input type="checkbox"/> [[${vo.product_id}]]</td>
-						<td><a th:href="@{/admin/user/details(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
+						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
+						<td><a th:href="@{/admin/products(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${vo.product_price}]]</td>
 						<td>[[${vo.category_id}]]</td>
 						<td>[[${vo.product_stock}]]</td>
