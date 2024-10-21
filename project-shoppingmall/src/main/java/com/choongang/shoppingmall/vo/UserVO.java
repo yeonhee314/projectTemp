@@ -72,7 +72,7 @@ public class UserVO implements UserDetails{
 	private String address;		//기본주소
 	private String address_detail;	//상세주소
 	
-	
+	private List<WishVO> wishList;
 	
 	
 	@Override
