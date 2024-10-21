@@ -12,6 +12,8 @@ import com.choongang.shoppingmall.service.CartService;
 
 import jakarta.servlet.http.HttpSession;
 
+
+
 @Controller
 public class CartController {
 
@@ -19,19 +21,23 @@ public class CartController {
 	    private CartService cartService;
 
 	    @PostMapping("/cart/add")
-	    public String addToCart(@RequestParam("productId") int productId, @RequestParam("cartCount") int cartCount, HttpSession session, RedirectAttributes redirectAttributes) {
-	        // 사용자 로그인 여부 확인
+	    public String addToCart(
+	    						@RequestParam("productId") int productId,
+	    						@RequestParam("cartCount") int cartCount, 
+	    						HttpSession session, RedirectAttributes redirectAttributes) {
+	    	
 	        Integer userId = (Integer) session.getAttribute("userId");
-
+	    	 
+	    	System.out.println("Session userId: " + userId);
+	   
 	        if (userId == null) {
 	            redirectAttributes.addFlashAttribute("message", "로그인 후 장바구니에 상품을 추가할 수 있습니다.");
 	            return "redirect:/login"; // 로그인 페이지로 리다이렉트
 	        }
-
 	        // 장바구니에 상품 추가
 	        cartService.addCart(userId, productId, cartCount);
 	        redirectAttributes.addFlashAttribute("message", "상품이 장바구니에 추가되었습니다.");
-	        return "redirect:/view"; // 장바구니 페이지로 리다이렉트
+	        return "redirect:/shoping-cart.html"; // 장바구니 페이지로 리다이렉트
 	    }
 
 	    @GetMapping("/cart")
@@ -48,4 +54,5 @@ public class CartController {
 	        cartService.deleteCartItem(cartId);
 	        return "redirect:/cart"; // 장바구니 페이지로 리다이렉트
 	    }
+	 
 	}

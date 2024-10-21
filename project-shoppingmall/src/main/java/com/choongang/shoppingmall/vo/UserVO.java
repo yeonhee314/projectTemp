@@ -114,4 +114,9 @@ public class UserVO implements UserDetails{
 	public boolean isEnabled() {  //계정이 활성화 여부에 대해 리턴한다(true:활성화됨)
 		return true;
 	}
+	
+	//User_id 세션 정보 추가
+	   public Integer getId() {
+	        return user_id;
+	    }
 }

@@ -6,7 +6,7 @@
 	<mapper namespace="com.choongang.shoppingmall.dao.CartMapper">
 	
 	<!-- 장바구니에 상품 추가 -->
-    <insert id="addCart"> 
+    <insert id="addToCart"> 
         INSERT INTO cart (cart_id, user_id, product_id, cart_count)
         VALUES (cart_id_seq.NEXTVAL, #{userId}, #{productId}, #{cartCount})
     </insert>
