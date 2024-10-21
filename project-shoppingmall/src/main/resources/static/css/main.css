@@ -3412,3 +3412,25 @@ button:disabled{
 .ta-r{
 	text-align: right;
 }
+
+.image-container{
+	top: 0px;
+	position: relative;
+	width: 290px;
+	/* border: 1px solid black; */
+}
+
+.top-image{
+	position: absolute;
+	top: 0;
+	left:0;
+	z-index: 2;
+	/* border: 1px solid red; */
+}
+
+.bottom-image{
+	position: absolute;
+	top: 0;
+	left:0;
+	z-index: 1;
+}

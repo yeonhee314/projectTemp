@@ -1,6 +1,7 @@
 package com.choongang.shoppingmall.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,16 @@ public class WishServiceImpl implements WishService{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<WishVO> selectWishByUserId(int user_id) {
+		List<WishVO> list = null;
+		try {
+			list = wishDAO.selectWishByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

@@ -8,8 +8,8 @@
 		insert into wish values (wish_id_seq.nextval, #{user_id}, #{product_id}, sysdate)
 	</insert>
 	
-	<!-- WishList 가져오기 -->
-	<select id="selectWishListByUserId" parameterType="int">
+	<!-- 유저 아이디 별 WishList 정보 가져오기 -->
+	<select id="selectWishByUserId" parameterType="int" resultType="WishVO">
 		select * from wish where user_id=#{user_id}
 	</select>
 </mapper>
