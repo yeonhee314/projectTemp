@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
+import com.choongang.shoppingmall.vo.UserVO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,5 +23,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		// 세션에 저장하고 싶다.
 		request.getSession().setAttribute("user", authentication.getPrincipal());
 		response.sendRedirect("/index.html");
+		
+		//user_id에 세션 저장 코드 추가
+		UserVO user = (UserVO) authentication.getPrincipal();
+		request.getSession().setAttribute("userId", user.getId());
+		
+		
+		
 	}
 }
