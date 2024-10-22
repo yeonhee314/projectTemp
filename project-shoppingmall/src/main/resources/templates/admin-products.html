@@ -210,6 +210,7 @@ $(function(){
 				</tr>
 				<tr class="index">
 					<th>No</th>
+					<th>썸네일</th>
 					<th>상품명</th>
 					<th>판매가</th>
 					<th>카테고리</th>
@@ -220,6 +221,7 @@ $(function(){
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">
 						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
+						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" width="40" height="35"/></td>
 						<td><a th:href="@{/admin/products(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${vo.product_price}]]</td>
 						<td>[[${vo.category_id}]]</td>

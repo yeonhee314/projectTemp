@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
@@ -45,32 +46,35 @@ public class HomeController {
 	@Autowired 
 	private UserService userService;
 	
+	private boolean isWish = false;
+	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
 	}
 	
-	// 사용자 정보 가져오기
+	// 회원 정보 가져오기
 	public UserVO getUserInfo() {
-		UserVO vo = new UserVO();
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		boolean isLogin = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
-		if(isLogin) {
-			String username = authentication.getName();
-			vo = userService.selectByUsername(username);
+		UserVO userVO = new UserVO();
+		List<WishVO> wishList = null;
+		if(isUserLoggedin()) {
+			String username = SecurityContextHolder.getContext().getAuthentication().getName();
+			userVO = userService.selectByUsername(username);
+			wishList = wishService.selectWishByUserId(userVO.getUser_id());
+			userVO.setWishList(wishList);
 		}
-		return vo;
+		return userVO;
 	}
-    
+	
     @GetMapping("/index.html")
 	public String index(
 						@ModelAttribute CommVO commVO, 
 						Model model) {
 		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
 		List<CategoryVO> categorylist= categoryService.selectCategory();
-		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
+		UserVO userVO = getUserInfo();
 		
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("uservo", userVO);
@@ -82,16 +86,23 @@ public class HomeController {
 		return "index";
 	}
     
-    @PostMapping("/addWish")
-    public ResponseEntity<String> addToWishList(@RequestBody Map<String, Integer> request){
+    @PostMapping("/setWish")
+    @ResponseBody
+    public Boolean setWishList(@RequestBody Map<String, Integer> request){
     	WishVO vo = new WishVO();
     	int user_id = request.get("user_id");
     	int product_id = request.get("product_id");
     	vo.setUser_id(user_id);
     	vo.setProduct_id(product_id);
     	
-    	wishService.addToWishList(vo);
-    	return ResponseEntity.ok("상품을 찜 목록에 담았습니다!");
+    	isWish = wishService.isWishCount(user_id, product_id) == 1 ? true : false;
+    	if(isWish) {
+    		wishService.deleteToWishList(vo);
+    	}else {
+    		wishService.addToWishList(vo);
+    	}
+    	
+    	return !isWish;
     }
 	
 	
@@ -146,7 +157,7 @@ public class HomeController {
 	public String productReview(
 			@ModelAttribute CommVO commVO, 
 			@RequestParam("product_id") int product_id,
-			@RequestParam("category_id") int category_id, 
+			@RequestParam("category_id") int category_id,
 			Model model
 			) {
 		PagingVO<ReviewVO> pv = reviewService.getReviewList(product_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());

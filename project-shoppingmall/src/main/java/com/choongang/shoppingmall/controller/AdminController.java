@@ -1,9 +1,14 @@
 package com.choongang.shoppingmall.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
@@ -18,11 +24,14 @@ import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
+import com.choongang.shoppingmall.vo.FileVO;
 import com.choongang.shoppingmall.vo.PagingVO;
+import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.UserPagingVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -36,6 +45,9 @@ public class AdminController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	@Autowired
+	ResourceLoader resourceLoader;
+	
 	// 관리자 페이지 접근
 	@GetMapping("/admin")
 	public String admin() {
@@ -43,8 +55,8 @@ public class AdminController {
 	}
 	// 유저목록 페이징
 	@GetMapping(value =  "/admin/users")
-	public String adminUsers(@RequestParam (required = false) String field,
-						@RequestParam (required = false) String search,
+	public String adminUsers(@RequestParam (required = false, name = "field") String field,
+						@RequestParam (required = false, name = "search") String search,
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
 		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), field, search);
@@ -68,13 +80,13 @@ public class AdminController {
 	}
 	// 상품 목록 페이징
 	@GetMapping("/admin/products")
-	public String adminProducts(@ModelAttribute UserPagingVO userPagingVO ,Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
+	public String adminProducts(@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
+		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
 		// 카테고리 페이징
-		AdminCategoryPagingVO<CategoryVO> cv = categoryService.getCategoryList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock());
+		AdminCategoryPagingVO<CategoryVO> cv = categoryService.getCategoryList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", cv);
-		model.addAttribute("upv", userPagingVO);
+		model.addAttribute("upv", productPagingVO);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
 		model.addAttribute("cvo", new CategoryVO());
@@ -84,7 +96,7 @@ public class AdminController {
 	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
 		@GetMapping(value = "/test/categoryCheck", produces = "text/plain;charset=UTF-8")
 		@ResponseBody
-		public String categoryCheck(@RequestParam(required = false)String category_name) {
+		public String categoryCheck(@RequestParam(required = false, name = "category_name")String category_name) {
 			return categoryService.selectCountByCategoryName(category_name)+"";
 		}
 		
@@ -122,8 +134,8 @@ public class AdminController {
 		// 상품 등록 페이지
 		@GetMapping("/admin/products/form")
 		public String productForm(Model model) {
-			List<CategoryVO> list = categoryService.selectCategory();
-			model.addAttribute("list", list);
+			List<CategoryVO> cglist = categoryService.selectCategory();
+			model.addAttribute("cglist", cglist);
 			return "admin-product-form";
 		}
 		// 상품등록 처리
@@ -132,11 +144,56 @@ public class AdminController {
 			return "redirect:/admin/products";
 		}
 		@PostMapping("/pdAddOk")
-		public String pdAddOkPost(@ModelAttribute(value = "vo") ProductVO productVO,
-				@ModelAttribute CategoryVO vo) {
+		public String pdAddOkPost(@RequestParam(required = false, name = "content") String content,
+				@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+				@ModelAttribute(value = "vo") ProductVO productVO,
+				@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
+			productVO.setImg_count(uploadFile.length);
 			productService.insert(productVO);
+			String filePath = request.getSession().getServletContext().getRealPath("/images");
+			File file = new File(filePath); 
+			if(!file.exists()) file.mkdirs();
+			
+			// 파일 처리
+			List<FileVO> list = new ArrayList<>();
+			if(uploadFile!=null && uploadFile.length>0) {
+				for(MultipartFile f : uploadFile) {
+					if(!f.isEmpty()) { 
+						// 현재는 미사용
+						FileVO fvo = new FileVO(
+										UUID.randomUUID().toString(), 
+										f.getOriginalFilename(),
+										f.getContentType());
+						list.add(fvo);
+						// 파일명 중복처리
+						String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
+						File newFile = new File(filePath, filename);
+						if(newFile.exists()) {
+							for(int i=2;; i++) {
+								int dot = filename.lastIndexOf("1");
+								String front = filename.substring(0, dot);
+								String end = filename.substring(dot+1);
+								String newFileName = front + i + end;
+								newFile = new File(filePath, newFileName);
+								if(!newFile.exists()) {
+									filename = newFileName;
+									break;
+								}
+							}
+						}
+						f.transferTo(newFile); 
+						log.info("=".repeat(100));
+						log.info("저장 :" + newFile);
+						log.info("=".repeat(100));
+					}
+				}
+			}
+			model.addAttribute("content", content);
+			model.addAttribute("list", list);
 			return "redirect:/admin/products";
 		}
+		
+		
 	// 문의 관리
 	@GetMapping("/admin/qna")
 	public String adminQna() {

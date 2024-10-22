@@ -53,14 +53,20 @@
 	</select>
 	<!-- 저장하기 -->
 	<insert id="insert" parameterType="ProductVO">
+	 
+	<selectKey resultType="int" keyProperty="product_id" order="BEFORE">
+			select product_id_seq.nextval from dual
+		</selectKey>
+
 		insert into product
 		(product_id, category_id, product_name, description, product_price,
 		img_count, product_stock, discount, product_regDate, product_status, product_option
 		)
 		values
-		(product_id_seq.nextval, #{category_id},#{product_name},#{description},#{product_price},
+		(#{product_id}, #{category_id},#{product_name},#{description},#{product_price},
 		#{img_count},#{product_stock},#{discount},sysdate,#{product_status},
 		#{product_option})
+		
 	</insert>
 	<update id="update" parameterType="ProductVO">
 		update product set category_id=#{category_id}, product_name=#{product_name},

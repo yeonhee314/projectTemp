@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
 		if(userVO != null) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			userVO.setPassword(passwordEncoder.encode(userVO.getPassword()));
-			userVO.setUser_role("ROLE_USER");
+			//userVO.setUser_role("ROLE_USER");
 			try {
 				userDAO.insert(userVO);
 			} catch (SQLException e) {
@@ -68,17 +68,78 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 	
+	// 아이디 찾기
+	@Override
+	public String selectByForgetUsername(String name, String email) {
+	    log.info("아이디 찾기 요청: 이름 = {}, 이메일 = {}", name, email);
+	    String username = null;
+	    
+	    try {
+	        username = userDAO.selectByForgetUsername(name, email);
+	        // 아이디가 존재하지 않는 경우 로그 남기기
+	        if (username == null) {
+	            log.warn("정보와 일치하는 아이디가 없습니다. 이름: {}, 이메일: {}", name, email);
+	            return null;
+	        } else {
+	            // 아이디 찾기 성공 로그
+	            log.info("아이디 찾기 성공: 이름 = {}, 이메일 = {}, 아이디 = {}", name, email, username);
+	            return username;
+	        }
+	    } catch (Exception e) {
+	    	log.error("아이디 찾기 중 오류 발생: {}", e.getMessage());
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
 	//아이디 중복 확인
 	@Override
 	public int selectCountByUsername(String username) {
-		int count = 1;
+		int countName = 1;
 		try {
-			count = userDAO.selectCountByUsername(username);
+			countName = userDAO.selectCountByUsername(username);
 		} catch (SQLException e) {
 			log.error("아이디 중복 확인 중 오류 발생: {}", e.getMessage());
 			e.printStackTrace();
 		}
-		return count;
+		return countName;
+	}
+/*	//이메일 중복 확인
+	@Override
+	public int selectCountByEmail(String email) {
+		int countEmail = 1;
+		try {
+			countEmail = userDAO.selectCountByEmail(email);
+		} catch (SQLException e) {
+			log.error("이메일 중복 확인 중 오류 발생: {}", e.getMessage());
+			e.printStackTrace();
+		}
+		return countEmail;
+	}
+	*/
+	//닉네임 중복 확인
+	@Override
+	public int selectCountByNickname(String nickname) {
+		int countNick = 1;
+		try {
+			countNick = userDAO.selectCountByNickname(nickname);
+		} catch (SQLException e) {
+			log.error("닉네임 중복 확인 중 오류 발생: {}", e.getMessage());
+			e.printStackTrace();
+		}
+		return countNick;
+	}
+	//핸드폰 중복 확인
+	@Override
+	public int selectCountByPhone(String phone) {
+		int countPhone = 1;
+		try {
+			countPhone = userDAO.selectCountByPhone(phone);
+		} catch (SQLException e) {
+			log.error("핸드폰 중복 확인 중 오류 발생: {}", e.getMessage());
+			e.printStackTrace();
+		}
+		return countPhone;
 	}
 	
 }
