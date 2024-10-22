@@ -10,7 +10,7 @@ import com.choongang.shoppingmall.vo.CartItem;
 public interface CartMapper {
 
 	// 장바구니에 상품 추가
-	void addToCart(CartItem cartItem);
+	void addCart(CartItem cartItem);
     
     // 사용자의 장바구니 목록 조회
     List<CartItem> getCartByUserId(int userId);

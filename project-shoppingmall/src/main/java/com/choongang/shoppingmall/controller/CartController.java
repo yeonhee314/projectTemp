@@ -21,21 +21,21 @@ public class CartController {
 	    private CartService cartService;
 
 	    @PostMapping("/cart/add")
-	    public String addToCart(
-	    						@RequestParam("productId") int productId,
-	    						@RequestParam("cartCount") int cartCount, 
-	    						HttpSession session, RedirectAttributes redirectAttributes) {
+
+	    public String addToCart(@RequestParam("productId") int productId,@RequestParam("cartCount") int cartCount, 
+	    		@RequestParam("productPrice") int productPrice, @RequestParam("productOption") String productOption, 
+	    		HttpSession session, RedirectAttributes redirectAttributes) {
 	    	
+	        // 사용자 로그인 여부 확인
 	        Integer userId = (Integer) session.getAttribute("userId");
-	    	 
-	    	System.out.println("Session userId: " + userId);
-	   
+	        System.out.println("세션 아이디:" +userId);
+
 	        if (userId == null) {
 	            redirectAttributes.addFlashAttribute("message", "로그인 후 장바구니에 상품을 추가할 수 있습니다.");
 	            return "redirect:/login"; // 로그인 페이지로 리다이렉트
 	        }
 	        // 장바구니에 상품 추가
-	        cartService.addCart(userId, productId, cartCount);
+	        cartService.addCart(userId, productId, cartCount, productPrice, productOption);
 	        redirectAttributes.addFlashAttribute("message", "상품이 장바구니에 추가되었습니다.");
 	        return "redirect:/shoping-cart.html"; // 장바구니 페이지로 리다이렉트
 	    }

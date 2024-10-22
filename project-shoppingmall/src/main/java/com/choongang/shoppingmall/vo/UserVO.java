@@ -115,8 +115,10 @@ public class UserVO implements UserDetails{
 		return true;
 	}
 	
-	//User_id 세션 정보 추가
-	   public Integer getId() {
-	        return user_id;
-	    }
+	//user_id 세션 정보 추가
+	public Integer getId() {
+		return user_id;
+	}
+
+
 }

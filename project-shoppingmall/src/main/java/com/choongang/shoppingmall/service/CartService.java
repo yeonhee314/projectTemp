@@ -14,12 +14,15 @@ public class CartService {
     @Autowired
     private CartMapper cartMapper;
 
-    public void addCart(int userId, int productId, int cartCount) {
+    public void addCart(int userId, int productId, int cartCount, int productPrice, String productOption) {
         CartItem cartItem = new CartItem();
         cartItem.setUserId(userId);
         cartItem.setProductId(productId);
         cartItem.setCartCount(cartCount);
-        cartMapper.addToCart(cartItem);
+        cartItem.setProductPrice(productPrice);
+        cartItem.setProductOption(productOption);
+        
+        cartMapper.addCart(cartItem);
     }
 
     public List<CartItem> getCartByUserId(int userId) {
