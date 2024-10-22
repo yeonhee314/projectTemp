@@ -54,7 +54,7 @@
 	<!-- 저장하기 -->
 	<insert id="insert" parameterType="ProductVO">
 	 
-	<selectKey resultType="java.lang.Integer" keyProperty="product_id" order="BEFORE">
+	<selectKey resultType="int" keyProperty="product_id" order="BEFORE">
 			select product_id_seq.nextval from dual
 		</selectKey>
 

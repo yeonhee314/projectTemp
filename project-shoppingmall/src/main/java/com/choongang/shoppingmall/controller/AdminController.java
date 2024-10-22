@@ -45,8 +45,6 @@ public class AdminController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	/*@Value("${part.upload.path}")
-	String filePath;*/
 	@Autowired
 	ResourceLoader resourceLoader;
 	
@@ -57,8 +55,8 @@ public class AdminController {
 	}
 	// 유저목록 페이징
 	@GetMapping(value =  "/admin/users")
-	public String adminUsers(@RequestParam (required = false) String field,
-						@RequestParam (required = false) String search,
+	public String adminUsers(@RequestParam (required = false, name = "field") String field,
+						@RequestParam (required = false, name = "search") String search,
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
 		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), field, search);
@@ -98,7 +96,7 @@ public class AdminController {
 	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
 		@GetMapping(value = "/test/categoryCheck", produces = "text/plain;charset=UTF-8")
 		@ResponseBody
-		public String categoryCheck(@RequestParam(required = false)String category_name) {
+		public String categoryCheck(@RequestParam(required = false, name = "category_name")String category_name) {
 			return categoryService.selectCountByCategoryName(category_name)+"";
 		}
 		
@@ -146,8 +144,8 @@ public class AdminController {
 			return "redirect:/admin/products";
 		}
 		@PostMapping("/pdAddOk")
-		public String pdAddOkPost(@RequestParam(required = false, defaultValue = "파일설명") String content,
-				@RequestParam(required = false) MultipartFile[] uploadFile,
+		public String pdAddOkPost(@RequestParam(required = false, name = "content") String content,
+				@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
 				@ModelAttribute(value = "vo") ProductVO productVO,
 				@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
 			productVO.setImg_count(uploadFile.length);
