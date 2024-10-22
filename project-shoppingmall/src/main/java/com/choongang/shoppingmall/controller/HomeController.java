@@ -1,6 +1,5 @@
 package com.choongang.shoppingmall.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
@@ -46,13 +46,15 @@ public class HomeController {
 	@Autowired 
 	private UserService userService;
 	
+	private boolean isWish = false;
+	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
 	}
 	
-	// 사용자 정보 가져오기
+	// 회원 정보 가져오기
 	public UserVO getUserInfo() {
 		UserVO userVO = new UserVO();
 		List<WishVO> wishList = null;
@@ -84,16 +86,23 @@ public class HomeController {
 		return "index";
 	}
     
-    @PostMapping("/addWish")
-    public ResponseEntity<String> addToWishList(@RequestBody Map<String, Integer> request){
+    @PostMapping("/setWish")
+    @ResponseBody
+    public Boolean setWishList(@RequestBody Map<String, Integer> request){
     	WishVO vo = new WishVO();
     	int user_id = request.get("user_id");
     	int product_id = request.get("product_id");
     	vo.setUser_id(user_id);
     	vo.setProduct_id(product_id);
     	
-    	wishService.addToWishList(vo);
-    	return ResponseEntity.ok("상품을 찜 목록에 담았습니다!");
+    	isWish = wishService.isWishCount(user_id, product_id) == 1 ? true : false;
+    	if(isWish) {
+    		wishService.deleteToWishList(vo);
+    	}else {
+    		wishService.addToWishList(vo);
+    	}
+    	
+    	return !isWish;
     }
 	
 	

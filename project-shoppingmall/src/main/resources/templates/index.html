@@ -143,7 +143,7 @@
 							</a>
 							<!-- 위시리스트 -->
 							<div id="wish-container">
-								 <a th:href="@{wishlist.html(u=${uservo.user_id})}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" th:data-notify="${uservo.wishList.size()}" >
+								 <a th:href="@{wishlist.html}" class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" th:data-notify="${uservo.wishList.size()}" >
 									<i class="zmdi zmdi-favorite-outline"></i>
 									<span class="stext-109"><b>WISH</b></span>
 								</a>
@@ -759,7 +759,7 @@
 				<th:block th:if="${pv.totalCount<=0}">
 					<span class="mtext-111">등록된 상품이 없습니다.</span>
 				</th:block>
-				<!-- 메인 상품 리스트 표시 -->
+				<!-- 메인 상품 리스트 -->
 				<th:block th:if="${pv.totalCount>0}">
 					<th:block th:each="vo:${pv.list}">
 						<div class="col-sm-6 col-md-4 col-lg-3 p-b-35">
@@ -768,8 +768,9 @@
 									<img th:src="@{'images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG-PRODUCT">
 								</div>
 								<div class="block2-txt flex-w flex-t p-t-14">
-								<!-- TODO : 위시리시트 -->
+								<!-- 위시리시트 -->
 									<div class="image-container block2-txt-child2 flex-r p-t-3">
+									
 										<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" th:data-product-id="${vo.product_id}">
 											<!-- 만약 상품을 이미 찜했다면 불러올 때 찜 표시를 해둔다. -->
 											<img class="bottom-image icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
@@ -787,6 +788,7 @@
 												</th:block>
 											</th:block>
 										</a>
+										
 									</div>
 									<div class="block2-txt-child1 flex-col-l ">
 										<!-- product_stoc(재고)가 0일 경우 [품절] 텍스트를 활성화한다. -->
@@ -1171,11 +1173,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script th:inline="javascript">
 	<!-- 찜 버튼 클릭 시 -->
 	/*<![CDATA[*/
-	function addToWishList(productId, event, element){
+	function setWishList(productId, event, element){
 		event.preventDefault();
 		var userId = /*[[${uservo.user_id}]]*/;
 		
-		fetch('/addWish', {
+		fetch('/setWish', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/json',
@@ -1191,15 +1193,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     })
 	    .then(data => {
 	    	var nameProduct = $(element).parent().parent().find('.js-name-b2').html();
-			swal({
-				 title: nameProduct,
-		            text: '상품을 찜 목록에 담았습니다!',
-		            icon: 'success',
-		        }).then((willReload) => {
-		            if (willReload) {
-		                window.location.reload();
-		            }
-				});
+	    	data = data == 'true';
+	    	if(!data){
+	    		swal({
+					 title: nameProduct,
+			            text: '상품을 찜 목록에서 삭제했습니다!',
+			            icon: 'error',
+			        }).then((willReload) => {
+			            if (willReload) {
+			                window.location.reload();
+			            }
+					});
+	    	}else{
+	    		swal({
+					 title: nameProduct,
+			            text: '상품을 찜 목록에 담았습니다!',
+			            icon: 'success',
+			        }).then((willReload) => {
+			            if (willReload) {
+			                window.location.reload();
+			            }
+					});
+	    	}
+	    	
 	    })
 	    .catch(error => {
 	        console.error('Error:', 'Error : 찜 목록에 담지 못했습니다.');
@@ -1212,7 +1228,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
 			var userId = /*[[${uservo.user_id}]]*/;
-			let isLogin = /*[[${isLogin}]]*/;
+			var isLogin = /*[[${isLogin}]]*/;
+			
 			if (!isLogin){
 				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
 				if(result){
@@ -1220,7 +1237,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				}
 			}else{
 				var productId = $(this).data('product-id');
-				addToWishList(productId, e, this);
+				setWishList(productId, e, this);
 			}
 		});
 		/*]]>*/
