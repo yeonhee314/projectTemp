@@ -73,16 +73,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public boolean insert(ProductVO productVO) {
-		boolean result = false;
+	public void insert(ProductVO productVO) {
 		try {
 			productDAO.insert(productVO);
-			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		log.info("상품등록 리턴 : {}", productVO);
-		return result;
 	}
 
 	@Override

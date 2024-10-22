@@ -18,7 +18,8 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/adminPdForm.css" />
 <script type="text/javascript">
 	$(function() {
-
+	var length = $("#formFileMultiple").files.length;
+		$("#img_count").val(length);
 	});
 </script>
 </head>
@@ -42,25 +43,26 @@
 			<div class="main">상품 등록하기</div>
 		</div>
 	</div>
-	<form th:action="@{/pdAddOk}" method="post" class="addForm">
+	<form th:action="@{/pdAddOk}" method="post" class="addForm" enctype="multipart/form-data">
 		<input type="text" name="product_name" id="product_name" required="required" placeholder="상품명입력"/>
 		<select name="category_id" id="category_id" class="category" required="required">
 			<option selected="selected">카테고리선택</option>
-			<th:block th:each="vo : ${list}">
+			<th:block th:each="vo : ${cglist}">
 				<option th:value="${vo.category_id}" th:text="${vo.category_name}"></option>
 			</th:block>
 		</select>
 		<input type="text" name="description" id="description" required="required" placeholder="설명입력"/>
-		<input type="number" name="product_price" id="product_price" required="required" placeholder="가격입력"/>
-		<input type="file" class="form-control-sm" id="formFileMultiple" multiple/>
-		<input type="hidden" class="img_count" id="img_count"/>
-		<input type="number" name="product_stock" id="product_stock" required="required" placeholder="수량입력"/>
+		<input type="number" name="product_price" id="product_price" required="required" min="0" placeholder="가격입력"/>
+		<input type="file" name="uploadFile" class="form-control-sm" id="formFileMultiple" multiple/>
+		<input type="number" name="product_stock" id="product_stock" required="required" min="0" placeholder="수량입력"/>
+		<br />
+		할인율
 		<input type="number" name="discount" id="discount" value="0" min="0" max="100" placeholder="할인율"/>
 		<br />
 		판매상태 :
 		<label><input type="radio" name="product_status" checked="checked" value="Y"/>Y</label>
 		<label><input type="radio" name="product_status" value="N"/>N</label>
-		<input type="text" name="product_option" id="product_option" required="required" placeholder="옵션 (,구분으로 연속입력)"/>
+		<input type="text" name="product_option" id="product_option" required="required" size="30" placeholder="옵션 (,구분으로 연속입력)"/>
 		<input type="reset" value="초기화"/>
 		<input type="submit" value="저장"/>
 	</form>
