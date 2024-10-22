@@ -14,12 +14,13 @@
     </insert>
 
   <!-- 사용자 ID로 장바구니 목록 조회 -->
-	<select id="getCartByUserId">
+	<select id="getCartItems">
 	    SELECT c.product_id, p.product_name, p.product_price, c.cart_count
 	    FROM cart c
 	    JOIN product p ON c.product_id = p.product_id
 	    WHERE c.user_id = #{userId}
 	</select>
+	
 
     <!-- 장바구니 항목 삭제 -->
     <delete id="deleteCartItem">
