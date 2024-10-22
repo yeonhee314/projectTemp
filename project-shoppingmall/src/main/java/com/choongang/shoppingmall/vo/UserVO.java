@@ -120,5 +120,5 @@ public class UserVO implements UserDetails{
 		return user_id;
 	}
 
-	
+
 }

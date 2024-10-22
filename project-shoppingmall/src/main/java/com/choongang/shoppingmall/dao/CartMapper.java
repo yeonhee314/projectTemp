@@ -13,11 +13,7 @@ public interface CartMapper {
 	void addCart(CartItem cartItem);
     
     // 사용자의 장바구니 목록 조회
-    List<CartItem> getCartByUserId(int userId);
-    
-    // 장바구니에서 상품 삭제
-    void deleteCartItem(int cartId);
-
-    
+    List<CartItem> getCartItems(int userId);
+      
     
 }
