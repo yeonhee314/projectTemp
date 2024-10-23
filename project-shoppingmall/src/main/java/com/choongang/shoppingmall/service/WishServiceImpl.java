@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.WishDAO;
-import com.choongang.shoppingmall.vo.UserVO;
+import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.WishVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +51,7 @@ public class WishServiceImpl implements WishService{
 		return list;
 	}
 
+	// 찜 갯수로 찜 상태 판단
 	@Override
 	public int isWishCount(int user_id, int product_id) {
 		boolean isWish= false;
@@ -70,6 +71,18 @@ public class WishServiceImpl implements WishService{
 			e.printStackTrace();
 		}
 		return isWish ? 1 : 0;
+	}
+
+	// 위시리스트 정보로 제품 정보 불러오기
+	@Override
+	public List<ProductVO> selectProductByUserId(int user_id) {
+		List<ProductVO> productVO = null;
+		try {
+			productVO = wishDAO.selectProductByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return productVO;
 	}
 
 }

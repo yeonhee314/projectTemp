@@ -172,7 +172,11 @@ public class HomeController {
 	}
 	
 	@GetMapping("/wishlist.html")
-	public String wishList() {
+	public String wishList(Model model) {
+		UserVO userVO = getUserInfo();
+		List<ProductVO> productList = wishService.selectProductByUserId(userVO.getUser_id());
+		model.addAttribute("productList", productList);
+		model.addAttribute("uservo", userVO);
 		
 		return "wishlist";
 	}

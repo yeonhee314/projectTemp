@@ -3420,6 +3420,8 @@ button:disabled{
 	/* border: 1px solid black; */
 }
 
+/* wish */
+/* heart */
 .top-image{
 	position: absolute;
 	top: 0;
@@ -3433,4 +3435,18 @@ button:disabled{
 	top: 0;
 	left:0;
 	z-index: 1;
+}
+
+.heart-container{
+	top: 0px;
+	position: relative;
+	width: 310px;
+	/* border: 1px solid black; */
+}
+
+.wish-cart{
+	padding: 0px;
+	cursor: pointer;
+	margin-top: 28px;
+	margin-left: 13px;
 }

@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.service;
 
 import java.util.List;
 
+import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.WishVO;
 
 public interface WishService {
@@ -13,4 +14,6 @@ public interface WishService {
 	List<WishVO> selectWishByUserId(int user_id);
 	// 찜 갯수로 찜 상태 판단
 	int isWishCount(int user_id, int product_id);
+	// 위시리스트 정보로 제품 정보 불러오기
+	List<ProductVO> selectProductByUserId(int user_id);
 }

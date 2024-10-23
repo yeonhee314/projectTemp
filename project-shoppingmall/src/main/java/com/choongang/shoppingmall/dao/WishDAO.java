@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.WishVO;
 
 @Mapper
@@ -14,4 +15,5 @@ public interface WishDAO {
 	void deleteToWishList(WishVO vo) throws SQLException;
 	List<WishVO> selectWishByUserId(int user_id) throws SQLException;
 	int isWishCount(HashMap<String, Integer> map) throws SQLException;
+	List<ProductVO> selectProductByUserId(int user_id) throws SQLException;
 }
