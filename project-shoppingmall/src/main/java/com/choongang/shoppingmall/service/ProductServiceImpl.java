@@ -83,26 +83,33 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public boolean update(ProductVO productVO) {
-		boolean result = false;
+	public void update(ProductVO productVO) {
 		try {
 			productDAO.update(productVO);
-			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return result;
+		log.info("상품수정 리턴 : {}", productVO);
 	}
 
 	@Override
-	public boolean delete(ProductVO productVO) {
-		boolean result = false;
+	public void delete(int product_id) {
 		try {
-			productDAO.delete(productVO.getProduct_id());
-			result = true;
+			productDAO.delete(product_id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return result;
+		log.info("상품삭제 리턴 : {}", product_id);
+	}
+
+	@Override
+	public int selectCountByProductName(String product_name) {
+		int count = 1;
+		try {
+			count = productDAO.selectCountByProductName(product_name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }

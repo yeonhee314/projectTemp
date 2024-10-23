@@ -15,6 +15,10 @@
 	<select id="selectByProductId" parameterType="int" resultType="ProductVO">
 		select * from product where product_id=#{product_id}
 	</select>
+	<!-- 상품명 이름 개수 세기 -->
+	<select id="selectCountByProductName" parameterType="string" resultType="int">
+		select count(*) from product where product_name=#{product_name}
+	</select>
 	<!-- 한 페이지 얻기 -->
 	<select id="selectProductList" parameterType="hashmap" resultType="ProductVO">
 		<![CDATA[
@@ -51,13 +55,11 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
-	<!-- 저장하기 -->
+	<!-- 상품 등록 -->
 	<insert id="insert" parameterType="ProductVO">
-	 
 	<selectKey resultType="int" keyProperty="product_id" order="BEFORE">
-			select product_id_seq.nextval from dual
-		</selectKey>
-
+		select product_id_seq.nextval from dual
+	</selectKey>
 		insert into product
 		(product_id, category_id, product_name, description, product_price,
 		img_count, product_stock, discount, product_regDate, product_status, product_option
@@ -66,14 +68,15 @@
 		(#{product_id}, #{category_id},#{product_name},#{description},#{product_price},
 		#{img_count},#{product_stock},#{discount},sysdate,#{product_status},
 		#{product_option})
-		
 	</insert>
+	<!-- 상품 수정 -->
 	<update id="update" parameterType="ProductVO">
 		update product set category_id=#{category_id}, product_name=#{product_name},
 		description=#{description}, product_price=#{product_price}, img_count=#{img_count},
 		product_stock=#{product_stock}, discount=#{discount}, product_regdate=sysdate,
 		product_status=#{product_status},product_option=#{product_option} where product_id=#{product_id}
 	</update>
+	<!-- 상품 삭제 -->
 	<delete id="delete" parameterType="int">
 		delete from product where product_id=#{product_id}
 	</delete>

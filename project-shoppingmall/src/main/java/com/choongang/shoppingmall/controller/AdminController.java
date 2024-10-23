@@ -138,6 +138,12 @@ public class AdminController {
 			model.addAttribute("cglist", cglist);
 			return "admin-product-form";
 		}
+		// 상품명 중복확인
+		@GetMapping(value = "/test/productNameCheck", produces = "text/plain;charset=UTF-8")
+		@ResponseBody
+		public String productNameCheck(@RequestParam(required = false, name = "product_name")String product_name) {
+			return productService.selectCountByProductName(product_name)+"";
+		}
 		// 상품등록 처리
 		@GetMapping("/pdAddOk")
 		public String pdAddOkGet() {
@@ -192,8 +198,77 @@ public class AdminController {
 			model.addAttribute("list", list);
 			return "redirect:/admin/products";
 		}
+	// 상품 정보 수정
+	@GetMapping("/admin/products/edit")
+	public String adminProductEdit(Model model, int product_id) {
+		List<CategoryVO> cglist = categoryService.selectCategory();
+		ProductVO pd = productService.selectByProductId(product_id);
+		model.addAttribute("cglist", cglist);
+		model.addAttribute("pd", pd);
+		return "admin-product-edit";
+	}
+	@GetMapping("/pdUpdateOk")
+	public String pdUpdateOkGet() {
+		return "redirect:/admin/products";
+	}
+	@PostMapping("/pdUpdateOk")
+	public String pdUpdateOkPost(@RequestParam(required = false, name = "content") String content,
+			@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+			@ModelAttribute(value = "vo") ProductVO productVO,
+			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
+		//productVO.setImg_count(uploadFile.length);
+		productService.update(productVO);
+		String filePath = request.getSession().getServletContext().getRealPath("/images");
+		File file = new File(filePath); 
+		if(!file.exists()) file.mkdirs();
 		
-		
+		// 파일 처리
+		List<FileVO> list = new ArrayList<>();
+		if(uploadFile!=null && uploadFile.length>0) {
+			for(MultipartFile f : uploadFile) {
+				if(!f.isEmpty()) { 
+					// 현재는 미사용
+					FileVO fvo = new FileVO(
+									UUID.randomUUID().toString(), 
+									f.getOriginalFilename(),
+									f.getContentType());
+					list.add(fvo);
+					// 파일명 중복처리
+					String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
+					File newFile = new File(filePath, filename);
+					if(newFile.exists()) {
+						for(int i=2;; i++) {
+							int dot = filename.lastIndexOf("1");
+							String front = filename.substring(0, dot);
+							String end = filename.substring(dot+1);
+							String newFileName = front + i + end;
+							newFile = new File(filePath, newFileName);
+							if(!newFile.exists()) {
+								filename = newFileName;
+								break;
+							}
+						}
+					}
+					f.transferTo(newFile); 
+					log.info("=".repeat(100));
+					log.info("저장 :" + newFile);
+					log.info("=".repeat(100));
+				}
+			}
+		}
+		model.addAttribute("content", content);
+		model.addAttribute("list", list);
+		return "redirect:/admin/products";
+	}
+	@GetMapping("/pdDeleteOk")
+	public String pdDeleteOkGet() {
+		return "redirect:/admin/products";
+	}
+	@PostMapping("/pdDeleteOk")
+	public String pdDeleteOkPost(@ModelAttribute ProductVO productVO) {
+		productService.delete(productVO.getProduct_id());
+		return "redirect:/admin/products";
+	}
 	// 문의 관리
 	@GetMapping("/admin/qna")
 	public String adminQna() {

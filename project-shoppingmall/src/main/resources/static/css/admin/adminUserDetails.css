@@ -3,24 +3,23 @@
 	border: 0px solid black;
 	width: 1200px;
 	height: 600px;
-	
 }
-
 .menu-bar {
 	position: fixed;
 	border: 0px solid black;
+	border-right: 1px solid #ebebeb;
 	width: 100px;
 	height: 600px;
 	text-align: center;
-	font-weight: bold;
-	
+	background-color: white;
 }
 .menu-bar div {
-	
 	height: 40px;
 	line-height: 40px;
 	margin-bottom: 50px;
-	background-color: lightblue;
+}
+.menu-bar div:hover {
+	background-color: #ebebeb;
 }
 .admin-main {
 	border: 0px solid black;
@@ -48,28 +47,36 @@ li {
 .info {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 250px;
-	position: fixed; left: 100px; top: 80px;
+	position: fixed; left: 100px; top: 60px;
 	margin: 50px;
 	background-color: white;
 }
 .email {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 50px; line-height: 50px;
-	position: fixed; left: 100px; top: 350px;
+	width: 400px; height: 40px; line-height: 40px;
+	position: fixed; left: 100px; top: 330px;
 	margin: 50px;
 	background-color: white;
 }
 .history {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 180px;
-	position: fixed; left: 600px; top: 80px;
+	position: fixed; left: 600px; top: 60px;
 	margin: 50px;
 	background-color: white;
 }
 .point {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 180px;
-	position: fixed; left: 600px; top: 280px;
+	position: fixed; left: 600px; top: 260px;
+	margin: 50px;
+	background-color: white;
+}
+.orderList {
+	border: 1px solid rgb(192, 192, 192);
+	width: 400px; height: 50px;
+	line-height: 50px;
+	position: fixed; left: 100px; top: 400px;
 	margin: 50px;
 	background-color: white;
 }

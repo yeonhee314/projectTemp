@@ -18,13 +18,6 @@
 <script type="text/javascript">
 	$(function() {
 		$("#upFile").on('change',function(){
-			var file = event.target.files[0];
-			var reader = new FileReader();
-			reader.onload = function(e) {
-		        $("#preview").attr("src", e.target.result);
-		    }
-		    reader.readAsDataURL(file);
-		    $("#preview").show();
 			  var fileName = $("#upFile").val();
 			  $(".upload-name").val(fileName);
 			  if ($(this).val() != "") {
@@ -36,14 +29,12 @@
 	    $("#fileReset").click(function() {
 	        $("#upFile").val('');
 	        $(".upload-name").val('');
-	        $("#preview").attr("src", '');
-	        $("#preview").hide();
 	        $(this).hide();
 	    });
 	});
 	function productCheck(){
 		var product_name = $("#product_name").val();
-		if(product_name.length>=1){
+		if(product_name.length>=1){ 
 				axios.get('/test/productNameCheck?product_name='+product_name)
 				  .then(function (response) {
 				    if(response.data*1==0){
@@ -80,16 +71,14 @@
 			</div>
 		</div>
 		<div class="admin-main">
-			<div class="main">상품 등록하기</div>
-		</div>
-		<div class="back">
-			<a href="/admin/products"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+			<div class="main">상품 수정</div>
 		</div>
 	</div>
-	<form th:action="@{/pdAddOk}" method="post" class="addForm" enctype="multipart/form-data">
-		<div class="input-group mb-2" id="pd">
+	<form th:action="@{/pdUpdateOk}" method="post" class="addForm" enctype="multipart/form-data">
+		<input type="hidden" name="product_id" th:value="${pd.product_id}"/>
+		<div class="input-group mb-2" id="pdName">
 			<label class="input-group-text">상품명</label>
-			<input type="text" name="product_name" id="product_name" onkeyup="productCheck()" required="required" placeholder="상품명입력" style="margin-right: 10px;"/>
+			<input type="text" name="product_name" id="product_name" onkeyup="productCheck()" th:value="${pd.product_name}" required="required" placeholder="상품명입력" style="margin-right: 10px;"/>
 			<div style="text-align: right;">
 		    <span id="message"></span>
 		  </div>
@@ -98,51 +87,49 @@
 				<input class="upload-name" value="첨부파일" placeholder="첨부파일">
 				<label for="upFile">사진첨부</label>
 				<button id="fileReset" class="btn btn-secondary btn-sm">초기화</button>
-				<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple/>
-			</div>
-			<div>
-				<img id="preview"/>
+				<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple />
 			</div>
 		<div class="input-group mb-2" id="cgdiv">
 			<label class="input-group-text">카테고리</label>
 			<select name="category_id" id="category_id" class="category" required="required">
 				<th:block th:each="vo : ${cglist}">
-					<option th:value="${vo.category_id}" th:text="${vo.category_name}"></option>
+					<option class="option" th:value="${vo.category_id}" th:text="${vo.category_name}" th:selected="${pd.category_id}==${vo.category_id}"></option>
 				</th:block>
 			</select>
 		</div>
 		<div class="form-floating mb-2">
-			<textarea class="form-control" name="description" id="description" required="required"></textarea>
+			<textarea class="form-control" name="description" id="description" th:text="${pd.description}" required="required"></textarea>
 			<label for="floatingInput" style="font-size: 10pt;">상세설명</label>
 		</div>
 		<div class="price">
 			<div class="input-group mb-2">
 				<label class="input-group-text">판매가</label>
-				<input type="number" name="product_price" id="product_price" required="required" min="0" max="9999999"/>
+				<input type="number" name="product_price" id="product_price" th:value="${pd.product_price}" required="required" min="0" max="9999999"/>
 			</div>
 			<div class="input-group mb-2" id="discountDiv">
 				<label class="input-group-text" >할인율</label>
-				<input type="number" name="discount" id="discount" value="0" min="0" max="100" placeholder="할인율"/>
+				<input type="number" name="discount" id="discount" th:value="${pd.discount}" value="0" min="0" max="100" placeholder="할인율"/>
 				<span class="input-group-text">%</span>
 			</div>
 		</div>
 		<div class="stockDiv">
 			<div class="input-group mb-2" id="discountDiv">
 				<label class="input-group-text" >재고</label>
-				<input type="number" name="product_stock" id="product_stock" required="required" min="0" max="99999" placeholder="수량입력"/>		
+				<input type="number" name="product_stock" id="product_stock" th:value="${pd.product_stock}" required="required" min="0" max="99999" placeholder="수량입력"/>		
 			</div>
 			<div class="input-group mb-2">
 				<label class="input-group-text" id="status">판매여부</label>
-				<label><input type="radio" name="product_status" checked="checked" value="Y"/>Y&nbsp;</label>
-				<label><input type="radio" name="product_status" value="N"/>N</label>
+				<label><input type="radio" name="product_status" th:checked="${pd.product_status}=='Y'" value="Y"/>Y&nbsp;</label>
+				<label><input type="radio" name="product_status" th:checked="${pd.product_status}=='N'" value="N"/>N</label>
 			</div>
 		</div>
 		<div class="input-group mb-2">
 			<label class="input-group-text" id="option">옵션</label>
-			<input type="text" name="product_option" id="product_option" required="required" size="30" placeholder=" ,구분으로 연속입력"/>
+			<input type="text" name="product_option" id="product_option" th:value="${pd.product_option}" required="required" size="30" placeholder=" ,구분으로 연속입력"/>
 		</div>
-		<input type="reset" class="btn btn-secondary  btn-sm" value="초기화"/>
-		<input type="submit" id="submit" class="btn btn-primary btn-sm" value="저장"/>
+		<input type="button" onclick="location.href='/admin/products'" class="btn btn-secondary btn-sm" value="취소"/>
+		<input type="reset" id="reset" class="btn btn-info btn-sm" value="초기화"/>
+		<input type="submit" id="submit" class="btn btn-primary btn-sm" value="수정"/>
 	</form>
 </body>
 </html>

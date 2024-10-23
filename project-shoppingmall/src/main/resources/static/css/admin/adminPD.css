@@ -2,8 +2,9 @@
 .bg {
 	background-color: rgb(227, 255, 255, 0.3);
 	border: 0px solid black;
-	width: 1250px;
-	height: 600px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 }
 
@@ -12,7 +13,7 @@
 	border: 0px solid black;
 	border-right: 1px solid #ebebeb;
 	width: 100px;
-	height: 600px;
+	height: 100%;
 	text-align: center;
 	background-color: white;
 }
@@ -233,9 +234,11 @@ a:visited {
 	top: 360px; left:120px;
 	display: none;
 }
-#deleteBtn {
+#categoryDeleteBtn {
 	position: absolute;
 	width: 8px; height: 25px;
-	border-radius:100px;
+	text-align: center;
+	text-indent: -3px;
+	border-radius:80px;
 	font-size: 10px;
 }

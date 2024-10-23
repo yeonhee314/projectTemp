@@ -10,7 +10,6 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
 <script type="text/javascript">
@@ -25,11 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
     modal.classList.toggle("show");
   }
   closeBtn.addEventListener("click", toggleModal);
-
   modalBtn.addEventListener("click", function () {
       toggleModal();
   });
- 
 });
 //카테고리 중복확인하는 함수
 function categoryCheck(){
@@ -41,10 +38,6 @@ function categoryCheck(){
 			// Ajax를 호출하여 처리 한다.
 			axios.get('/test/categoryCheck?category_name='+category_name)
 			  .then(function (response) {
-			    // 성공 핸들링
-			   // console.log("넘어온값 : " + JSON.stringify(response));
-			   // console.log("넘어온 결과 : " + response.data);
-			    // alert(response.data);
 			    if(response.data*1==0){
 			    	$("#message").html("").css('color','blue');
 			    }else{
@@ -55,7 +48,6 @@ function categoryCheck(){
 			    console.log(error);
 			  })
 			  .finally(function () {
-			    // 항상 실행되는 영역
 			  });
 		}
 	}else{
@@ -63,17 +55,13 @@ function categoryCheck(){
 	}
 }
 function updateCheck(){
-	const category_name2 = $("#update").val(); // 입력한 카테고리읽기
-	if(category_name2.length>=1){ // 길이가 1자 이상때만
-		if(category_name2.indexOf(" ")!=-1){ // 카테고리명에 공백이 있다면
+	const category_name2 = $("#update").val(); 
+	if(category_name2.length>=1){ 
+		if(category_name2.indexOf(" ")!=-1){ 
 			$("#message").html("공백은 포함할수 없어요").css('color','red');
 		}else{
-			// Ajax를 호출하여 처리 한다.
 			axios.get('/test/categoryCheck?category_name='+category_name2)
 			  .then(function (response) {
-			    // 성공 핸들링
-			  //  console.log("넘어온값 : " + JSON.stringify(response));
-			  //  console.log("넘어온 결과 : " + response.data);
 			    if(response.data*1==0){
 			    	$("#message").html("").css('color','blue');
 			    }else{
@@ -84,7 +72,6 @@ function updateCheck(){
 			    console.log(error);
 			  })
 			  .finally(function () {
-			    // 항상 실행되는 영역
 			  });
 		}
 	}else{
@@ -92,8 +79,6 @@ function updateCheck(){
 	}
 }
 $(function(){
-
-
 	$("#addBtn").click(function(){
 		$("#insertText").show().focus();
 		$("#addCloseBtn").show();
@@ -128,7 +113,7 @@ $(function(){
 		$("#update").show().focus();
 		$("#updateId").val($(this).find(".category_id").val());
 		$("#update").val($(this).find(".category_name").val());
-		$("#deleteBtn").show();
+		$("#categoryDeleteBtn").show();
 		$("#message").show();
 	})
 	$("#updateCloseBtn").click(function(){
@@ -143,30 +128,35 @@ $(function(){
 	$(".categorydiv > button").click(function(){
 		$("#update").hide();
 	})
-	 $(function(){
-			$(".insertForm").submit(function(){
-				var value1 = $("#insertText").val();
-				if(value1==null || value1.trim().length==0){
-					alert('입력된 정보가 없습니다');
-					$("#insertText").val("");	
-					$("#insertText").focus();
-					return false;
-				}
-			});
+	$(".insertForm").submit(function(){
+		var value1 = $("#insertText").val();
+		if(value1==null || value1.trim().length==0){
+			alert('입력된 정보가 없습니다');
+			$("#insertText").val("");	
+			$("#insertText").focus();
+			return false;
+		}
+	});
+	$(".updateForm").submit(function(){
+		var value2 = $("#update").val();
+		if(value2==null || value2.trim().length==0){
+			alert('입력된 정보가 없습니다');
+			$("#category_name").val("");	
+			$("#category_name").focus();
+			return false;
+		}
+	});
+	$(".pdDeleteForm").submit(function(){
+		if(!confirm('정말 삭제하시겠습니까?')){
+			return false;
+		}
 	  });
-	  $(function(){
-			$(".updateForm").submit(function(){
-				var value2 = $("#update").val();
-				if(value2==null || value2.trim().length==0){
-					alert('입력된 정보가 없습니다');
-					$("#category_name").val("");	
-					$("#category_name").focus();
-					return false;
-				}
-			});
-	  });
+	  $(".deleteForm").submit(function(){
+		  if(!confirm('정말 삭제하시겠습니까?')){
+			return false;
+		}
+	 });
 })
-
 </script>
 </head>
 <body>
@@ -205,7 +195,7 @@ $(function(){
 				</tr>
 				<tr>
 					<td colspan="7" class="pdAdd">
-						<input type="button" value="추가" class="btn btn-info btn-sm" onclick="location.href='/admin/products/form'"/>
+						<input type="button" value="추가" class="btn btn-outline-primary btn-sm" onclick="location.href='/admin/products/form'"/>
 					</td>
 				</tr>
 				<tr class="index">
@@ -219,35 +209,39 @@ $(function(){
 					<th>등록일</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${pv.list}" class="list">
+					<tr th:each="vo: ${pv.list}" class="list">		
 						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
 						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" width="40" height="35"/></td>
-						<td><a th:href="@{/admin/products(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
+						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${vo.product_price}]]</td>
 						<td>[[${vo.category_id}]]</td>
 						<td>[[${vo.product_stock}]]</td>
 						<td>[[${vo.product_status}]]</td>
 						<td>[[${#dates.format(vo.product_regDate,'yy-MM-dd(E) HH:mm')}]]</td>
+						<td><form th:action="@{/pdDeleteOk}" method="post" class="pdDeleteForm">
+							<input type="hidden" name="product_id" th:value="${vo.product_id}"/>
+							<input type="submit" class="btn btn-light btn-sm" id="pdDeleteBtn" value="삭제"/>
+							</form>
+						</td>
 					</tr>
-					
 					<tr>
 						<td colspan="6">[(${pv.pageList})]</td>
 					</tr>
 					<tr>
-					<td colspan="6" style="border: none; text-align: center;">
-					<form th:action="@{/admin/products}" method="get">
-						<input type="hidden" name="p" th:value="${upv.p}" />
-						<input type="hidden" name="s" th:value="${upv.s}" />
-						<input type="hidden" name="b" th:value="${upv.b}" />
-						<select name="field" id="field">
-							<option value="product_name">상품</option>
-							<option value="category_name">카테고리</option>
-						</select>
-						<input type="text" name="search" id="search"/>
-						<input type="submit" value="검색"/>
-					</form>
-				</td>
-			</tr>
+						<td colspan="6" style="border: none; text-align: center;">
+							<form th:action="@{/admin/products}" method="get">
+								<input type="hidden" name="p" th:value="${upv.p}" />
+								<input type="hidden" name="s" th:value="${upv.s}" />
+								<input type="hidden" name="b" th:value="${upv.b}" />
+								<select name="field" id="field">
+									<option value="product_name">상품</option>
+									<option value="category_name">카테고리</option>
+								</select>
+								<input type="text" name="search" id="search"/>
+								<input type="submit" value="검색"/>
+							</form>
+						</td>
+					</tr>
 				</th:block>
 			</table>
 	</div>
@@ -268,7 +262,7 @@ $(function(){
 					<form th:action="@{/deleteOk}" method="POST" class="deleteForm">
 						<input type="hidden" class="category_id" name="category_id" th:value="${co.category_id}"/>
 						<input type="text" class="category_name" th:value="${co.category_name}" readonly="readonly"/>
-						<button type="submit" id="deleteBtn" class="btn btn-outline-danger">X</button>
+						<button type="submit" id="categoryDeleteBtn" class="btn btn-outline-danger">X</button>
 			 		</form>
 				</td>
 			</tr>
@@ -294,6 +288,5 @@ $(function(){
   </div>
 </div>
 </div>
-
 </body>
 </html>
