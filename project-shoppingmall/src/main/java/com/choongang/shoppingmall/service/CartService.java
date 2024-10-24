@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.CartMapper;
-import com.choongang.shoppingmall.vo.CartItem;
+import com.choongang.shoppingmall.vo.CartVO;
 
 @Service
 public class CartService {
@@ -15,21 +15,19 @@ public class CartService {
     private CartMapper cartMapper;
 
     public void addCart(int userId, int productId, int cartCount, int productPrice, String productOption) {
-        CartItem cartItem = new CartItem();
-        cartItem.setUserId(userId);
-        cartItem.setProductId(productId);
-        cartItem.setCartCount(cartCount);
-        cartItem.setProductPrice(productPrice);
-        cartItem.setProductOption(productOption);
+        CartVO cartVO = new CartVO();
+        cartVO.setUserId(userId);
+        cartVO.setProductId(productId);
+        cartVO.setCartCount(cartCount);
+        cartVO.setProductPrice(productPrice);
+        cartVO.setProductOption(productOption);
         
-        cartMapper.addCart(cartItem);
+        cartMapper.addCart(cartVO);
     }
 
-    public List<CartItem> getCartByUserId(int userId) {
-        return cartMapper.getCartByUserId(userId);
+    public List<CartVO> getCartItems(int userId) {
+        return cartMapper.getCartItems(userId);
     }
 
-    public void deleteCartItem(int cartId) {
-        cartMapper.deleteCartItem(cartId);
-    }
+  
 }
