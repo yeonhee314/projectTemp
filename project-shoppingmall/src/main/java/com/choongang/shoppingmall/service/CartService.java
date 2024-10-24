@@ -29,5 +29,13 @@ public class CartService {
 		
 	}
 	
+	public void deleteCart(int cartId) {
+		cartMapper.deleteCart(cartId);
+	}
+	
+	public void updateCart(CartVO cartVO) {
+		cartMapper.updateCart(cartVO);
+	}
+	
 
 }
