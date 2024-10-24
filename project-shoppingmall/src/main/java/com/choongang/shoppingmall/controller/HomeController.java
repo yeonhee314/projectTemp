@@ -142,12 +142,14 @@ public class HomeController {
 			Model model) {
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
+		UserVO userVO = getUserInfo();
 		int reviewCount = reviewService.selectReviewCount(product_id);
 		double avgRating = reviewService.selectRating(product_id);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
 		model.addAttribute("reviewcount", reviewCount);
 		model.addAttribute("avgrating", avgRating);
+		model.addAttribute("uservo", userVO);
 		
 		return "product-detail";
 	}
@@ -163,10 +165,12 @@ public class HomeController {
 		PagingVO<ReviewVO> pv = reviewService.getReviewList(product_id, commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
+		UserVO userVO = getUserInfo();
 		
 		model.addAttribute("pv", pv);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
+		model.addAttribute("uservo", userVO);
 		
 		return "product-review";
 	}
