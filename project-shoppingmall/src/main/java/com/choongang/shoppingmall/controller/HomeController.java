@@ -181,9 +181,9 @@ public class HomeController {
 		return "wishlist";
 	}
 
-	@GetMapping("/shoping-cart.html")
+	@GetMapping("cart.html")
 	public String shopingCart() {
-		return "shoping-cart";
+		return "cart";
 	}
 	@GetMapping("/orders.html")
 	public String orders() {
