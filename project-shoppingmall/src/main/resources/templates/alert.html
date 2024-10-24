@@ -1,0 +1,4 @@
+response.setContentType("text/html; charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<script>alert('중복된 이름입니다.'); location.href='/admin/products/form';</script>");
+out.flush();

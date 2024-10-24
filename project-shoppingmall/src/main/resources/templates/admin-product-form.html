@@ -14,6 +14,7 @@
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
+<link rel="stylesheet" type="text/css" href="/css/admin/admin.css"/>
 <link rel="stylesheet" type="text/css" href="/css/admin/adminPdForm.css" />
 <script type="text/javascript">
 	$(function() {
@@ -39,6 +40,20 @@
 	        $("#preview").attr("src", '');
 	        $("#preview").hide();
 	        $(this).hide();
+	    });   
+	    $("#reset").click(function() {
+	        $("#upFile").val('');
+	        $(".upload-name").val('');
+	        $("#preview").attr("src", '');
+	        $("#preview").hide();
+	        $("#fileReset").hide();
+	        $(this).hide();
+	    });   
+	    $("#product_price").on('change',function() {
+	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
+	    });
+	    $("#discount").on('change',function() {
+	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
 	    });
 	});
 	function productCheck(){
@@ -78,6 +93,9 @@
 			<div class="admin-qna">
 				<a href="/admin/qna">문의관리</a>
 			</div>
+			<div>
+				<a href="/index.html">SHOP</a>
+			</div>
 		</div>
 		<div class="admin-main">
 			<div class="main">상품 등록하기</div>
@@ -96,7 +114,7 @@
 		</div>
 			<div class="filebox">
 				<input class="upload-name" value="첨부파일" placeholder="첨부파일">
-				<label for="upFile">사진첨부</label>
+				<label for="upFile" style="height: 30px; line-height: 30px;">사진첨부</label>
 				<button id="fileReset" class="btn btn-secondary btn-sm">초기화</button>
 				<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple/>
 			</div>
@@ -113,17 +131,21 @@
 		</div>
 		<div class="form-floating mb-2">
 			<textarea class="form-control" name="description" id="description" required="required"></textarea>
-			<label for="floatingInput" style="font-size: 10pt;">상세설명</label>
+			<label for="floatingInput" style="font-size: 8pt;">상세설명</label>
 		</div>
 		<div class="price">
 			<div class="input-group mb-2">
-				<label class="input-group-text">판매가</label>
+				<label class="input-group-text" style="font-size: 8pt;">정가</label>
 				<input type="number" name="product_price" id="product_price" required="required" min="0" max="9999999"/>
 			</div>
 			<div class="input-group mb-2" id="discountDiv">
 				<label class="input-group-text" >할인율</label>
 				<input type="number" name="discount" id="discount" value="0" min="0" max="100" placeholder="할인율"/>
 				<span class="input-group-text">%</span>
+			</div>
+			<div class="input-group mb-2" id="totalPriceDiv">
+				<label class="input-group-text">판매가</label>
+				<input type="number" readonly class="form-control-plaintext" id="totalprice" max="9999999"/>
 			</div>
 		</div>
 		<div class="stockDiv">
@@ -141,7 +163,7 @@
 			<label class="input-group-text" id="option">옵션</label>
 			<input type="text" name="product_option" id="product_option" required="required" size="30" placeholder=" ,구분으로 연속입력"/>
 		</div>
-		<input type="reset" class="btn btn-secondary  btn-sm" value="초기화"/>
+		<input type="reset" id="reset" class="btn btn-secondary btn-sm" value="초기화"/>
 		<input type="submit" id="submit" class="btn btn-primary btn-sm" value="저장"/>
 	</form>
 </body>
