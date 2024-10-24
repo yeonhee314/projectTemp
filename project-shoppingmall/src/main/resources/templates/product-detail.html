@@ -446,10 +446,15 @@
 											                <i class="fs-16 zmdi zmdi-plus"></i>
 											            </div>
 											        </div>
+											        <!-- product_stoc(재고)가 0일 경우 장바구니 버튼을 비활성화한다. -->
+													<th:block th:if="${productvo.product_stock <= 0}">
+				   								 		<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>
+													</th:block>
+													<th:block th:if="${productvo.product_stock > 0}">
 											        <button type="submit" 
-        class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-    장바구니 추가
-</button>
+													class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+													    장바구니 추가
+													</button>
 											    </div>
 											</div>
 							<!-- 수량 버튼 끝 -->
@@ -470,11 +475,7 @@
 									</div>
 							 기존 수량 버튼 -->
 								
-									<!-- product_stoc(재고)가 0일 경우 장바구니 버튼을 비활성화한다. -->
-									<th:block th:if="${productvo.product_stock <= 0}">
-   								 		<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>
-									</th:block>
-									<th:block th:if="${productvo.product_stock > 0}">
+									
 									
 									<!-- 
 										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
