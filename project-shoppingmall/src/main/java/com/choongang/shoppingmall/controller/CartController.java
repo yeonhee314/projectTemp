@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.choongang.shoppingmall.service.CartListService;
 import com.choongang.shoppingmall.service.CartService;
-import com.choongang.shoppingmall.vo.CartItem;
+import com.choongang.shoppingmall.vo.CartVO;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class CartController {
 
@@ -42,6 +43,23 @@ public class CartController {
 		        return "redirect:/shoping-cart.html"; // 장바구니 페이지로 리다이렉트
 		    }
 	
+			@GetMapping("/shoping-cart.html")
+		    public String shopingCart(HttpSession session, Model model) {
+		        Integer userId = (Integer) session.getAttribute("userId");
+		       
+		        List<CartVO> cartItems = cartService.getCartItems(userId);
+		        
+		        if (userId == null) {
+		            return "redirect:/login"; // 로그인 안된 경우 로그인 페이지로 리다이렉트
+		        }
 
+		        // 사용자 ID로 장바구니 항목을 가져옴
+		        model.addAttribute("cartItems", cartItems);
+		        //log.info("로그"+cartItems);
+		       
+		        return "shoping-cart"; 
+
+		 
+		    }
 	 
 	}

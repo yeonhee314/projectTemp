@@ -14,8 +14,8 @@
     </insert>
 
   <!-- 사용자 ID로 장바구니 목록 조회 -->
-	<select id="getCartItems">
-	    SELECT c.product_id, p.product_name, p.product_price, c.cart_count
+	<select id="getCartItems" parameterType="int" resultType="CartVO">
+	    SELECT c.product_id AS productId, p.product_name AS productName, p.product_price AS productPrice, c.cart_count AS cartCount, c.cart_id AS cartId
 	    FROM cart c
 	    JOIN product p ON c.product_id = p.product_id
 	    WHERE c.user_id = #{userId}

@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.choongang.shoppingmall.service.CartListService;
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
-import com.choongang.shoppingmall.vo.CartItem;
-import com.choongang.shoppingmall.vo.CartVO;
+
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -33,7 +31,6 @@ import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
 
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Configuration
@@ -50,9 +47,6 @@ public class HomeController {
 	@Autowired 
 	private UserService userService;
 	
-	@Autowired
-	private CartListService cartListService;
-
 	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -175,24 +169,7 @@ public class HomeController {
 		return "wishlist";
 	}
 
-	
-	@GetMapping("/shoping-cart.html")
-    public String shopingCart(HttpSession session, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
-        List<CartItem> cartItems = cartListService.getCartItems(userId);
-        for (CartItem item : cartItems) {
-            System.out.println("Product: " + item.getProductName() + ", Price: " + item.getCartPrice());
-        }
-        
-        if (userId == null) {
-            return "redirect:/login"; // 로그인 안 된 경우 로그인 페이지로 리다이렉트
-        }
 
-     
-        model.addAttribute("cartItems", cartItems);
-
-        return "shoping-cart"; // 장바구니 화면으로 이동
-    }
 	@GetMapping("/orders.html")
 	public String orders() {
 		return "orders";

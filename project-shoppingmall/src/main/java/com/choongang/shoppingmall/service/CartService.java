@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.choongang.shoppingmall.dao.CartMapper;
-import com.choongang.shoppingmall.vo.CartItem;
+import com.choongang.shoppingmall.vo.CartVO;
 
 @Service
 public class CartService {
@@ -14,19 +14,20 @@ public class CartService {
 	private CartMapper cartMapper;
 
 	public void addCart(int userId, int productId, int cartCount, int productPrice, String productOption) {
-		CartItem cartItem = new CartItem();
-		cartItem.setUserId(userId);
-		cartItem.setProductId(productId);
-		cartItem.setCartCount(cartCount);
-		cartItem.setProductPrice(productPrice);
-		cartItem.setProductOption(productOption);
+		CartVO cartVO = new CartVO();
+		cartVO.setUserId(userId);
+		cartVO.setProductId(productId);
+		cartVO.setCartCount(cartCount);
+		cartVO.setProductPrice(productPrice);
+		cartVO.setProductOption(productOption);
 
-		cartMapper.addCart(cartItem);
+		cartMapper.addCart(cartVO);
 	}
-	//사용자 장바구니 리스트 가져오는 메소드
-	public List<CartItem> getCartItems(int userId) {
+	
+	public List<CartVO> getCartItems(int useId){
+		return cartMapper.getCartItems(useId);
 		
-		  return cartMapper.getCartItems(userId);
 	}
+	
 
 }
