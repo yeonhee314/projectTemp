@@ -1,5 +1,8 @@
 package com.choongang.shoppingmall.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -37,27 +40,78 @@ public class UserController {
         return "join";
     }
 
-    // 회원가입 처리
     @PostMapping("/join")
-    public String JoinUser(@ModelAttribute UserVO user) {
+    @ResponseBody // JSON 형식으로 응답
+    public Map<String, String> joinUser(@ModelAttribute UserVO user) {
+        Map<String, String> response = new HashMap<>();
+
         // 중복 확인
-        int count = userService.selectCountByUsername(user.getUsername());
-        if (count > 0) {
-            return "redirect:/join"; // 오류 발생 시 다시 회원가입 페이지로 리다이렉트
+        int countUsername = userService.selectCountByUsername(user.getUsername());
+        int countNickname = userService.selectCountByNickname(user.getNickname());
+        int countPhone = userService.selectCountByPhone(user.getPhone());
+        int countEmail = userService.selectCountByEmail(user.getEmail());
+
+        if (countUsername > 0) {
+            response.put("status", "fail");
+            response.put("message", "이미 사용 중인 아이디입니다.");
+            return response;
         }
 
-        // 회원가입
+        if (countNickname > 0) {
+            response.put("status", "fail");
+            response.put("message", "이미 사용 중인 닉네임입니다.");
+            return response;
+        }
+
+        if (countPhone > 0) {
+            response.put("status", "fail");
+            response.put("message", "이미 사용 중인 전화번호입니다.");
+            return response;
+        }
+        if (countEmail > 0) {
+        	response.put("status", "fail");
+        	response.put("message", "이미 사용 중인 이메일입니다.");
+        	return response;
+        }
+
+        // 회원가입 성공
         userService.insert(user);
-        return "redirect:/login"; // 회원가입 후 login 페이지로 리다이렉트
+        response.put("status", "success");
+        response.put("message", "회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+        return response;
     }
     
     //아이디 중복확인
-    @GetMapping(value = "/test/userIdCheck", produces = "text/plain;charset=UTF-8")
+    @GetMapping(value = "/test/usernameCheck", produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String userIdCheck(@RequestParam(required = false,  defaultValue = "user") String username) {
+    public String usernameCheck(@RequestParam(required = false,  defaultValue = "user") String username) {
         int count = userService.selectCountByUsername(username);
         log.info("아이디 중복 확인 요청: {}, 결과: {}", username, count);
         return String.valueOf(count);
+    }
+    //닉네임 중복확인
+    @GetMapping(value = "/test/nicknameCheck", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String nicknameCheck(@RequestParam(required = false, defaultValue = "user") String nickname) {
+    	int count = userService.selectCountByNickname(nickname);
+    	log.info("닉네임 중복 확인 요청: {}, 결과: {}", nickname, count);
+    	return String.valueOf(count);
+    }
+    //핸드폰 중복확인
+    @GetMapping(value = "/test/phoneCheck", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String phoneCheck(@RequestParam(required = false, defaultValue = "user") String phone) {
+    	int count = userService.selectCountByPhone(phone);
+    	log.info("핸드폰 중복 확인 요청: {}, 결과: {}", phone, count);
+    	return String.valueOf(count);
+    }
+    //이메일 중복확인
+    @GetMapping(value = "/test/emailCheck", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String emailCheck(@RequestParam(required = false, defaultValue = "user") String email) {
+    	int count = userService.selectCountByEmail(email);
+    	log.info("이메일 중복 확인 요청: {}, 결과: {}", email, count);
+    	return String.valueOf(count);
     }
    
     //로그인페이지
