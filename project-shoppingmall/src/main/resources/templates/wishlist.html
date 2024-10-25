@@ -588,8 +588,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</span>
 	</div>
 	
-	<!-- TODO : 위시 상품 띄우기 -->
-	<!-- Modal -->
+	<!-- 위시 Modal 팝업창 -->
 		<div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
 		<div class="overlay-modal1 js-hide-modal1"></div>
 		<div class="container">
@@ -601,25 +600,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				<div class="row">
 					<div class="col-md-6 col-lg-7 p-b-30">
 						<div class="p-l-25 p-r-30 p-lr-0-lg">
-							<div class="wrap-slick3 flex-sb flex-w">
-								<div class="wrap-slick3-dots"></div>
-								<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-								<!-- TODO : 상품 디테일 -->
-								<!-- 사진 띄우기 -->
-								<div class="slick3 gallery-lb">
+							<div class="wrap-slick4 flex-sb flex-w">
+								<div class="wrap-slick4-dots"></div>
+								<div class="wrap-slick4-arrows flex-sb-m flex-w"></div>
+								<!-- 상품 디테일 -->
+								<div class="slick4 gallery-lb">
 								
-								<!-- TODO : 아악! -->
 									<div class="item-slick3" data-thumb="images/product-detail-02.jpg">
 										<div class="wrap-pic-w pos-relative">
 											<img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
-
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
 												<i class="fa fa-expand"></i>
 											</a>
 										</div>
 									</div>
-									
-
 								</div>
 							</div>
 						</div>
@@ -628,14 +622,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					<div class="col-md-6 col-lg-5 p-b-30">
 						<div class="p-r-50 p-t-5 p-lr-0-lg">
 							<h4 class="mtext-105 cl2 js-name-detail p-b-14" id="product_name"></h4>
-
 							<div class="mtext-106 cl2" id="product_price_original"></div>
 							<div class="mtext-106 cl2" id="product_price_discount"></div>
-
 							<p class="stext-102 cl3 p-t-23" id="product_description">
 							</p>
-							
-							<!--  -->
 							<div class="p-t-33">
 								<div class="flex-w p-b-10">
 									<div class="size-203 flex-c-m respon6">
@@ -649,11 +639,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 										</div>
 									</div>
 								</div>
-
 								<div class="flex-w flex-r-m p-b-10">
 									<div class="size-204 flex-w flex-m respon6-next">
-
-										<!-- TODO : 수량 -->
 										<div class="wrap-num-product flex-w m-r-20 m-tb-10">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-minus"></i>
@@ -663,11 +650,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
 										</div>
-
-										<div id="add-cart">
-										
-										</div>
-
+										<div id="add-cart"></div>
 									</div>
 								</div>	
 							</div>
@@ -714,19 +697,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			                window.location.reload();
 			            }
 					});
-	    	}else{
-	    		swal({
-					 title: nameProduct,
-			            text: '상품을 찜 목록에 담았습니다!',
-			            icon: 'success',
-			        }).then((willReload) => {
-			            if (willReload) {
-			            	console.log(`userId = ${userId}`);
-			                window.location.reload();
-			            }
-					});
 	    	}
-	    	
 	    })
 	    .catch(error => {
 	        console.error('Error:', 'Error : 찜 목록에 담지 못했습니다.');
@@ -736,97 +707,23 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		$(this).off('click');	
 	}
 		
-		
+		// 찜 버튼 클릭 시 
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
 			var productId = $(this).data('product-id');
 			setWishList(productId, e, this);
 		});
 		
-		// TODO : 장바구니 버튼 클릭 시 팝업에 상품 정보를 띄운다.
-		$('.js-show-modal1').on('click', function(e){
-			e.preventDefault();
+		
+		$(document).ready(function(){
 			var productId = $(this).data('product-id');
 			var productList = /*[[${productList}]]*/;
-			
 			for(var i = 0; i < productList.length; i++){
 				if(productList[i].product_id == productId){
-					// 상품명
-					if(productList[i].product_stock <= 0){
-						$('#product_name').text('[품절] ' + productList[i].product_name);
-					}else{
-						$('#product_name').text(productList[i].product_name);
-					}
-					
-					// 가격
-					var formattedPrice = productList[i].product_price.toLocaleString() + '₩';
-					$('#product_price_original').text('');
-					$('#product_price_discount').text('');
-					if(productList[i].discount != 0){
-						$('#product_price_original').text(formattedPrice);
-						$('#product_price_original').css({
-							'text-decoration' : 'line-through'
-						});
-						$('#product_price_discount').text(' ↪ [' + productList[i].discount + '% 할인]' + formattedPrice);	
-					}else{
-						$('#product_price_original').text(formattedPrice);
-						$('#product_price_original').css({
-							'text-decoration' : 'none'
-						});
-					}
-					
-					
-					$('#product_description').text(productList[i].description);
-					
-					// 상품 옵션
-					var option = '';
-					var $select = $('#option_select');
-					const option_arr = productList[i].product_option.split(',');
-					$select.text('');
-					for(var j = 0; j < option_arr.length; j++){
-						if(productList[i].product_stock <= 0){
-							option = $('<option></option>')
-							.text(option_arr[j] + ' [품절]');
-							$select.append(option);
-						}else{
-							option = $('<option></option>')
-							.text(option_arr[j]);
-							$select.append(option);
-						}
-					}
-					
-					// 장바구니 버튼
-					 $('#add-cart').empty();
-					if(productList[i].product_stock > 0){
-						$('#add-cart').append('<button type="submit" class="add-to-cart flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">장바구니에 추가</button>');
-						// TODO : 추 후 장바구니 이벤트 추가
-						/*
-						$('#add-cart').on('click', '.add-to-cart', function() {
-						    alert('장바구니에 추가되었습니다!');
-						});
-						*/
-					} else{
-						$('#add-cart').append('<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>');
-					}
-					
-					// 수량
-					var stock = $('#product_stock');
-					stock.val(1);
-					stock.attr('max', productList[i].product_stock);
-					
-					// TODO : 상품 사진
 					var imgCount = productList[i].img_count;
 					var str ="";
 					for(var k = 0; k < imgCount; k++){
-						var newImgSrc = 'images/product-' + productList[i].product_id + '-' + (k+1) + '.jpg';
-						var item = $('.item-slick3').eq(k);	
-						// console.log(item);
-						item.attr('data-thumb', newImgSrc);
-						console.log(newImgSrc);
-						item.find('img').attr('src', newImgSrc);
-						item.find('a').attr('href', newImgSrc);
-					
-/* 						str = "";
+						str = "";
 						str += "<div class='item-slick3' data-thumb='images/product-" + productList[i].product_id + "-" + (k+1) + ".jpg'>";
 						str += "<div class='wrap-pic-w pos-relative'>";
 						str += "<img src='images/product-" + productList[i].product_id + "-" + (k+1) + ".jpg'>";
@@ -836,14 +733,100 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 						str += "</div>";
 						str += "</div>";
 						
-						//console.log(str);
-						 $('div.slick3').html(str); */
+						$(".item-slick3").append(str);
 					}
-					
 				}
 			}
 		});
 		
+		
+		// 장바구니 버튼 클릭 시 팝업에 상품 정보를 띄운다.
+		$(document).ready(function(){
+			$('.js-show-modal1').on('click', function(e){
+				e.preventDefault();
+				var productId = $(this).data('product-id');
+				var productList = /*[[${productList}]]*/;
+				
+				for(var i = 0; i < productList.length; i++){
+					if(productList[i].product_id == productId){
+						// 상품명
+						if(productList[i].product_stock <= 0){
+							$('#product_name').text('[품절] ' + productList[i].product_name);
+						}else{
+							$('#product_name').text(productList[i].product_name);
+						}
+						
+						// 가격
+						var formattedPrice = productList[i].product_price.toLocaleString() + '₩';
+						$('#product_price_original').text('');
+						$('#product_price_discount').text('');
+						if(productList[i].discount != 0){
+							$('#product_price_original').text(formattedPrice);
+							$('#product_price_original').css({
+								'text-decoration' : 'line-through'
+							});
+							$('#product_price_discount').text(' ↪ [' + productList[i].discount + '% 할인]' + formattedPrice);	
+						}else{
+							$('#product_price_original').text(formattedPrice);
+							$('#product_price_original').css({
+								'text-decoration' : 'none'
+							});
+						}
+						
+						$('#product_description').text(productList[i].description);
+						
+						// 상품 옵션
+						var option = '';
+						var $select = $('#option_select');
+						const option_arr = productList[i].product_option.split(',');
+						$select.text('');
+						for(var j = 0; j < option_arr.length; j++){
+							if(productList[i].product_stock <= 0){
+								option = $('<option></option>')
+								.text(option_arr[j] + ' [품절]');
+								$select.append(option);
+							}else{
+								option = $('<option></option>')
+								.text(option_arr[j]);
+								$select.append(option);
+							}
+						}
+						
+						// 장바구니 버튼
+						 $('#add-cart').empty();
+						if(productList[i].product_stock > 0){
+							$('#add-cart').append('<button type="submit" class="add-to-cart flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">장바구니에 추가</button>');
+							// TODO : 추 후 장바구니 이벤트 추가
+							/*
+							$('#add-cart').on('click', '.add-to-cart', function() {
+							    alert('장바구니에 추가되었습니다!');
+							});
+							*/
+						} else{
+							$('#add-cart').append('<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>');
+						}
+						
+						// 수량
+						var stock = $('#product_stock');
+						stock.val(1);
+						stock.attr('max', productList[i].product_stock);
+						
+						//상품 사진
+						var imgCount = productList[i].img_count;
+						var str ="";
+						for(var k = 0; k < imgCount; k++){
+							var newImgSrc = 'images/product-' + productList[i].product_id + '-' + (k+1) + '.jpg';
+							var item = $('.item-slick3').eq(k);	
+							var thumb = $('.wrap-slick3').eq(k);
+							item.find('thumb').attr('src', newImgSrc);
+							item.find('img').attr('src', newImgSrc);
+							item.find('a').attr('href', newImgSrc);
+							console.log(newImgSrc);
+						}
+					}
+				}
+			});
+		});
 		/*]]>*/
 	</script>
 
