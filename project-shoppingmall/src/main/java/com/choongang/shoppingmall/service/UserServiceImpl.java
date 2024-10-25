@@ -95,16 +95,16 @@ public class UserServiceImpl implements UserService{
 	//아이디 중복 확인
 	@Override
 	public int selectCountByUsername(String username) {
-		int countName = 1;
+		int countUsername = 1;
 		try {
-			countName = userDAO.selectCountByUsername(username);
+			countUsername = userDAO.selectCountByUsername(username);
 		} catch (SQLException e) {
 			log.error("아이디 중복 확인 중 오류 발생: {}", e.getMessage());
 			e.printStackTrace();
 		}
-		return countName;
+		return countUsername;
 	}
-/*	//이메일 중복 확인
+	//이메일 중복 확인
 	@Override
 	public int selectCountByEmail(String email) {
 		int countEmail = 1;
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService{
 		}
 		return countEmail;
 	}
-	*/
+	
 	//닉네임 중복 확인
 	@Override
 	public int selectCountByNickname(String nickname) {
