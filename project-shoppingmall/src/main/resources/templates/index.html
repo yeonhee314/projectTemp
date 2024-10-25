@@ -55,21 +55,18 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
+						<a th:href="@{counseling.html}" class="customer flex-c-m trans-04 p-lr-25">
+							<b>고객 센터</b>
 						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
+						
+						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
+						<th:block th:if="${isLogin}">
+							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25">
+									<b>관리자 모드</b>
+								</a>
+							</th:block>
+						</th:block>
 					</div>
 				</div>
 			</div>
@@ -364,7 +361,8 @@
 						<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 							<div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
 								<span class="ltext-101 cl2 respon2">
-									Women Collection 2018
+									Women Collection
+									<script>document.write(new Date().getFullYear());</script>
 								</span>
 							</div>
 								
@@ -412,7 +410,8 @@
 						<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
 							<div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
 								<span class="ltext-101 cl2 respon2">
-									Men Collection 2018
+									Men Collection 
+									<script>document.write(new Date().getFullYear());</script>
 								</span>
 							</div>
 								
@@ -451,7 +450,8 @@
 								</span>
 
 								<span class="block1-info stext-102 trans-04">
-									Spring 2018
+									Spring
+									<script>document.write(new Date().getFullYear());</script>
 								</span>
 							</div>
 
@@ -476,7 +476,8 @@
 								</span>
 
 								<span class="block1-info stext-102 trans-04">
-									Spring 2018
+									Spring
+									<script>document.write(new Date().getFullYear());</script>
 								</span>
 							</div>
 
@@ -1227,7 +1228,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
-			var userId = /*[[${uservo.user_id}]]*/;
 			var isLogin = /*[[${isLogin}]]*/;
 			
 			if (!isLogin){
@@ -1240,6 +1240,19 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				setWishList(productId, e, this);
 			}
 		});
+		
+		// 고객센터는 로그인해야만 이동할 수 있다.
+		// TODO : 1:1문의 외 추가기능을 넣는다면 수정해야한다. 
+		$('.customer').on('click', function(e){
+			var isLogin = /*[[${isLogin}]]*/;
+			if (!isLogin){
+				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
+				if(result){
+					window.location.href= '/login';
+				}
+			}
+		});
+		
 		/*]]>*/
 		
 		$('.js-addwish-detail').each(function(){

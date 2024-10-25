@@ -184,6 +184,14 @@ public class HomeController {
 		
 		return "wishlist";
 	}
+	
+	@GetMapping("/counseling.html")
+	public String inquery(Model model) {
+		UserVO userVO = getUserInfo();
+		model.addAttribute("uservo", userVO);
+		
+		return "counseling";
+	}
 
 	@GetMapping("cart.html")
 	public String shopingCart() {
