@@ -667,7 +667,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	/*<![CDATA[*/
 		function setWishList(productId, event, element){
 		event.preventDefault();
-		var userId = `/*[[${uservo.user_id}]]*/`;
+		var userId = /*[[${uservo.user_id}]]*/;
 		
 		
 		fetch('/setWish', {
@@ -821,7 +821,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							item.find('thumb').attr('src', newImgSrc);
 							item.find('img').attr('src', newImgSrc);
 							item.find('a').attr('href', newImgSrc);
-							console.log(newImgSrc);
+							//console.log(newImgSrc);
 						}
 					}
 				}

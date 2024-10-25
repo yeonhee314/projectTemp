@@ -160,8 +160,8 @@
                 dotsClass:'slick3-dots',
                 customPaging: function(slick, index) {
                     var portrait = $(slick.$slides[index]).data('thumb');
-				console.log('portrait :' + portrait);
-				console.log('slick.$slides[index]).data("thumb") :' + $(slick.$slides[index]).data('thumb'));
+				//console.log('portrait :' + portrait);
+				//console.log('slick.$slides[index]).data("thumb") :' + $(slick.$slides[index]).data('thumb'));
                     return '<img src=" ' + portrait + ' "/><div class="slick3-dot-overlay"></div>';
                 },  
             });
@@ -187,8 +187,8 @@
 			dotsClass: 'slick3-dots',
 			customPaging: function(slick, index) {
 				var portrait = $(slick.$slides[index]).data('thumb');
-				console.log('portrait :' + portrait);
-				console.log('slick.$slides[index]).data("thumb") :' + $(slick.$slides[index]).data('thumb'));
+				//console.log('portrait :' + portrait);
+				//console.log('slick.$slides[index]).data("thumb") :' + $(slick.$slides[index]).data('thumb'));
 				return '<img src=" ' + portrait + ' "/><div class="slick3-dot-overlay"></div>';
 			},
 		});
