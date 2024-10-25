@@ -10,9 +10,8 @@ import com.choongang.shoppingmall.vo.UserVO;
 
 @Mapper
 public interface UsersBoardDAO {
-	int selectCount() throws SQLException;
-	List<UserVO> selectAll() throws SQLException;
+	int selectCount(HashMap<String, String> map) throws SQLException;
 	UserVO selectByID(int user_id) throws SQLException;
-	// 3. 한 페이지 얻기
+	// 한 페이지 얻기
 	List<UserVO> selectUserList(HashMap<String, String> map) throws SQLException;
 }

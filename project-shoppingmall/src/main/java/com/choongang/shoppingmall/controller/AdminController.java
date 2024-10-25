@@ -60,12 +60,11 @@ public class AdminController {
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
 		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), field, search);
-		List<UserVO> list= usersBoardService.selectAll();
+		
 		model.addAttribute("pv", pv);
 		model.addAttribute("upv", userPagingVO);
 		model.addAttribute("field", field);
 		model.addAttribute("search", search);
-		model.addAttribute("list", list);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
 		return "admin-users";
@@ -107,7 +106,14 @@ public class AdminController {
 		}
 	// Post전송일때만 저장
 		@PostMapping("/categoryOk")
-		public String categoryOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+		public String categoryOkPost(@ModelAttribute(value = "vo") CategoryVO vo,
+				Model model) {
+			int count = categoryService.selectCountByCategoryName(vo.getCategory_name());
+			if (count > 0) {
+				 model.addAttribute("msg","카테고리명 중복");
+				 model.addAttribute("url","/admin/products");
+				return "alert";
+			}
 			categoryService.insert(vo);
 			return "redirect:/admin/products";
 		}
@@ -117,7 +123,13 @@ public class AdminController {
 			return "redirect:/admin/products";
 		}
 		@PostMapping("/updateOk")
-		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo) {
+		public String categoryUpdateOkPost(@ModelAttribute(value = "vo") CategoryVO vo, Model model) {
+			int count = categoryService.selectCountByCategoryName(vo.getCategory_name());
+			if (count > 0) {
+				model.addAttribute("msg","카테고리명 중복");
+				model.addAttribute("url","/admin/products");
+				return "alert";
+			}
 			categoryService.update(vo);
 			return "redirect:/admin/products";
 		}
@@ -154,6 +166,12 @@ public class AdminController {
 				@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
 				@ModelAttribute(value = "vo") ProductVO productVO,
 				@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
+			int count = productService.selectCountByProductName(productVO.getProduct_name());
+			if (count > 0) {
+				model.addAttribute("msg","상품명 중복");
+				model.addAttribute("url","/admin/products/form");
+				return "alert";
+			}
 			productVO.setImg_count(uploadFile.length);
 			productService.insert(productVO);
 			String filePath = request.getSession().getServletContext().getRealPath("/images");
@@ -217,6 +235,7 @@ public class AdminController {
 			@ModelAttribute(value = "vo") ProductVO productVO,
 			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
 		//productVO.setImg_count(uploadFile.length);
+		
 		productService.update(productVO);
 		String filePath = request.getSession().getServletContext().getRealPath("/images");
 		File file = new File(filePath); 
@@ -267,6 +286,7 @@ public class AdminController {
 	@PostMapping("/pdDeleteOk")
 	public String pdDeleteOkPost(@ModelAttribute ProductVO productVO) {
 		productService.delete(productVO.getProduct_id());
+		
 		return "redirect:/admin/products";
 	}
 	// 문의 관리

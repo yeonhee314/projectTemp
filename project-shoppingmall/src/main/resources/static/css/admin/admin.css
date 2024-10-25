@@ -21,15 +21,17 @@
 }
 .menu-bar div:hover {
 	background-color: #ebebeb;
+	border-radius: 10px;
 }
-
 .admin-main {
 	border: 0px solid black;
-	width: 1000px;
-	position: fixed; left: 150px;
+	width: 900px;
+	position: fixed;
+	left: 200px;
 }
+
 .main {
-	height: 80px;
+	height: 60px;
 	text-align: center;
 	font-weight: bold;
 	font-size: 1.5rem;

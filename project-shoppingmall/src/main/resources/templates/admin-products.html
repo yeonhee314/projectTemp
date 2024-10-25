@@ -11,6 +11,7 @@
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
+<link rel="stylesheet" type="text/css" href="../css/admin/admin.css"/>
 <link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
 <script type="text/javascript">
 //HTML 문서의 로딩이 완료되었을 때, 해당 함수를 실행
@@ -174,6 +175,9 @@ $(function(){
 			<div class="admin-qna">
 				<a href="qna">문의관리</a>
 			</div>
+			<div>
+				<a href="/index.html">SHOP</a>
+			</div>
 		</div>
 		<table class="categoryList">
 			<tr>
@@ -188,14 +192,12 @@ $(function(){
 		</table>
 			<table class="admin-main">
 				<tr>
-					<td colspan="6" class="main">상품 관리 화면</td>
+					<td colspan="6" class="main">상품 관리</td>
 				</tr>
 				<tr>
 					<td colspan="3" class="total">[[${pv.pageInfo}]]</td>
-				</tr>
-				<tr>
 					<td colspan="7" class="pdAdd">
-						<input type="button" value="추가" class="btn btn-outline-primary btn-sm" onclick="location.href='/admin/products/form'"/>
+						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 8pt;" onclick="location.href='/admin/products/form'"/>
 					</td>
 				</tr>
 				<tr class="index">
@@ -211,13 +213,13 @@ $(function(){
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">		
 						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
-						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" width="40" height="35"/></td>
+						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="40" height="35"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
-						<td>[[${vo.product_price}]]</td>
-						<td>[[${vo.category_id}]]</td>
+						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
+						<td>[[${cv.list[vo.category_id-1].category_name}]]</td>
 						<td>[[${vo.product_stock}]]</td>
 						<td>[[${vo.product_status}]]</td>
-						<td>[[${#dates.format(vo.product_regDate,'yy-MM-dd(E) HH:mm')}]]</td>
+						<td>[[${#dates.format(vo.product_regDate,'yy/MM/dd HH:mm')}]]</td>
 						<td><form th:action="@{/pdDeleteOk}" method="post" class="pdDeleteForm">
 							<input type="hidden" name="product_id" th:value="${vo.product_id}"/>
 							<input type="submit" class="btn btn-light btn-sm" id="pdDeleteBtn" value="삭제"/>
