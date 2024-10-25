@@ -24,17 +24,17 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 	@Override
 	public AdminUsersPagingVO<UserVO> getUserList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
 		AdminUsersPagingVO<UserVO> pv = null;
-		
 		try {
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("field", field == null || field.trim().length()==0 ? null : field);
 			map.put("search", search == null || search.trim().length()==0 ? null : search);
-			int totalCount = usersBoardDAO.selectCount();
+			int totalCount = usersBoardDAO.selectCount(map);
 			pv = new AdminUsersPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
 			if(totalCount > 0) {
 				map.put("startNo", pv.getStartNo()+"");
 				map.put("endNo", pv.getEndNo()+"");
-				pv.setList(usersBoardDAO.selectUserList(map));
+				List<UserVO> list = usersBoardDAO.selectUserList(map);
+				pv.setList(list);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -42,31 +42,7 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 		//log.info("pv 리턴 : {}",pv);
 		return pv;
 	}
-	
 
-	// 전체 회원 리스트
-	@Override
-	public List<UserVO> selectAll() {
-		List<UserVO> list = null;
-		try {
-			list = usersBoardDAO.selectAll();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	// 총 회원 수
-	@Override
-	public int selectCount() {
-		int count = 1;
-		try {
-			count = usersBoardDAO.selectCount();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
 	// 회원 정보 상세
 	@Override
 	public UserVO selectByID(int user_id) {
@@ -77,5 +53,16 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 			e.printStackTrace();
 		}
 		return userVO;
+	}
+
+	@Override
+	public int selectCount(HashMap<String, String> map) {
+		int count = 0;
+		try {
+			count = usersBoardDAO.selectCount(map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }

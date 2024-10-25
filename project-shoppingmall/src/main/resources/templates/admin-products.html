@@ -213,7 +213,7 @@ $(function(){
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">		
 						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
-						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.src='/images/noimg.jpg'" width="40" height="35"/></td>
+						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="40" height="35"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
 						<td>[[${cv.list[vo.category_id-1].category_name}]]</td>
