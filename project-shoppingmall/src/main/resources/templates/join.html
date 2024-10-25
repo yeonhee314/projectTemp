@@ -86,10 +86,9 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-    
-    	//이메일인증여부
-    	let emailVerified = false;
-    
+  	//이메일인증여부
+	let emailVerified = false;
+	
         function findPostcode() {	//다음우편API
             new daum.Postcode({
                 oncomplete: function(data) {
@@ -99,6 +98,7 @@
                 }
             }).open();
         }
+        
         
         function sendVerificationCode() {	//인증번호 전송
             const email = $('#email').val();
@@ -120,6 +120,7 @@
                 }
             });
         }
+        
 
         function verifyCode() {		//이메일 인증번호 확인
             const email = $('#email').val();
@@ -144,16 +145,10 @@
             });
         }
         
-        //이메일 인증여부
-        $(document).ready(function() {
-            $('form').on('submit', function(event) {
-                if (!emailVerified) {		//이메일 인증 안했을때
-                    event.preventDefault();
-                    alert('이메일 인증은 필수입니다.');
-                }
-            });
-            
-            //비밀번호 확인
+        
+        $(document).ready(function () {
+
+        	//비밀번호 확인
             $('#confirm_password').on('keyup', function() {
                 const password = $('#password').val();
                 const confirmPassword = $('#confirm_password').val();
@@ -163,41 +158,81 @@
                 	$("#password_message").html("비밀번호가 일치합니다.").css('color', 'blue').show();
                 }
             });
+        	
+            // 폼 제출 이벤트 처리
+            $('form').on('submit', function (event) {
+            	
+                event.preventDefault(); // 기본 폼 제출 동작 막기
+
+                // 이메일 인증 여부 확인
+                if (!emailVerified) {
+                    alert('이메일 인증은 필수입니다.');
+                    return; // 인증되지 않으면 제출 중단
+                }
+
+                const formData = $(this).serialize(); // 폼 데이터 직렬화
+
+                // 회원가입 AJAX 요청
+                $.ajax({
+                    type: 'POST',
+                    url: '/join',
+                    data: formData,
+                    success: function (response) {
+                        if (response.status === 'fail') {
+                            alert(response.message); // 중복된 항목 메시지 표시
+                        } else {
+                            alert(response.message); // 성공 메시지
+                            window.location.href = '/login'; // 로그인 페이지로 이동
+                        }
+                    },
+                    error: function () {
+                        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    }
+                });
+            });
         });
         
-     // 아이디 중복확인하는 함수
-        function useridCheck() {
-            let username = $("#username").val(); // 입력한 userid 읽기
-            if (username.length >= 1) { // 길이가 1자 이상일 때만
-                if (username.indexOf(" ") != -1) { // 아이디에 공백이 있다면
-                    $("#message").html("공백은 포함할 수 없어요").css('color', 'red').show();
+     // 중복 확인 통합 함수
+        function checkDuplicate(type) {
+            let value = $(`#${type}`).val(); // 입력 값 읽기
+            let messageSelector = `#${type}Message`; // 메시지 표시 위치
+
+            if (value.length >= 1) { // 입력 값이 1자 이상일 때
+                if (value.indexOf(" ") !== -1) { // 공백 포함 여부 확인
+                    $(messageSelector).html("공백은 포함할 수 없어요").css('color', 'red').show();
                 } else {
-                    // Ajax를 호출하여 처리한다.
+                    // Ajax 호출
                     $.ajax({
-                        url: '/test/userIdCheck',
+                        url: `/test/${type}Check`,
                         type: 'GET',
-                        data: { username: username },
+                        data: { [type]: value }, // 동적 파라미터 설정
                         success: function (response) {
-                            // 성공 핸들링
-                            //console.log("넘어온값 : " + response);
-                            //console.log("넘어온 결과 : " + response);
-                            
-                            // 응답값이 숫자일 경우 직접 비교
+                            // 응답이 숫자일 때 비교
                             if (parseInt(response) === 0) {
-                                $("#message").html("사용 가능한 아이디입니다.").css('color', 'blue').show();
+                                $(messageSelector).html(`사용 가능한 ${type === 'username' ? '아이디' : type === 'nickname' ? '닉네임' : type === 'email' ? '이메일' : '전화번호'}입니다.`)
+                                                  .css('color', 'blue').show();
+                                if (type === 'email') {
+									$('#emailVerifyButton').show();
+                                }
+
                             } else {
-                                $("#message").html("사용 불가능한 아이디입니다.").css('color', 'red').show();
+                                $(messageSelector).html(`사용 불가능한 ${type === 'username' ? '아이디' : type === 'nickname' ? '닉네임' : type === 'email' ? '이메일' : '전화번호'}입니다.`)
+                                                  .css('color', 'red').show();
+                                if (type === 'email') {
+									$('#emailVerifyButton').hide();
+                                }
+
                             }
+                            
                         },
                         error: function (error) {
-                            // 에러 핸들링
-                            console.log(error);
-                            $("#message").html("서버 오류가 발생했습니다.").css('color', 'orange').show();
+                            console.log(error); // 에러 로그 출력
+                            $(messageSelector).html("서버 오류가 발생했습니다.").css('color', 'orange').show();
                         }
                     });
                 }
             } else {
-            	$("#message").hide();
+                $(messageSelector).hide(); // 값이 없으면 숨김
             }
         }
      
@@ -206,10 +241,10 @@
 <body>
     <div class="container">
         <h1>회원가입</h1>
-        <form action="/join" method="post">
-            <label for="username">사용자명:</label>
-   			<input name="username" id="username" type="text" onkeyup="useridCheck()" class="form-control" placeholder="사용자아이디 입력" autofocus="autofocus" style="margin-bottom: 8px;"/>
-   			<span id="message" style="color: blue; display: none;"></span>
+        <form id="joinForm" action="/join" method="post">
+            <label for="username">아이디:</label>
+   			<input name="username" id="username" type="text" onkeyup="checkDuplicate('username')" class="form-control" placeholder="아이디 입력" autofocus="autofocus" style="margin-bottom: 8px;"/>
+   			<span id="usernameMessage" style="color: blue; display: none;"></span>
 
             <label for="password">비밀번호:</label>
             <input type="password" id="password" name="password" required>
@@ -218,21 +253,24 @@
 			<span id="password_message" style="color: red; display: none;"></span>
 
             <label for="nickname">닉네임:</label>
-            <input type="text" id="nickname" name="nickname" required>
+            <input name="nickname" id="nickname" type="text" onkeyup="checkDuplicate('nickname')" class="form-control" style="margin-bottom: 8px;"/>
+            <span id="nicknameMessage" style="color: blue; display: none;"></span>
 
             <label for="name">이름:</label>
             <input type="text" id="name" name="name" required>
 
             <label for="email">이메일:</label>
-            <input type="email" id="email" name="email" required>
-            <button type="button" onclick="sendVerificationCode()">이메일 인증</button>
+            <input name="email" id="email" type="text" onkeyup="checkDuplicate('email')" class="form-control" style="margin-bottom: 8px;"/>
+            <span id="emailMessage" style="color: blue; display: none;"></span>
+            <button type="button" id="emailVerifyButton" onclick="sendVerificationCode()">이메일 인증</button>
 
             <label for="verification-code">인증번호:</label>
             <input type="text" id="verification-code" name="verification-code">
             <button type="button" onclick="verifyCode()">인증번호 확인</button>
 
             <label for="phone">전화번호:</label>
-            <input type="text" id="phone" name="phone" required>
+            <input name="phone" id="phone" type="text" onkeyup="checkDuplicate('phone')" class="form-control" style="margin-bottom: 8px;"/>
+            <span id="phoneMessage" style="color: blue; display: none;"></span>
 
             <label for="birth_date">생년월일:</label>
             <input type="date" id="birth_date" name="birth_date" required>
