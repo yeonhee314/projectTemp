@@ -64,7 +64,7 @@ public class CartController {
 		    }
 			
 		//장바구니 삭제
-			@PostMapping("/cart/delete")
+			@GetMapping("/cart/delete")
 			public String deleteCart(@RequestParam("cartId") int cartId) {
 				cartService.deleteCart(cartId);
 				return "redirect:/shoping-cart.html";
@@ -76,7 +76,7 @@ public class CartController {
 				
 				cartService.updateCart(cartVO);
 			
-				log.info("로그"+cartVO);
+				//log.info("로그"+cartVO);
 				
 				return "redirect:/shoping-cart.html";
 			}

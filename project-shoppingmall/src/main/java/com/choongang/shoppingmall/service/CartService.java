@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 import com.choongang.shoppingmall.dao.CartMapper;
 import com.choongang.shoppingmall.vo.CartVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CartService {
 
 	@Autowired
@@ -30,6 +33,7 @@ public class CartService {
 	}
 	
 	public void deleteCart(int cartId) {
+		log.info("삭제 id : {}", cartId);
 		cartMapper.deleteCart(cartId);
 	}
 	
