@@ -394,16 +394,16 @@
 						
 						
 						
-						
+						<form action="/cart/add" method="post"  onsubmit="return validateOptionSelection()">
 						<div class="p-t-33">
 							<div class="flex-w flex-r-m p-b-10">
 								<div class="size-203 flex-c-m respon6">
 									Option
 								</div>
-
+							
 								<div class="size-204 respon6-next">
 									<div class="rs1-select2 bor8 bg0">
-										<select class="js-select2" name="time">
+										<select class="js-select2" name="productOption">
 											<option>옵션을 선택하세요.</option>
 											<!-- product_stoc(재고)가 0일 경우 [품절] 텍스트를 활성화한다. -->
 											<th:block th:each="status : ${#strings.setSplit(productvo.product_option, ',')}">
@@ -420,10 +420,10 @@
 								</div>
 							</div>
 							<!--  장바구니 버튼 테스트 -->
-										<form action="/cart/add" method="post">
+										
 									    <input type="hidden" name="productId" th:value="${productvo.product_id}"/>
 									    <input type="hidden" name="productPrice" th:value="${productvo.product_price}"/>
-									    <input type="hidden" name="productOption" th:value="${productvo.product_option}"/>
+									 
 									    
  							<!-- 수량 버튼 -->
 											<div class="flex-w flex-r-m p-b-10">
@@ -1274,6 +1274,19 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</div>
 	</div>
 
+
+<!--===============================================================================================-->	
+		<script>
+        // 옵션 선택 확인 함수
+        function validateOptionSelection() {
+            const optionSelect = document.querySelector("select[name='productOption']");
+            if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
+                alert("옵션을 선택해주세요.");
+                return false; // 폼 제출 중단
+            }
+            return true; // 선택이 된 경우 폼 제출
+        }
+    </script>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

@@ -23,7 +23,8 @@ public class CartController {
 
 		@Autowired
 	    private CartService cartService;
-
+		
+		//장바구니 추가 
 		 @PostMapping("/cart/add")
 		    public String addCart(@RequestParam("productId") int productId,@RequestParam("cartCount") int cartCount, 
 		    		@RequestParam("productPrice") int productPrice, @RequestParam("productOption") String productOption, 
@@ -42,7 +43,8 @@ public class CartController {
 		        redirectAttributes.addFlashAttribute("message", "상품이 장바구니에 추가되었습니다.");
 		        return "redirect:/shoping-cart.html"; // 장바구니 페이지로 리다이렉트
 		    }
-	
+		 
+		 //장바구니 목록 확인
 			@GetMapping("/shoping-cart.html")
 		    public String shopingCart(HttpSession session, Model model) {
 		        Integer userId = (Integer) session.getAttribute("userId");
@@ -58,8 +60,27 @@ public class CartController {
 		        //log.info("로그"+cartItems);
 		       
 		        return "shoping-cart"; 
-
-		 
+		
 		    }
+			
+		//장바구니 삭제
+			@GetMapping("/cart/delete")
+			public String deleteCart(@RequestParam("cartId") int cartId) {
+				cartService.deleteCart(cartId);
+				return "redirect:/shoping-cart.html";
+			}
+		
+		//장바구니 수량 수정
+			@PostMapping("/cart/update")
+			public String updateCart(CartVO cartVO) {
+				
+				cartService.updateCart(cartVO);
+			
+				//log.info("로그"+cartVO);
+				
+				return "redirect:/shoping-cart.html";
+			}
+			
+		
 	 
 	}
