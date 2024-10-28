@@ -312,6 +312,7 @@
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
+                        <th>이미지</th>
                         <th>상품명</th>
                         <th>가격</th>
                         <th>옵션</th>
@@ -324,8 +325,11 @@
                 
                 <tbody>
                     <tr th:each="item : ${cartItems}">
-	                   	<form th:action="@{/cart/update}" method="post">
-                        <td th:text="${item.productName}">상품명</td>
+	              				 <td>
+            <div>
+                <img th:src="@{${'/images/product-' + item.productId + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: auto;" />
+        </td>
+													</th:block><td th:text="${item.productName}">상품명</td>
                         <td th:text="${#numbers.formatInteger(item.productPrice, 3,'COMMA')} + '원'">가격</td>
                       	<td th:text="${item.productOption}">옵션</td>
                         <td>
@@ -341,6 +345,7 @@
 	                    <td>
                           	<input type="button" class="btn btn-danger" value="삭제" th:onclick="|location.href='@{/cart/delete(cartId=${item.cartId})}'|">
                         </td>
+                        
                     </tr>
                 </tbody>
             </table>

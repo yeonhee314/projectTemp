@@ -46,7 +46,7 @@ public class CartController {
 		 
 		 //장바구니 목록 확인
 			@GetMapping("/shoping-cart.html")
-		    public String shopingCart(HttpSession session, Model model) {
+		    public String shopingCart(HttpSession session, Model model) throws SQLException {
 		        Integer userId = (Integer) session.getAttribute("userId");
 		       
 		        List<CartVO> cartItems = cartService.getCartItems(userId);
