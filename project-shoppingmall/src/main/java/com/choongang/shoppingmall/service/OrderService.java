@@ -18,12 +18,16 @@ public interface OrderService {
 	void createOrder_Complete(Order_CompleteVO orderComplete) throws SQLException;
 	
 	// 주문 조회
-	OrdersVO getOrderByid(int orderid) throws SQLException;
+	OrdersVO getOrderById(int orderid, int user_id) throws SQLException;
 
-	List<Order_CompleteVO> getOrderCompleteByOrderId(int orderId);
+	// 주문 ID에 대한 주문 완료 정보를 조회합니다.
+	
+	List<Order_CompleteVO> getOrderCompleteByOrderId(int orderId) throws SQLException;
 
+	// 사용자 ID 에 따른 주문 목록 조회
+	List<OrdersVO> getUserById(Integer userId) throws SQLException;
 
-
+	
 	
 	
 }
