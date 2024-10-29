@@ -726,7 +726,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 			    // 저장한 파일의 로컬 주소를 formData에 저장
 			    const fileInput = document.getElementById('fileUploadBtn');
-			    const uploadfile = fileInput.files[0]; // 수정된 부분
+			    const uploadfile = fileInput.files[0];
 			    console.log('uploadfile : ' + uploadfile);
 			    if (uploadfile) {
 			        formData.append('uploadfile', uploadfile); // 여기서 uploadfile로 추가
@@ -785,8 +785,5 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	}
 		
 	</script>
-	
-
-
 </body>
 </html>

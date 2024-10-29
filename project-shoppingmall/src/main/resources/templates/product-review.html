@@ -43,21 +43,18 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
+						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25">
+							<b>고객 센터</b>
 						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
+						
+						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
+						<th:block th:if="${isLogin}">
+							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25">
+									<b>관리자 모드</b>
+								</a>
+							</th:block>
+						</th:block>
 					</div>
 				</div>
 			</div>
