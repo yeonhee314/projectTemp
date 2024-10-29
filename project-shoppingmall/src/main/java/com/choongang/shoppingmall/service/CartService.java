@@ -19,8 +19,6 @@ public class CartService {
 
     @Autowired
     private CartMapper cartMapper;
-    @Autowired
-    private ProductDAO productDAO;
 
     public void addCart(int userId, int productId, int cartCount, int productPrice, String productOption) {
         CartVO cartVO = new CartVO();
@@ -34,19 +32,8 @@ public class CartService {
     }
 
     public List<CartVO> getCartItems(int userId) throws SQLException {
-        List<CartVO> cartItems = cartMapper.getCartItems(userId);
-      
-        for (CartVO cartItem : cartItems) {
-            //System.out.println("상품정보: " + cartItem + ", ProductId: " + cartItem.getProductId());
-            ProductVO product = productDAO.selectByProductId(cartItem.getProductId());
-            if (product != null) {
-                cartItem.setProduct(product);
-            } else {
-                System.out.println("No product found for ID: " + cartItem.getProductId());
-                cartItem.setProduct(new ProductVO());
-            }
-        }
-        return cartItems;
+
+        return cartMapper.getCartItems(userId);
     }
 
     public void deleteCart(int cartId) {
