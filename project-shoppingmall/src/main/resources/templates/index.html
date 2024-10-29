@@ -55,7 +55,7 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a th:href="@{counseling.html}" class="customer flex-c-m trans-04 p-lr-25">
+						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25">
 							<b>고객 센터</b>
 						</a>
 						
@@ -1244,12 +1244,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		// 고객센터는 로그인해야만 이동할 수 있다.
 		// TODO : 1:1문의 외 추가기능을 넣는다면 수정해야한다. 
 		$('.customer').on('click', function(e){
+			e.preventDefault();
 			var isLogin = /*[[${isLogin}]]*/;
 			if (!isLogin){
 				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
 				if(result){
 					window.location.href= '/login';
 				}
+			}else{
+				window.location.href= '/question.html';
 			}
 		});
 		

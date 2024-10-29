@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +26,6 @@ import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.CartVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
-import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
@@ -191,12 +189,12 @@ public class HomeController {
 		return "wishlist";
 	}
 	
-	@GetMapping("/counseling.html")
+	@GetMapping("/question.html")
 	public String inquery(Model model) {
 		UserVO userVO = getUserInfo();
 		model.addAttribute("uservo", userVO);
 		
-		return "counseling";
+		return "question";
 	}
 
 	@GetMapping("cart.html")

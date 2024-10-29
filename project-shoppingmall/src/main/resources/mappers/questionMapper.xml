@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.shoppingmall.dao.QuestionDAO">
+	<!-- 문의 내역 저장 -->
+	<insert id="addToQuestion" parameterType="QuestionVO">
+		insert into question (question_id, user_id, question_title, question_content, question_regdate, question_add, inquiryType, alertEmail)
+		values(question_id_seq.nextval, #{user_id}, #{question_title}, #{question_content}, sysdate, #{question_add}, #{inquiryType}, #{alertEmail})
+	</insert>
+</mapper>
