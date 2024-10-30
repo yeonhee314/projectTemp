@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>MyPage</title>
+<title>MyPage-ReviewList</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -33,10 +33,10 @@
 <link rel="stylesheet" type="text/css"
 	href="vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="css/util.css">
-<link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="css/question.css">
-<link rel="stylesheet" type="text/css" href="css/myPage.css">
+<link rel="stylesheet" type="text/css" href="/css/util.css">
+<link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="stylesheet" type="text/css" href="/css/question.css">
+<link rel="stylesheet" type="text/css" href="/css/myPage.css">
 <!--===============================================================================================-->
 <!-- jQuery & Bootstrap 추가 -->
 <link rel="stylesheet"
@@ -131,8 +131,7 @@
 							<!-- 마이페이지 -->
 							<a th:href="@{myPage.html}"
 								class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY
-										PAGE</b></span>
+								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY PAGE</b></span>
 							</a>
 							<!-- 위시리스트 -->
 							<div id="wish-container">
@@ -365,10 +364,10 @@
 					<div class="myshopMain xans-element- xans-myshop xans-myshop-main">
 						<h2><b>나의 쇼핑</b></h2>
 						<ul>
-							<li class="shopMain order active"><a href="/myPage.html">주문내역</a></li>
+							<li class="shopMain order"><a href="/myPage.html">주문내역</a></li>
 							<li class="shopMain mileage"><a href="/my-mileage.html">적립금</a></li>
 							<li class="shopMain coupon"><a href="/my-coupon.html">쿠폰</a></li>
-							<li class="shopMain board"><a href="/my-reviewList.html">후기 관리</a></li>
+							<li class="shopMain board active"><a href="/my-reviewList.html">후기 관리</a></li>
 							<li class="shopMain address"><a href="/my-addrList.html">주소록</a></li>
 							<li class="shopMain profile"><a href="/my-modify.html">개인 정보 수정</a></li>
 						</ul>
@@ -376,52 +375,20 @@
 				</div>
 				<div class="card-order">
 					<div class="card-header">
-						<h5><b>주문조회</b></h5>
+						<h5><b>후기 관리</b></h5>
 					</div>
 					<div class="card-body">
-						<form method="GET" id="OrderHistoryForm" class="mb-4">
-							<div class="form-row">
-								<div class="form-group col-md-4">
-									<label for="order_status">주문처리상태</label> 
-									<select id="order_status" name="order_status" class="form-control">
-										<option value="all">전체</option>
-										<option value="shipped_before">입금전</option>
-										<option value="shipped_standby">배송준비중</option>
-										<option value="shipped_begin">배송중</option>
-										<option value="shipped_complate">배송완료</option>
-										<option value="order_cancel">취소</option>
-										<option value="order_exchange">교환</option>
-										<option value="order_return">반품</option>
-									</select>
-								</div>
-								<div class="form-group col-md-3">
-									<label for="history_start_date">시작일</label> <input type="date"
-										id="history_start_date" name="history_start_date"
-										class="form-control" value="2024-08-01">
-								</div>
-								<div class="form-group col-md-3">
-									<label for="history_end_date">종료일</label> <input type="date"
-										id="history_end_date" name="history_end_date"
-										class="form-control" value="2024-10-30">
-								</div>
-								<button type="submit" class="btn btn-primary" style="display: inline;">조회</button>
-							</div>
-						</form>
-			
 						<table class="table table-striped">
 							<thead>
-								<tr>
-									<th>주문일자</th>
-									<th>이미지</th>
-									<th>상품정보</th>
-									<th>수량</th>
-									<th>상품구매금액</th>
-									<th>주문처리상태</th>
-									<th>취소/교환/반품</th>
+								<tr class="table-menu">
+									<th>리뷰 작성 (0)</th>
+									<th>작성한 리뷰 (0)</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
+									<!-- 주문 내역 불러오기(상품 사진, 상품며으 옵션, 배송일) -->
+									<!-- 리뷰 작성버튼/숨기기 버튼 -->
 									<td colspan="7" class="text-center empty-tb">주문 내역이 없습니다.</td>
 								</tr>
 							</tbody>
@@ -590,7 +557,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script th:inline="javascript">
-	
+		
 		
 	</script>
 </body>
