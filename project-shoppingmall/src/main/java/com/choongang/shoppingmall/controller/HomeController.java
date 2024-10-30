@@ -147,8 +147,10 @@ public class HomeController {
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
 		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
 		int reviewCount = reviewService.selectReviewCount(product_id);
 		double avgRating = reviewService.selectRating(product_id);
+		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
 		model.addAttribute("reviewcount", reviewCount);
@@ -190,7 +192,9 @@ public class HomeController {
 	}
 	
 	@GetMapping("/question.html")
-	public String inquery(Model model) {
+	public String question(Model model) {
+		if (!isUserLoggedin()) 
+			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		model.addAttribute("uservo", userVO);
 		
