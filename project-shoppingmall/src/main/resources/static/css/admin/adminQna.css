@@ -5,29 +5,19 @@
 }
 .index {
 	height: 5px;
-	font-size: 0.9rem;
+	font-size: 0.7rem;
 	border-bottom: 1px solid black;
 	text-indent: 30px;
 }
 .list {
 	background-color: white;
-	height: 35px;
+	height: 10px;
 	line-height:20px;
-	font-size: 1rem;
+	font-size: 0.7rem;
 	border-bottom: 1px solid #ebebeb;
 	text-indent: 30px;
 }
 .list:hover {
 	background-color: whitesmoke;
-}
-.pageList {
-	position: fixed;
-	top: 660px;
-	left: 900px;
-}
-.userSearch {
-	position: fixed;
-	top: 700px;
-	left: 760px;
 }
 

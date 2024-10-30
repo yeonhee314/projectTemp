@@ -184,23 +184,35 @@ $(function(){
 				<td class="categorySet" id="categorySet">카테고리관리<i class="bi bi-gear-fill"></i></td>
 			</tr>
 			<tr>
-				<td style="color: blue; text-align: center; font-size: 0.9rem;">전체 카테고리</td>
+				<td class="categoryAll" onclick="location.href='/admin/products'">전체 카테고리</td>
 			</tr>
 			<tr th:each="co: ${cv.list}">
-				<td class="categoryName">[[${co.category_name}]]</td>
+				<td class="categoryName" th:onclick="location.href='/admin/products?p=1&s=10&b=10&field=category_id&search=[[${co.category_id}]]'">[[${co.category_name}]]</td>
 			</tr>
 		</table>
 			<table class="admin-main">
+				<colgroup>
+                  <col width="1%" />
+                  <col width="2%" />
+                  <col width="9%" />
+                  <col width="40%" />
+                  <col width="12%" />
+                  <col width="10%" />
+                  <col width="8%" />
+                  <col width="7%" />
+                  <col width="30%" />
+                </colgroup>
 				<tr>
-					<td colspan="6" class="main">상품 관리</td>
+					<td colspan="9" class="main">상품 관리</td>
 				</tr>
 				<tr>
 					<td colspan="3" class="total">[[${pv.pageInfo}]]</td>
-					<td colspan="7" class="pdAdd">
-						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 8pt;" onclick="location.href='/admin/products/form'"/>
+					<td colspan="9" class="pdAdd">
+						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 15pt;" onclick="location.href='/admin/products/form'"/>
 					</td>
 				</tr>
 				<tr class="index">
+					<th><input type="checkbox" /></th>
 					<th>No</th>
 					<th>썸네일</th>
 					<th>상품명</th>
@@ -210,10 +222,16 @@ $(function(){
 					<th>상태</th>
 					<th>등록일</th>
 				</tr>
+				<th:block th:if="${pv.totalCount==0}">
+					<tr>
+						<td colspan="9" style="text-align: center;">해당 상품이 없습니다</td>
+					</tr>
+				</th:block>
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">		
-						<td><input type="checkbox"/>[[${vo.product_id}]]</td>
-						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="40" height="35"/></td>
+						<td><input type="checkbox" /></td>
+						<td>[[${vo.product_id}]]</td>
+						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
 						<td>[[${cv.list[vo.category_id-1].category_name}]]</td>
@@ -226,26 +244,21 @@ $(function(){
 							</form>
 						</td>
 					</tr>
-					<tr>
-						<td colspan="6">[(${pv.pageList})]</td>
-					</tr>
-					<tr>
-						<td colspan="6" style="border: none; text-align: center;">
-							<form th:action="@{/admin/products}" method="get">
-								<input type="hidden" name="p" th:value="${upv.p}" />
-								<input type="hidden" name="s" th:value="${upv.s}" />
-								<input type="hidden" name="b" th:value="${upv.b}" />
-								<select name="field" id="field">
-									<option value="product_name">상품</option>
-									<option value="category_name">카테고리</option>
-								</select>
-								<input type="text" name="search" id="search"/>
-								<input type="submit" value="검색"/>
-							</form>
-						</td>
-					</tr>
 				</th:block>
 			</table>
+			<div class="pageList">
+				<div>[(${pv.pageList})]</div>
+			</div>
+				<form th:action="@{/admin/products}" method="get" class="productSearch">
+					<input type="hidden" name="p" th:value="${ppv.p}" />
+					<input type="hidden" name="s" th:value="${ppv.s}" />
+					<input type="hidden" name="b" th:value="${ppv.b}" />
+					<select name="field" id="field">
+						<option value="product_name">상품</option>
+					</select>
+					<input type="text" name="search" id="search"/>
+					<input type="submit" value="검색"/>
+				</form>
 	</div>
 	<!-- 카테고리 관리 모달팝업창 -->
 <div id="myModal" class="modal">
@@ -257,7 +270,7 @@ $(function(){
     </div>
 	    <table class="modalCategoryList" style="text-align: left;">
 			<tr>
-				<td style="color: blue; text-align: center; font-size: 0.9rem; height: 30px;">카테고리</td>
+				<td style="color: blue; text-align: center; font-size: 1.3rem; height: 35px;">카테고리</td>
 			</tr>
 			<tr th:each="co: ${cv.list}">
 				<td class="categorydiv">

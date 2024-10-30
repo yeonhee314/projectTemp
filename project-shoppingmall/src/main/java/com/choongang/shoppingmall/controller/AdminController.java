@@ -60,7 +60,6 @@ public class AdminController {
 						@ModelAttribute UserPagingVO userPagingVO ,
 						Model model) {
 		AdminUsersPagingVO<UserVO> pv = usersBoardService.getUserList(userPagingVO.getCurrentPage(), userPagingVO.getSizeOfPage(), userPagingVO.getSizeOfBlock(), field, search);
-		
 		model.addAttribute("pv", pv);
 		model.addAttribute("upv", userPagingVO);
 		model.addAttribute("field", field);
@@ -79,13 +78,17 @@ public class AdminController {
 	}
 	// 상품 목록 페이징
 	@GetMapping("/admin/products")
-	public String adminProducts(@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
+	public String adminProducts(@RequestParam (required = false, name = "field") String field,
+			@RequestParam (required = false, name = "search") String search,
+			@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
+		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock(), field, search);
 		// 카테고리 페이징
 		AdminCategoryPagingVO<CategoryVO> cv = categoryService.getCategoryList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", cv);
-		model.addAttribute("upv", productPagingVO);
+		model.addAttribute("ppv", productPagingVO);
+		model.addAttribute("field", field);
+		model.addAttribute("search", search);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
 		model.addAttribute("cvo", new CategoryVO());
@@ -291,7 +294,8 @@ public class AdminController {
 	}
 	// 문의 관리
 	@GetMapping("/admin/qna")
-	public String adminQna() {
+	public String adminQna(Model model) {
+		
 		return "admin-qna";
 	}
 }

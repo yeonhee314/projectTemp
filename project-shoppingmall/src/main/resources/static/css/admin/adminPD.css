@@ -1,8 +1,8 @@
 .admin-main {
 	border: 0px solid black;
-	width: 900px;
+	width: 1300px;
 	position: fixed;
-	left: 300px;
+	left: 450px;
 }
 .total {
 	height: 20px;
@@ -13,15 +13,15 @@
 }
 .index {
 	height: 5px;
-	font-size: 0.7rem;
+	font-size: 1rem;
 	border-bottom: 1px solid black;
 	text-indent: 30px;
 }
 .list {
 	background-color: white;
-	height: 10px;
+	height: 60px;
 	line-height: 30px;
-	font-size: 0.65rem;
+	font-size: 0.9rem;
 	border-bottom: 1px solid #ebebeb;
 	text-indent: 30px;
 }
@@ -30,24 +30,36 @@
 }
 .categoryList {
 	position: fixed;
-	left: 150px;
+	left: 250px;
 	top: 70px;
-	width: 120px;
+	width: 150px;
 	background-color: white;
 }
 .categorySet {
-	font-size: 0.7rem;
+	font-size: 1rem;
 	text-align: right;
-	height: 25px;
+	height: 40px;
 }
 .categorySet:hover {
 	cursor: pointer;
 }
+.categoryAll {
+	color: blue;
+	text-align: center;
+	font-size: 1rem;
+	height:50px;
+	cursor: pointer;
+	background-color: whitesmoke;
+}
+.categoryAll:hover {
+	background-color: whitesmoke;
+}
 .categoryName {
 	border: 0px solid black;
-	height: 30px;
-	text-align: center;
-	font-size: 0.7rem;
+	height: 40px;
+	text-align: left;
+	text-indent: 15px;
+	font-size: 1rem;
 	border-bottom: 1px solid #ebebeb;
 }
 .categoryName:hover {
@@ -74,8 +86,8 @@
   align-items: center;
 }
 .modal-content {
-  width: 350px;
-  height: 450px;
+  width: 450px;
+  height: 550px;
   background-color: white;
   padding: 20px;
   border-radius: 5px;
@@ -102,12 +114,11 @@
 .modalCategoryList {
 	position: fixed;
 	top:50px; left: 100px;
-	width: 130px; height:300px;
+	width: 230px; height:400px;
 	background-color: white;
 }
 .categorydiv {
-	height: 10px;
-	border-bottom: 1px solid #ebebeb;
+	height: 40px;
 	position: relative;
 	display: flex;
 }
@@ -120,23 +131,33 @@
 }
 .category_name {
 	border: 0px solid black;
-	height: 30px;
+	height: 40px;
 	line-height: 30px;
 	text-align: center;
-	font-size: 0.7rem;
+	font-size: 1rem;
 }
 .modalCategoryName:hover {
 	cursor: pointer;
 	background-color: whitesmoke;
 }
+.pageList {
+	position: fixed;
+	top: 750px;
+	left: 1000px;
+}
+.productSearch {
+	position: fixed;
+	top: 800px;
+	left: 860px;
+}
 #pdDeleteBtn {
-	font-size: 8pt;
+	font-size: 1rem;
 }
 #insertText {
 	position: fixed;
-	width: 100px;
-	height: 30px;
-	top: 270px; left:120px;
+	width: 120px;
+	height: 40px;
+	top: 350px; left:140px;
 	display: none;
 }
 #closeBtn{
@@ -146,8 +167,8 @@
 }
 #message {
 	position: fixed;
-	top: 390px; left:240px;
-	font-size: 0.6rem;
+	top: 460px; left:270px;
+	font-size: 1rem;
 }
 #addCloseBtn {
 	display: none;
@@ -169,15 +190,17 @@
 }
 #update {
 	position: fixed;
-	width: 100px;
-	top: 360px; left:120px;
+	width: 120px;
+	top: 440px; left:150px;
 	display: none;
 }
 #categoryDeleteBtn {
 	position: absolute;
-	width: 8px; height: 25px;
+	width: 15px; height: 28px;
+	line-height: 17px;
 	text-align: center;
-	text-indent: -3px;
-	border-radius:80px;
-	font-size: 10px;
+	text-indent: -4px;
+	border-radius:90px;
+	font-size: 15px;
+	margin-top: 5px;
 }

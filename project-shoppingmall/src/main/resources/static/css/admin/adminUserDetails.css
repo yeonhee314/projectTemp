@@ -4,28 +4,28 @@ li {
 .info {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 250px;
-	position: fixed; left: 100px; top: 60px;
+	position: fixed; left: 300px; top: 60px;
 	margin: 50px;
 	background-color: white;
 }
 .email {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 40px; line-height: 40px;
-	position: fixed; left: 100px; top: 330px;
+	position: fixed; left: 300px; top: 330px;
 	margin: 50px;
 	background-color: white;
 }
 .history {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 180px;
-	position: fixed; left: 600px; top: 60px;
+	position: fixed; left: 800px; top: 60px;
 	margin: 50px;
 	background-color: white;
 }
 .point {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 180px;
-	position: fixed; left: 600px; top: 260px;
+	position: fixed; left: 800px; top: 260px;
 	margin: 50px;
 	background-color: white;
 }
@@ -33,7 +33,7 @@ li {
 	border: 1px solid rgb(192, 192, 192);
 	width: 400px; height: 50px;
 	line-height: 50px;
-	position: fixed; left: 100px; top: 400px;
+	position: fixed; left: 300px; top: 400px;
 	margin: 50px;
 	background-color: white;
 }
