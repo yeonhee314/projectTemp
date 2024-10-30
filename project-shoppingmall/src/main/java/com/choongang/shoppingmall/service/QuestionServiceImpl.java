@@ -1,14 +1,15 @@
 package com.choongang.shoppingmall.service;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.QuestionDAO;
+import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,5 +53,50 @@ public class QuestionServiceImpl implements QuestionService{
 	    } catch (Exception e) {
 	        e.printStackTrace(); 
 	    }
+	}
+
+	@Override
+	public int selectQuestionCount(HashMap<String, String> map) {
+		int count = 0;
+		try {
+			count = questionDAO.selectQuestionCount(map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	@Override
+	public PagingVO<QuestionVO> getQuestionList(int currentPage, int sizeOfPage, int sizeOfBlock, String field,
+			String search) {
+		PagingVO<QuestionVO> qv = null;
+		try {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("field", field == null || field.trim().length()==0 ? null : field);
+			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = questionDAO.selectQuestionCount(map);
+			qv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			if(totalCount > 0) {
+				map.put("startNo", qv.getStartNo()+"");
+				map.put("endNo", qv.getEndNo()+"");
+				List<QuestionVO> list = questionDAO.selectQuestionList(map);
+				qv.setList(list);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		//log.info("pv 리턴 : {}",pv);
+		return qv;
+	}
+	// 문의글 상세
+	@Override
+	public QuestionVO selectById(int question_id) {
+		QuestionVO questionVO = null;
+		try {
+			questionVO = questionDAO.selectById(question_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questionVO;
 	}
 }
