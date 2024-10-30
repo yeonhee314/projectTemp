@@ -17,20 +17,20 @@
 <body>
 	<div class="bg">
 		<div class="menu-bar">
-			<div class="admin">
-				<a href="/admin" >ADMIN</a>
+			<div class="admin" onclick="location.href='/admin'">
+				ADMIN
 			</div>
-			<div class="admin-users">
-				<a href="users">회원관리</a>
+			<div class="admin-users" onclick="location.href='/admin/users'">
+				회원관리
 			</div>
-			<div class="admin-products">
-				<a href="products">상품관리</a>
+			<div class="admin-products" onclick="location.href='/admin/products'">
+				상품관리
 			</div>
-			<div class="admin-qna">
-				<a href="qna">문의관리</a>
+			<div class="admin-qna" onclick="location.href='/admin/qna'">
+				문의관리
 			</div>
-			<div>
-				<a href="/index.html">SHOP</a>
+			<div onclick="location.href='/index.html'">
+				SHOP
 			</div>
 		</div>
 			<table class="admin-main">
@@ -49,20 +49,14 @@
 					<th>가입일</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${pv.list}" class="list">
+					<tr th:each="vo: ${pv.list}" class="list" th:onclick="location.href='/admin/user/details?user_id=[[${vo.user_id}]]'">
 						<td>[[${vo.user_id}]]</td>
-						<td><a th:href="@{/admin/user/details(user_id=${vo.user_id})}">[[${vo.username}]]</a></td>
+						<td>[[${vo.username}]]</td>
 						<td>[[${vo.nickname}]]</td>
 						<td>[[${vo.email}]]</td>
 						<td>[[${vo.user_level}]]</td>
 						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
-					
-					<tr>
-					<td colspan="6" style="border: none; text-align: center;">
-					
-				</td>
-			</tr>
 				</th:block>
 			</table>
 			<div class="pageList">
@@ -80,7 +74,6 @@
 				<input type="text" name="search" id="search"/>
 				<input type="submit" value="검색"/>
 			</form>
-			
 	</div>
 </body>
 </html>

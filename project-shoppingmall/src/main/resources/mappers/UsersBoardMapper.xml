@@ -16,6 +16,9 @@
  	<select id="selectByID" parameterType="int" resultType="UserVO">
  		select * from users where user_id = #{user_id}
  	</select>
+ 	<select id="selectUsers" resultType="UserVO">
+ 		select * from users order by user_id desc
+ 	</select>
  	<!-- 유저목록 1페이지 얻기 -->
 	<select id="selectUserList" parameterType="hashmap" resultType="UserVO">
 		
