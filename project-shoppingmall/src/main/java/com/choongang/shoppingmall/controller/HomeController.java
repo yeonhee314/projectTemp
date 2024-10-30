@@ -109,6 +109,17 @@ public class HomeController {
     	return !isWish;
     }
 	
+    @GetMapping("/myPage.html")
+	public String myPage(Model model) {
+    	boolean isLogin = isUserLoggedin();
+		UserVO userVO = getUserInfo();
+		if (!isLogin) 
+			return "redirect:/login";
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("uservo", userVO);
+    	
+		return "myPage";
+	}
 	
 	@GetMapping("/about.html")
 	public String about() {
@@ -125,14 +136,6 @@ public class HomeController {
 	@GetMapping("/contact.html")
 	public String contact() {
 		return "contact";
-	}
-	@GetMapping("/home-02.html")
-	public String home02() {
-		return "home-02";
-	}
-	@GetMapping("/home-03.html")
-	public String home03() {
-		return "home-03";
 	}
 	@GetMapping("/product.html")
 	public String product() {
@@ -183,6 +186,8 @@ public class HomeController {
 	
 	@GetMapping("/wishlist.html")
 	public String wishList(Model model) {
+		if (!isUserLoggedin()) 
+			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		List<ProductVO> productList = wishService.selectProductByUserId(userVO.getUser_id());
 		model.addAttribute("productList", productList);
