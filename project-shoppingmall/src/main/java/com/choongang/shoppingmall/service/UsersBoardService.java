@@ -1,7 +1,6 @@
 package com.choongang.shoppingmall.service;
 
 import java.util.HashMap;
-import java.util.List;
 
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.UserVO;

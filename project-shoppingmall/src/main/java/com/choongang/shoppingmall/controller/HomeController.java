@@ -72,10 +72,11 @@ public class HomeController {
 	}
 	
     @GetMapping("/index.html")
-	public String index(
+	public String index(@RequestParam (required = false, name = "field") String field,
+			@RequestParam (required = false, name = "search") String search,
 						@ModelAttribute CommVO commVO, 
 						Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
+		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock(), field, search);
 		List<CategoryVO> categorylist= categoryService.selectCategory();
 		boolean isLogin = isUserLoggedin();
 		UserVO userVO = getUserInfo();
@@ -84,6 +85,8 @@ public class HomeController {
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("pv", pv);
 		model.addAttribute("categorylist", categorylist);
+		model.addAttribute("field", field);
+		model.addAttribute("search", search);
 		model.addAttribute("newLine", "\n" );
 		model.addAttribute("br", "<br>" );
 		
@@ -109,6 +112,17 @@ public class HomeController {
     	return !isWish;
     }
 	
+    @GetMapping("/myPage.html")
+	public String myPage(Model model) {
+    	boolean isLogin = isUserLoggedin();
+		UserVO userVO = getUserInfo();
+		if (!isLogin) 
+			return "redirect:/login";
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("uservo", userVO);
+    	
+		return "myPage";
+	}
 	
 	@GetMapping("/about.html")
 	public String about() {
@@ -126,14 +140,6 @@ public class HomeController {
 	public String contact() {
 		return "contact";
 	}
-	@GetMapping("/home-02.html")
-	public String home02() {
-		return "home-02";
-	}
-	@GetMapping("/home-03.html")
-	public String home03() {
-		return "home-03";
-	}
 	@GetMapping("/product.html")
 	public String product() {
 		return "product";
@@ -147,8 +153,10 @@ public class HomeController {
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
 		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
 		int reviewCount = reviewService.selectReviewCount(product_id);
 		double avgRating = reviewService.selectRating(product_id);
+		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
 		model.addAttribute("reviewcount", reviewCount);
@@ -181,6 +189,8 @@ public class HomeController {
 	
 	@GetMapping("/wishlist.html")
 	public String wishList(Model model) {
+		if (!isUserLoggedin()) 
+			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		List<ProductVO> productList = wishService.selectProductByUserId(userVO.getUser_id());
 		model.addAttribute("productList", productList);
@@ -190,7 +200,9 @@ public class HomeController {
 	}
 	
 	@GetMapping("/question.html")
-	public String inquery(Model model) {
+	public String question(Model model) {
+		if (!isUserLoggedin()) 
+			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		model.addAttribute("uservo", userVO);
 		

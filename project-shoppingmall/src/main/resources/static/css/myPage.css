@@ -1,0 +1,116 @@
+a{
+	text-decoration: none;
+}
+
+.mypage_leftcon {
+    background-color: #f8f9fa; /* 연한 회색 배경 */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    flex: 0 0 200px; /* 고정 너비 설정 (원하는 너비로 조정 가능) */
+    margin-right: 20px; /* 오른쪽 여백 추가 */
+}
+
+.mypage_leftcon h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.myshopMain {
+    list-style: none;
+    padding: 0;
+}
+
+.myshopMain li {
+	color: black !important;
+    margin-top: 20px;
+}
+
+.myshopMain a {
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.myshopMain a:hover {
+    color: #717FE0;
+}
+
+
+.col-md-11 {
+	margin: auto;
+	display:flex;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+.card-order{
+    margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-body {
+    background-color: #ffffff; 
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table th {
+    background-color: #ffffff; /* 테이블 헤더 배경색 */
+}
+
+.btn-primary {
+    background-color: #717FE0; /* 버튼 배경색 */
+    border-color: #007bff;
+    height: 35px;
+    position: relative;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #717FE0; /* 버튼 호버 시 색상 */
+}
+
+.path {
+    margin-bottom: 15px;
+}
+
+.empty-tb{
+	height: 370px;
+	line-height: 370px;
+}
+
+.breadcrumb {
+    background-color: transparent; 
+    padding: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: '>';
+}
+
+.list-group{
+	margin-left: 20px;
+	margin-bottom: 20px;
+	height: 105px;
+	width: 800px;
+	line-height: 43px;
+}
+
+.left-menu{
+	margin-bottom: 100px;
+}
+
+
+.form-row{
+	margin-top: 25px;
+}

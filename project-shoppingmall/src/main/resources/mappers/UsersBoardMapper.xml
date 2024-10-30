@@ -8,7 +8,7 @@
  		select count(*) from users
  		<where>
 			<if test="search != null">
-				#{field} like #{search}
+				${field} like '%'||#{search}||'%'
 			</if>
 		</where>
  	</select>
@@ -29,7 +29,7 @@
 				(select * from users 
 				<where>
 					<if test="search != null">
-						#{field} like #{search}
+						${field} like '%'||#{search}||'%'
 					</if>
 				</where>
 				order by user_id desc) Q
