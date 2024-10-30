@@ -57,27 +57,30 @@
 						<td>[[${vo.user_level}]]</td>
 						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
-					<tr>
-						<td colspan="6">[(${pv.pageList})]</td>
-					</tr>
+					
 					<tr>
 					<td colspan="6" style="border: none; text-align: center;">
-					<form th:action="@{/admin/users}" method="get">
-						<input type="hidden" name="p" th:value="${upv.p}" />
-						<input type="hidden" name="s" th:value="${upv.s}" />
-						<input type="hidden" name="b" th:value="${upv.b}" />
-						<select name="field" id="field">
-							<option value="username">아이디</option>
-							<option value="nickname">닉네임</option>
-							<option value="email">이메일</option>
-						</select>
-						<input type="text" name="search" id="search"/>
-						<input type="submit" value="검색"/>
-					</form>
+					
 				</td>
 			</tr>
 				</th:block>
 			</table>
+			<div class="pageList">
+				<div>[(${pv.pageList})]</div>
+			</div>
+			<form th:action="@{/admin/users}" method="get" class="userSearch">
+				<input type="hidden" name="p" th:value="${upv.p}" />
+				<input type="hidden" name="s" th:value="${upv.s}" />
+				<input type="hidden" name="b" th:value="${upv.b}" />
+				<select name="field" id="field">
+					<option value="username">아이디</option>
+					<option value="nickname">닉네임</option>
+					<option value="email">이메일</option>
+				</select>
+				<input type="text" name="search" id="search"/>
+				<input type="submit" value="검색"/>
+			</form>
+			
 	</div>
 </body>
 </html>

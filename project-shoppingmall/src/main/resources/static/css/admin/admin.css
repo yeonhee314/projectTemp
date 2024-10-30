@@ -9,7 +9,7 @@
 	position: fixed;
 	border: 0px solid black;
 	border-right: 1px solid #ebebeb;
-	width: 100px;
+	width: 200px;
 	height: 100%;
 	text-align: center;
 	background-color: white;
@@ -25,11 +25,10 @@
 }
 .admin-main {
 	border: 0px solid black;
-	width: 900px;
+	width: 1200px;
 	position: fixed;
-	left: 200px;
+	left: 400px;
 }
-
 .main {
 	height: 60px;
 	text-align: center;

@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +20,19 @@ public class ProductServiceImpl implements ProductService{
 	private ProductDAO productDAO;
 
 	@Override
-	public PagingVO<ProductVO> getProductList(int currentPage, int sizeOfPage, int sizeOfBlock) {
+	public PagingVO<ProductVO> getProductList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
 		PagingVO<ProductVO> pv = null;
-		
 		try {
-			int totalCount = productDAO.selectProductCount();
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("field", field == null || field.trim().length()==0 ? null : field);
+			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = productDAO.selectProductCount(map);
 			pv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
 			if(totalCount > 0) {
-				HashMap<String, Integer> map = new HashMap<>();
-				map.put("startNo", pv.getStartNo());
-				map.put("endNo", pv.getEndNo());
-				pv.setList(productDAO.selectProductList(map));
+				map.put("startNo", pv.getStartNo()+"");
+				map.put("endNo", pv.getEndNo()+"");
+				List<ProductVO> list = productDAO.selectProductList(map);
+				pv.setList(list);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,4 +115,16 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return count;
 	}
+
+	@Override
+	public int selectProductCount(HashMap<String, String> map) {
+		int count = 0;
+		try {
+			count = productDAO.selectProductCount(map);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
 }

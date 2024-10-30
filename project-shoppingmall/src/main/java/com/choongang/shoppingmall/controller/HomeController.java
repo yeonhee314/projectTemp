@@ -72,10 +72,11 @@ public class HomeController {
 	}
 	
     @GetMapping("/index.html")
-	public String index(
+	public String index(@RequestParam (required = false, name = "field") String field,
+			@RequestParam (required = false, name = "search") String search,
 						@ModelAttribute CommVO commVO, 
 						Model model) {
-		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock());
+		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(), commVO.getSizeOfBlock(), field, search);
 		List<CategoryVO> categorylist= categoryService.selectCategory();
 		boolean isLogin = isUserLoggedin();
 		UserVO userVO = getUserInfo();
@@ -84,6 +85,8 @@ public class HomeController {
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("pv", pv);
 		model.addAttribute("categorylist", categorylist);
+		model.addAttribute("field", field);
+		model.addAttribute("search", search);
 		model.addAttribute("newLine", "\n" );
 		model.addAttribute("br", "<br>" );
 		

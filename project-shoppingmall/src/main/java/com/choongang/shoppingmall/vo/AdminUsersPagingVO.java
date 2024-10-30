@@ -11,8 +11,7 @@ public class AdminUsersPagingVO<T> {
 	private int currentPage;	// 현재 페이지
 	private int sizeOfPage;		// 페이지당 글수
 	private int sizeOfBlock;	// 하단 페이지 목록 개수
-	
-	
+
 	// 계산해서 만들 변수
 	private int totalPage;	// 전체 페이지수
 	private int startNo;	// 시작 글번호
