@@ -18,6 +18,7 @@ public class CartVO {
     private int productPrice;  // 상품 가격
 	private int discount;	
     private int productCategory;  // 상품 카테고리
+    private int productStock;  // 상품 재고
     
  // 할인가 계산
  	public int getDiscountPrice(int productPrice, int discount) {

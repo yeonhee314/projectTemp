@@ -146,6 +146,7 @@ th {
 									<span class="stext-109"><b>WISH</b></span>
 								</a>
 							</div>
+							
 							 -->
 						 	 
 						 	<!-- 장바구니 -->
@@ -357,6 +358,12 @@ th {
 			<table class="table table-bordered">
 				<thead class="thead-light">
 					<tr>
+						<!-- <th>
+						<<div class="all_check_input_div">
+						<input type="checkbox" class="all_check_input input_size_20" checked="checked">
+						<span class="all_chcek_span"></span>
+						</div> 
+						</th>-->
 						<th>이미지</th>
 						<th>상품명</th>
 						<th>가격</th>
@@ -370,13 +377,17 @@ th {
 
 				<tbody>
 					<tr th:each="item : ${cartItems}">
-					
+		
 						<form th:action="@{/cart/update}" method="post">
 						
-							<td>
-							<input type="checkbox" class="individual_cart_checkbox input_size_20" checked="checked">
-							<img th:src="@{${'/images/product-' + item.productId + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: auto;" />
-							</td>
+							<!-- <td>
+							
+							<input type="checkbox" name="selectedItems" th:value="${item.cartId}" checked="checked" 
+							style="width:15px; height:15px;vertical-align:-3px;display:inline-block;">
+							-->
+							<td> 
+							<img th:src="@{${'/images/product-' + item.productId + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: auto;" /></td>
+							
 							</th:block>
 							<td>
 							<a 
@@ -397,19 +408,24 @@ th {
 							<td th:text="${item.productOption}">옵션</td>
 							
 							<td>
-							<input type="hidden" name="productId" th:value="${item.productId}" /> 
+							<input type="hidden" name="cartId" th:value="${item.cartId}" /> 
 								<div class="wrap-num-product flex-c">
 											<div
 												class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m ">
 												<i class="fs-16 zmdi zmdi-minus"></i>
 											</div>
 											<input class="mtext-104 cl3 txt-center num-product"
-												type="number" name="cartCount" th:value="${item.cartCount}">
+												type="number" 
+												name="cartCount" 
+												th:value="${item.cartCount}" 
+												th:max="${item.productStock}" readonly>
 
 											<div
 												class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
+											
+											
 										</div>
 							</td>
 						
@@ -444,7 +460,7 @@ th {
 			<!-- 결제하기 버튼 -->
 			<div class="text-center mt-4">
 				<a href="orders.html"
-					class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">결제하기</a>
+					class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">주문하기</a>
 				<br>
 			</div>
 
@@ -574,29 +590,6 @@ th {
 				class="zmdi zmdi-chevron-up"></i>
 			</span>
 		</div>
-
-		<script>
-    	function calculateTotal() {
-        // 총합 변수 초기화
-        let total = 1000;
-        
-        // 모든 수량 입력 요소를 가져오기
-        const quantities = document.querySelectorAll(".item-quantity");
-        
-        quantities.forEach((quantity) => {
-            // 현재 아이템의 수량과 가격 가져오기
-            const count = parseInt(quantity.value, 10);
-            const price = parseFloat(quantity.getAttribute("data-price"));
-            
-            // 총합 계산
-            total += count * price;
-        });
-        
-        // 총합을 HTML에 업데이트
-        document.getElementById("totalAmount").innerText = total.toLocaleString();
-    }
-    	   calculateTotal();
-</script>
 
 		<!--===============================================================================================-->
 		<script src="vendor/jquery/jquery-3.2.1.min.js"></script>

@@ -15,7 +15,7 @@
 	<select id="getCartItems" parameterType="int" resultType="CartVO"> 
 	SELECT c.product_id AS productId, p.product_name AS productName, 
 	p.product_price AS productPrice, c.cart_count AS cartCount, c.cart_id AS cartId , 
-	c.product_option AS productOption , p.category_id AS productCategory , p.discount 
+	c.product_option AS productOption , p.category_id AS productCategory , p.discount , p.product_stock AS productStock
 	FROM cart c 
 	JOIN product p ON c.product_id = p.product_id WHERE c.user_id = #{userId}
 	 </select>
@@ -29,7 +29,7 @@
 	<!--  장바구니 수량 수정  -->
 	<update id="updateCart"> 
 	UPDATE cart SET cart_count = #{cartCount} 
-	WHERE product_id = #{productId} 
+	WHERE cart_id = #{cartId} 
 	</update>
-	
+
 	</mapper>
