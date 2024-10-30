@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.shoppingmall.service.CartService;
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
+import com.choongang.shoppingmall.vo.CartVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -45,6 +46,9 @@ public class HomeController {
 	private WishService wishService;
 	@Autowired 
 	private UserService userService;
+	@Autowired
+	private CartService cartService;
+	
 	
 	private boolean isWish = false;
 	
@@ -185,22 +189,47 @@ public class HomeController {
 		return "wishlist";
 	}
 	
-	@GetMapping("/counseling.html")
+	@GetMapping("/question.html")
 	public String inquery(Model model) {
 		UserVO userVO = getUserInfo();
 		model.addAttribute("uservo", userVO);
 		
-		return "counseling";
+		return "question";
 	}
 
 	@GetMapping("cart.html")
 	public String shopingCart() {
 		return "cart";
 	}
+	
 	@GetMapping("/orders.html")
-	public String orders() {
-		return "orders";
+	public String orders(Model model) {
+	    UserVO userVO = getUserInfo(); // 로그인 유저 정보 가져오기
+	    
+	    // 유저가 로그인했는지 확인
+	    if (userVO != null && userVO.getUser_id() != 0) {
+	        // 카트에 있는 상품 정보 가져오기
+	        List<CartVO> cartItems = cartService.getCartItems(userVO.getUser_id()); // 카트 상품 정보 가져오기
+	        
+	        	// 카트에 상품이 있는 경우 첫 번째 상품을 기준으로 상품 정보 가져오기
+	        if (!cartItems.isEmpty()) {
+	        	int product_id = cartItems.get(0).getProductId();
+	        	ProductVO productVO = productService.selectByProductId(product_id);
+	        
+	        // 모델에 추가
+	        model.addAttribute("uservo", userVO);
+	        model.addAttribute("productvo",productVO);
+	        model.addAttribute("cartItems", cartItems);
+	       }
+	    } else {
+	        // 유저가 로그인하지 않았거나, 유저 ID가 0인 경우 처리
+	        return "login"; 
+	    }
+	    
+	    return "orders"; // orders.html로 이동
 	}
+
+
 	@GetMapping("/orderComplete.html")
 	public String orderComplete() {
 		return "orderComplete";

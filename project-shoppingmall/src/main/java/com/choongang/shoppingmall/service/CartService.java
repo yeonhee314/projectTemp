@@ -1,12 +1,15 @@
 package com.choongang.shoppingmall.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.CartMapper;
+import com.choongang.shoppingmall.dao.ProductDAO;
 import com.choongang.shoppingmall.vo.CartVO;
+import com.choongang.shoppingmall.vo.ProductVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +31,8 @@ public class CartService {
         cartMapper.addCart(cartVO);
     }
 
-    public List<CartVO> getCartItems(int userId) {
+    public List<CartVO> getCartItems(int userId) throws SQLException {
+
         return cartMapper.getCartItems(userId);
     }
 

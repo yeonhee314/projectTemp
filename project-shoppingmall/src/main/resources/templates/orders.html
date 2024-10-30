@@ -1,208 +1,270 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>주문 결제 페이지</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-    <style>
-        body {
-            background-color: #FFFFFF;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            font-weight: 400;
-            font-size: 36px;
-        }
-        .navigation {
-            text-align: center;
-            font-size: 12px;
-            color: gray;
-            margin: 10px 0;
-        }
-        .section {
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        h2 {
-            margin-bottom: 10px;
-            color: black;
-            font-weight: 150;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            text-align: left;
-            padding: 8px;
-            border-bottom: 1px solid #ccc;
-        }
+<meta charset="UTF-8">
+<title>주문 결제 페이지</title>
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<style>
+body {
+	background-color: #FFFFFF;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
 
-        #paymentButton {
-            display: block;
-            margin: 30px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: blue;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #paymentButton:hover {
-            background-color: darkblue;
-        }
-       
-        .small-text {
-            font-size: 12px; /* 글씨 크기 */
-            color: gray;     /* 글씨 색상 */
-        }
-    </style>
+.container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+h1 {
+	text-align: center;
+	font-weight: 400;
+	font-size: 36px;
+}
+
+.navigation {
+	text-align: center;
+	font-size: 12px;
+	color: gray;
+	margin: 10px 0;
+}
+
+.section {
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	padding: 15px;
+	margin: 20px 0;
+}
+
+h3 {
+	margin-bottom: 10px;
+	color: black;
+	font-weight: 150;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+	border-bottom: 1px solid #ccc;
+}
+
+#paymentButton {
+	display: block;
+	margin: 30px auto;
+	padding: 10px 20px;
+	font-size: 16px;
+	background-color: blue;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#paymentButton:hover {
+	background-color: darkblue;
+}
+
+.small-text {
+	font-size: 12px; /* 글씨 크기 */
+	color: gray; /* 글씨 색상 */
+}
+</style>
 </head>
 <body>
 
-	
+ <!-- 상품 정보를 숨겨진 필드로 설정 -->
+<input type="hidden" id="productName" th:value="${productvo != null ? productvo.product_name : ''}" />
+<input type="hidden" id="productPrice" th:value="${productvo != null ? productvo.product_price : ''}" />
+<!-- 사용자 정보 숨겨진 필드로 설정-->
+<input type="hidden" id="userName" th:value="${uservo != null ? uservo.name : ''}" />
+<input type="hidden" id="userPhone" th:value="${uservo != null ? uservo.phone : ''}" />
+<input type="hidden" id="userAddress" th:value="${uservo != null ? uservo.address : ''}" />
+<input type="hidden" id="userPostcode" th:value="${uservo != null ? uservo.postcode : ''}" />
+<input type="hidden" id="userEmail" th:value="${uservo != null ? uservo.email : ''}" />
 
-    <div class="container">
-        <h1>주문/결제</h1>
-        
-        <div class="navigation">
-            쇼핑백 > <span style="color: black;">주문결제</span> > 주문완료
-        </div>
 
-        <h2>배송지 정보</h2>
-        <div class="section">
-            <p>
-                이름: <span th:text="${user != null ? user.name : '정보 없음'}"></span>
-                
-                우편번호: <span th:text="${user != null ? user.zipcode : '정보 없음'}"></span>
-            
-                주소: <span th:text="${user != null ? user.addr : '정보 없음'}"></span>
-            
-                상세 주소: <span th:text="${user != null ? user.addr_detail : '정보 없음'}"></span>
-           
-                전화번호: <span th:text="${user != null ? user.phone : '정보 없음'}"></span>
-            </p>
-            <p>
-                배송 요청사항: 
-                <select id="ordermemo" name="ordermemo" onchange="showInputField(this)">
-                    <option value="">배송 요청 사항을 선택해 주세요.</option>
-                    <option value="1">부재 시 경비실에 맡겨주세요.</option>
-                    <option value="2">부재 시 전화 또는 문자 주세요.</option>
-                    <option value="3">배송 전 연락주세요.</option>
-                    <option value="4">택배함에 넣어주세요.</option>
-                    <option value="5">파손위험 상품.배송 주의해주세요.</option>
-                    <option value="6">직접입력</option>
-                </select> 
-                <input type="text" id="customOrderMemo" name="customOrderMemo" placeholder="내용을 입력해주세요. (20자 이내)" maxlength="20" style="display: none;">
-            </p>
-            <hr>
-        </div>
+	<div class="container">
+		<h1>주문/결제</h1>
 
-        <h2>주문 상품 목록</h2>
-        <div class="section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>상품정보</th>
-                        <th>수량</th>
-                        <th>가격</th>
-                        <th>총 상품 금액</th>
-                        <th>배송비</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${cartItems}">
-				  <!--  <td th:text="${item.product_name}"></td> 사진 변수명 확인후 기입 -->                         
-                        <td th:text="${item.product_name}"></td>
-                        <td th:text="${item.cart_count}"></td>
-                        <td th:text="${item.product_price}"></td>
-                        <td th:text="${item.cart_price}"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr>
-            <p class="small-text">* 제주/도서산간 지역의 경우 추가 배송비가 발생할 수 있습니다.</p>
-        </div>
-        
-        <!-- 할인 섹션 -->
-        <h2>할인</h2>
-        <div class="section">
-            <p>쿠폰 적용: <input type="text" id="couponCode" placeholder="쿠폰 코드를 입력하세요."></p>
-            <p>적용된 할인 금액: <span id="discountAmount">0원</span></p>
-            <hr>
-        </div>
+		<div class="navigation">
+			쇼핑백 > <span style="color: black;">주문결제</span> > 주문완료
+		</div>
 
-        <!-- 결제수단 섹션 -->
-        <h2>결제수단</h2>
-        <div class="section">
-            <p>
-                <input type="radio" id="card" name="paymentMethod" value="card" checked>
-                <label for="card">신용카드</label>
-            </p>
-            <p>
-                <input type="radio" id="bank" name="paymentMethod" value="bank">
-                <label for="bank">무통장 입금</label>
-            </p>
-            <p>
-                <input type="radio" id="kakaopay" name="paymentMethod" value="kakaopay">
-                <label for="kakaopay">카카오페이</label>
-            </p>
-            <hr>
-        </div>
-        
-        <button id="paymentButton" onclick="requestPayment()">결제하기</button>
-    </div>
+		<h3>배송지 정보</h3>
+		<div class="section">
+			<form th:action="@{/createOrder}" method="post">
+				<p>
+					이름: <span th:text="${uservo != null ? uservo.name : '정보 없음'}"></span>
 
-    <script>
-        function showInputField(select) {
-            const inputField = document.getElementById('customOrderMemo');
-            if (select.value === "6") { // '직접입력'이 선택되었을 때
-                inputField.style.display = 'block';
-                inputField.placeholder = '내용을 입력해주세요.'; // 플레이스홀더 텍스트 설정
-            } else {
-                inputField.style.display = 'none';
-            }
-        }
+					우편번호: <span th:text="${uservo != null ? uservo.postcode : '정보 없음'}"></span>
 
-        function requestPayment() {
-            const IMP = window.IMP;
-            IMP.init('imp13623334'); // 가맹점 키로 초기화
+					주소: <span th:text="${uservo != null ? uservo.address : '정보 없음'}"></span>
+					상세주소: <span
+						th:text="${uservo != null ? uservo.address_detail : '정보 없음'}"></span>
 
-            IMP.request_pay({
-                pg : 'nice_v2',
-                pay_method : 'card',
-                merchant_uid : `mid_${new Date().getTime()}`,
-                name : document.getElementById("product_name").value,
-                amount : document.getElementById("total_price").value,
-                buyer_email : 'buyer@example.com',
-                buyer_name : '홍길동',
-                buyer_tel : '010-0000-0000',
-                buyer_addr : document.getElementById("addr").value,
-                buyer_postcode : document.getElementById("zipcode").value,
-            }, function(response) {
-                if (response.success) {
-                    alert("결제 완료! 고유번호: " + response.imp_uid);
-                    window.location.href = 'orderComplete.html';
-                } else {
-                    alert("결제 실패: " + response.error_msg);
-                }
-            });
-        }
+					전화번호: <span th:text="${uservo != null ? uservo.phone : '정보 없음'}"></span>
+				</p>
+				<p>
+					배송 요청사항: <select id="ordermemo" name="ordermemo"
+						onchange="showInputField(this)">
+						<option value="">배송 요청 사항을 선택해 주세요.</option>
+						<option value="1">부재 시 경비실에 맡겨주세요.</option>
+						<option value="2">부재 시 전화 또는 문자 주세요.</option>
+						<option value="3">배송 전 연락주세요.</option>
+						<option value="4">택배함에 넣어주세요.</option>
+						<option value="5">파손위험 상품.배송 주의해주세요.</option>
+						<option value="6">직접입력</option>
+					</select> <input type="text" id="customOrderMemo" name="customOrderMemo"
+						placeholder="내용을 입력해주세요. (20자 이내)" maxlength="20"
+						style="display: none;">
+				</p>
+				<hr>
+			</form>
+		</div>
 
-    </script>
+
+		<h3>주문 상품 목록</h3>
+		<div class="section">
+			<form th:action="@{/shoping-cart.html}" method="get">
+				<table>
+					<thead>
+						<tr>
+							<th>상품정보</th>
+							<th>옵션</th>
+							<th>수량</th>
+							<th>가격</th>
+							<th>총 상품 금액</th>
+							<th>배송비</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${cartItems}">
+							<!--  <td th:text="${item.product_name}"></td> 사진 변수명 확인후 기입 -->
+							<td th:text="${item.productName}"></td>
+							<td th:text="${item.productOption}"></td>
+							<td th:text="${item.cartCount}"></td>
+							<td th:text="${item.productPrice}"></td>
+							<td
+								th:text="${#numbers.formatInteger(item.productPrice * item.cartCount, 3,'COMMA')} + '원'"></td>
+							<td>무료배송</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<hr>
+			<p class="small-text">* 제주/도서산간 지역의 경우 추가 배송비가 발생할 수 있습니다.</p>
+		</div>
+
+
+		<!-- 할인 섹션 -->
+		<h3>할인</h3>
+		<div class="section">
+			<p>
+				쿠폰 적용: <input type="text" id="couponCode"
+					placeholder="쿠폰 코드를 입력하세요.">
+			</p>
+			<p>
+				적용된 할인 금액: <span id="discountAmount">0원</span>
+			</p>
+			<hr>
+		</div>
+
+		<!-- 결제수단 섹션 -->
+		<h3>결제수단</h3>
+		<div class="section">
+			<p>
+				<input type="radio" id="card" name="paymentMethod" value="card"
+					checked> <label for="card">신용카드</label>
+			</p>
+			<p>
+				<input type="radio" id="bank" name="paymentMethod" value="bank">
+				<label for="bank">무통장 입금</label>
+			</p>
+			<p>
+				<input type="radio" id="kakaopay" name="paymentMethod"
+					value="kakaopay"> <label for="kakaopay">카카오페이</label>
+			</p>
+			<hr>
+		</div>
+
+		<button id="paymentButton" onclick="requestPayment()">결제하기</button>
+	</div>
+
+	<script>
+		function showInputField(select) {
+			const inputField = document.getElementById('customOrderMemo');
+			if (select.value === "6") { // '직접입력'이 선택되었을 때
+				inputField.style.display = 'block';
+				inputField.placeholder = '내용을 입력해주세요.'; // 플레이스홀더 텍스트 설정
+			} else {
+				inputField.style.display = 'none';
+			}
+		}
+		
+		function requestPayment() {
+	        const IMP = window.IMP;
+	        IMP.init('imp13623334'); // 가맹점 키로 초기화
+
+	        // 숨겨진 필드에서 값 가져오기
+	        const productName = document.getElementById('productName').value;
+	        const productPrice = document.getElementById('productPrice').value;
+	        const name = document.getElementById("userName").value;
+	        const phone = document.getElementById("userPhone").value;
+	        const address = document.getElementById("userAddress").value;
+	        const postcode = document.getElementById("userPostcode").value;
+	        const email = document.getElementById("userEmail").value;
+
+	        // 결제 요청 데이터 로그
+	        console.log("결제 요청 데이터:", {
+	            productName: productName,
+	            productPrice: productPrice,
+	            name: name,
+	            phone: phone,
+	            address: address,
+	            postcode: postcode,
+	            email: email,
+	            merchant_uid: `mid_${new Date().getTime()}`
+	            
+	            
+	        });
+	        // 상품 데이터 체크 콘솔 로그 
+	        console.log("숨겨진 필드 값:", {
+	            productName: document.getElementById('productName').value,
+	            productPrice: document.getElementById('productPrice').value
+	        });
+	        // 결제 요청
+	        IMP.request_pay({
+	            pg: 'nice_v2', // 결제 서비스
+	            pay_method: 'card', // 결제 수단
+	            merchant_uid: `mid_${new Date().getTime()}`, // 고유 주문번호
+	            name: productName, // 상품명
+	            amount: productPrice, // 결제 금액
+	            buyer_name: name, // 구매자 이름
+	            buyer_tel: phone, // 구매자 전화번호
+	            buyer_addr: address, // 구매자 주소
+	            buyer_postcode: postcode, // 구매자 우편번호
+	            buyer_email: email, // 구매자 이메일
+	        }, function(response) {
+	            console.log("결제 응답:", response);
+
+	            if (response.success) {
+	                alert("결제 완료! 고유번호: " + response.imp_uid);
+	                window.location.href = 'orderComplete.html'; // 결제 후 이동할 페이지
+	            } else {
+	                alert("결제 실패: " + response.error_msg);
+	            }
+	        });
+	    }
+	</script>
 </body>
 </html>

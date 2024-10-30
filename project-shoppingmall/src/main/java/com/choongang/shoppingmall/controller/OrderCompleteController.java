@@ -23,15 +23,15 @@ public class OrderCompleteController {
 
     // 주문 완료 페이지 표시
     @GetMapping("templates/orderComplete")
-    public String showOrderCompletePage(@RequestParam int orderId, Model model) {
+    public String showOrderCompletePage(@RequestParam int orderId,int user_id, Model model) {
         try {
             List<Order_CompleteVO> items = orderService.getOrderCompleteByOrderId(orderId);
-            OrdersVO order = orderService.getOrderByid(orderId);
+            OrdersVO order = orderService.getOrderById(orderId ,user_id);
             
             // 사용자 정보 임시 객체
             UserVO user = new UserVO();
-            user.setName("홍길동");
-            user.setPhone("010-1234-5678");
+//            user.setName("홍길동");
+//            user.setPhone("010-1234-5678");
             
             model.addAttribute("order", order);
             model.addAttribute("user", user);

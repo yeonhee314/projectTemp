@@ -15,7 +15,7 @@
 	<select id="getCartItems" parameterType="int" resultType="CartVO"> 
 	SELECT c.product_id AS productId, p.product_name AS productName, 
 	p.product_price AS productPrice, c.cart_count AS cartCount, c.cart_id AS cartId , 
-	p.product_option AS productOption 
+	c.product_option AS productOption , p.category_id AS productCategory , p.discount 
 	FROM cart c 
 	JOIN product p ON c.product_id = p.product_id WHERE c.user_id = #{userId}
 	 </select>

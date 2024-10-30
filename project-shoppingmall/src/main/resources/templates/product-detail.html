@@ -34,6 +34,8 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body class="animsition">
 	
@@ -49,21 +51,18 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
+						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25">
+							<b>고객 센터</b>
 						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
+						
+						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
+						<th:block th:if="${isLogin}">
+							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25">
+									<b>관리자 모드</b>
+								</a>
+							</th:block>
+						</th:block>
 					</div>
 				</div>
 			</div>
@@ -482,38 +481,13 @@
 				   								 		<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>
 													</th:block>
 													<th:block th:if="${productvo.product_stock > 0}">
+													
 											        <button type="submit" 
 													class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
 													    장바구니 추가
 													</button>
 											    </div>
 											</div>
-							<!-- 수량 버튼 끝 -->
-	
-							<!-- 기존 수량 버튼 
-							<div class="flex-w flex-r-m p-b-10">
-								<div class="size-204 flex-w flex-m respon6-next">
-									<div class="wrap-num-product flex-w m-r-20 m-tb-10">
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fs-16 zmdi zmdi-minus"></i>
-										</div>
-										
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1" th:max="${productvo.product_stock}" readonly>
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fs-16 zmdi zmdi-plus"></i>
-										</div>
-									</div>
-							 기존 수량 버튼 -->
-								
-									
-									
-									<!-- 
-										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-											Add to cart
-										</button>
-										기존 버튼 -->
-				
 									  	 
 													<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m bor9 p-r-10 m-r-11">
@@ -1304,20 +1278,25 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			</div>
 		</div>
 	</div>
-
-
 <!--===============================================================================================-->	
 		<script>
-        // 옵션 선택 확인 함수
-        function validateOptionSelection() {
-            const optionSelect = document.querySelector("select[name='productOption']");
-            if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
-                alert("옵션을 선택해주세요.");
-                return false; // 폼 제출 중단
-            }
-            return true; // 선택이 된 경우 폼 제출
+		
+    // 옵션 선택 확인 함수
+    function validateOptionSelection() {
+        const optionSelect = document.querySelector("select[name='productOption']");
+        if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
+            Swal.fire({
+                icon: 'warning',
+                title: '옵션 미선택',
+                text: '옵션을 선택해주세요.',
+                confirmButtonText: '확인'
+            });
+            return false; // 폼 제출 중단
         }
-    </script>
+        return true; // 선택이 된 경우 폼 제출  
+    }
+    
+</script>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -1391,14 +1370,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		});
 
 		/*---------------------------------------------*/
+		     $('.js-addcart-detail').each(function(){
+            var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+            $(this).on('click', function(){
+                swal(nameProduct, "is added to cart !", "success");
+            });
+        });
+		
 
-		$('.js-addcart-detail').each(function(){
-			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
-	
 	</script>
 <!--===============================================================================================-->
 	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -1419,6 +1398,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 </body>
 </html>

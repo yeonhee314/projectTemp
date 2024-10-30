@@ -46,7 +46,7 @@ public class CartController {
 		 
 		 //장바구니 목록 확인
 			@GetMapping("/shoping-cart.html")
-		    public String shopingCart(HttpSession session, Model model) {
+		    public String shopingCart(HttpSession session, Model model) throws SQLException {
 		        Integer userId = (Integer) session.getAttribute("userId");
 		       
 		        List<CartVO> cartItems = cartService.getCartItems(userId);
@@ -54,9 +54,15 @@ public class CartController {
 		        if (userId == null) {
 		            return "redirect:/login"; // 로그인 안된 경우 로그인 페이지로 리다이렉트
 		        }
-
-		        // 사용자 ID로 장바구니 항목을 가져옴
-		        model.addAttribute("cartItems", cartItems);
+		        
+		        int totalPrice = cartItems.stream()
+			            .mapToInt(item -> item.getDiscountPrice(item.getProductPrice(), item.getDiscount()) * item.getCartCount())
+			            .sum();
+			        
+			        // 모델에 장바구니와 총합 추가
+			        model.addAttribute("cartItems", cartItems);
+			        model.addAttribute("totalPrice", totalPrice);
+		     
 		        //log.info("로그"+cartItems);
 		       
 		        return "shoping-cart"; 
@@ -80,7 +86,7 @@ public class CartController {
 				
 				return "redirect:/shoping-cart.html";
 			}
-			
+	
 		
 	 
 	}
