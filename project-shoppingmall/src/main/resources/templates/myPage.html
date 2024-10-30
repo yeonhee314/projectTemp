@@ -335,70 +335,59 @@
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="description01">
-							<span class="icon">등급★</span> <span>이름 님 
+							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b> 님 
 							<a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
 						</div>
-						<p class="myshop_benefit_display_no_benefit">
-							<strong><span>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
+						<p class="myshop_benefit_display_no_benefit txt_notice">
+							<strong><span><br>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
 							<span>추가적립</span> 받으실 수 있습니다.
 						</p>
 					</div>
 				</div>
 
-				<ul class="list-group mb-4">
-					<li
-						class="list-group-item d-flex justify-content-between align-items-center">
-						총주문 <span id="xans_myshop_bankbook_order_price">0원 (<span
-							id="xans_myshop_bankbook_order_count">0</span>회)
-					</span>
+				<ul class="list-group">
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 주문</b> 
+						<span id="xans_myshop_bankbook_order_price">0원 (<span id="xans_myshop_bankbook_order_count">0</span>회)</span>
 					</li>
-					<li
-						class="list-group-item d-flex justify-content-between align-items-center">
-						총적립금 <span id="xans_myshop_bankbook_total_mileage">0원</span>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 적립금</b>
+						<span id="xans_myshop_bankbook_total_mileage">0원</span>
 					</li>
 				</ul>
 			</div>
 		</div>
-
+		<br>
 		<div class="row">
 			<div class="col-md-11 p-b-20 left-menu">
 				<div
 					class="mypage_leftcon headroomLeft headroom headroom--not-bottom headroom--pinned headroom--top">
-					<div id="myshopMain"
-						class="xans-element- xans-myshop xans-myshop-main">
-						<h2>나의 쇼핑</h2>
+					<div class="myshopMain xans-element- xans-myshop xans-myshop-main">
+						<h2><b>나의 쇼핑</b></h2>
 						<ul>
 							<li class="shopMain order active"><a
 								href="/myshop/order/list.html">주문내역</a></li>
-							<li class="shopMain wishlist"><a
-								href="/myshop/wish_list.html">관심 상품</a></li>
-							<li class="shopMain likeIt displaynone"><a href="">좋아요</a></li>
 							<li class="shopMain mileage"><a
 								href="/myshop/mileage/historyList.html">적립금</a></li>
-							<li class="shopMain deposits"><a
-								href="/myshop/deposits/historyList.html">예치금</a></li>
 							<li class="shopMain coupon"><a
 								href="/myshop/coupon/coupon.html">쿠폰</a></li>
-							<li class="shopMain board"><a href="/myshop/board_list.html">게시물/후기
-									관리</a></li>
+							<li class="shopMain board"><a href="/myshop/board_list.html">후기 관리</a></li>
 							<li class="shopMain address"><a
 								href="/myshop/addr/list.html">주소록</a></li>
-							<li class="shopMain profile"><a href="/member/modify.html">개인
-									정보 수정</a></li>
-							<li class="shopMain attendance"><a href="/attend/stamp.html">출석체크</a></li>
+							<li class="shopMain profile"><a href="/member/modify.html">개인 정보 수정</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="card-order">
 					<div class="card-header">
-						<h5>주문조회</h5>
+						<h5><b>주문조회</b></h5>
 					</div>
 					<div class="card-body">
 						<form method="GET" id="OrderHistoryForm" class="mb-4">
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label for="order_status">주문처리상태</label> <select
-										id="order_status" name="order_status" class="form-control">
+									<label for="order_status">주문처리상태</label> 
+									<select id="order_status" name="order_status" class="form-control">
 										<option value="all">전체</option>
 										<option value="shipped_before">입금전</option>
 										<option value="shipped_standby">배송준비중</option>
@@ -419,15 +408,14 @@
 										id="history_end_date" name="history_end_date"
 										class="form-control" value="2024-10-30">
 								</div>
+								<button type="submit" class="btn btn-primary" style="display: inline;">조회</button>
 							</div>
-							<button type="submit" class="btn btn-primary">조회</button>
 						</form>
 			
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th>주문일자<br>[주문번호]
-									</th>
+									<th>주문일자</th>
 									<th>이미지</th>
 									<th>상품정보</th>
 									<th>수량</th>
@@ -438,30 +426,8 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
+									<td colspan="7" class="text-center empty-tb">주문 내역이 없습니다.</td>
 								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								<tr>
-									<td colspan="7" class="text-center">주문 내역이 없습니다.</td>
-								</tr>
-								
 							</tbody>
 						</table>
 						

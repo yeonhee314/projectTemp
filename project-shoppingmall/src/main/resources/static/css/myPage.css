@@ -1,3 +1,7 @@
+a{
+	text-decoration: none;
+}
+
 .mypage_leftcon {
     background-color: #f8f9fa; /* 연한 회색 배경 */
     padding: 20px;
@@ -19,17 +23,17 @@
 }
 
 .myshopMain li {
-    margin-bottom: 20px;
+	color: black !important;
+    margin-top: 20px;
 }
 
 .myshopMain a {
     text-decoration: none;
-    color: #007bff; /* 부트스트랩 기본 링크 색상 */
     transition: color 0.2s;
 }
 
 .myshopMain a:hover {
-    color: #0056b3; /* 마우스 오버 시 색상 변경 */
+    color: #717FE0;
 }
 
 
@@ -60,20 +64,29 @@
 }
 
 .table th {
-    background-color: #f1f1f1; /* 테이블 헤더 배경색 */
+    background-color: #ffffff; /* 테이블 헤더 배경색 */
 }
 
 .btn-primary {
-    background-color: #007bff; /* 버튼 배경색 */
+    background-color: #717FE0; /* 버튼 배경색 */
     border-color: #007bff;
+    height: 35px;
+    position: relative;
+    margin-top: 30px;
+    margin-left: 10px;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3; /* 버튼 호버 시 색상 */
+    background-color: #717FE0; /* 버튼 호버 시 색상 */
 }
 
 .path {
     margin-bottom: 15px;
+}
+
+.empty-tb{
+	height: 370px;
+	line-height: 370px;
 }
 
 .breadcrumb {
@@ -83,4 +96,21 @@
 
 .breadcrumb-item + .breadcrumb-item::before {
     content: '>';
+}
+
+.list-group{
+	margin-left: 20px;
+	margin-bottom: 20px;
+	height: 105px;
+	width: 800px;
+	line-height: 43px;
+}
+
+.left-menu{
+	margin-bottom: 100px;
+}
+
+
+.form-row{
+	margin-top: 25px;
 }
