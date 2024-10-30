@@ -428,7 +428,7 @@
 						
 						
 						
-						<form action="/cart/add" method="post"  onsubmit="return validateOptionSelection()">
+						<form id="cartForm" action="/cart/add" method="post">
 						<div class="p-t-33">
 							<div class="flex-w flex-r-m p-b-10">
 								<div class="size-203 flex-c-m respon6">
@@ -453,8 +453,6 @@
 									</div>
 								</div>
 							</div>
-							<!--  장바구니 버튼 테스트 -->
-										
 									    <input type="hidden" name="productId" th:value="${productvo.product_id}"/>
 									    <input type="hidden" name="productPrice" th:value="${productvo.product_price}"/>
 									 
@@ -486,10 +484,10 @@
 													</th:block>
 													<th:block th:if="${productvo.product_stock > 0}">
 													
-											        <button type="submit" 
-													class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-													    장바구니 추가
-													</button>
+											      <button type="button"
+													class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+													onclick="handleAddToCart()">장바구니 추가</button>
+													</form>
 											    </div>
 											</div>
 
@@ -1297,24 +1295,45 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</div>
 	</div>
 <!--===============================================================================================-->	
-		<script>
-		
-    // 옵션 선택 확인 함수
-    function validateOptionSelection() {
-        const optionSelect = document.querySelector("select[name='productOption']");
-        if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
-            Swal.fire({
-                icon: 'warning',
-                title: '옵션 미선택',
-                text: '옵션을 선택해주세요.',
-                confirmButtonText: '확인'
-            });
-            return false; // 폼 제출 중단
-        }
-        return true; // 선택이 된 경우 폼 제출  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+	 function handleAddToCart() {
+	        const optionSelect = document.querySelector("select[name='productOption']");
+
+	        // 옵션 선택 여부 확인
+	        if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
+	            Swal.fire({
+	                icon: 'warning',
+	                title: '옵션 미선택',
+	                text: '옵션을 선택해주세요.',
+	                confirmButtonText: '확인'
+	            });
+	            return;
+	        }
+
+	        //  장바구니 추가 확인 메시지 표시
+	        Swal.fire({
+	            icon: 'question',
+	            title: '장바구니에 추가하시겠습니까?',
+	            showCancelButton: true,
+	            confirmButtonText: '예',
+	            cancelButtonText: '아니오',
+	            customClass: {
+	                     title: 'small-title'  
+	                 }
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	                document.getElementById("cartForm").submit();
+	            }
+	        });
+	    }
+	</script>
+	<style>    /* SweetAlert 타이틀 텍스트 크기 조정 */
+    .small-title {
+        font-size: 18px; 
     }
-    
-</script>
+    </style>
+
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
