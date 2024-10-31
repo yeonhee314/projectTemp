@@ -19,4 +19,5 @@ public class QuestionVO {
 	private String alertEmail;		// 알림을 받을 이메일 주소
 	
 	private MultipartFile uploadfile;// 업로드할 파일
+	private String questionStatus; 	 // 접수 상태
 }

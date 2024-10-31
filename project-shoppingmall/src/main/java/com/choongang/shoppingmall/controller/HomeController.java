@@ -116,18 +116,6 @@ public class HomeController {
     	return !isWish;
     }
 	
-    @GetMapping("/myPage.html")
-	public String myPage(Model model) {
-    	boolean isLogin = isUserLoggedin();
-		UserVO userVO = getUserInfo();
-		if (!isLogin) 
-			return "redirect:/login";
-		model.addAttribute("isLogin", isLogin);
-		model.addAttribute("uservo", userVO);
-    	
-		return "myPage";
-	}
-	
 	@GetMapping("/about.html")
 	public String about() {
 		return "about";

@@ -51,6 +51,22 @@ a{
     height: 100%;
 }
 
+.question-header{
+	display: flex;
+}
+
+.question-header button{
+	border: 1px solid grey;
+	width: 100px;
+	height: 30px;
+	position: absolute;
+	right: 15px;
+	transition: color 0.2s;
+}
+.question-header button:hover{
+	  color: #717FE0;
+}
+
 .card-title {
     font-weight: bold;
 }

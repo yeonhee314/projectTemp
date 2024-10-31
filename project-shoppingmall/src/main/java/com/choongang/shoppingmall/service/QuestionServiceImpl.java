@@ -20,6 +20,7 @@ public class QuestionServiceImpl implements QuestionService{
 	@Autowired
 	private QuestionDAO questionDAO;
 	
+	// 문의 내역 저장
 	@Override
 	public void addToQuestion(QuestionVO vo) {
 		try {
@@ -98,5 +99,18 @@ public class QuestionServiceImpl implements QuestionService{
 			e.printStackTrace();
 		}
 		return questionVO;
+	}
+
+	@Override
+	public List<QuestionVO> selectQuestionListByUserId(int user_id) {
+	List<QuestionVO> questionList = null;
+		
+		try {
+			questionList = questionDAO.selectQuestionListByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return questionList;
 	}
 }
