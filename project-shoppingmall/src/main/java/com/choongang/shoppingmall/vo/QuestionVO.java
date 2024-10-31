@@ -17,6 +17,7 @@ public class QuestionVO {
 	private String question_add;	// 첨부파일
 	private String inquiryType;		// 문의 유형 - '취소문의', '배송문의', '반품문의', '교환문의', '환불문의', 'AS문의', '오류문의', '기타'
 	private String alertEmail;		// 알림을 받을 이메일 주소
+	private String question_status;	// 접수 상태 -'답변대기중(기본)', '답변완료', '답변거부'
 	
 	private MultipartFile uploadfile;// 업로드할 파일
 	private String questionStatus; 	 // 접수 상태

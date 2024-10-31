@@ -84,6 +84,10 @@ a{
     text-align: center;
 }
 
+.table-striped td{
+	width: 850px;
+}
+
 .table-menu th{
 	border:1px solid grey;
 	cursor: pointer;
@@ -140,4 +144,26 @@ a{
 .active{
 	font-size: 17px;
 	font-weight: bold;
+}
+
+#previewModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modalBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; 
+    display: none;
 }

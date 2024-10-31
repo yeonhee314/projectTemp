@@ -48,6 +48,11 @@
 		insert into question (question_id, user_id, question_title, question_content, question_regdate, question_add, inquiryType, alertEmail)
 		values(question_id_seq.nextval, #{user_id}, #{question_title}, #{question_content}, sysdate, #{question_add}, #{inquiryType}, #{alertEmail})
 	</insert>
+	<!-- 문의 내역 삭제 -->
+	<delete id="deleteToQuestion" parameterType="QuestionVO">
+		delete from question where user_id=#{user_id} and question_id=#{question_id}
+	</delete>
+	
 	<!-- 유저 아이디 별 문의 내역 가져오기 -->
 	<select id="selectQuestionListByUserId" parameterType="int" resultType="QuestionVO">
 		select * from question where user_id=#{user_id}

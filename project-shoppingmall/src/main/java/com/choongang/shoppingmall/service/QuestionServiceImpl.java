@@ -104,13 +104,20 @@ public class QuestionServiceImpl implements QuestionService{
 	@Override
 	public List<QuestionVO> selectQuestionListByUserId(int user_id) {
 	List<QuestionVO> questionList = null;
-		
 		try {
 			questionList = questionDAO.selectQuestionListByUserId(user_id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return questionList;
+	}
+
+	@Override
+	public void deleteToQuestion(QuestionVO vo) {
+		try {
+			questionDAO.deleteToQuestion(vo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

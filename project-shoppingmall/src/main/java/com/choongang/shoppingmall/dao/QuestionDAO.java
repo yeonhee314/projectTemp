@@ -15,7 +15,8 @@ public interface QuestionDAO {
 	List<QuestionVO> selectQuestionList(HashMap<String, String> map) throws SQLException;
 	// 문의 내역 저장
 	void addToQuestion(QuestionVO vo) throws SQLException;
-	List<QuestionVO> selectQuestionList() throws SQLException;
+	// 문의 내역 삭제
+	void deleteToQuestion(QuestionVO vo) throws SQLException;
 	// 유저 아이디 별 문의 내역 가져오기
 	List<QuestionVO> selectQuestionListByUserId(int user_id) throws SQLException;
 }
