@@ -1,5 +1,6 @@
 package com.choongang.shoppingmall.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,8 @@ import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Configuration
@@ -67,6 +70,7 @@ public class HomeController {
 			userVO = userService.selectByUsername(username);
 			wishList = wishService.selectWishByUserId(userVO.getUser_id());
 			userVO.setWishList(wishList);
+			
 		}
 		return userVO;
 	}
@@ -187,6 +191,35 @@ public class HomeController {
 		return "product-review";
 	}
 	
+		//장바구니 목록 확인
+		@GetMapping("/shoping-cart.html")
+	    public String cartList(HttpSession session, Model model) throws SQLException {
+	        Integer userId = (Integer) session.getAttribute("userId");
+	 
+	        List<CartVO> cartItems = cartService.getCartItems(userId);
+	        
+	        UserVO userVO = getUserInfo();
+	        
+	        if (userId == null) {
+	            return "redirect:/login"; // 로그인 안된 경우 로그인 페이지로 리다이렉트
+	        }
+	        
+	        int totalPrice = cartItems.stream()
+		            .mapToInt(item -> item.getDiscountPrice(item.getProductPrice(), item.getDiscount()) * item.getCartCount())
+		            .sum();
+		        
+		        // 모델에 장바구니와 총합 추가
+		        model.addAttribute("cartItems", cartItems);
+		        model.addAttribute("totalPrice", totalPrice);
+		        model.addAttribute("uservo", userVO);
+	     
+	        //log.info("로그"+cartItems);
+	       
+	        return "shoping-cart"; 
+
+	    }
+		
+	
 	@GetMapping("/wishlist.html")
 	public String wishList(Model model) {
 		if (!isUserLoggedin()) 
@@ -209,10 +242,6 @@ public class HomeController {
 		return "question";
 	}
 
-	@GetMapping("cart.html")
-	public String shopingCart() {
-		return "cart";
-	}
 	
 	@GetMapping("/orders.html")
 	public String orders(Model model) {

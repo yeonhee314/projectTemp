@@ -65,4 +65,16 @@ public class UsersBoardServiceImpl implements UsersBoardService {
 		}
 		return count;
 	}
+
+	@Override
+	public List<UserVO> selectUsers() {
+		List<UserVO> userList = null;
+		try {
+			userList = usersBoardDAO.selectUsers();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userList;
+	}
 }

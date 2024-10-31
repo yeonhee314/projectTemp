@@ -5,19 +5,28 @@
 }
 .index {
 	height: 5px;
-	font-size: 0.7rem;
+	font-size: 0.9rem;
 	border-bottom: 1px solid black;
 	text-indent: 30px;
 }
 .list {
 	background-color: white;
-	height: 10px;
-	line-height:20px;
-	font-size: 0.7rem;
+	height: 40px;
+	line-height:40px;
+	font-size: 1rem;
 	border-bottom: 1px solid #ebebeb;
 	text-indent: 30px;
 }
 .list:hover {
 	background-color: whitesmoke;
 }
-
+.pageList {
+	position: fixed;
+	top: 660px;
+	left: 900px;
+}
+.QuestionSearch {
+	position: fixed;
+	top: 700px;
+	left: 760px;
+}

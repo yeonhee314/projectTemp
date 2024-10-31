@@ -3,6 +3,46 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.shoppingmall.dao.QuestionDAO">
+	<!-- 문의글 개수 카운트 -->
+	<select id="selectQuestionCount" resultType="int" parameterType="hashmap">
+		select count(*) from question
+		<where>
+			<if test="search != null">
+				${field} like '%'||#{search}||'%'
+			</if>
+		</where>
+	</select>
+	<!-- 문의 글번호로 찾기 -->
+	<select id="selectById" resultType="QuestionVO" parameterType="int">
+		select * from question where question_id = #{question_id}
+	</select>
+		<!-- 한 페이지 얻기 -->
+	<select id="selectQuestionList" parameterType="hashmap" resultType="QuestionVO">
+		
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from question
+				<where>
+					<if test="search != null">
+						${field} like '%'||#{search}||'%'
+					</if>
+				</where>
+				order by question_id desc) Q
+			where
+			<![CDATA[
+				rownum<=#{endNo}
+				]]>
+		) R
+		where
+		<![CDATA[
+			rnum >= #{startNo}
+		]]>
+	</select>
 	<!-- 문의 내역 저장 -->
 	<insert id="addToQuestion" parameterType="QuestionVO">
 		insert into question (question_id, user_id, question_title, question_content, question_regdate, question_add, inquiryType, alertEmail)

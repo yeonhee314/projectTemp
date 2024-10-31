@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
@@ -28,6 +29,7 @@ import com.choongang.shoppingmall.vo.FileVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
+import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserPagingVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
@@ -44,7 +46,8 @@ public class AdminController {
 	private ProductService productService;
 	@Autowired
 	private CategoryService categoryService;
-	
+	@Autowired
+	private QuestionService questionService;
 	@Autowired
 	ResourceLoader resourceLoader;
 	
@@ -294,8 +297,33 @@ public class AdminController {
 	}
 	// 문의 관리
 	@GetMapping("/admin/qna")
-	public String adminQna(Model model) {
-		
+	public String adminQna(@RequestParam (required = false, name = "field") String field,
+			@RequestParam (required = false, name = "search") String search,
+			@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
+		PagingVO<QuestionVO> qv = questionService.getQuestionList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock(), field, search);
+		model.addAttribute("qv", qv);
+		model.addAttribute("ppv", productPagingVO);
+		model.addAttribute("field", field);
+		model.addAttribute("search", search);
+		model.addAttribute("newLine", "\n");
+		model.addAttribute("br", "<br>");
 		return "admin-qna";
+	}
+	// 문의글 상세
+	@GetMapping("/admin/qna/view")
+	public String adminQnaView(Integer question_id,Model model) {
+		model.addAttribute("question_id",question_id);
+		model.addAttribute("qna",questionService.selectById(question_id));
+		return "admin-qna-view";
+	}
+	@GetMapping("/adminQnaOk")
+	public String adminQnaOkGet() {
+		return "redirect:/admin/qna";
+	}
+	// 문의 답변 저장
+	@PostMapping("/adminQnaOk")
+	public String adminQnaOkPost() {
+		
+		return "redirect:/admin/qna";
 	}
 }

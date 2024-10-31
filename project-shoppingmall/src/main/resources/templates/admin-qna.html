@@ -15,49 +15,57 @@
 <body>
 	<div class="bg">
 		<div class="menu-bar">
-			<div class="admin">
-				<a href="/admin" >ADMIN</a>
+			<div class="admin" onclick="location.href='/admin'">
+				ADMIN
 			</div>
-			<div class="admin-users">
-				<a href="users">회원관리</a>
+			<div class="admin-users" onclick="location.href='/admin/users'">
+				회원관리
 			</div>
-			<div class="admin-products">
-				<a href="products">상품관리</a>
+			<div class="admin-products" onclick="location.href='/admin/products'">
+				상품관리
 			</div>
-			<div class="admin-qna">
-				<a href="qna">문의관리</a>
+			<div class="admin-qna" onclick="location.href='/admin/qna'">
+				문의관리
 			</div>
-			<div>
-				<a href="/index.html">SHOP</a>
+			<div onclick="location.href='/index.html'">
+				SHOP
 			</div>
 		</div>
 			<table class="admin-main">
 				<tr>
-					<td colspan="6" class="main">문의 관리</td>
+					<td colspan="7" class="main">문의 관리</td>
 				</tr>
 				<tr class="index">
 					<th>글번호</th>
 					<th>유저번호</th>
 					<th>제목</th>
-					<th>내용</th>
-					<th>작성일</th>
-					<th>첨부파일</th>
 					<th>문의유형</th>
-					<th>이메일</th>
+					<th>작성일</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${qnaList}" class="list">
-						<td>[[${vo.id}]]</td>
+					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]'">
+						<td>[[${vo.question_id}]]</td>
 						<td>[[${vo.user_id}]]</td>
 						<td>[[${vo.question_title}]]</td>
-						<td>[[${vo.question_content}]]</td>
-						<td>[[${#dates.format(vo.question_regdate,'yy-MM-dd(E) HH:mm')}]]</td>
-						<td>[[${vo.question_add}]]</td>
 						<td>[[${vo.inquiryType}]]</td>
-						<td>[[${vo.email}]]</td>
+						<td>[[${#dates.format(vo.question_regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 					</tr>
 				</th:block>
 			</table>
+			<div class="pageList">
+				<div>[(${qv.pageList})]</div>
+			</div>
+			<form th:action="@{/admin/qna}" method="get" class="QuestionSearch">
+				<input type="hidden" name="p" th:value="${ppv.p}" />
+				<input type="hidden" name="s" th:value="${ppv.s}" />
+				<input type="hidden" name="b" th:value="${ppv.b}" />
+				<select name="field" id="field">
+					<option value="question_title">제목</option>
+					<option value="inquiryType">문의유형</option>
+				</select>
+				<input type="text" name="search" id="search"/>
+				<input type="submit" value="검색"/>
+			</form>
 	</div>
 </body>
 </html>
