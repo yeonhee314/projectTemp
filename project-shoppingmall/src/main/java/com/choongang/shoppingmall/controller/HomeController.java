@@ -181,12 +181,15 @@ public class HomeController {
 	
 		//장바구니 목록 확인
 		@GetMapping("/shoping-cart.html")
-	    public String cartList(HttpSession session, Model model) throws SQLException {
-	        Integer userId = (Integer) session.getAttribute("userId");
+	    public String shopingCart(HttpSession session, Model model) throws SQLException {
+	        
+			Integer userId = (Integer) session.getAttribute("userId");
 	 
 	        List<CartVO> cartItems = cartService.getCartItems(userId);
+	        int itemCount = cartService.getCartItemCount(userId);//장바구니 개수 출력 
 	        
 	        UserVO userVO = getUserInfo();
+	        
 	        
 	        if (userId == null) {
 	            return "redirect:/login"; // 로그인 안된 경우 로그인 페이지로 리다이렉트
@@ -200,6 +203,7 @@ public class HomeController {
 		        model.addAttribute("cartItems", cartItems);
 		        model.addAttribute("totalPrice", totalPrice);
 		        model.addAttribute("uservo", userVO);
+		        model.addAttribute("itemCount", itemCount);
 	     
 	        //log.info("로그"+cartItems);
 	       

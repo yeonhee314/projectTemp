@@ -31,5 +31,13 @@
 	UPDATE cart SET cart_count = #{cartCount} 
 	WHERE cart_id = #{cartId} 
 	</update>
+	
+	<!-- 장바구니에 담긴 상품 개수 가져오기 -->
+    <select id="getCartItemCount" resultType="int" parameterType="int">
+        SELECT COUNT(*) 
+        FROM cart 
+        WHERE user_id = #{userId}
+    </select>
+	
 
 	</mapper>
