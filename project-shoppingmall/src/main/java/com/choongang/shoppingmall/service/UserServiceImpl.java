@@ -142,4 +142,22 @@ public class UserServiceImpl implements UserService{
 		return countPhone;
 	}
 	
+	//아이디로 회원정보 확인
+	@Override
+	public UserVO getUserById(int userId) throws SQLException {
+	
+			return userDAO.getUserById(userId);
+		
+	}
+	//회원정보 수정
+	@Transactional
+	public UserVO updateUser(UserVO userVO) throws SQLException {
+	
+			userDAO.updateUser(userVO);
+			return userVO;
+		
+	}
+	
+	
+	
 }

@@ -49,4 +49,22 @@
 		select count(*) from users where phone=#{phone}
 	</select>
 	
+	<!-- 사용자 ID로 회원 정보 조회 -->
+	<select id="getUserById" parameterType="int" resultType="UserVO">
+		select * from users where user_id=#{userId}
+	</select>
+	
+	<!-- 사용자 정보 업데이트-->
+	<update id="updateUser" parameterType="UserVO">
+		 UPDATE users
+        SET password = #{password},
+       		nickname = #{nickname},
+       		phone = #{phone},
+         	birth_date = #{birth_date},
+         	email = #{email},
+            news_email = #{news_email}
+        WHERE user_id=#{user_id}
+	</update>
+	
+	
 </mapper>  

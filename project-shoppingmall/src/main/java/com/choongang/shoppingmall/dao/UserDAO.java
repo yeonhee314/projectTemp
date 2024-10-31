@@ -23,4 +23,9 @@ public interface UserDAO {
 	int selectCountByNickname(String nickname) throws SQLException;
 	// 동일한 핸드폰의 개수를 센다.(핸드폰 중복확인)
 	int selectCountByPhone(String phone) throws SQLException;
+	
+	// id로 유저 정보 확인
+	UserVO getUserById(int userId)throws SQLException;
+	// 유저 정보 업데이트
+	void updateUser(UserVO userVO);
 }

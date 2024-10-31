@@ -1,6 +1,8 @@
 package com.choongang.shoppingmall.service;
 
 
+import java.sql.SQLException;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.choongang.shoppingmall.vo.UserVO;
@@ -13,4 +15,7 @@ public interface UserService extends UserDetailsService{
 	int selectCountByEmail(String email);  // 이메일 중복확인
 	int selectCountByNickname(String nickname);  // 닉네임 중복확인
 	int selectCountByPhone(String phone);  // 핸드폰 중복확인
+	
+	UserVO getUserById(int userId) throws SQLException; //아이디로 회원정보 확인
+	UserVO updateUser(UserVO userVO) throws SQLException;
 }

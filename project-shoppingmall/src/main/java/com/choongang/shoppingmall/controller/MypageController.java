@@ -1,14 +1,17 @@
 package com.choongang.shoppingmall.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UserService;
@@ -16,6 +19,8 @@ import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MypageController {
@@ -87,4 +92,35 @@ public class MypageController {
 		
 		return "/my-question.html";
 	}
+	
+	// 회원 정보 확인
+		@GetMapping("/my-modify.html")
+		public String getProfile(HttpSession session,Model model) throws SQLException {
+			if(!isUserLoggedin())
+				return "redirect:/login";
+			UserVO userVO = getUserInfo();
+			boolean isLogin = isUserLoggedin();
+			
+			int userId=(int) session.getAttribute("userId");
+			UserVO user = userService.getUserById(userId);
+			
+			//model.addAttribute("list", list);
+			model.addAttribute("uservo", userVO);
+			model.addAttribute("isLogin", isLogin);
+			model.addAttribute("user", user);
+			
+			return "/my-modify.html";
+		}
+	//회원 정보 수정
+		@PostMapping("/updateProfile")
+		public String updateProfile(UserVO userVO,HttpSession session) throws SQLException {
+			int userId=(int) session.getAttribute("userId");
+			userVO.setUser_id(userId);
+			userService.updateUser(userVO);
+			
+			
+			return "redirect:/my-modify.html";
+			
+		}
+		
 }
