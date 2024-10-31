@@ -44,4 +44,8 @@ public class CartService {
 	public void updateCart(CartVO cartVO) {
 		cartMapper.updateCart(cartVO);
 	}
+	
+	 public int getCartItemCount(int userId) {
+	        return cartMapper.getCartItemCount(userId);
+	    }
 }
