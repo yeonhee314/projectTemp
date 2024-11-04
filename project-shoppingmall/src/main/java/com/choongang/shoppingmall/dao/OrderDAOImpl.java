@@ -66,10 +66,10 @@ public class OrderDAOImpl implements OrderDAO {
 	 // 사용자 ID에 따른 주문 목록 조회
 	
 	@Override
-	public List<OrdersVO> selectOrdersByUserId(Integer userId) {
-	    log.info("사용자 ID: {}에 대한 주문 목록 조회 시작", userId);
-	    List<OrdersVO> ordersList = sqlSession.selectList("com.choongang.shoppingmall.dao.OrdersDAO.selectOrdersByUserId", userId);
-	    log.info("사용자 ID: {}에 대한 주문 목록 조회 완료, 주문 개수: {}", userId, ordersList.size());
+	public List<OrdersVO> selectOrdersByUserId(Integer user_id) {
+	    log.info("사용자 ID: {}에 대한 주문 목록 조회 시작", user_id);
+	    List<OrdersVO> ordersList = sqlSession.selectList("com.choongang.shoppingmall.dao.OrdersDAO.selectOrdersByUserId", user_id);
+	    log.info("사용자 ID: {}에 대한 주문 목록 조회 완료, 주문 개수: {}", user_id, ordersList.size());
 	    return ordersList;
 	}
 

@@ -5,19 +5,42 @@
 <title>주문 결제 페이지</title>
 <link rel="stylesheet" type="text/css" href="/css/styles.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<!-- 포트원 결제 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <style>
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
 body {
-	background-color: #FFFFFF;
+	-webkit-font-smoothing: antialiased;
+	min-width: 1240px;
 	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+body.scrollOff {
+	overflow: hidden;
+	touch-action: none;
 }
 
 .container {
-	max-width: 800px;
+	width: 1280px;
 	margin: 0 auto;
-	padding: 20px;
+}
+
+.container:before, .container:after {
+	content: "";
+	display: table;
+}
+
+.container:after {
+	clear: both;
 }
 
 h1 {
@@ -82,17 +105,24 @@ th, td {
 </head>
 <body>
 
- <!-- 상품 정보를 숨겨진 필드로 설정 -->
-<input type="hidden" id="productName" th:value="${productvo != null ? productvo.product_name : ''}" />
-<input type="hidden" id="productPrice" th:value="${productvo != null ? productvo.product_price : ''}" />
-<!-- 사용자 정보 숨겨진 필드로 설정-->
-<input type="hidden" id="userName" th:value="${uservo != null ? uservo.name : ''}" />
-<input type="hidden" id="userPhone" th:value="${uservo != null ? uservo.phone : ''}" />
-<input type="hidden" id="userAddress" th:value="${uservo != null ? uservo.address : ''}" />
-<input type="hidden" id="userPostcode" th:value="${uservo != null ? uservo.postcode : ''}" />
-<input type="hidden" id="userEmail" th:value="${uservo != null ? uservo.email : ''}" />
+	<!-- 상품 정보를 숨겨진 필드로 설정 -->
+	<input type="hidden" id="productName"
+		th:value="${productvo != null ? productvo.product_name : ''}" />
+	<input type="hidden" id="productPrice"
+		th:value="${productvo != null ? productvo.product_price : ''}" />
+	<!-- 사용자 정보 숨겨진 필드로 설정-->
+	<input type="hidden" id="userName"
+		th:value="${uservo != null ? uservo.name : ''}" />
+	<input type="hidden" id="userPhone"
+		th:value="${uservo != null ? uservo.phone : ''}" />
+	<input type="hidden" id="userAddress"
+		th:value="${uservo != null ? uservo.address : ''}" />
+	<input type="hidden" id="userPostcode"
+		th:value="${uservo != null ? uservo.postcode : ''}" />
+	<input type="hidden" id="userEmail"
+		th:value="${uservo != null ? uservo.email : ''}" />
 
-
+	<!-- 주문서 컨테이너 시작 *********************************** -->
 	<div class="container">
 		<h1>주문/결제</h1>
 
@@ -133,6 +163,8 @@ th, td {
 		</div>
 
 
+		<!-- 주문 상품 목록 -->
+
 		<h3>주문 상품 목록</h3>
 		<div class="section">
 			<form th:action="@{/shoping-cart.html}" method="get">
@@ -148,17 +180,25 @@ th, td {
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="item : ${cartItems}">
-							<!--  <td th:text="${item.product_name}"></td> 사진 변수명 확인후 기입 -->
-							<td th:text="${item.productName}"></td>
-							<td th:text="${item.productOption}"></td>
-							<td th:text="${item.cartCount}"></td>
-							<td th:text="${item.productPrice}"></td>
+						<tr th:each="item, iterStat : ${cartItems}">
+							<!-- 상품명 -->
+							<td th:text="${item != null ? item.productName : ''}"></td>
+							<!-- 옵션 -->
+							<td th:text="${item != null ? item.productOption : ''}"></td>
+							<!-- 수량을 인덱스로 가져옴 -->
+							<td th:text="${cartCount[iterStat.index]}"></td>
+							<!-- 상품 가격 -->
 							<td
-								th:text="${#numbers.formatInteger(item.productPrice * item.cartCount, 3,'COMMA')} + '원'"></td>
+								th:text="${item != null && item.productPrice != null ? #numbers.formatCurrency(item.productPrice) : ''}"></td>
+							<!-- 총 상품 금액  -->
+							<td
+								th:text="${item != null && item.productPrice != null && item.cartCount != null ? #numbers.formatCurrency(item.productPrice * item.cartCount) : ''}"></td>
+							<!-- 배송비 -->
 							<td>무료배송</td>
 						</tr>
 					</tbody>
+					<!-- ********* 총 상품 금액 호출 메서드 <td><span th:text="${#numbers.formatCurrency(totalAmount)}"></span></td>  -->
+
 				</table>
 			</form>
 			<hr>
@@ -196,9 +236,13 @@ th, td {
 			</p>
 			<hr>
 		</div>
-
 		<button id="paymentButton" onclick="requestPayment()">결제하기</button>
 	</div>
+	<!-- 주문서 컨테이너 끝 *********************************** -->
+
+	<!-- 결제 배너 시작 -->
+
+	<!-- 결제 배너 끝 -->
 
 	<script>
 		function showInputField(select) {
@@ -210,61 +254,64 @@ th, td {
 				inputField.style.display = 'none';
 			}
 		}
-		
+
 		function requestPayment() {
-	        const IMP = window.IMP;
-	        IMP.init('imp13623334'); // 가맹점 키로 초기화
+			const IMP = window.IMP;
+			IMP.init('imp13623334'); // 가맹점 키로 초기화
 
-	        // 숨겨진 필드에서 값 가져오기
-	        const productName = document.getElementById('productName').value;
-	        const productPrice = document.getElementById('productPrice').value;
-	        const name = document.getElementById("userName").value;
-	        const phone = document.getElementById("userPhone").value;
-	        const address = document.getElementById("userAddress").value;
-	        const postcode = document.getElementById("userPostcode").value;
-	        const email = document.getElementById("userEmail").value;
+			// 숨겨진 필드에서 값 가져오기
+			const productName = document.getElementById('productName').value;
+			const productPrice = document.getElementById('productPrice').value;
+			const name = document.getElementById("userName").value;
+			const phone = document.getElementById("userPhone").value;
+			const address = document.getElementById("userAddress").value;
+			const postcode = document.getElementById("userPostcode").value;
+			const email = document.getElementById("userEmail").value;
 
-	        // 결제 요청 데이터 로그
-	        console.log("결제 요청 데이터:", {
-	            productName: productName,
-	            productPrice: productPrice,
-	            name: name,
-	            phone: phone,
-	            address: address,
-	            postcode: postcode,
-	            email: email,
-	            merchant_uid: `mid_${new Date().getTime()}`
-	            
-	            
-	        });
-	        // 상품 데이터 체크 콘솔 로그 
-	        console.log("숨겨진 필드 값:", {
-	            productName: document.getElementById('productName').value,
-	            productPrice: document.getElementById('productPrice').value
-	        });
-	        // 결제 요청
-	        IMP.request_pay({
-	            pg: 'nice_v2', // 결제 서비스
-	            pay_method: 'card', // 결제 수단
-	            merchant_uid: `mid_${new Date().getTime()}`, // 고유 주문번호
-	            name: productName, // 상품명
-	            amount: productPrice, // 결제 금액
-	            buyer_name: name, // 구매자 이름
-	            buyer_tel: phone, // 구매자 전화번호
-	            buyer_addr: address, // 구매자 주소
-	            buyer_postcode: postcode, // 구매자 우편번호
-	            buyer_email: email, // 구매자 이메일
-	        }, function(response) {
-	            console.log("결제 응답:", response);
+			// 결제 요청 데이터 콘솔 로그
+			console.log("결제 요청 데이터:", {
+				productName : productName,
+				productPrice : productPrice,
+				name : name,
+				phone : phone,
+				address : address,
+				postcode : postcode,
+				email : email,
+				merchant_uid : `mid_${new Date().getTime()}`
 
-	            if (response.success) {
-	                alert("결제 완료! 고유번호: " + response.imp_uid);
-	                window.location.href = 'orderComplete.html'; // 결제 후 이동할 페이지
-	            } else {
-	                alert("결제 실패: " + response.error_msg);
-	            }
-	        });
-	    }
+			});
+			// 상품 데이터 체크 콘솔 로그 
+			console.log("숨겨진 필드 값:", {
+				productName : document.getElementById('productName').value,
+				productPrice : document.getElementById('productPrice').value
+
+			});
+			// 결제 요청
+			IMP.request_pay({
+				pg : 'nice_v2', // 결제 서비스
+				pay_method : 'card', // 결제 수단
+				merchant_uid : `mid_${new Date().getTime()}`, // 고유 주문번호
+				name : productName, // 상품명
+				amount : productPrice, // 결제 금액
+				buyer_name : name, // 구매자 이름
+				buyer_tel : phone, // 구매자 전화번호
+				buyer_addr : address, // 구매자 주소
+				buyer_postcode : postcode, // 구매자 우편번호
+				buyer_email : email, // 구매자 이메일
+			}, 
+		function(response) {
+
+			console.log("결제 응답:", response);
+			if (response.success) {
+				alert("결제 완료! 고유번호: " + response.imp_uid);
+				window.location.href = 'orderComplete.html'; // 결제 후 이동할 페이지
+			} else {
+				alert("결제 실패: " + response.error_msg);
+				}
+				
+			});
+		}
+
 	</script>
 </body>
 </html>

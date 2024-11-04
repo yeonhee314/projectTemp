@@ -14,7 +14,7 @@
 			VALUES (#{order_complete_id}, #{order_id}, #{product_id}, #{quantity}, #{total_price})
 		</insert>
 	<!-- 주문 조회 -->
-		<select id="selectOrders" parameterType="com.choongang.shoppingmall.vo.OrdersVO">
+		<select id="selectOrdersByUserId" parameterType="com.choongang.shoppingmall.vo.OrdersVO">
 			SELECT order_id, user_id, order_date 
 			FROM orders
 			WHERE order_id = #{order_id}

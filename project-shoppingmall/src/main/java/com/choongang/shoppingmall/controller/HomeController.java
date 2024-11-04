@@ -3,6 +3,7 @@ package com.choongang.shoppingmall.controller;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CartService;
 import com.choongang.shoppingmall.service.CategoryService;
+import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
@@ -27,6 +29,7 @@ import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.CartVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
+import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
@@ -49,6 +52,8 @@ public class HomeController {
 	private WishService wishService;
 	@Autowired 
 	private UserService userService;
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private CartService cartService;
 	
@@ -236,29 +241,24 @@ public class HomeController {
 
 	
 	@GetMapping("/orders.html")
-	public String orders(Model model) {
-	    UserVO userVO = getUserInfo(); // 로그인 유저 정보 가져오기
-	    
-	    // 유저가 로그인했는지 확인
-	    if (userVO != null && userVO.getUser_id() != 0) {
-	        // 카트에 있는 상품 정보 가져오기
-	        List<CartVO> cartItems = cartService.getCartItems(userVO.getUser_id()); // 카트 상품 정보 가져오기
-	        
-	        	// 카트에 상품이 있는 경우 첫 번째 상품을 기준으로 상품 정보 가져오기
-	        if (!cartItems.isEmpty()) {
-	        	int product_id = cartItems.get(0).getProductId();
-	        	ProductVO productVO = productService.selectByProductId(product_id);
-	        
-	        // 모델에 추가
-	        model.addAttribute("uservo", userVO);
-	        model.addAttribute("productvo",productVO);
-	        model.addAttribute("cartItems", cartItems);
-	       }
-	    } else {
-	        // 유저가 로그인하지 않았거나, 유저 ID가 0인 경우 처리
-	        return "login"; 
-	    }
-	    
+	public String orders(Model model)  {
+		UserVO userVO = getUserInfo(); // 로그인 유저 정보 가져오기
+		
+		// 유저가 로그인했는지 확인
+		if (userVO == null || userVO.getUser_id() == 0) {
+			return"login"; // 로그인 페이지로 이동
+		}
+		
+		List<OrdersVO> ordersList = orderService.getOrdersByUserId(userVO.getUser_id());
+		List<CartVO> cartItems = cartService.getCartItems(userVO.getUser_id());
+		List<Integer> cartCount = cartItems.stream().map(CartVO::getCartCount).collect(Collectors.toList());
+		ProductVO productVO = productService.selectByProductId(cartItems.get(0).getProductId());
+		model.addAttribute("uservo",userVO);
+		model.addAttribute("productvo", productVO);
+		model.addAttribute("ordersList", ordersList);
+		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("cartCount",cartCount);
+		
 	    return "orders"; // orders.html로 이동
 	}
 

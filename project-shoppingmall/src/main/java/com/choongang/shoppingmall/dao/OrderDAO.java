@@ -22,9 +22,9 @@ public interface OrderDAO {
 	OrdersVO selectOrderById(int orderId) throws SQLException;
 
 	// 사용자 ID에 따른 주문 목록 조회
-	List<OrdersVO> selectOrdersByUserId(Integer userId);
+	List<OrdersVO> selectOrdersByUserId(Integer user_id) throws SQLException;
 
 	// 주문 ID에 대한 주문 완료 정보를 조회합니다.
-	List<Order_CompleteVO> selectOrderCompleteByOrderId(int orderId);
+	List<Order_CompleteVO> selectOrderCompleteByOrderId(int orderId) throws SQLException;
 	
 }

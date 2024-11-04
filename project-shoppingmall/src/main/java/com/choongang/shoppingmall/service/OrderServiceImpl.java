@@ -21,18 +21,26 @@ public class OrderServiceImpl implements OrderService{
 
 	// 주문서 작성
 	@Override
-	public void createOrder(OrdersVO ordersVO) throws SQLException {
+	public void createOrder(OrdersVO ordersVO)  {
 		log.info("주문서 작성 시작 : {} ", ordersVO);
-		orderDAO.insertOrder(ordersVO);
+		try {
+			orderDAO.insertOrder(ordersVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		log.info("주문서 작성 완료 : {} ", ordersVO);
 		
 		
 	}
 	// 주문서 작성
 	@Override
-	public void createOrder_Complete(Order_CompleteVO order_CompleteVO) throws SQLException {
+	public void createOrder_Complete(Order_CompleteVO order_CompleteVO)  {
 		log.info("주문서 작성 시작 : {} ", order_CompleteVO);
-		orderDAO.insertOrderCompleteVO(order_CompleteVO);
+		try {
+			orderDAO.insertOrderCompleteVO(order_CompleteVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		log.info("주문서 작성 완료 : {} ", order_CompleteVO);
 		
 		
@@ -41,24 +49,39 @@ public class OrderServiceImpl implements OrderService{
 
 	// 주문 조회
 	@Override
-	public OrdersVO getOrderById(int orderid, int user_id) throws SQLException {
+	public OrdersVO getOrderById(int orderid, int user_id) {
 		log.info("주문서 조회 시작 : {} ", orderid);
-		OrdersVO ordersVO = orderDAO.selectOrderById(orderid);
+		OrdersVO ordersVO = null;
+		try {
+			ordersVO = orderDAO.selectOrderById(orderid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		log.info("주문서 조회 완료 : {} ", ordersVO);
 		return ordersVO;
 	}
 	@Override
-	public List<Order_CompleteVO> getOrderCompleteByOrderId(int orderId) throws SQLException {
+	public List<Order_CompleteVO> getOrderCompleteByOrderId(int orderId) {
 	    log.info("주문 완료 조회 시작: orderId = {}", orderId);
-	    List<Order_CompleteVO> orderCompleteList = orderDAO.selectOrderCompleteByOrderId(orderId); // DAO에서 구현 필요
+	    List<Order_CompleteVO> orderCompleteList = null;
+		try {
+			orderCompleteList = orderDAO.selectOrderCompleteByOrderId(orderId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	    log.info("주문 완료 조회 완료: {}", orderCompleteList);
 	    return orderCompleteList;
 	}
 
 	@Override
-	public List<OrdersVO> getUserById(Integer userId) throws SQLException {
-	    log.info("사용자 ID에 따른 주문 목록 조회 시작 : userId = {}", userId);
-	    List<OrdersVO> ordersList = orderDAO.selectOrdersByUserId(userId); // DAO에서 구현 필요
+	public List<OrdersVO> getOrdersByUserId(Integer user_id) {
+	    log.info("사용자 ID에 따른 주문 목록 조회 시작 : user_id = {}", user_id);
+	    List<OrdersVO> ordersList = null;
+		try {
+			ordersList = orderDAO.selectOrdersByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	    log.info("사용자 ID에 따른 주문 목록 조회 완료 : {} ", ordersList);
 	    return ordersList;
 	}
