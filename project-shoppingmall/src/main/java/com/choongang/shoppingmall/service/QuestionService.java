@@ -1,6 +1,5 @@
 package com.choongang.shoppingmall.service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +13,8 @@ public interface QuestionService {
 	
 	// 문의 내역 저장
 	void addToQuestion(QuestionVO vo);
+	// 문의 접수상태 변경
+	void updateStatus(QuestionVO vo);
 	// 문의 내역 삭제
 	void deleteToQuestion(QuestionVO vo);
 	// 유저 아이디 별 문의 내역 가져오기

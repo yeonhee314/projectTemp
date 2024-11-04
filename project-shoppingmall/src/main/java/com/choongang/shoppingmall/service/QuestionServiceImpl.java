@@ -120,4 +120,13 @@ public class QuestionServiceImpl implements QuestionService{
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public void updateStatus(QuestionVO vo) {
+		try {
+			questionDAO.updateStatus(vo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		log.info("상태변경 : {}", vo);
+	}
 }

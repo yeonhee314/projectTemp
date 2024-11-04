@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.shoppingmall.dao.QuestionCommentDAO">
+    <select id="selectCommentById" parameterType="int" resultType="QuestionCommentVO">
+        select * from question_comment where question_id = #{question_id}
+    </select>
+    <!-- 문의 답변 저장 -->
+    <insert id="addToComment" parameterType="QuestionCommentVO">
+        insert into question_comment (question_cmt_id, question_id, question_cmt, cmt_regdate)
+        values(QUESTION_CMT_ID_SEQ.nextval, #{question_id}, #{question_cmt},sysdate)
+    </insert>
+    <update id="updateComment" parameterType="QuestionCommentVO">
+        update question_comment set question_cmt = #{question_cmt}, cmt_regdate = sysdate where question_cmt_id = #{question_cmt_id}
+    </update>
+    <!-- 문의 답변 삭제 -->
+    <delete id="deleteToComment" parameterType="int">
+        delete from question_comment where question_cmt_id=#{question_cmt_id}
+    </delete>
+    
+</mapper>

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
@@ -29,6 +30,7 @@ import com.choongang.shoppingmall.vo.FileVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
+import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserPagingVO;
 import com.choongang.shoppingmall.vo.UserVO;
@@ -49,6 +51,8 @@ public class AdminController {
 	@Autowired
 	private QuestionService questionService;
 	@Autowired
+	private QuestionCommentService questionCommentService;
+	
 	ResourceLoader resourceLoader;
 	
 	// 관리자 페이지 접근
@@ -299,7 +303,8 @@ public class AdminController {
 	@GetMapping("/admin/qna")
 	public String adminQna(@RequestParam (required = false, name = "field") String field,
 			@RequestParam (required = false, name = "search") String search,
-			@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
+			@ModelAttribute ProductPagingVO productPagingVO ,
+			Model model) {
 		PagingVO<QuestionVO> qv = questionService.getQuestionList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock(), field, search);
 		model.addAttribute("qv", qv);
 		model.addAttribute("ppv", productPagingVO);
@@ -311,9 +316,16 @@ public class AdminController {
 	}
 	// 문의글 상세
 	@GetMapping("/admin/qna/view")
-	public String adminQnaView(Integer question_id,Model model) {
-		model.addAttribute("question_id",question_id);
-		model.addAttribute("qna",questionService.selectById(question_id));
+	public String adminQnaView(@ModelAttribute QuestionVO questionVO,
+			@ModelAttribute UserVO userVO,
+			int question_id, int user_id, Model model) {
+		model.addAttribute("question_id", question_id);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("qna",questionService.selectById(questionVO.getQuestion_id()));
+		model.addAttribute("user",usersBoardService.selectByID(questionVO.getUser_id()));
+		model.addAttribute("cmt",questionCommentService.selectCommentById(question_id));
+		model.addAttribute("newLine", "\n");
+		model.addAttribute("br", "<br>");
 		return "admin-qna-view";
 	}
 	@GetMapping("/adminQnaOk")
@@ -322,8 +334,34 @@ public class AdminController {
 	}
 	// 문의 답변 저장
 	@PostMapping("/adminQnaOk")
-	public String adminQnaOkPost() {
-		
+	public String adminQnaOkPost(@ModelAttribute(value = "vo") QuestionCommentVO vo,
+			@ModelAttribute QuestionVO questionVO) {
+		questionCommentService.addToQuestion(vo);
+		questionService.updateStatus(questionVO);
+		return "redirect:/admin/qna";
+	}
+	@GetMapping("/adminQnaUpdateOk")
+	public String aadminQnaUpdateOkGet() {
+		return "redirect:/admin/qna";
+	}
+	// 문의 답변 수정
+	@PostMapping("/adminQnaUpdateOk")
+	public String adminQnaUpdateOkPost(@ModelAttribute(value = "vo") QuestionCommentVO vo,
+			@ModelAttribute QuestionVO questionVO,Model model) {
+		questionCommentService.updateComment(vo);
+		questionService.updateStatus(questionVO);
+		return "redirect:/admin/qna";
+	}
+	@GetMapping("/adminQnaDeleteOk")
+	public String adminQnaDeleteOkGet() {
+		return "redirect:/admin/qna";
+	}
+	// 문의 답변 삭제
+	@PostMapping("/adminQnaDeleteOk")
+	public String adminQnaDeleteOkPost(@ModelAttribute QuestionCommentVO vo,
+			@ModelAttribute QuestionVO questionVO) {
+		questionCommentService.deleteToQuestion(vo);
+		questionService.updateStatus(questionVO);
 		return "redirect:/admin/qna";
 	}
 }

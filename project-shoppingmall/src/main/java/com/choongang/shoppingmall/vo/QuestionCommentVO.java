@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Question_commentVO {
+public class QuestionCommentVO {
 	
 	private int question_cmt_id;	// 문의댓글 번호
 	private int question_id;	// 문의글 번호

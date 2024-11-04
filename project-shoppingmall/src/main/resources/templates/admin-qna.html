@@ -41,14 +41,16 @@
 					<th>제목</th>
 					<th>문의유형</th>
 					<th>작성일</th>
+					<th>답변여부</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]'">
+					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]&user_id=[[${vo.user_id}]]'">
 						<td>[[${vo.question_id}]]</td>
 						<td>[[${vo.user_id}]]</td>
 						<td>[[${vo.question_title}]]</td>
 						<td>[[${vo.inquiryType}]]</td>
 						<td>[[${#dates.format(vo.question_regdate,'yy-MM-dd(E) HH:mm')}]]</td>
+						<td>[[${vo.question_status}]]</td>
 					</tr>
 				</th:block>
 			</table>

@@ -12,7 +12,9 @@
 .customer {
     padding: 20px;
 }
-
+.question_status{
+	width: 130px;
+}
 table {
     width: 100%;
     border-collapse: collapse;
