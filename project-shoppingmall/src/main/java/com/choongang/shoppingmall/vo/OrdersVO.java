@@ -21,5 +21,4 @@ public class OrdersVO {
 	private int user_id;		// 회원 고유번호
 	private int product_id;		// 상품 고유번호
 	private int category_id;	// 카테고리 고유번호
-	private int cartId;			// 장바구니 고유번호
 }
