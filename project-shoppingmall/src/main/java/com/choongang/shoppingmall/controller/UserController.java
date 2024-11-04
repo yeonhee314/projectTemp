@@ -148,4 +148,37 @@ public class UserController {
     		return "find-username";
     	}
     }
+    
+    //비밀번호찾기페이지
+    @GetMapping("/find-password")
+    public String findPasswordForm() {
+    	return "find-password";
+    }
+    
+    //비밀번호찾기(사용자조회)
+    @PostMapping("/find-password")
+    public String findPassword(@RequestParam("username") String username,
+    							@RequestParam("phone") String phone,
+    							@RequestParam("email") String email,
+    							Model model) {
+    	UserVO user = userService.selectByUserPW(username, phone, email);
+    	
+    	if (user != null) {
+    		model.addAttribute("username", username);
+    		return "reset-password";
+    	} else {
+    		model.addAttribute("error", "입력한 정보와 일치하는 계정이 없습니다");
+    		return "find-password";
+    	}
+    }
+    
+    //비밀번호찾기(새비밀번호변경)
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam("username") String username,
+    							@RequestParam("password") String password,
+    							Model model) {
+    	userService.updatePassword(username, password);
+    	model.addAttribute("message", "비밀번호가 변경되었습니다.");
+    	return "login";
+    }
 }

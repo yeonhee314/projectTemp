@@ -169,6 +169,14 @@
                     alert('이메일 인증은 필수입니다.');
                     return; // 인증되지 않으면 제출 중단
                 }
+                
+             	// 비밀번호 확인 체크
+                const password = $('#password').val();
+                const confirmPassword = $('#confirm_password').val();
+                if (password !== confirmPassword) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return; // 비밀번호가 일치하지 않으면 제출 중단
+                }
 
                 const formData = $(this).serialize(); // 폼 데이터 직렬화
 

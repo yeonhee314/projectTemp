@@ -15,6 +15,10 @@ public interface UserDAO {
 	UserVO selectByUsername(String username) throws SQLException;
 	//아이디 찾기(이름과 이메일을 받아서 처리)
 	String selectByForgetUsername(String name, String email) throws SQLException;
+	//비밀번호찾기(사용자조회 : 아이디,핸드폰,이메일 받아서 처리)
+	UserVO selectByUserPW(String username, String phone, String email) throws SQLException;
+	//비밀번호찾기(새비밀번호변경)
+	void updatePassword(String username, String password) throws SQLException;
 	// 동일한 아이디의 개수를 센다.(아이디 중복확인)
 	int selectCountByUsername(String username) throws SQLException;
 	// 동일한 이메일의 개수를 센다.(이메일 중복확인)

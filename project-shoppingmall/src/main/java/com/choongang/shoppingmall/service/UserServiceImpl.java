@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
 		if(userVO != null) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			userVO.setPassword(passwordEncoder.encode(userVO.getPassword()));
-			//userVO.setUser_role("ROLE_USER");
+			userVO.setUser_role("ROLE_USER");
 			try {
 				userDAO.insert(userVO);
 			} catch (SQLException e) {
@@ -90,6 +90,35 @@ public class UserServiceImpl implements UserService{
 	        e.printStackTrace();
 	        return null;
 	    }
+	}
+	
+	//비밀번호찾기(사용자조회 : 아이디, 핸드폰, 이메일 입력받아서)
+	@Override
+	public UserVO selectByUserPW(String username, String phone, String email) {
+		log.info("비밀번호 찾기 사용자조회 요청: 아이디 = {}, 핸드폰 = {}, 이메일 = {}", username, phone, email);
+		try {
+			return userDAO.selectByUserPW(username, phone, email);
+		} catch (SQLException e) {
+			log.error("비밀번호 찾기 사용자조회 중 오류 발생: {}", e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	//비밀번호찾기(새비밀번호변경 : 암호화하여 데이터저장)
+	@Override
+	public void updatePassword(String username, String password) {
+		log.info("비밀번호 변경 요청: 아이디 = {}, 비밀번호 = {}", username, password);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(password);
+		try {
+			log.info("비밀번호 변경 성공: 아이디 = {}, 비밀번호 = {}", username, encodedPassword);
+			userDAO.updatePassword(username, encodedPassword);
+		} catch (SQLException e) {
+			log.error("비밀번호 변경 중 오류 발생: {}", e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//아이디 중복 확인

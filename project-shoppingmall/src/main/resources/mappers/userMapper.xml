@@ -14,7 +14,7 @@
         address, address_detail)
 		values (
 			users_user_id_seq.nextval,#{username},#{password},#{nickname},#{name},
-			#{email},#{phone},SYSDATE,#{news_email},#{gender},#{birth_date},'N','ROLE_USER',
+			#{email},#{phone},SYSDATE,#{news_email},#{gender},#{birth_date},'N',#{user_role},
 			'기본',0,#{postcode},#{address},#{address_detail}
 		)
 	</insert>
@@ -28,6 +28,16 @@
 	<select id="selectByForgetUsername" parameterType="Map" resultType="String">
 		select username from users where name=#{name} and email=#{email}
 	</select>
+	
+	<!-- 비밀번호찾기(사용자조회) -->
+	<select id="selectByUserPW" parameterType="Map" resultType="UserVO">
+		select * from users where username=#{username} and phone=#{phone} and email=#{email}
+	</select>
+	
+	<!-- 비밀번호찾기(새비밀번호로 변경) -->
+	<update id="updatePassword" parameterType="Map">
+		update users set password=#{password} where username=#{username}
+	</update>
 	
 	<!-- 아이디 중복확인 -->
 	<select id="selectCountByUsername" resultType="int" parameterType="String">
