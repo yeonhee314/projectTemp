@@ -128,4 +128,15 @@ public class ReviewServiceImpl implements ReviewService{
 		}
 		return rv;
 	}
+
+	@Override
+	public int selectReviewCountByUserId(int user_id) {
+		int count = 0;
+			try {
+				count = reviewDAO.selectReviewCountByUserId(user_id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return count;
+	}
 }

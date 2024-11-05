@@ -42,6 +42,7 @@ select {
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 16px;
+    outline: none;
 }
 .cus_btn_wrap {
 	text-align: right;
@@ -73,3 +74,4 @@ select {
 .btn.black:hover {
     background-color: #0056b3;
 }
+
