@@ -1,6 +1,7 @@
 package com.choongang.shoppingmall.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,47 @@ public class ReviewServiceImpl implements ReviewService{
 		}
 		return vo;
 	}
-	
+	@Override
+	public int selectReviewTotalCount(HashMap<String, String> map) {
+		int count = 0;
+			try {
+				count = reviewDAO.selectReviewTotalCount(map);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return count;
+		}
+
+	@Override
+	public PagingVO<ReviewVO> selectReviewPage(int currentPage, int sizeOfPage, int sizeOfBlock, String field,
+			String search) {
+		PagingVO<ReviewVO> rv = null;
+		try {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("field", field == null || field.trim().length()==0 ? null : field);
+		map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = reviewDAO.selectReviewTotalCount(map);
+		rv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+		if(totalCount > 0) {
+			map.put("startNo", rv.getStartNo()+"");
+			map.put("endNo", rv.getEndNo()+"");
+			List<ReviewVO> list = reviewDAO.selectReviewPage(map);
+			rv.setList(list);
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rv;
+	}
+
+	@Override
+	public ReviewVO selectReviewByReviewId(int review_id) {
+		ReviewVO rv = null;
+		try {
+			rv = reviewDAO.selectReviewByReviewId(review_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rv;
+	}
 }

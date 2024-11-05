@@ -15,6 +15,7 @@ public interface ProductService {
 	PagingVO<ProductVO> getFilterProductList (int categoryId, int currentPage, int sizeOfPage, int sizeOfBlock);
 	// 상품명 중복세기
 	int selectCountByProductName(String product_name);
+	String selectProductNameById(int product_id);
 	void insert(ProductVO productVO);
 	void update(ProductVO productVO);
 	void delete(int product_id);

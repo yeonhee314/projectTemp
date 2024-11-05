@@ -175,6 +175,9 @@ $(function(){
 			<div class="admin-qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/review'">
+				후기관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
@@ -234,13 +237,14 @@ $(function(){
 						<td><img th:src="@{'/images/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
-						<td>[[${cv.list[vo.category_id-1].category_name}]]</td>
+						<td>[[${vo.category_id}]]</td>
 						<td>[[${vo.product_stock}]]</td>
 						<td>[[${vo.product_status}]]</td>
 						<td>[[${#dates.format(vo.product_regDate,'yy/MM/dd HH:mm')}]]</td>
-						<td><form th:action="@{/pdDeleteOk}" method="post" class="pdDeleteForm">
-							<input type="hidden" name="product_id" th:value="${vo.product_id}"/>
-							<input type="submit" class="btn btn-light btn-sm" id="pdDeleteBtn" value="삭제"/>
+						<td>
+							<form th:action="@{/pdDeleteOk}" method="post" class="pdDeleteForm">
+								<input type="hidden" name="product_id" th:value="${vo.product_id}"/>
+								<input type="submit" class="btn btn-light btn-sm" id="pdDeleteBtn" value="삭제"/>
 							</form>
 						</td>
 					</tr>

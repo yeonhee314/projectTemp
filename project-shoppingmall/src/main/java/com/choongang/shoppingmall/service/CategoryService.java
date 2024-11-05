@@ -14,6 +14,8 @@ public interface CategoryService {
 	int selectCountByCategoryName(String category_name);
 	// id로 카테고리 가져오기
 	CategoryVO selectCategoryId(int id);
+	
+	String selectCategoryNameById(int category_id);
 	// 한 페이지 얻기
 	AdminCategoryPagingVO<CategoryVO> getCategoryList(int currentPage, int sizeOfPage, int sizeOfBlock);
 	void insert(CategoryVO categoryVO);

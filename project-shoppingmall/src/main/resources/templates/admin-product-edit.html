@@ -60,6 +60,13 @@
 				$("#message").html("").css('color','black');
 			}
 	}
+	function priceCheck(){
+		let value = $("#product_price").val();
+		let price_regex = /^[1-9]+[0-9]+$/;
+		if(!price_regex.test(value)){ 
+			value = value.replace(/^0+/, '');
+		}
+	}
 </script>
 </head>
 <body>
@@ -76,6 +83,9 @@
 			</div>
 			<div class="admin-qna" onclick="location.href='/admin/qna'">
 				문의관리
+			</div>
+			<div class="admin-review" onclick="location.href='/admin/review'">
+				후기관리
 			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
@@ -115,7 +125,7 @@
 		<div class="price">
 			<div class="input-group mb-2">
 				<label class="input-group-text">정가</label>
-				<input type="number" name="product_price" id="product_price" th:value="${pd.product_price}" required="required" min="0" max="9999999"/>
+				<input type="number" name="product_price" id="product_price" onsubmit="priceCheck()" th:value="${pd.product_price}" required="required" min="0" max="9999999"/>
 				<span class="input-group-text">원</span>
 			</div>
 			<div class="input-group mb-2" id="discountDiv">

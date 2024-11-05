@@ -22,6 +22,7 @@ import com.choongang.shoppingmall.service.CategoryService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.QuestionService;
+import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
@@ -32,6 +33,7 @@ import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
+import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserPagingVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
@@ -52,8 +54,11 @@ public class AdminController {
 	private QuestionService questionService;
 	@Autowired
 	private QuestionCommentService questionCommentService;
+	@Autowired
+	private ReviewService reviewService;
 	
 	ResourceLoader resourceLoader;
+	
 	
 	// 관리자 페이지 접근
 	@GetMapping("/admin")
@@ -81,13 +86,18 @@ public class AdminController {
 	public String adminUserDetail(Integer user_id, Model model) {
 		model.addAttribute("user_id",user_id);
 		model.addAttribute("details", usersBoardService.selectByID(user_id));
+		model.addAttribute("qnaCount", questionService.selectQuestionCountByUserId(user_id));
 		return "admin-userdetails";
 	}
-	// 상품 목록 페이징
+	// 상품 관리
 	@GetMapping("/admin/products")
-	public String adminProducts(@RequestParam (required = false, name = "field") String field,
+	public String adminProducts(
+			@RequestParam (required = false, name = "field") String field,
 			@RequestParam (required = false, name = "search") String search,
-			@ModelAttribute ProductPagingVO productPagingVO ,Model model) {
+			@ModelAttribute ProductPagingVO productPagingVO,
+			@ModelAttribute CategoryVO categoryVO,
+			@ModelAttribute ProductVO productVO
+			, Model model) {
 		PagingVO<ProductVO> pv = productService.getProductList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock(), field, search);
 		// 카테고리 페이징
 		AdminCategoryPagingVO<CategoryVO> cv = categoryService.getCategoryList(productPagingVO.getCurrentPage(), productPagingVO.getSizeOfPage(), productPagingVO.getSizeOfBlock());
@@ -98,7 +108,6 @@ public class AdminController {
 		model.addAttribute("search", search);
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
-		model.addAttribute("cvo", new CategoryVO());
 		return "admin-products";
 	}
 	
@@ -318,12 +327,12 @@ public class AdminController {
 	@GetMapping("/admin/qna/view")
 	public String adminQnaView(@ModelAttribute QuestionVO questionVO,
 			@ModelAttribute UserVO userVO,
-			int question_id, int user_id, Model model) {
+			int question_id, Model model) {
+		QuestionVO qna = questionService.selectById(question_id);
 		model.addAttribute("question_id", question_id);
-		model.addAttribute("user_id", user_id);
-		model.addAttribute("qna",questionService.selectById(questionVO.getQuestion_id()));
-		model.addAttribute("user",usersBoardService.selectByID(questionVO.getUser_id()));
-		model.addAttribute("cmt",questionCommentService.selectCommentById(question_id));
+		model.addAttribute("qna", qna);
+		model.addAttribute("user",usersBoardService.selectByID(qna.getUser_id()));
+		model.addAttribute("cmt",questionCommentService.selectCommentById(qna.getQuestion_id()));
 		model.addAttribute("newLine", "\n");
 		model.addAttribute("br", "<br>");
 		return "admin-qna-view";
@@ -364,4 +373,34 @@ public class AdminController {
 		questionService.updateStatus(questionVO);
 		return "redirect:/admin/qna";
 	}
+	// 후기 관리
+		@GetMapping("/admin/review")
+		public String adminReview(@RequestParam (required = false, name = "field") String field,
+				@RequestParam (required = false, name = "search") String search,
+				@ModelAttribute ProductPagingVO ppv ,
+				Model model) {
+			PagingVO<ReviewVO> rv = reviewService.selectReviewPage(ppv.getCurrentPage(), ppv.getSizeOfPage(), ppv.getSizeOfBlock(), field, search);
+			model.addAttribute("ppv", ppv);
+			model.addAttribute("rv", rv);
+			model.addAttribute("field", field);
+			model.addAttribute("search", search);
+			model.addAttribute("newLine", "\n");
+			model.addAttribute("br", "<br>");
+			return "admin-review";
+		}
+		// 후기 상세
+		@GetMapping("/admin/review/view")
+		public String adminReViewView(@ModelAttribute ReviewVO reviewVO,
+				@ModelAttribute ProductVO productVO,
+				int review_id, Model model) {
+			ReviewVO rv = reviewService.selectReviewByReviewId(review_id);
+			model.addAttribute("review_id", review_id);
+			model.addAttribute("reviewVO", reviewVO);
+			model.addAttribute("rv", reviewService.selectReviewByReviewId(review_id));
+			model.addAttribute("pdname", productService.selectProductNameById(rv.getCategory_id()));
+			model.addAttribute("user", usersBoardService.selectByID(rv.getUser_id()));
+			model.addAttribute("newLine", "\n");
+			model.addAttribute("br", "<br>");
+			return "admin-review-view";
+		}
 }

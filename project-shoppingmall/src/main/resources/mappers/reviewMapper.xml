@@ -3,9 +3,22 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.shoppingmall.dao.ReviewDAO">
+	<!-- 리뷰 개수 카운트 -->
+	<select id="selectReviewTotalCount" resultType="int" parameterType="hashmap">
+		select count(*) from review
+		<where>
+			<if test="search != null">
+				${field} like '%'||#{search}||'%'
+			</if>
+		</where>
+	</select>
 	<!-- 1. 상품 id로 리뷰 가져오기 -->
 	<select id="selectReviewId" parameterType="int" resultType="ReviewVO">
 		select * from review where product_id=#{product_id}
+	</select>
+	<!-- 1. 상품 id로 리뷰 가져오기 -->
+	<select id="selectReviewByReviewId" parameterType="int" resultType="ReviewVO">
+		select * from review where review_id=#{review_id}
 	</select>
 	
 	<!-- 2. 평균 별점 계산해서 가져오기 -->
@@ -36,8 +49,34 @@
 			rnum >= #{startNo} and product_id=#{product_id}
 		]]>
 	</select>
-	
-	<!-- 5. user_id로 유저정보 가져오기 -->
+	<!-- 5. 한 페이지 얻기 -->
+	<select id="selectReviewPage" parameterType="hashmap" resultType="ReviewVO">
+		
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from review
+				<where>
+					<if test="search != null">
+						${field} like '%'||#{search}||'%'
+					</if>
+				</where>
+				order by review_id desc) Q
+			where
+			<![CDATA[
+				rownum<=#{endNo}
+				]]>
+		) R
+		where
+		<![CDATA[
+			rnum >= #{startNo}
+		]]>
+	</select>
+	<!-- 6. user_id로 유저정보 가져오기 -->
 	<select id="selectUserId" parameterType="int" resultType="UserVO">
 		select * from users where user_id = (select user_id from review where user_id=#{user_id})
 	</select>

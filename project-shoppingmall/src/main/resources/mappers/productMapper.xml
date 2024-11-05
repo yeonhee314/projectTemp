@@ -12,6 +12,10 @@
 			</if>
 		</where>
 	</select>
+	<!-- 갯수 세기 -->
+	<select id="selectProducts" resultType="ProductVO">
+		select * from product
+	</select>
 	<!-- 필터링된 상품 갯수 세기 -->
 	<select id="selectFilterProductCount" parameterType="int" resultType="int">
 		select count(*) from product where category_id=#{category_id}
@@ -19,6 +23,9 @@
 	<!-- id로 한개 얻기 -->
 	<select id="selectByProductId" parameterType="int" resultType="ProductVO">
 		select * from product where product_id=#{product_id}
+	</select>
+	<select id="selectProductNameById" parameterType="int" resultType="String">
+		select product_name from product where product_id=#{product_id}
 	</select>
 	<!-- 상품명 이름 개수 세기 -->
 	<select id="selectCountByProductName" parameterType="string" resultType="int">

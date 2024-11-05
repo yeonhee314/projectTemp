@@ -10,8 +10,11 @@ import com.choongang.shoppingmall.vo.QuestionVO;
 
 @Mapper
 public interface QuestionDAO {
+	// 문의글 총 개수
 	int selectQuestionCount(HashMap<String, String> map) throws SQLException;
+	// 문의 글번호로 가져오기
 	QuestionVO selectById(int question_id) throws SQLException;
+	// 문의 글 페이징
 	List<QuestionVO> selectQuestionList(HashMap<String, String> map) throws SQLException;
 	// 문의 내역 저장
 	void addToQuestion(QuestionVO vo) throws SQLException;
@@ -21,4 +24,6 @@ public interface QuestionDAO {
 	void deleteToQuestion(QuestionVO vo) throws SQLException;
 	// 유저 아이디 별 문의 내역 가져오기
 	List<QuestionVO> selectQuestionListByUserId(int user_id) throws SQLException;
+	// 유저 아이디 별 문의글 개수
+	int selectQuestionCountByUserId(int user_id) throws SQLException;
 }

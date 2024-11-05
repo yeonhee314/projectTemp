@@ -27,6 +27,9 @@
 			<div class="admin-qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/review'">
+				후기관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
@@ -44,7 +47,7 @@
 					<th>답변여부</th>
 				</tr>
 				<th:block>
-					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]&user_id=[[${vo.user_id}]]'">
+					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]'">
 						<td>[[${vo.question_id}]]</td>
 						<td>[[${vo.user_id}]]</td>
 						<td>[[${vo.question_title}]]</td>
@@ -63,6 +66,7 @@
 				<input type="hidden" name="b" th:value="${ppv.b}" />
 				<select name="field" id="field">
 					<option value="question_title">제목</option>
+					<option value="user_id">유저번호</option>
 					<option value="inquiryType">문의유형</option>
 				</select>
 				<input type="text" name="search" id="search"/>

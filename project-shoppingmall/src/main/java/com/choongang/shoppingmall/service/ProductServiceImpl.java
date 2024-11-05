@@ -127,4 +127,14 @@ public class ProductServiceImpl implements ProductService{
 		return count;
 	}
 
+	@Override
+	public String selectProductNameById(int product_id) {
+		String pdname = "";
+		try {
+			pdname = productDAO.selectProductNameById(product_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pdname;
+	}
 }
