@@ -239,7 +239,7 @@ public class HomeController {
 
 	@GetMapping("/orders.html") 
 	public String orders(Model model) throws SQLException { // (throws SQLException) 에러 페이지 임시 조치
-		UserVO userVO = getUserInfo(); // 로그인 유저 정보 가져오기
+		UserVO userVO = getUserInfo(); // 유저 정보 가져오기
 
 		// 유저가 로그인했는지 확인
 		if (userVO == null || userVO.getUser_id() == 0) {
@@ -249,7 +249,6 @@ public class HomeController {
 		List<OrdersVO> ordersList = orderService.getOrdersByUserId(userVO.getUser_id());
 		List<CartVO> cartItems = cartService.getCartItems(userVO.getUser_id());
 		List<Integer> cartCount = cartItems.stream().map(CartVO::getCartCount).collect(Collectors.toList());
-
 		// 상품 정보와 장바구니 항목별 총 결제 금액 계산
 		List<Integer> cartPrices = new ArrayList<>();
 		int totalCartPrice = 0; // 총 결제 금액 초기화
@@ -259,26 +258,46 @@ public class HomeController {
 			int cartPrice = productVO.getProduct_price() * cartItem.getCartCount();
 			cartPrices.add(cartPrice); 
 		}
-
+		
+		// 전화번호 포맷팅
+		String formattedPhone = OrderController.formatPhoneNumber(userVO.getPhone());
+		
+		
 		// 총 결제 금액 계산
 		totalCartPrice = cartPrices.stream().mapToInt(Integer::intValue).sum();
 		ProductVO productVO = null;
 		if (!cartItems.isEmpty()) {
 			productVO = productService.selectByProductId(cartItems.get(0).getProductId());
 		}
+		// 할인가 계산
+				int totalPrice = cartItems.stream()
+						.mapToInt(
+								item -> item.getDiscountPrice(item.getProductPrice(), item.getDiscount()) * item.getCartCount())
+						.sum();
 
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("ordersList", ordersList);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("cartCount", cartCount);
+		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("totalCartPrice", totalCartPrice); 
+		model.addAttribute("formattedPhone", formattedPhone);
+		
 
-		return "orders"; // orders.html로 이동
+		return "orders"; 
 	}
 
 	@GetMapping("/orderComplete.html")
-	public String orderComplete() {
-		return "orderComplete";
+	public String orderComplete(Model model) {
+		UserVO userVO = getUserInfo();	// 유저 정보 가져오기
+		
+		// 유저가 로그인했는지 확인
+		if (userVO == null || userVO.getUser_id() == 0) {
+			return "login"; // 로그인 페이지로 이동
+		}
+		
+		model.addAttribute("uservo", userVO);
+		return "orderComplete"; 
 	}
 }

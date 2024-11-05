@@ -1,0 +1,82 @@
+/* 중앙 정렬을 위한 스타일 */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* 컨테이너 크기 조정 */
+.container {
+    max-width: 1000px; /* 더 넓은 PC 버전 크기 */
+    padding: 40px; /* 넉넉한 패딩으로 여백 추가 */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* 주문 완료 메시지 */
+h1 {
+    font-size: 2.5em; /* 크기 확대 */
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* 섹션 헤더 */
+h3 {
+    font-size: 1.5em; /* 헤더 크기 확대 */
+    color: #444;
+    margin-top: 30px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* 정보 섹션 */
+.section {
+    margin: 20px 0;
+    padding: 15px 0;
+}
+
+/* 주문 상품 테이블 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px; /* 셀 간격 확대 */
+    text-align: center;
+    font-size: 1.1em; /* 텍스트 크기 확대 */
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* 홈으로 돌아가기 버튼 */
+.complete-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.complete-button button {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 1.2em; /* 텍스트 크기 확대 */
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.complete-button button:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
