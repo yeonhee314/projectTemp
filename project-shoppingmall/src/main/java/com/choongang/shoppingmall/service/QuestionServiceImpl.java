@@ -2,14 +2,17 @@ package com.choongang.shoppingmall.service;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.choongang.shoppingmall.dao.QuestionCommentDAO;
 import com.choongang.shoppingmall.dao.QuestionDAO;
 import com.choongang.shoppingmall.vo.PagingVO;
+import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionServiceImpl implements QuestionService{
 	@Autowired
 	private QuestionDAO questionDAO;
+	@Autowired
+	private QuestionCommentDAO questionCommentDAO;
 	
 	// 문의 내역 저장
 	@Override
@@ -110,6 +115,24 @@ public class QuestionServiceImpl implements QuestionService{
 			e.printStackTrace();
 		}
 		return questionList;
+	}
+	
+	@Override
+	public List<QuestionCommentVO> getCommList(int user_id) {
+		List<QuestionCommentVO> commList = new ArrayList<>();
+		List<QuestionVO> questionList = null;
+		try {
+			questionList = questionDAO.selectQuestionListByUserId(user_id);
+			for(int i = 0; i < questionList.size(); i++) {
+				QuestionCommentVO commVO = questionCommentDAO.selectCommentById(questionList.get(i).getQuestion_id());
+				if(commVO != null) {
+					commList.add(commVO);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return commList;
 	}
 
 	@Override
