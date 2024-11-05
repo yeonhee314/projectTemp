@@ -401,7 +401,7 @@
 												<span th:text="${'[' +#dates.format(vo.question_regdate, 'yyyy/MM/dd HH:mm') +'] [' + vo.question_status + ']'}" class="txt_notice"></span> 
 												&nbsp[[${vo.question_title}]]
 												<div style="margin-left: auto">
-													<button class="flex-c-m stext-109 cl0 size-50 bg1 bor1 hov-btn1 p-lr-15 trans-04" onclick="console.log('삭제클릭')">삭제</button>												
+													<button class="delete-questionbtn flex-c-m stext-109 cl0 size-50 bg1 bor1 hov-btn1 p-lr-15 trans-04" th:onclick="'deleteQuestion(' + ${vo.question_id} +')'">삭제</button>
 												</div>
 											</td>
 										</tr>
@@ -582,6 +582,9 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		$(".js-select2").each(function(){
 			$(this).select2({
@@ -618,8 +621,39 @@
 			document.getElementById('modalBg').style.display = 'none';
 		});
 		
-		// TODO : 문의 내역을 삭제한다. 
-		
+		function deleteQuestion(question_id){	
+			event.stopPropagation();
+			Swal.fire({
+				icon: 'question',
+				title: '문의 내역을 삭제하시면 복구할 수 없습니다.\n삭제하시겠습니까?',
+				showCancelButton: true,
+				confirmButtonText: '예',
+				cancelButtonText: '아니오',
+				reverseButtons: true,
+				customClass: {
+                    title: 'small-title'  
+                }
+			}).then((result) => {
+				if(result.isConfirmed){
+					// AJAX 요청
+					$.ajax({
+						url: '/deleteQuestion',
+						type: 'POST',
+						data: {
+							question_id: question_id
+						},
+						success: function(response){
+							console.log('삭제 완료');
+							location.reload();
+						},
+						error: function(xhr, status, error){
+							Swal.fire('오류 발생', '삭제 중 문제가 발생했습니다.', 'error');
+						}
+					});
+					//location.href = '/deleteQuestion(question_id, user_id)';
+				}
+			});
+		}
 	</script>
 	<!--===============================================================================================-->
 	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
@@ -644,7 +678,6 @@
 	<script src="js/main.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script th:inline="javascript">
 	
 		
