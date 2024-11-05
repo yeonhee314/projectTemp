@@ -427,14 +427,19 @@
 														</a>
 													</span><br>
 												</th:block>
-												<!-- TODO : 답변이 달린 경우 표시한다. 관리자 작업 완료되면 추가하기 -->
-												<div style="padding: 5px;">
-													<hr>
-													<b>[답변 완료]</b><br>
-													<span class="txt_notice">답변 시간을 표시합니다. 임시값입니다.</span><br>
-													안녕하세요. 관리자입니다.<br>
-													답변을 달면 표시 예정입니다. 현재 임시값입니다.
-												</div>
+												<th:block th:if="${vo.question_status=='답변완료' || vo.question_status=='답변거부'}">
+													<div style="padding: 5px;">
+														<hr>
+														<b><span th:text="${'[' + vo.question_status + ']'}"></span></b>
+														<th:block th:each="comm:${commList}">
+															<th:block th:if="${comm.question_id == vo.question_id}">
+																<span class="txt_notice" th:text="${' [' +#dates.format(comm.cmt_regdate, 'yyyy/MM/dd HH:mm') +']'}"></span><br>
+																<span>[[${comm.question_cmt}]]</span>
+															</th:block>
+														</th:block>
+														
+													</div>
+												</th:block>
 											</div>
 										</td>
 									</th:block>

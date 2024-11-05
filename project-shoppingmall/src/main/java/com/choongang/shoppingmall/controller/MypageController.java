@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -12,10 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
+import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
@@ -31,6 +37,9 @@ public class MypageController {
 	private WishService wishService;
 	@Autowired
 	private QuestionService questionService;
+	@Autowired
+	private QuestionCommentService questionCommentService;
+	
 	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -85,15 +94,17 @@ public class MypageController {
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
 		List<QuestionVO> list = questionService.selectQuestionListByUserId(userVO.getUser_id());
+		List<QuestionCommentVO> commList = questionService.getCommList(userVO.getUser_id());
 		
 		model.addAttribute("list", list);
+		model.addAttribute("commList", commList);
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
 		
 		return "/my-question.html";
 	}
 	
-	// 회원 정보 확인
+		// 회원 정보 확인
 		@GetMapping("/my-modify.html")
 		public String getProfile(HttpSession session,Model model) throws SQLException {
 			if(!isUserLoggedin())
@@ -111,7 +122,7 @@ public class MypageController {
 			
 			return "/my-modify.html";
 		}
-	//회원 정보 수정
+		//회원 정보 수정
 		@PostMapping("/updateProfile")
 		public String updateProfile(UserVO userVO,HttpSession session) throws SQLException {
 			int userId=(int) session.getAttribute("userId");

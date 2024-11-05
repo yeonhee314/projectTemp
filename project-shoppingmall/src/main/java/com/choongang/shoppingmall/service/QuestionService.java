@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.choongang.shoppingmall.vo.PagingVO;
+import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 
 public interface QuestionService {
@@ -19,4 +20,7 @@ public interface QuestionService {
 	void deleteToQuestion(QuestionVO vo);
 	// 유저 아이디 별 문의 내역 가져오기
 	List<QuestionVO> selectQuestionListByUserId(int user_id);
+	
+	// 문의 답변 가져오기
+	List<QuestionCommentVO> getCommList(int user_id);
 }
