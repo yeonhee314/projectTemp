@@ -8,10 +8,12 @@ import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 
 public interface QuestionService {
+	// 문의글 총 개수
 	int selectQuestionCount(HashMap<String, String> map);
+	// 문의 아이디로 가져오기
 	QuestionVO selectById(int question_id);
+	// 문의 페이징
 	PagingVO<QuestionVO> getQuestionList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search);
-	
 	// 문의 내역 저장
 	void addToQuestion(QuestionVO vo);
 	// 문의 접수상태 변경
@@ -20,7 +22,10 @@ public interface QuestionService {
 	void deleteToQuestion(QuestionVO vo);
 	// 유저 아이디 별 문의 내역 가져오기
 	List<QuestionVO> selectQuestionListByUserId(int user_id);
-	
+
+	// 유저 아이디 별 문의 개수
+	int selectQuestionCountByUserId(int user_id);
+
 	// 문의 답변 가져오기
 	List<QuestionCommentVO> getCommList(int user_id);
 }

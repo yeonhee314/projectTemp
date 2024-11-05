@@ -29,6 +29,9 @@
 			<div class="admin-qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/review'">
+				후기관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
@@ -43,7 +46,7 @@
 			</table>
 			<div class="info" >
 				<ul>
-					<li>유저번호 : [[${details.user_id}]]</li>
+					<label>유저정보</label>
 					<li> &nbsp; </li>
 					<li>ID : [[${details.username}]]</li>
 					<li>닉네임: [[${details.nickname}]]</li>
@@ -56,18 +59,18 @@
 			</div>
 			<div class="history" >
 				<ul>
-					<li>활동정보</li>
+					<label>활동정보</label>
 					<li> &nbsp; </li>
 					<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
 					<li>최근접속일 : </li>
 					<li>&nbsp;</li>
-					<li>후기 : (n)</li>
-					<li>문의 : (n)</li>
+					<li>후기 : </li>
+					<li th:onclick="location.href='/admin/qna?p=1&s=10&b=10&field=user_id&search=[[${details.user_id}]]'" style="cursor: pointer;">문의 : [[${qnaCount}]]건</li>
 				</ul>
 			</div>
 			<div class="point" >
 				<ul>
-					<li>포인트</li>
+					<label>포인트</label>
 					<li> &nbsp; </li>
 					<li>보유 포인트 : [[${details.user_point}]]</li>
 					<li>포인트 지급/차감</li>

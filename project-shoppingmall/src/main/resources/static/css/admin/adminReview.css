@@ -1,0 +1,32 @@
+
+.total {
+	height: 20px;
+	text-align: right;
+}
+.index {
+	height: 5px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid black;
+	text-indent: 30px;
+}
+.list {
+	background-color: white;
+	height: 40px;
+	line-height:40px;
+	font-size: 1rem;
+	border-bottom: 1px solid #ebebeb;
+	text-indent: 30px;
+}
+.list:hover {
+	background-color: whitesmoke;
+}
+.pageList {
+	position: fixed;
+	top: 660px;
+	left: 900px;
+}
+.ReviewSearch {
+	position: fixed;
+	top: 700px;
+	left: 760px;
+}

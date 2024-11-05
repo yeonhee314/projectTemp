@@ -10,6 +10,10 @@ import com.choongang.shoppingmall.vo.UserVO;
 
 @Mapper
 public interface ReviewDAO {
+	// 리뷰 총 개수
+	int selectReviewTotalCount(HashMap<String, String> map) throws Exception;
+	// 리뷰번호로 가져오기
+	ReviewVO selectReviewByReviewId(int review_id) throws Exception;
 	// 상품 id로 리뷰 가져오기
 	ReviewVO selectReviewId(int id) throws Exception;
 	
@@ -18,7 +22,8 @@ public interface ReviewDAO {
 	
 	// 상품 id별 리스트 가져오기
 	List<ReviewVO> selectReviewList(HashMap<String, Integer> map) throws Exception;
-	
+	// 페이지 얻기
+	List<ReviewVO> selectReviewPage(HashMap<String, String> map) throws Exception;
 	// 평균 별점 계산해서 가져오기
 	double selectRating(int id) throws Exception;
 	

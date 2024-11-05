@@ -57,4 +57,8 @@
 	<select id="selectQuestionListByUserId" parameterType="int" resultType="QuestionVO">
 		select * from question where user_id=#{user_id}
 	</select>
+	<!-- 유저 아이디 별 문의 개수 가져오기 -->
+	<select id="selectQuestionCountByUserId" parameterType="int" resultType="int">
+		select count(*) from question where user_id=#{user_id}
+	</select>
 </mapper>

@@ -121,4 +121,14 @@ public class CategoryServiceImpl implements CategoryService{
 		}
 		log.info("카테고리 삭제(name) 리턴 : {}",categoryVO.getCategory_name());
 	}
+	@Override
+	public String selectCategoryNameById(int category_id) {
+		String cname = "";
+		try {
+			cname = categoryDAO.selectCategoryNameById(category_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cname;
+	}
 }

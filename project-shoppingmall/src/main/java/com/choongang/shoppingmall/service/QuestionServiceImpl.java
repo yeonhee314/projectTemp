@@ -152,4 +152,15 @@ public class QuestionServiceImpl implements QuestionService{
 		}
 		log.info("상태변경 : {}", vo);
 	}
+
+	@Override
+	public int selectQuestionCountByUserId(int user_id) {
+		int count = 0;
+		try {
+			count = questionDAO.selectQuestionCountByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }

@@ -1,13 +1,18 @@
 package com.choongang.shoppingmall.service;
 
+import java.util.HashMap;
+
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
 public interface ReviewService {
+	int selectReviewTotalCount(HashMap<String, String> map);
 	// 상품 id로 리뷰 가져오기
 	ReviewVO selectReviewId(int id);
+	ReviewVO selectReviewByReviewId(int review_id);
 	
+	PagingVO<ReviewVO> selectReviewPage(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search);
 	// 상품 id별 리뷰 갯수 세기
 	int selectReviewCount(int id);
 	

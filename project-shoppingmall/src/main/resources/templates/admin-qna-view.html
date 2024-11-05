@@ -36,6 +36,9 @@
 			<div class="admin-qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/review'">
+				후기관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
@@ -70,7 +73,7 @@
 								<tr>
 									<th>문의 내용</th>
 									<td class="multi_input_row">
-									<textarea cols="10" rows="7" id="contents" name="contents" maxlength="1000" style="width: 883px;" readonly="readonly">[[${qna.question_content}]]</textarea>											
+									<textarea cols="10" rows="7" id="contents" name="contents" maxlength="1000" style="width: 883px;  border: none;" readonly="readonly">[[${qna.question_content}]]</textarea>											
 								</tr>
 								<tr>
 									<th>파일첨부</th>
