@@ -37,7 +37,7 @@ public class CartService {
     }
 
     public void deleteCart(int cartId) {
-		log.info("삭제 id : {}", cartId);
+		//log.info("삭제 id : {}", cartId);
 		cartMapper.deleteCart(cartId);
 	}
 	

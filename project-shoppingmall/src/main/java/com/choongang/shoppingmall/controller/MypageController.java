@@ -11,11 +11,18 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.choongang.shoppingmall.service.AddressService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
+import com.choongang.shoppingmall.vo.AddressVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
@@ -31,6 +38,8 @@ public class MypageController {
 	private WishService wishService;
 	@Autowired
 	private QuestionService questionService;
+	@Autowired 
+	private AddressService addressService;
 	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -82,6 +91,7 @@ public class MypageController {
 	public String questionList(Model model) {
 		if(!isUserLoggedin())
 			return "redirect:/login";
+		
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
 		List<QuestionVO> list = questionService.selectQuestionListByUserId(userVO.getUser_id());
@@ -92,7 +102,31 @@ public class MypageController {
 		
 		return "/my-question.html";
 	}
-	
+
+					@GetMapping("/my-addrList.html")
+					public String addressList(HttpSession session,Model model) throws SQLException {
+
+						int userId = (int) session.getAttribute("userId");
+						
+						List<AddressVO> addressList = addressService.getAddressList(userId);
+		
+						UserVO user = userService.getUserById(userId);
+
+						if(!isUserLoggedin())
+							return "redirect:/login";
+						UserVO userVO = getUserInfo();
+						boolean isLogin = isUserLoggedin();
+						
+						model.addAttribute("uservo", userVO);
+						model.addAttribute("isLogin", isLogin);
+						model.addAttribute("user", user);
+						model.addAttribute("addressVO", new AddressVO());
+						model.addAttribute("addressList",addressList);
+						
+						return "/my-addrList.html";
+					}
+										
+										
 	// 회원 정보 확인
 		@GetMapping("/my-modify.html")
 		public String getProfile(HttpSession session,Model model) throws SQLException {
@@ -111,6 +145,7 @@ public class MypageController {
 			
 			return "/my-modify.html";
 		}
+		
 	//회원 정보 수정
 		@PostMapping("/updateProfile")
 		public String updateProfile(UserVO userVO,HttpSession session) throws SQLException {
