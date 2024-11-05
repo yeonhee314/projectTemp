@@ -8,6 +8,7 @@ import com.choongang.shoppingmall.vo.UserVO;
 
 public interface ReviewService {
 	int selectReviewTotalCount(HashMap<String, String> map);
+	int selectReviewCountByUserId(int user_id);
 	// 상품 id로 리뷰 가져오기
 	ReviewVO selectReviewId(int id);
 	ReviewVO selectReviewByReviewId(int review_id);

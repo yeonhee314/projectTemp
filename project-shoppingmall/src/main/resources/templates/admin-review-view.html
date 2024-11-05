@@ -50,11 +50,11 @@
 							<tbody>
 								<tr>
 									<th>회원정보</th>
-									<td>[[${user.username}]]</td>
+									<td><a th:href="@{/admin/user/details(user_id=${user.user_id})}">[[${user.username}]]</a></td>
 								</tr>
 								<tr>
 									<th>상품</th>
-									<td>[[${pdname}]]</td>
+									<td><a th:href="@{/admin/products/edit(product_id=${rv.product_id})}">[[${pdname}]]</a></td>
 								</tr>
 								<tr>
 									<th>별점</th>
@@ -82,12 +82,13 @@
 								<tr>
 									<th>답변</th>
 									<td>
-										
-										
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						<div class="cus_btn_wrap">
+							<button type="button" class="btn white btn_cancel" onclick="location.href='/admin/review'">목록</button>
+						</div>
 					</div>
 				</div>
 			</div>

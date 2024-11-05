@@ -23,6 +23,7 @@ import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.ReviewService;
+import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
@@ -56,6 +57,8 @@ public class AdminController {
 	private QuestionCommentService questionCommentService;
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private UserService userService;
 	
 	ResourceLoader resourceLoader;
 	
@@ -87,7 +90,17 @@ public class AdminController {
 		model.addAttribute("user_id",user_id);
 		model.addAttribute("details", usersBoardService.selectByID(user_id));
 		model.addAttribute("qnaCount", questionService.selectQuestionCountByUserId(user_id));
+		model.addAttribute("reviewCount", reviewService.selectReviewCountByUserId(user_id));
 		return "admin-userdetails";
+	}
+	@GetMapping("/pointOk")
+	public String userPointOkGet() {
+		return "redirect:/admin/users";
+	}
+	@PostMapping("/pointOk")
+	public String userPointOkPost(@ModelAttribute UserVO userVO, Model model) {
+		userService.pointUpdate(userVO);
+		return "redirect:/admin/user/details?user_id="+userVO.getUser_id();
 	}
 	// 상품 관리
 	@GetMapping("/admin/products")

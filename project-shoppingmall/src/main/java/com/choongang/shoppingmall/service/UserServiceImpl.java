@@ -186,7 +186,15 @@ public class UserServiceImpl implements UserService{
 			return userVO;
 		
 	}
-	
-	
-	
+	// 회원 포인트 증감
+	@Override
+	public void pointUpdate(UserVO userVO) {
+		try {
+			userDAO.pointUpdate(userVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }

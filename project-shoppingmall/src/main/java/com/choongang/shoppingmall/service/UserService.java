@@ -20,4 +20,5 @@ public interface UserService extends UserDetailsService{
 	
 	UserVO getUserById(int userId) throws SQLException; //아이디로 회원정보 확인
 	UserVO updateUser(UserVO userVO) throws SQLException;
+	void pointUpdate(UserVO userVO);
 }
