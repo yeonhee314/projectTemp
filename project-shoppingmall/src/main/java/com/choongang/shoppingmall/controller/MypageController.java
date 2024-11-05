@@ -104,6 +104,14 @@ public class MypageController {
 		return "/my-question.html";
 	}
 	
+	// 문의 내역 삭제
+	@PostMapping("/deleteQuestion")
+	public String deleteQuestion(@RequestParam("question_id") int question_id) {
+		QuestionVO questionVO = questionService.selectById(question_id);
+		questionService.deleteToQuestion(questionVO);
+		return "redirect:/my-question.html";
+	}
+	
 		// 회원 정보 확인
 		@GetMapping("/my-modify.html")
 		public String getProfile(HttpSession session,Model model) throws SQLException {

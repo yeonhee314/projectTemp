@@ -167,3 +167,11 @@ a{
     z-index: 1000; 
     display: none;
 }
+
+/* SweetAlert 타이틀 텍스트 크기 조정 */
+.small-title {
+	font-size: 20px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	line-height: 160%;
+}
