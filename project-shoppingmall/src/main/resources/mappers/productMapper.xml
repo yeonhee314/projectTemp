@@ -7,9 +7,14 @@
 	<select id="selectProductCount" resultType="int" parameterType="hashmap">
 		select count(*) from product
 		<where>
-			<if test="search != null">
-				${field} like '%'||#{search}||'%'
-			</if>
+			<choose>
+				<when test="search != null and search != '0'.toString()">
+					${field} like '%'||#{search}||'%'
+				</when>
+				<when test="search == 0">
+					${field} like #{search}
+				</when>
+			</choose>
 		</where>
 	</select>
 	<!-- 갯수 세기 -->
@@ -43,9 +48,14 @@
 			from
 				(select * from product
 				<where>
-					<if test="search != null">
-						${field} like '%'||#{search}||'%'
-					</if>
+					<choose>
+						<when test="search != null and search != '0'.toString()">
+							${field} like '%'||#{search}||'%'
+						</when>
+						<when test="search == 0">
+							${field} like #{search}
+						</when>
+					</choose>
 				</where>
 				order by product_id desc) Q
 			where
@@ -101,4 +111,15 @@
 	<delete id="delete" parameterType="int">
 		delete from product where product_id=#{product_id}
 	</delete>
+	<!-- 판매중 상품 개수 -->
+	<select id="selectYCount" resultType="int">
+		select count(*) from product where product_status = 'Y'
+	</select>
+	<!-- 품절 상품 개수 -->
+	<select id="selectSoldOutCount" resultType="int">
+		select count(*) from product where product_stock = '0'
+	</select>
+	<update id="updateStatus" parameterType="ProductVO">
+		update product set product_status=#{product_status} where product_id=#{product_id}
+	</update>
 </mapper>  

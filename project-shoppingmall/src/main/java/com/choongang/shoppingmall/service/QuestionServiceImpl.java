@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.QuestionCommentDAO;
 import com.choongang.shoppingmall.dao.QuestionDAO;
+import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
@@ -94,6 +95,28 @@ public class QuestionServiceImpl implements QuestionService{
 		//log.info("pv 리턴 : {}",pv);
 		return qv;
 	}
+	@Override
+	public AdminProductsPagingVO<QuestionVO> getAdminQuestionList(int currentPage, int sizeOfPage, int sizeOfBlock, String field,
+			String search) {
+		AdminProductsPagingVO<QuestionVO> qv = null;
+		try {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("field", field == null || field.trim().length()==0 ? null : field);
+			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = questionDAO.selectQuestionCount(map);
+			qv = new AdminProductsPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			if(totalCount > 0) {
+				map.put("startNo", qv.getStartNo()+"");
+				map.put("endNo", qv.getEndNo()+"");
+				List<QuestionVO> list = questionDAO.selectQuestionList(map);
+				qv.setList(list);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		//log.info("pv 리턴 : {}",pv);
+		return qv;
+	}
 	// 문의글 상세
 	@Override
 	public QuestionVO selectById(int question_id) {
@@ -158,6 +181,17 @@ public class QuestionServiceImpl implements QuestionService{
 		int count = 0;
 		try {
 			count = questionDAO.selectQuestionCountByUserId(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	@Override
+	public int selectCountByStatus() {
+		int count = 0;
+		try {
+			count = questionDAO.selectCountByStatus();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

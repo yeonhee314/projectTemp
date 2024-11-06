@@ -18,6 +18,11 @@
 				return false;
 			}
 		 });
+		  $(".commentUpdateForm").submit(function(){
+			  if(!confirm('정말 수정하시겠습니까?')){
+				return false;
+			}
+		 });
 	})
 </script>
 </head>
@@ -38,6 +43,9 @@
 			</div>
 			<div class="admin-review" onclick="location.href='/admin/review'">
 				후기관리
+			</div>
+			<div class="admin-review" onclick="location.href='/admin/orders'">
+				주문관리
 			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP

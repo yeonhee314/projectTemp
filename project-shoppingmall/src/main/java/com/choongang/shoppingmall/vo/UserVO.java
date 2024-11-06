@@ -74,7 +74,7 @@ public class UserVO implements UserDetails{
 	
 	private List<WishVO> wishList;
 	
-	
+	private String pnm;	// 포인트 지급/차감 파라미터
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		

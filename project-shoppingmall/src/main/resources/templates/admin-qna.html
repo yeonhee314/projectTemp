@@ -30,22 +30,44 @@
 			<div class="admin-review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/orders'">
+				주문관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
 		</div>
 			<table class="admin-main">
+			<colgroup>
+               <col width="5%" />
+               <col width="7%" />
+               <col width="33%" />
+               <col width="8%" />
+               <col width="12%" />
+               <col width="8%" />
+             </colgroup>
 				<tr>
-					<td colspan="7" class="main">문의 관리</td>
+					<td colspan="6" class="main">문의 관리</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="total">[[${qv.pageInfo}]]</td>
+					<td style="color: blue;"><a href="/admin/qna">전체</a>[[${qv.pageInfo}]]</td>
+					<td style="color: blue;"><a href="/admin/qna?p=1&s=10&b=10&field=question_status&search=답변대기">미답변 </a>[[${noreply}]]</td>
 				</tr>
 				<tr class="index">
 					<th>글번호</th>
 					<th>유저번호</th>
 					<th>제목</th>
-					<th>문의유형</th>
+					<th><select id="aa" style="font-weight: bold; height: 30px;" onchange="window.open(value,'_self')">
+							<option value="/admin/qna">문의유형</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=취소문의" th:selected="${search}==취소문의">취소문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=배송문의" th:selected="${search}==배송문의">배송문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=반품문의" th:selected="${search}==반품문의">반품문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=교환문의" th:selected="${search}==교환문의">교환문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=환불문의" th:selected="${search}==환불문의">환불문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=AS문의" th:selected="${search}==문의">AS문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=오류문의" th:selected="${search}==오류문의">오류문의</option>
+							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=기타" th:selected="${search}==기타">기타</option>
+						</select></th>
 					<th>작성일</th>
 					<th>답변여부</th>
 				</tr>

@@ -78,6 +78,14 @@
 	
 	<!-- 포인트 증감 -->
 	<update id="pointUpdate" parameterType="UserVO">
-	update users set user_point = user_point + #{user_point} where user_id=#{user_id}
+		update users set user_point = user_point 
+		<choose>
+			<when test="pnm == 'plus'.toString()">
+			+ #{user_point} where user_id=#{user_id}
+			</when>
+			<otherwise>
+			- #{user_point} where user_id=#{user_id}
+			</otherwise>
+		</choose>
 	</update>
 </mapper>  

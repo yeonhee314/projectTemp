@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.ReviewDAO;
+import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
@@ -54,6 +55,30 @@ public class ReviewServiceImpl implements ReviewService{
 				map.put("endNo", pv.getEndNo());
 				map.put("product_id", id);
 				pv.setList(reviewDAO.selectReviewList(map));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return pv;
+	}
+	
+	@Override
+	public AdminProductsPagingVO<ReviewVO> selectAdminReviewPage(int currentPage, int sizeOfPage, int sizeOfBlock, String field,
+			String search) {
+		AdminProductsPagingVO<ReviewVO> pv = null;
+		
+		try {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("field", field == null || field.trim().length()==0 ? null : field);
+			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = reviewDAO.selectReviewTotalCount(map);
+			pv = new AdminProductsPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			if(totalCount > 0) {
+				map.put("startNo", pv.getStartNo()+"");
+				map.put("endNo", pv.getEndNo()+"");
+				List<ReviewVO> list = reviewDAO.selectReviewPage(map);
+				pv.setList(list);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

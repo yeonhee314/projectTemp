@@ -24,7 +24,12 @@ public interface ProductDAO {
 	List<ProductVO> selectFilterProductList (HashMap<String, Integer> map) throws SQLException;
 	// 상품 아이디로 상품명 얻기
 	String selectProductNameById(int product_id) throws SQLException;
+	// 판매중인 상품 개수
+	int selectYCount() throws SQLException;
+	// 품절된 상품 개수
+	int selectSoldOutCount() throws SQLException;
 	void insert(ProductVO productVO) throws SQLException;
 	void update(ProductVO productVO) throws SQLException;
 	void delete(int product_id) throws SQLException;
+	void updateStatus(ProductVO productVO) throws SQLException;
 }

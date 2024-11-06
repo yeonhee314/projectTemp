@@ -11,6 +11,9 @@
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
 <link rel="stylesheet" type="text/css" href="/css/admin/adminReview.css">
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 	<div class="bg">
@@ -30,34 +33,56 @@
 			<div class="admin-review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
+			<div class="admin-review" onclick="location.href='/admin/orders'">
+				주문관리
+			</div>
 			<div onclick="location.href='/index.html'">
 				SHOP
 			</div>
 		</div>
 			<table class="admin-main">
+			<colgroup>
+               <col width="7%" />
+               <col width="8%" />
+               <col width="40%" />
+               <col width="10%" />
+               <col width="8%" />
+               <col width="8%" />
+               <col width="19%" />
+             </colgroup>
 				<tr>
 					<td colspan="7" class="main">후기 관리</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="total">[[${rv.pageInfo}]]</td>
+					<td style="color: blue;"><a href="/admin/review" style="font-weight: bold;">전체</a>[[${rv.pageInfo}]]</td>
 				</tr>
 				<tr class="index">
 					<th>글번호</th>
 					<th>유저번호</th>
+					<th>제목</th>
+					<th style="text-align: left;">
+						<select id="review_rating" onchange="window.open(value,'_self')" style="width: 60px; height: 30px; font-weight: bold;" >
+							<option value="/admin/review" >별점</option>
+							<option value="/admin/review?p=1&s=10&b=10&field=review_rating&search=5" th:selected="${search}==5">5</option>
+							<option value="/admin/review?p=1&s=10&b=10&field=review_rating&search=4" th:selected="${search}==4">4</option>
+							<option value="/admin/review?p=1&s=10&b=10&field=review_rating&search=3" th:selected="${search}==3">3</option>
+							<option value="/admin/review?p=1&s=10&b=10&field=review_rating&search=2" th:selected="${search}==2">2</option>
+							<option value="/admin/review?p=1&s=10&b=10&field=review_rating&search=1" th:selected="${search}==1">1</option>
+						</select>
+					</th>
 					<th>상품번호</th>
 					<th>카테고리</th>
-					<th>제목</th>
 					<th>작성일</th>
 				</tr>
 				<th:block>
 					<tr th:each="vo: ${rv.list}" class="list" th:onclick="location.href='/admin/review/view?review_id=[[${vo.review_id}]]'">
 						<td>[[${vo.review_id}]]</td>
 						<td>[[${vo.user_id}]]</td>
+						<td>[[${vo.review_title}]]</td>
+						<td><i class="bi bi-star-fill"></i>[[${vo.review_rating}]]</td>
 						<td>[[${vo.product_id}]]</td>
 						<td>[[${vo.category_id}]]</td>
-						<td>[[${vo.review_title}]]</td>
 						<td>[[${#dates.format(vo.review_date,'yy-MM-dd(E) HH:mm')}]]</td>
-						<td></td>
 					</tr>
 				</th:block>
 			</table>

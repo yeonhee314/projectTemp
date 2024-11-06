@@ -48,6 +48,10 @@
 		insert into question (question_id, user_id, question_title, question_content, question_regdate, question_add, inquiryType, alertEmail)
 		values(question_id_seq.nextval, #{user_id}, #{question_title}, #{question_content}, sysdate, #{question_add}, #{inquiryType}, #{alertEmail})
 	</insert>
+	<!-- 답변 등록시 접수상태 변경 -->
+	<update id="updateStatus" parameterType="QuestionVO">
+		update question set question_status = #{question_status} where question_id=#{question_id}
+	</update>
 	<!-- 문의 내역 삭제 -->
 	<delete id="deleteToQuestion" parameterType="QuestionVO">
 		delete from question where user_id=#{user_id} and question_id=#{question_id}
@@ -60,5 +64,8 @@
 	<!-- 유저 아이디 별 문의 개수 가져오기 -->
 	<select id="selectQuestionCountByUserId" parameterType="int" resultType="int">
 		select count(*) from question where user_id=#{user_id}
+	</select>
+	<select id="selectCountByStatus" resultType="int">
+		select count(*) from question where question_status = '답변대기'
 	</select>
 </mapper>

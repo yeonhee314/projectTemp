@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.ProductDAO;
+import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 
@@ -28,6 +29,27 @@ public class ProductServiceImpl implements ProductService{
 			map.put("search", search == null || search.trim().length()==0 ? null : search);
 			int totalCount = productDAO.selectProductCount(map);
 			pv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
+			if(totalCount > 0) {
+				map.put("startNo", pv.getStartNo()+"");
+				map.put("endNo", pv.getEndNo()+"");
+				List<ProductVO> list = productDAO.selectProductList(map);
+				pv.setList(list);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		//log.info("pv 리턴 : {}",pv);
+		return pv;
+	}
+	@Override
+	public AdminProductsPagingVO<ProductVO> getAdminProductList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search) {
+		AdminProductsPagingVO<ProductVO> pv = null;
+		try {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("field", field == null || field.trim().length()==0 ? null : field);
+			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			int totalCount = productDAO.selectProductCount(map);
+			pv = new AdminProductsPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
 			if(totalCount > 0) {
 				map.put("startNo", pv.getStartNo()+"");
 				map.put("endNo", pv.getEndNo()+"");
@@ -136,5 +158,34 @@ public class ProductServiceImpl implements ProductService{
 			e.printStackTrace();
 		}
 		return pdname;
+	}
+	@Override
+	public int selectYCount() {
+		int count = 0;
+		try {
+			count = productDAO.selectYCount();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	@Override
+	public int selectSoldOutCount() {
+		int count = 0;
+		try {
+			count = productDAO.selectSoldOutCount();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	@Override
+	public void updateStatus(ProductVO productVO) {
+		try {
+			productDAO.updateStatus(productVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

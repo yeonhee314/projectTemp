@@ -13,12 +13,18 @@
 	cursor: pointer;
 	font-weight: bold;
 }
-.addForm {
+.formbox {
 	position: fixed;
-	top: 100px; left: 300px;
-	width:1000px; 
+	top: 100px; left: 280px;
+	width: 700px; height: 700px;
+	background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+.addForm {
+	margin: 20px;
 	display: inline-block;
-	font-size: 15pt;
+	font-size: 13pt;
 }
 .filebox .upload-name {
     display: inline-block;
@@ -86,7 +92,7 @@ img {
 	display: flex;
 }
 #description {
-	width: 600px; height: 180px;
+	width: 630px; height: 180px;
 }
 #status {
 	height: 40px;
@@ -106,6 +112,9 @@ img {
 }
 #totalPriceDiv {
 	margin-left: -50px;
+}
+.category {
+	width: 120px;
 }
 span {
 	width: 25px;

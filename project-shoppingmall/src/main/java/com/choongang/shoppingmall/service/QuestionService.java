@@ -3,6 +3,7 @@ package com.choongang.shoppingmall.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
@@ -14,6 +15,7 @@ public interface QuestionService {
 	QuestionVO selectById(int question_id);
 	// 문의 페이징
 	PagingVO<QuestionVO> getQuestionList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search);
+	AdminProductsPagingVO<QuestionVO> getAdminQuestionList(int currentPage, int sizeOfPage, int sizeOfBlock, String field, String search);
 	// 문의 내역 저장
 	void addToQuestion(QuestionVO vo);
 	// 문의 접수상태 변경
@@ -28,4 +30,6 @@ public interface QuestionService {
 
 	// 문의 답변 가져오기
 	List<QuestionCommentVO> getCommList(int user_id);
+	// 답변대기 개수
+	int selectCountByStatus();
 }

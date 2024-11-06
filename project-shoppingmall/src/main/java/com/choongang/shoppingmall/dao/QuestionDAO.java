@@ -26,4 +26,6 @@ public interface QuestionDAO {
 	List<QuestionVO> selectQuestionListByUserId(int user_id) throws SQLException;
 	// 유저 아이디 별 문의글 개수
 	int selectQuestionCountByUserId(int user_id) throws SQLException;
+	// 답변대기 개수
+	int selectCountByStatus() throws SQLException;
 }
