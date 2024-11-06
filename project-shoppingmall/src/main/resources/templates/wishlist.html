@@ -631,7 +631,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 									<div class="size-204 respon6-next">
 										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time" id="option_select"></select>
+											<select class="js-select2 productOption" name="time" id="option_select"></select>
 											<div class="dropDownSelect2"></div>
 										</div>
 									</div>
@@ -642,7 +642,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-minus"></i>
 											</div>
-											<input class="mtext-104 cl3 txt-center num-product" type="number" id="product_stock" value="1" max="10" readonly>
+											<input class="mtext-104 cl3 txt-center num-product" type="number" id="product_stock" name="cartCount" readonly>
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
@@ -660,6 +660,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 <!--===============================================================================================-->	
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script th:inline="javascript">
 	/*<![CDATA[*/
 		function setWishList(productId, event, element){
@@ -685,7 +686,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	    	var nameProduct = $(element).parent().parent().find('.js-name-b2').html();
 	    	data = data == 'true';
 	    	if(!data){
-	    		swal({
+	    		Swal.fire({
 					 title: nameProduct,
 			            text: '상품을 찜 목록에서 삭제했습니다!',
 			            icon: 'error',
@@ -734,95 +735,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					}
 				}
 			}
-		});
-		
-		
-		// 장바구니 버튼 클릭 시 팝업에 상품 정보를 띄운다.
-		$(document).ready(function(){
-			$('.js-show-modal1').on('click', function(e){
-				e.preventDefault();
-				var productId = $(this).data('product-id');
-				var productList = /*[[${productList}]]*/;
-				
-				for(var i = 0; i < productList.length; i++){
-					if(productList[i].product_id == productId){
-						// 상품명
-						if(productList[i].product_stock <= 0){
-							$('#product_name').text('[품절] ' + productList[i].product_name);
-						}else{
-							$('#product_name').text(productList[i].product_name);
-						}
-						
-						// 가격
-						var formattedPrice = productList[i].product_price.toLocaleString() + '₩';
-						$('#product_price_original').text('');
-						$('#product_price_discount').text('');
-						if(productList[i].discount != 0){
-							$('#product_price_original').text(formattedPrice);
-							$('#product_price_original').css({
-								'text-decoration' : 'line-through'
-							});
-							$('#product_price_discount').text(' ↪ [' + productList[i].discount + '% 할인]' + formattedPrice);	
-						}else{
-							$('#product_price_original').text(formattedPrice);
-							$('#product_price_original').css({
-								'text-decoration' : 'none'
-							});
-						}
-						
-						$('#product_description').text(productList[i].description);
-						
-						// 상품 옵션
-						var option = '';
-						var $select = $('#option_select');
-						const option_arr = productList[i].product_option.split(',');
-						$select.text('');
-						for(var j = 0; j < option_arr.length; j++){
-							if(productList[i].product_stock <= 0){
-								option = $('<option></option>')
-								.text(option_arr[j] + ' [품절]');
-								$select.append(option);
-							}else{
-								option = $('<option></option>')
-								.text(option_arr[j]);
-								$select.append(option);
-							}
-						}
-						
-						// 장바구니 버튼
-						 $('#add-cart').empty();
-						if(productList[i].product_stock > 0){
-							$('#add-cart').append('<button type="submit" class="add-to-cart flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">장바구니에 추가</button>');
-							// TODO : 추 후 장바구니 이벤트 추가
-							/*
-							$('#add-cart').on('click', '.add-to-cart', function() {
-							    alert('장바구니에 추가되었습니다!');
-							});
-							*/
-						} else{
-							$('#add-cart').append('<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>');
-						}
-						
-						// 수량
-						var stock = $('#product_stock');
-						stock.val(1);
-						stock.attr('max', productList[i].product_stock);
-						
-						//상품 사진
-						var imgCount = productList[i].img_count;
-						var str ="";
-						for(var k = 0; k < imgCount; k++){
-							var newImgSrc = 'images/product-' + productList[i].product_id + '-' + (k+1) + '.jpg';
-							var item = $('.item-slick3').eq(k);	
-							var thumb = $('.wrap-slick3').eq(k);
-							item.find('thumb').attr('src', newImgSrc);
-							item.find('img').attr('src', newImgSrc);
-							item.find('a').attr('href', newImgSrc);
-							//console.log(newImgSrc);
-						}
-					}
-				}
-			});
 		});
 		/*]]>*/
 	</script>
@@ -883,5 +795,170 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
+	<script th:inline="javascript">
+	
+	/*<![CDATA[*/
+	// 장바구니 버튼 클릭 시 팝업에 상품 정보를 띄운다.
+	
+	$(document).ready(function(){
+		$('.js-show-modal1').on('click', function(e){
+			e.preventDefault();
+			var productId = $(this).data('product-id');
+			var productList = /*[[${productList}]]*/;
+			
+			for(var i = 0; i < productList.length; i++){
+				if(productList[i].product_id == productId){
+					// 상품명
+					if(productList[i].product_stock <= 0){
+						$('#product_name').text('[품절] ' + productList[i].product_name);
+					}else{
+						$('#product_name').text(productList[i].product_name);
+					}
+					
+					// 가격
+					var formattedPrice = productList[i].product_price.toLocaleString() + '₩';
+					$('#product_price_original').text('');
+					$('#product_price_discount').text('');
+					if(productList[i].discount != 0){
+						$('#product_price_original').text(formattedPrice);
+						$('#product_price_original').css({
+							'text-decoration' : 'line-through'
+						});
+						$('#product_price_discount').text(' ↪ [' + productList[i].discount + '% 할인]' + formattedPrice);	
+					}else{
+						$('#product_price_original').text(formattedPrice);
+						$('#product_price_original').css({
+							'text-decoration' : 'none'
+						});
+					}
+					
+					$('#product_description').text(productList[i].description);
+					
+					// 상품 옵션
+					var option = '';
+					var $select = $('#option_select');
+					const option_arr = productList[i].product_option.split(',');
+					$select.text('');
+					$select.append('<option>옵션을 선택하세요.</option>');
+					for(var j = 0; j < option_arr.length; j++){
+						if(productList[i].product_stock <= 0){
+							option = $('<option></option>')
+							.text(option_arr[j] + ' [품절]');
+							$select.append(option);
+						}else{
+							option = $('<option></option>')
+							.text(option_arr[j]);
+							$select.append(option);
+						}
+					}
+					
+					// 최대 수량
+					var stock = $('#product_stock');
+					stock.val(1);
+					stock.attr('max', productList[i].product_stock);
+					
+					const productId = $(this).data('product-id');
+					const productPrice = productList[i].product_price;
+					const categoryId = productList[i].category_id;
+					var tempCount = 1;
+					 $('.btn-num-product-down').on('click', function(){
+						 const cartCount = document.querySelector("input[name='cartCount']").value;
+						 tempCount = cartCount;
+					    });
+
+					    $('.btn-num-product-up').on('click', function(){
+					    	const cartCount = document.querySelector("input[name='cartCount']").value;
+					    	tempCount = cartCount;
+					    });
+					
+					// 장바구니 버튼
+					 $('#add-cart').empty();
+					if(productList[i].product_stock > 0){
+						$('#add-cart').append('<button type="submit" class="add-to-cart flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">장바구니에 추가</button>');
+						// 장바구니 이벤트
+						$('#add-cart').on('click', '.add-to-cart', function() {
+						    const optionSelect = document.querySelector('.productOption');
+						    if(!optionSelect.value || optionSelect.value === "옵션을 선택하세요."){
+						    	Swal.fire({
+									icon: 'warning',
+									title: '옵션 미선택',
+									 text: '옵션을 선택해주세요.',
+						             confirmButtonText: '확인'
+								});
+								return;
+						    }else{
+						    	 Swal.fire({
+							            icon: 'success',
+							            title: '장바구니에 담았습니다!',
+							            showCancelButton: true,
+							            confirmButtonText: '쇼핑백 확인',
+							            cancelButtonText: '찜목록으로',
+							            allowOutsideClick: false,
+							            customClass:{
+											title: 'small-title'
+							            }
+							        }).then((result) => {
+										const isResume = result.isConfirmed ? false : true;
+										$.ajax({
+											url: '/cart/addAjax',
+											type: 'POST',
+											data: {
+												productId: productId,
+												cartCount: tempCount,
+												productPrice:productPrice,
+												productOption: optionSelect.value,
+												categoryId: categoryId, 
+												isResume: isResume
+											},
+											success: function(response){
+												if(response.redirect){
+													window.location.href = response.redirect;
+												}
+											},
+											error: function(xhr, status, error){
+												Swal.fire({
+													icon: 'error',
+													title: '문제가 발생했습니다.',
+													text: '다시 시도해주세요.',
+													confirmButtonText: '확인'
+												});
+											}
+										});
+							        });
+						    }
+						});
+					} else{
+						$('#add-cart').append('<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>');
+					}
+					
+					//상품 사진
+					var imgCount = productList[i].img_count;
+					var newImgSrc = '';
+					console.log('imgCount : ' + imgCount);
+					if(imgCount == 0){
+						console.error('이미지가 없습니다.');
+						newImgSrc = 'images/product-' + productList[i].product_id + '-1' + '.jpg';
+						var item = $('.item-slick3').eq(0);	
+						var thumb = $('.wrap-slick3').eq(0);
+						item.find('thumb').attr('src', newImgSrc);
+						item.find('img').attr('src', newImgSrc);
+						item.find('a').attr('href', newImgSrc);
+					}else{
+						for(var k = 0; k < imgCount; k++){
+							newImgSrc = 'images/product-' + productList[i].product_id + '-' + (k+1) + '.jpg';
+							var item = $('.item-slick3').eq(k);	
+							var thumb = $('.wrap-slick3').eq(k);
+							item.find('thumb').attr('src', newImgSrc);
+							item.find('img').attr('src', newImgSrc);
+							item.find('a').attr('href', newImgSrc);
+							//console.log('newImgSrc : ' + newImgSrc);
+						}
+					}
+				}
+			}
+		});
+	});
+	/*]]>*/
+	</script>
 </body>
 </html>

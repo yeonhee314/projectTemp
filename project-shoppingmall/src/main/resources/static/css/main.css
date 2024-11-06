@@ -1875,7 +1875,7 @@ input.num-product::-webkit-inner-spin-button {
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 9000;
+  z-index: 8999;
   overflow: auto;
 
   -webkit-transition: all 0.4s;
@@ -3450,3 +3450,9 @@ button:disabled{
 	margin-top: 28px;
 	margin-left: 13px;
 }
+.swal2-container {
+  z-index: 10000;
+}
+.small-title {
+        font-size: 18px; 
+    }
