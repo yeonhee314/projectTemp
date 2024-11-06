@@ -76,5 +76,8 @@
         WHERE user_id=#{user_id}
 	</update>
 	
-	
+	<!-- 포인트 증감 -->
+	<update id="pointUpdate" parameterType="UserVO">
+	update users set user_point = user_point + #{user_point} where user_id=#{user_id}
+	</update>
 </mapper>  

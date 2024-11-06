@@ -12,26 +12,30 @@
 			</if>
 		</where>
 	</select>
-	<!-- 1. 상품 id로 리뷰 가져오기 -->
+	<!-- 유저 아이디 별 후기 개수 가져오기 -->
+	<select id="selectReviewCountByUserId" parameterType="int" resultType="int">
+		select count(*) from review where user_id=#{user_id}
+	</select>
+	<!-- 상품 id로 리뷰 가져오기 -->
 	<select id="selectReviewId" parameterType="int" resultType="ReviewVO">
 		select * from review where product_id=#{product_id}
 	</select>
-	<!-- 1. 상품 id로 리뷰 가져오기 -->
+	<!-- 리뷰 id로 리뷰 가져오기 -->
 	<select id="selectReviewByReviewId" parameterType="int" resultType="ReviewVO">
 		select * from review where review_id=#{review_id}
 	</select>
 	
-	<!-- 2. 평균 별점 계산해서 가져오기 -->
+	<!-- 평균 별점 계산해서 가져오기 -->
 	<select id="selectRating" parameterType="int" resultType="double">
 		select avg(review_rating) from review where product_id=#{product_id}
 	</select>
 	
-	<!-- 3. 상품 id별 리뷰 개수 -->
+	<!-- 상품 id별 리뷰 개수 -->
 	<select id="selectReviewCount" parameterType="int" resultType="int">
 		select count(*) from review where product_id=#{product_id}
 	</select>
 	
-	<!-- 4. 상품 id별 리뷰 리스트 -->
+	<!-- 상품 id별 리뷰 리스트 -->
 	<select id="selectReviewList" parameterType="hashmap" resultType="ReviewVO">
 		<![CDATA[
 		select 

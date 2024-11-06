@@ -12,6 +12,7 @@ import com.choongang.shoppingmall.vo.UserVO;
 public interface ReviewDAO {
 	// 리뷰 총 개수
 	int selectReviewTotalCount(HashMap<String, String> map) throws Exception;
+	int selectReviewCountByUserId(int user_id) throws Exception;
 	// 리뷰번호로 가져오기
 	ReviewVO selectReviewByReviewId(int review_id) throws Exception;
 	// 상품 id로 리뷰 가져오기

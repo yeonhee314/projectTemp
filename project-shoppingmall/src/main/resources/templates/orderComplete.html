@@ -2,70 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>주문 완료</title>
+<title>OrderComplete</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" type="text/css"
+	href="/css/orders/orderComplete.css">
 </head>
 
 <body>
 	<div class="container">
 		<h1>주문이 완료되었습니다.</h1>
+		
+		<h3>주문번호</h3>
+	
+		<!-- 배송지 정보 섹션 -->
+        <h3>배송지 정보</h3>
+        <div class="section">
+            <p>
+                받는 사람: <span th:text="${uservo != null ? uservo.name : '정보 없음'}"></span><br>
+                우편번호: <span th:text="${uservo != null ? uservo.postcode : '정보 없음'}"></span><br>
+                주소: <span th:text="${uservo != null ? uservo.address : '정보 없음'}"></span><br>
+                상세주소: <span th:text="${uservo != null ? uservo.address_detail : '정보 없음'}"></span><br>
+                연락처: <span th:text="${uservo != null ? uservo.phone : '정보 없음'}"></span><br>
+                배송 요청사항: <span th:text="${orderMemo}"></span>
+            </p>
+        </div>
 
-		<h2>배송지 정보</h2>
-		<p>
-			<strong>받는 사람:</strong> <span th:if="${user != null}"
-				th:text="${user.name}">이름 없음</span><br> <strong>주소:</strong> <span
-				th:if="${user != null}" th:text="${user.addr}">주소 없음</span><br>
-			<strong>상품 금액:</strong> <span th:if="${order != null}"
-				th:text="${order.totalPrice} + '원'">금액 없음</span><br>
+        <!-- 주문 상품 섹션 -->
+        <h3>주문 상품</h3>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>상품</th>
+                        <th>상품명</th>
+                        <th>옵션</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${orderedItems}">
+                        <td><img th:src="${item.productImage}" alt="상품 이미지" style="width: 50px;"></td>
+                        <td th:text="${item.productName}">상품명</td>
+                        <td th:text="${item.productOption}">옵션</td>
+                        <td th:text="${item.quantity}">수량</td>
+                        <td th:text="${#numbers.formatCurrency(item.price)}">가격</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-		</p>
+        <!-- 결제 정보 섹션 -->
+        <h3>결제 정보</h3>
+        <div class="section">
+            <p>결제 수단: <span th:text="${paymentMethod}">결제 수단</span></p>
+            <p>상품 금액: <span th:text="${totalProductAmount}">총 상품 금액</span></p>
+            <p>총 결제 금액: <span th:text="${totalAmount}">총 결제 금액</span></p>
+        </div>
 
-		<h2>주문 상품</h2>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>상품</th>
-					<th>상품명</th>
-					<th>옵션</th>
-					<th>수량</th>
-					<th>가격</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<!-- 여기에서 items 리스트를 순회하여 출력합니다 -->
-					<!-- 예시로 2개의 상품을 하드코딩한 것입니다. 실제 데이터로 대체하세요. -->
-					<td><img src="path/to/image1.jpg" alt="상품 썸네일"
-						style="max-width: 100px; height: auto;"></td>
-					<td>상품1</td>
-					<td>옵션1</td>
-					<td>2</td>
-					<td>100원</td>
-				</tr>
-				<tr>
-					<td><img src="path/to/image2.jpg" alt="상품 썸네일"
-						style="max-width: 100px; height: auto;"></td>
-					<td>상품2</td>
-					<td>옵션2</td>
-					<td>1</td>
-					<td>150원</td>
-				</tr>
-			</tbody>
-			
-			
-			
-		</table>
-
-		<h2>결제 수단</h2>
-		<p>
-			<strong>결제 수단:</strong> <span>${order.payMent}</span><br>
-			<strong>상품 금액:</strong> <span>${order.totalPrice}원</span><br> <strong>총
-				결제 금액:</strong> <span>${order.totalPrice}원</span>
-		</p>
-
-		<a href="/" class="btn btn-primary">홈으로 돌아가기</a>
-	</div>
+        <!-- 주문 완료 버튼 -->
+        <div class="complete-button">
+            <button onclick="window.location.href='/'">홈으로 돌아가기</button>
+        </div>
+    </div>
 </body>
 
 </html>
