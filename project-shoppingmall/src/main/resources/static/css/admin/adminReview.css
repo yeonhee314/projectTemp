@@ -1,4 +1,9 @@
-
+.paging {
+	position: relative;
+	width: 1400px;
+	left: 350px;
+	top: 100px;
+}
 .total {
 	height: 20px;
 	text-align: right;
@@ -6,7 +11,7 @@
 .index {
 	height: 5px;
 	font-size: 0.9rem;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid grey;
 	text-indent: 30px;
 	line-height: 40px;
 }
@@ -30,7 +35,23 @@
 	position: fixed;
 	top: 700px;
 	left: 760px;
+	height:30px;
+	line-height: 30px;
+	border: 0px solid black;
+	background-color: white;
 }
-i {
-	color: gold;
+
+.index select {
+	background-color: rgb(236,240,244,0.8);
+}
+.ReviewSearch input,select{
+	border: none;
+}
+#submit {
+	width:35px;
+	background-color: white;
+	background-image: url(/images/icons/icon-search.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	border: none;
 }

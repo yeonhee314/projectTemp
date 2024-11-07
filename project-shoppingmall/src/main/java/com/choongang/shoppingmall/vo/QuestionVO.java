@@ -20,4 +20,6 @@ public class QuestionVO {
 	private String question_status;	// 접수 상태 -'답변대기(기본)', '답변완료', '답변거부'
 	
 	private MultipartFile uploadfile;// 업로드할 파일
+	
+	private String username;
 }

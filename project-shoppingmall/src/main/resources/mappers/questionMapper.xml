@@ -26,7 +26,7 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select * from question
+				(select * from question q join users u on q.user_id=u.user_id 
 				<where>
 					<if test="search != null">
 						${field} like '%'||#{search}||'%'

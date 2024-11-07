@@ -17,4 +17,8 @@ public class ReviewVO {
 	private String review_img;		// 리뷰 사진
 	
 	private int totalCount;			// 상품별 리뷰 갯수
+	
+	private String category_name;
+	private String username;
+	private String product_name;
 }

@@ -40,7 +40,7 @@
     display: inline-block;
     color: black;
     vertical-align: middle;
-    background-color: #c1e0ff;
+    background-color: rgb(227, 255, 255, 0.8);
     cursor: pointer;
     font-size:12pt;
     text-align: center;
@@ -63,7 +63,7 @@ input, select {
 	border: 1px solid #dddddd;
 }
 .price {
-	width:660px; height:40px;
+	width:650px; height:40px;
 	display: inline-flex;
 	margin-bottom: 15px;
 }
@@ -128,6 +128,8 @@ label > input {
 }
 .input-group-text {
 	font-size: 12pt;
+	background-color: rgb(236,240,244,0.8);
+	font-weight: bold;
 }
 .form-control {
 	font-size: 12pt;

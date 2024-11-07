@@ -87,8 +87,8 @@ public class AdminUsersPagingVO<T> {
 	}
 	
 	// 페이지 상단에 "전체 : ??개(현재페이지/전체페이지 Page)"을 출력해주는 메서드
-	public String getPageInfo() {
-		return "전체 : " + totalCount + "명 " + (totalCount>0 ? "(" + currentPage + "/ " + totalPage + "Page)" : "");
+	public int getPageInfo() {
+		return totalCount;
 	}
 
 	// 목록 상/하단에 페이지 번호를 출력해주는 메서드

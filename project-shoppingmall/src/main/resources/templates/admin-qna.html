@@ -13,7 +13,10 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/adminQna.css">
 </head>
 <body>
-	<div class="bg">
+	<header>
+		문의 관리
+	</header>
+	<nav>
 		<div class="menu-bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
@@ -37,7 +40,13 @@
 				SHOP
 			</div>
 		</div>
-			<table class="admin-main">
+	</nav>
+	<section class="bg">
+			<table class="paging">
+				<tr>
+					<td style="color: blue;"><a href="/admin/qna">전체</a>[[${qv.pageInfo}]]</td>
+					<td style="color: blue;"><a href="/admin/qna?p=1&s=10&b=10&field=question_status&search=답변대기">미답변 </a>[[${noreply}]]</td>
+				</tr>
 			<colgroup>
                <col width="5%" />
                <col width="7%" />
@@ -46,18 +55,11 @@
                <col width="12%" />
                <col width="8%" />
              </colgroup>
-				<tr>
-					<td colspan="6" class="main">문의 관리</td>
-				</tr>
-				<tr>
-					<td style="color: blue;"><a href="/admin/qna">전체</a>[[${qv.pageInfo}]]</td>
-					<td style="color: blue;"><a href="/admin/qna?p=1&s=10&b=10&field=question_status&search=답변대기">미답변 </a>[[${noreply}]]</td>
-				</tr>
 				<tr class="index">
 					<th>글번호</th>
-					<th>유저번호</th>
+					<th>유저</th>
 					<th>제목</th>
-					<th><select id="aa" style="font-weight: bold; height: 30px;" onchange="window.open(value,'_self')">
+					<th><select style="font-weight: bold; height: 30px;" onchange="window.open(value,'_self')">
 							<option value="/admin/qna">문의유형</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=취소문의" th:selected="${search}==취소문의">취소문의</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=배송문의" th:selected="${search}==배송문의">배송문의</option>
@@ -74,17 +76,17 @@
 				<th:block>
 					<tr th:each="vo: ${qv.list}" class="list" th:onclick="location.href='/admin/qna/view?question_id=[[${vo.question_id}]]'">
 						<td>[[${vo.question_id}]]</td>
-						<td>[[${vo.user_id}]]</td>
+						<td>[[${vo.username}]]</td>
 						<td>[[${vo.question_title}]]</td>
 						<td>[[${vo.inquiryType}]]</td>
 						<td>[[${#dates.format(vo.question_regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 						<td>[[${vo.question_status}]]</td>
 					</tr>
 				</th:block>
+				<tr class="pageList">
+				<td>[(${qv.pageList})]</td>
+			</tr>
 			</table>
-			<div class="pageList">
-				<div>[(${qv.pageList})]</div>
-			</div>
 			<form th:action="@{/admin/qna}" method="get" class="QuestionSearch">
 				<input type="hidden" name="p" th:value="${ppv.p}" />
 				<input type="hidden" name="s" th:value="${ppv.s}" />
@@ -95,8 +97,8 @@
 					<option value="inquiryType">문의유형</option>
 				</select>
 				<input type="text" name="search" id="search"/>
-				<input type="submit" value="검색"/>
+				<input type="submit" id="submit" value=""/>
 			</form>
-	</div>
+	</section>
 </body>
 </html>

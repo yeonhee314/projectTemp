@@ -18,6 +18,8 @@ public class ProductVO {
 	private String product_status;	// 판매 가능 상태
 	private String product_option;	// 상품 옵션
 	
+	// 참조 컬럼
+	private String category_name;
 	// 할인가 계산
 	public int getDiscountPrice(int price, int discount) {
 		return price - (price * discount / 100);

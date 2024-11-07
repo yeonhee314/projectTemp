@@ -61,7 +61,11 @@
 								</tr>
 								<tr>
 									<th>별점</th>
-									<td class="multi_input_row"><i class="bi bi-star-fill"></i>[[${rv.review_rating}]]</td>
+									<td th:if="${rv.review_rating}==1" th:utext="'★'" style="color: orange;"></td>
+									<td th:if="${rv.review_rating}==2" th:utext="'★★'" style="color: orange;"></td>
+									<td th:if="${rv.review_rating}==3" th:utext="'★★★'" style="color: orange;"></td>
+									<td th:if="${rv.review_rating}==4" th:utext="'★★★★'" style="color: orange;"></td>
+									<td th:if="${rv.review_rating}==5" th:utext="'★★★★★'" style="color: orange;"></td>
 								</tr>
 								<tr>
 									<th>작성일</th>

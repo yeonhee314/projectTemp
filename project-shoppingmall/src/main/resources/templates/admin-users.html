@@ -15,7 +15,10 @@
 </script>
 </head>
 <body>
-	<div class="bg">
+	<header>
+		회원 관리
+	</header>
+	<nav>
 		<div class="menu-bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
@@ -39,35 +42,39 @@
 				SHOP
 			</div>
 		</div>
-			<table class="admin-main">
+	</nav>
+	<section class="bg">
+		<table class="paging">
+			<tr>
+				<td class="total" style="color: blue; text-align: left;"><a href="/admin/users">전체 </a>[[${pv.pageInfo}]]</td>
+			</tr>
+			<tr class="index">
+				<th>No</th>
+				<th>아이디</th>
+				<th>닉네임</th>
+				<th>이메일</th>
+				<th>등급</th>
+				<th>가입일</th>
+			</tr>
+			<th:block th:if="${pv.totalCount==0}">
 				<tr>
-					<td colspan="6" class="main">회원 관리</td>
+					<td colspan="9" style="text-align: center;">등록된 회원이 없습니다</td>
 				</tr>
-				<tr>
-					<td colspan="6" class="total">[[${pv.pageInfo}]]</td>
+			</th:block>
+			<th:block>
+				<tr th:each="vo: ${pv.list}" class="list" th:onclick="location.href='/admin/user/details?user_id=[[${vo.user_id}]]'">
+					<td>[[${vo.user_id}]]</td>
+					<td>[[${vo.username}]]</td>
+					<td>[[${vo.nickname}]]</td>
+					<td>[[${vo.email}]]</td>
+					<td>[[${vo.user_level}]]</td>
+					<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 				</tr>
-				<tr class="index">
-					<th>No</th>
-					<th>아이디</th>
-					<th>닉네임</th>
-					<th>이메일</th>
-					<th>등급</th>
-					<th>가입일</th>
-				</tr>
-				<th:block>
-					<tr th:each="vo: ${pv.list}" class="list" th:onclick="location.href='/admin/user/details?user_id=[[${vo.user_id}]]'">
-						<td>[[${vo.user_id}]]</td>
-						<td>[[${vo.username}]]</td>
-						<td>[[${vo.nickname}]]</td>
-						<td>[[${vo.email}]]</td>
-						<td>[[${vo.user_level}]]</td>
-						<td>[[${#dates.format(vo.regdate,'yy-MM-dd(E) HH:mm')}]]</td>
-					</tr>
-				</th:block>
-			</table>
-			<div class="pageList">
-				<div>[(${pv.pageList})]</div>
-			</div>
+			</th:block>
+			<tr class="pageList">
+				<td>[(${pv.pageList})]</td>
+			</tr>
+		</table>
 			<form th:action="@{/admin/users}" method="get" class="userSearch">
 				<input type="hidden" name="p" th:value="${upv.p}" />
 				<input type="hidden" name="s" th:value="${upv.s}" />
@@ -78,8 +85,8 @@
 					<option value="email">이메일</option>
 				</select>
 				<input type="text" name="search" id="search"/>
-				<input type="submit" value="검색"/>
+				<input type="submit" id="submit" value=""/>
 			</form>
-	</div>
+	</section>
 </body>
 </html>

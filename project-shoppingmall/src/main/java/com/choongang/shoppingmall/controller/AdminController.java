@@ -219,7 +219,8 @@ public class AdminController {
 			}
 			productVO.setImg_count(uploadFile.length);
 			productService.insert(productVO);
-			String filePath = request.getSession().getServletContext().getRealPath("/images");
+			String projectDir = System.getProperty("user.dir");
+			String filePath = projectDir + "/src/main/resources/static/images/products/";
 			File file = new File(filePath); 
 			if(!file.exists()) file.mkdirs();
 			
@@ -228,12 +229,6 @@ public class AdminController {
 			if(uploadFile!=null && uploadFile.length>0) {
 				for(MultipartFile f : uploadFile) {
 					if(!f.isEmpty()) { 
-						// 현재는 미사용
-						FileVO fvo = new FileVO(
-										UUID.randomUUID().toString(), 
-										f.getOriginalFilename(),
-										f.getContentType());
-						list.add(fvo);
 						// 파일명 중복처리
 						String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
 						File newFile = new File(filePath, filename);
@@ -282,7 +277,8 @@ public class AdminController {
 		//productVO.setImg_count(uploadFile.length);
 		
 		productService.update(productVO);
-		String filePath = request.getSession().getServletContext().getRealPath("/images");
+		String projectDir = System.getProperty("user.dir");
+		String filePath = projectDir + "/src/main/resources/static/images/products/";
 		File file = new File(filePath); 
 		if(!file.exists()) file.mkdirs();
 		

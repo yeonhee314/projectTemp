@@ -1,4 +1,8 @@
-
+.paging {
+	position: relative;
+	width: 1200px;
+	left: 400px; top: 100px;
+}
 .total {
 	height: 20px;
 	text-align: right;
@@ -6,7 +10,7 @@
 .index {
 	height: 5px;
 	font-size: 0.9rem;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid grey;
 	text-indent: 30px;
 }
 .list {
@@ -20,14 +24,27 @@
 .list:hover {
 	background-color: whitesmoke;
 }
-.pageList {
-	position: fixed;
-	top: 660px;
-	left: 900px;
+.pageList{
+	position: relative;
+	top: 30px;
+	left: 500px;
 }
 .userSearch {
-	position: fixed;
-	top: 700px;
-	left: 760px;
+	position: relative;
+	left: 800px; top:130px;
+	width:300px;
+	height:30px;
+	line-height: 30px;
+	background-color: white;
 }
-
+.userSearch input,select{
+	border: none;
+}
+#submit {
+	width:35px;
+	background-color: white;
+	background-image: url(/images/icons/icon-search.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	border: none;
+}

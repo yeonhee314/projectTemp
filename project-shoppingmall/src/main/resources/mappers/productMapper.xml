@@ -46,18 +46,18 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select * from product
+				(select * from product p join category c on p.category_id=c.category_id
 				<where>
 					<choose>
 						<when test="search != null and search != '0'.toString()">
-							${field} like '%'||#{search}||'%'
+							p.${field} like '%'||#{search}||'%'
 						</when>
 						<when test="search == 0">
 							${field} like #{search}
 						</when>
 					</choose>
 				</where>
-				order by product_id desc) Q
+				order by p.product_id desc) Q
 			where
 			<![CDATA[
 				rownum<=#{endNo}

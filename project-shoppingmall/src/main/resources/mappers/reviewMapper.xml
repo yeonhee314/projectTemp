@@ -63,7 +63,9 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select * from review
+				(select * from review r join category c on r.category_id=c.category_id
+				join users u on r.user_id=u.user_id
+				join product p on r.product_id=p.product_id
 				<where>
 					<if test="search != null">
 						${field} like '%'||#{search}||'%'
