@@ -484,9 +484,16 @@
 													</th:block>
 													<th:block th:if="${productvo.product_stock > 0}">
 													
-											      <button type="button"
-													class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-													th:onclick="handleAddToCart([[${uservo}]])">장바구니 추가</button>
+													<th:block th:if="${isLogin}">
+														<button type="button"
+																class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																th:onclick="handleAddToCart([[${uservo}]])">장바구니 추가</button>
+													</th:block>
+													<th:block th:if="${!isLogin}">
+														<button type="button"
+																class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																onclick="loginConfirm()">장바구니 추가</button>
+													</th:block>
 													<input type="hidden" name="isResume" value=true />
 													</form>
 											    </div>
@@ -1435,22 +1442,25 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			$(this).addClass('js-addedwish-b2');
 			$(this).off('click');	
 		}
-
+	
+		var isLogin = /*[[${isLogin}]]*/;
+		function loginConfirm(){
+			let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
+			if(result){
+				window.location.href= '/login';
+			}
+		}
+		
 		$('.js-addwish-b2').on('click', function(e){
 			e.preventDefault();
-			var isLogin = /*[[${isLogin}]]*/;
 			
 			if (!isLogin){
-				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
-				if(result){
-					window.location.href= '/login';
-				}
+				loginConfirm();
 			}else{
 				var productId = $(this).data('product-id');
 				setWishList(productId, e, this);
 			}
 		});
-
 		 /*]]>*/
 	</script>
 <!--===============================================================================================-->
