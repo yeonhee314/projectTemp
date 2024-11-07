@@ -88,6 +88,8 @@
     <script>
   	//이메일인증여부
 	let emailVerified = false;
+  	//비밀번호 정규식(영문 + 숫자 4자리 이상)
+	const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9]{4,}$/;
 	
         function findPostcode() {	//다음우편API
             new daum.Postcode({
@@ -148,6 +150,20 @@
         
         $(document).ready(function () {
 
+        	//비밀번호 정규식 유효성 검사
+        	$('#password').on('keyup', function() {
+				const password = $(this).val();
+				if (!passwordRegex.test(password)) {
+					$("#password_message").html("비밀번호는 영문과 숫자를 포함 4자리 이상이어야 합니다.")
+										.css('color', 'red')
+										.show();
+				} else {
+					$("#password_message").html("사용 가능한 비밀번호입니다.")
+										.css('color', 'blue')
+										.show();
+				}
+        	});
+
         	//비밀번호 확인
             $('#confirm_password').on('keyup', function() {
                 const password = $('#password').val();
@@ -170,8 +186,15 @@
                     return; // 인증되지 않으면 제출 중단
                 }
                 
-             	// 비밀번호 확인 체크
+                //비밀번호 정규식 체크
                 const password = $('#password').val();
+                if (!passwordRegex.test(password)) {
+					alert('비밀번호는 영문과 숫자를 포함 4자리 이상이어야 합니다.');
+					return;	// 비밀번호가 정규식에 맞지 않으면 제출 중단
+                }
+                
+                
+             	// 비밀번호 확인 체크
                 const confirmPassword = $('#confirm_password').val();
                 if (password !== confirmPassword) {
                     alert('비밀번호가 일치하지 않습니다.');
@@ -255,7 +278,7 @@
    			<span id="usernameMessage" style="color: blue; display: none;"></span>
 
             <label for="password">비밀번호:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required placeholder="영문+숫자 4자리 이상 입력하세요.">
             <label for="confirm_password">비밀번호 확인:</label>
 			<input type="password" id="confirm_password" name="confirm_password" required>
 			<span id="password_message" style="color: red; display: none;"></span>
@@ -277,7 +300,7 @@
             <button type="button" onclick="verifyCode()">인증번호 확인</button>
 
             <label for="phone">전화번호:</label>
-            <input name="phone" id="phone" type="text" onkeyup="checkDuplicate('phone')" class="form-control" style="margin-bottom: 8px;"/>
+            <input name="phone" id="phone" type="text" onkeyup="checkDuplicate('phone')" class="form-control" style="margin-bottom: 8px;" placeholder="- 빼고 입력하세요."/>
             <span id="phoneMessage" style="color: blue; display: none;"></span>
 
             <label for="birth_date">생년월일:</label>
