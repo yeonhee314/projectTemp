@@ -385,9 +385,9 @@
 							<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 							<div class="slick3 gallery-lb">
 								<th:block th:each="item: ${#numbers.sequence(1, productvo.img_count)}">
-									<div class="item-slick3" th:data-thumb="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
+									<div class="item-slick3" th:data-thumb="'images/products/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 										<div class="wrap-pic-w pos-relative">
-											<img th:src="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'" alt="IMG-PRODUCT">
+											<img th:src="'images/products/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'" alt="IMG-PRODUCT">
 											
 											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" th:href="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 												<i class="fa fa-expand"></i>
