@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>개인 정보 수정</title>
+<title>배송지 관리</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -48,148 +48,158 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <style>
-        /* 감싸는 div 스타일 */
-        .input-group {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 1000px
-        }
-        
-        /* 입력 필드 스타일 */
-        .input-group input {
-            padding-right: 0px; /* 버튼을 위한 여유 공간 */
-            font-size: 1rem;
-        }
+/* 감싸는 div 스타일 */
+.input-group {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 1000px
+}
 
-        /* 버튼 스타일 */
-        .input-group button {
-            position: absolute;
-            right: 5px; /* 오른쪽 끝에 버튼 배치 */
-            height: 80%;
-            padding: 0 10px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-        }
-           .popup {
-            display: none; /* 초기 상태는 숨김 */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            z-index: 1000;
-        }
-			.addr_code {
-			    display: flex;
-			    align-items: center;
-			}
-			
-			.addr_code input[type="text"] {
-			    width: 70%;
-			    display: inline-block;
-			    margin-right: 5px;
-			}
-			
-			.addr_code button {
-			    width: 150%;
-			    display: inline-block;
-			    background-color: #007bff;
-			    color: #fff;
-			    border-radius: 4px;
-			}
-			
-        /* 팝업 오버레이 */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
+/* 입력 필드 스타일 */
+.input-group input {
+	padding-right: 0px; /* 버튼을 위한 여유 공간 */
+	font-size: 1rem;
+}
 
-        /* 닫기 버튼 */
-        .popup .close-btn {
-            float: right;
-            cursor: pointer;
-            font-weight: bold;
-            color: #999;
-        }
-         /* 모달 스타일 */
-        .modal {
-            display: none; /* 기본적으로 숨기기 */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 400px;
-            border-radius: 5px;
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-   /* 버튼 기본 스타일 */
+/* 버튼 스타일 */
+.input-group button {
+	position: absolute;
+	right: 5px; /* 오른쪽 끝에 버튼 배치 */
+	height: 80%;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	border: none;
+	background-color: #007bff;
+	color: #fff;
+	border-radius: 5px;
+}
+
+.popup {
+	display: none; /* 초기 상태는 숨김 */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	z-index: 1000;
+}
+
+.addr_code {
+	display: flex;
+	align-items: center;
+}
+
+.addr_code input[type="text"] {
+	width: 70%;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.addr_code button {
+	width: 150%;
+	display: inline-block;
+	background-color: #007bff;
+	color: #fff;
+	border-radius: 4px;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	gap: 10px; /* 버튼 간격 조정 */
+	margin-top: 10px; /* 버튼 위쪽 여백 조정 */
+}
+
+/* 팝업 오버레이 */
+.overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+}
+
+/* 닫기 버튼 */
+.popup .close-btn {
+	float: right;
+	cursor: pointer;
+	font-weight: bold;
+	color: #999;
+}
+/* 모달 스타일 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+	background-color: #fff;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 25%;
+}
+
+.close-btn {
+	color: #aaa;
+	float: right;
+	font-size: 24px;
+	font-weight: bold;
+	cursor: pointer;
+}
+/* 버튼 기본 스타일 */
 .btn {
-    padding: 8px 12px; /* 버튼 내부 여백 */
-    border: none; /* 경계선 제거 */
-    border-radius: 4px; /* 모서리 둥글게 */
-    cursor: pointer; /* 마우스 커서 모양 변경 */
-    font-size: 14px; /* 글자 크기 */
-    margin: 5px; /* 버튼 사이 여백 */
-    transition: background-color 0.3s, transform 0.3s; /* 호버 효과 애니메이션 */
+	padding: 8px 12px; /* 버튼 내부 여백 */
+	border: none; /* 경계선 제거 */
+	border-radius: 4px; /* 모서리 둥글게 */
+	cursor: pointer; /* 마우스 커서 모양 변경 */
+	font-size: 14px; /* 글자 크기 */
+	margin: 5px; /* 버튼 사이 여백 */
+	transition: background-color 0.3s, transform 0.3s; /* 호버 효과 애니메이션 */
 }
 
 /* 수정 버튼 스타일 */
 .btn-primary {
-    background-color: #007bff; /* 파란색 배경 */
-    color: white; /* 흰색 글자 */
+	background-color: #007bff; /* 파란색 배경 */
+	color: white; /* 흰색 글자 */
 }
 
 /* 수정 버튼 호버 효과 */
 .btn-primary:hover {
-    background-color: #0056b3; /* 어두운 파란색으로 변경 */
-    transform: translateY(-2px); /* 약간 위로 이동 */
+	background-color: #0056b3; /* 어두운 파란색으로 변경 */
+	transform: translateY(-2px); /* 약간 위로 이동 */
 }
 
 /* 삭제 버튼 스타일 */
 .btn-danger {
-    background-color: #dc3545; /* 빨간색 배경 */
-    color: white; /* 흰색 글자 */
+	background-color: #dc3545; /* 빨간색 배경 */
+	color: white; /* 흰색 글자 */
 }
 
 /* 삭제 버튼 호버 효과 */
 .btn-danger:hover {
-    background-color: #c82333; /* 어두운 빨간색으로 변경 */
-    transform: translateY(-2px); /* 약간 위로 이동 */
+	background-color: #c82333; /* 어두운 빨간색으로 변경 */
+	transform: translateY(-2px); /* 약간 위로 이동 */
 }
-  
-    </style>
-    
-    
+</style>
+
+
 </head>
 <body class="animsition">
 
@@ -204,15 +214,15 @@
 						over $100</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25"> 
-							<b>고객 센터</b>
+						<a th:href="@{question.html}"
+							class="customer flex-c-m trans-04 p-lr-25"> <b>고객 센터</b>
 						</a>
 
 						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
 						<th:block th:if="${isLogin}">
 							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
-								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> 
-									<b>관리자 모드</b>
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> <b>관리자
+										모드</b>
 								</a>
 							</th:block>
 						</th:block>
@@ -274,7 +284,8 @@
 							<!-- 마이페이지 -->
 							<a th:href="@{myPage.html}"
 								class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY PAGE</b></span>
+								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY
+										PAGE</b></span>
 							</a>
 							<!-- 위시리스트 -->
 							<div id="wish-container">
@@ -470,15 +481,16 @@
 
 
 	<!-- 마이페이지 -->
-	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY PAGE</h3>
+	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY
+		PAGE</h3>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-11">
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="description01">
-							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b> 님 
-							<a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
+							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b>
+								님 <a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
 						</div>
 						<p class="myshop_benefit_display_no_benefit txt_notice">
 							<strong><span><br>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
@@ -488,13 +500,15 @@
 				</div>
 
 				<ul class="list-group">
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 주문</b> 
-						<span id="xans_myshop_bankbook_order_price">0원 (<span id="xans_myshop_bankbook_order_count">0</span>회)</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 주문</b> <span id="xans_myshop_bankbook_order_price">0원
+							(<span id="xans_myshop_bankbook_order_count">0</span>회)
+					</span>
 					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 적립금</b>
-						<span id="xans_myshop_bankbook_total_mileage">0원</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 적립금</b> <span id="xans_myshop_bankbook_total_mileage">0원</span>
 					</li>
 				</ul>
 			</div>
@@ -505,297 +519,360 @@
 				<div
 					class="mypage_leftcon headroomLeft headroom headroom--not-bottom headroom--pinned headroom--top">
 					<div class="myshopMain xans-element- xans-myshop xans-myshop-main">
-						<h2><b>나의 쇼핑</b></h2>
+						<h2>
+							<b>나의 쇼핑</b>
+						</h2>
 						<ul>
 							<li class="shopMain order"><a href="/myPage.html">주문내역</a></li>
 							<li class="shopMain mileage"><a href="/my-mileage.html">적립금</a></li>
 							<li class="shopMain coupon"><a href="/my-coupon.html">쿠폰</a></li>
-							<li class="shopMain board "><a href="/my-reviewList.html">후기 관리</a></li>
-							<li class="shopMain question"><a href="/my-question.html">문의 내역</a></li>
-							<li class="shopMain address active"><a href="/my-addrList.html">배송지 관리</a></li>
-							<li class="shopMain profile " ><a href="/my-modify.html">개인 정보 수정</a></li>
+							<li class="shopMain board "><a href="/my-reviewList.html">후기
+									관리</a></li>
+							<li class="shopMain question"><a href="/my-question.html">문의
+									내역</a></li>
+							<li class="shopMain address active"><a
+								href="/my-addrList.html">배송지 관리</a></li>
+							<li class="shopMain profile "><a href="/my-modify.html">개인
+									정보 수정</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="card-order">
 					<div class="card-header">
-						<h5><b>배송지 관리</b></h5>
-						<hr style="border:solid 2px;">
+						<h5>
+							<b>배송지 관리</b>
+						</h5>
+						<hr style="border: solid 2px;">
 					</div>
 					<div class="card-body">
 						<table class="table table-striped">
 							<thead>
 								<tr class="table-menu">
-								<label for="address" style="color:orange"><b>기본 배송지</b></label>
-								
+									<label for="address" style="color: orange"><b>기본
+											배송지</b></label>
+
 									<div class="input-group">
-									    <input type="text" id="fullAddress" name="fullAddress" 
-									           th:value="${'[' + user.postcode + '] ' + user.address + ' ' + user.address_detail}" disabled="disabled"/>
-									    <button type="button" onclick="showPopup()">수정</button>
-									       <table id="addressTable" class="table table-striped" >
-									         <h6><b>배송지 목록</b></h6>
-										 <tr th:each="address : ${addressList}">
-											    <td colspan="6">
-											        <span><strong>받는사람 :</strong> <span th:text="${address.addr_name}"></span> [<span th:text="${address.addr_code}"></span>] <span th:text="${address.addr}"></span> <span th:text="${address.addr_detail}"></span></span>
-											        <button class="btn btn-primary" type="button" onclick="showPopup([[${address.id}]])">수정</button>
-											        <button class="btn btn-danger" type="button" onclick="deleteAddress([[${address.id}]])">삭제</button>
-											    </td>
-											    
+										<input type="text" id="fullAddress" name="fullAddress"
+											th:value="${'[' + user.postcode + '] ' + user.address + ' ' + user.address_detail}"
+											disabled="disabled" />
+										<button type="button" onclick="showPopup()">수정</button>
+										<table id="addressTable" class="table table-striped">
+											<!-- 배송지 목록 -->
+											<tr th:each="address : ${addressList}">
+												<td colspan="6"><span><strong>받는사람 :</strong> <span
+														th:text="${address.addr_name}"></span> <span
+														th:text="${address.addr_code}"></span> <span
+														th:text="${address.addr}"></span> <span
+														th:text="${address.addr_detail}"></span> </span> <span
+													style="float: right;">
+														<button class="btn btn-primary" type="button"
+															th:onclick="'showPopup(' + ${address.addr_id} + ')'">수정</button>
+
+												</span></td>
 											</tr>
-											  
-										         <tbody>
-           						 <!-- DB에서 가져온 배송지 목록 반복 출력 -->
-									   
-									
-									<!-- 오버레이 및 팝업 창 -->
-									</label>
-									<div class="overlay" id="overlay"></div>
-									<div class="popup" id="popup">
-									    <span class="close-btn" onclick="closePopup()">×</span>
-									    <h3>배송지 정보</h3>
-									    <div id="addressInfo">
-									        <!-- 주소 정보가 여기에 표시됩니다 -->
-									     
-									    </div>
-									    
-									</div>
-									
-									<hr style="border:solid 1px;">
-									
-									
-      									 
-						 <!-- 모달 창 -->
-						  <div id="addressModal" class="modal">
-						    <div class="modal-content">
-						    <span class="close-btn" onclick="closeModal()">x</span>
-								            <h4>배송지 등록</h4>
-								            <hr style="border:solid 1px;">
-								    <form th:action="@{/address/add}" th:object="${addressVO}" method="post">
-								       <div>
-								       	    		
-								                   <input type="text" id="addr_name" th:field="*{addr_name}" placeholder="받으시는분 이름을 입력하세요." >
-								                   <hr>
-								                  	배송 주소
-								              	<div class="addr_code">
-												    <input type="text" id="addr_code" th:field="*{addr_code}" required readonly style="display: inline-block; width: 70%;"/>
-												    <button type="button" onclick="openZipCodeSearch()" style="display: inline-block; width: 28%; margin-left: 5px;">우편 번호<br>찾기</button>
+
+											<!-- 수정 모달 -->
+											<div id="editModal" class="modal" style="display: none;">
+												<div class="modal-content">
+													<h4>배송지 수정</h4>
+													<hr>
+													<form th:action="@{/address/update}"
+														th:object="${addressVO}" method="post">
+														<input type="hidden" id="addr_id" name="addr_id">
+														<div>
+															<label for="addr_name">받는사람:</label> <input type="text"
+																id="addr_name" name="addr_name"
+																style="width: 200px; display: inline-block;" />
+														</div>
+														<div>
+															<label for="addr_code">우편번호:</label> <input type="text"
+																id="addr_code" name="addr_code" readonly
+																style="width: 200px; display: inline-block;" />
+															<button class="btn btn-success" type="button"
+																onclick="execDaumPostcode()"
+																style="display: inline-block;">우편번호 찾기</button>
+														</div>
+														<div>
+															<label for="addr">배송 주소:</label> <input type="text"
+																id="addr" name="addr" style="width: 100%;" />
+														</div>
+														<div>
+															<label for="addr_detail">상세 주소:</label> <input
+																type="text" id="addr_detail" name="addr_detail"
+																style="width: 100%;" />
+														</div>
+														<div class="button-container">
+															<button class="btn btn-primary" type="submit">수정
+																완료</button>
+															<button class="btn btn-danger" onclick="closeEditPopup()">닫기</button>
+														</div>
+													</form>
 												</div>
-												  </div>
-								                <div>
-								                    <input type="text" id="addr" th:field="*{addr}" required readonly/>
-								                </div>
-								                <div>
-								                    <input type="text" id="addr_detail" th:field="*{addr_detail}" placeholder="상세주소를 입력하세요" />
-								                </div>
-								               <hr>
-								                <button type="submit" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">확인</button>
-								                								            
-								             </form>
-								           
-								        </div>
-								    </div> 
-								
-								</tr>
-								
-							</thead>
-							
-						</table>
-						<div th:if="${#lists.isEmpty(addressList)}">
-							    <p></p>
-							</div>
-						 <a href="javascript:void(0);" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
-      									 onclick="openModal()">배송지 등록</a>
-					</div>
-				</div>
-			</div>
-	
+											</div>
+
+											<!-- 오버레이 및 팝업 창 -->
+											</label>
+											<div class="overlay" id="overlay"></div>
+											<div class="popup" id="popup">
+												<span class="close-btn" onclick="closePopup()">×</span>
+												<h3>배송지 정보</h3>
+												<div id="addressInfo">
+													<!-- 주소 정보가 여기에 표시됩니다 -->
+												</div>
+											</div>
+											<hr style="border: solid 1px;">
+
+											<!-- 모달 창 -->
+											<div id="addressModal" class="modal">
+												<div class="modal-content">
+													<span class="close-btn" onclick="closeModal()">×</span>
+													<h4>배송지 등록</h4>
+													<hr style="border: solid 1px;">
+
+													<form th:action="@{/address/add}" th:object="${addressVO}"
+														method="post">
+														<input type="hidden" id="addr_id" name="addr_id">
+														<div>
+															<input type="text" id="addr_name" name="addr_name"
+																placeholder="받으시는 분 이름을 입력하세요." required>
+														</div>
+
+														<hr>
+
+														<label>배송 주소</label>
+														<div class="addr_code">
+															<label for="addr_code"></label><input type="text" id="addr_code" name="addr_code"
+																style="width: 60%;"placeholder="우편 번호">
+															<button type="button" onclick="execDaumPostcode()"
+																style="width: 40%; margin-left: 5px;">우편 번호 찾기</button>
+														</div>
+
+														<div>
+															<input type="text" id="addr" name="addr" placeholder="주소">
+														</div>
+
+														<div>
+															<input type="text" id="addr_detail" name="addr_detail"
+																placeholder="상세주소를 입력하세요">
+														</div>
+
+														<hr>
+
+														<button type="submit"
+															class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">확인</button>
+													</form>
+												</div>
+											</div>
+											</tr>
+											</thead>
+										</table>
+										<div th:if="${#lists.isEmpty(addressList)}">
+											<p></p>
+										</div>
+										<a href="javascript:void(0);"
+											class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
+											onclick="openModal()">배송지 등록</a>
+									</div>
+									</div>
+									</div>
 
 
-	<!-- Footer -->
-	<footer class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">Categories</h4>
 
-					<ul>
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Women </a></li>
+									<!-- Footer -->
+									<footer class="bg3 p-t-75 p-b-32">
+										<div class="container">
+											<div class="row">
+												<div class="col-sm-6 col-lg-3 p-b-50">
+													<h4 class="stext-301 cl0 p-b-30">Categories</h4>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Men </a></li>
+													<ul>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Women </a></li>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Shoes </a></li>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Men </a></li>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Watches </a></li>
-					</ul>
-				</div>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Shoes </a></li>
 
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">Help</h4>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Watches </a></li>
+													</ul>
+												</div>
 
-					<ul>
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Track Order </a></li>
+												<div class="col-sm-6 col-lg-3 p-b-50">
+													<h4 class="stext-301 cl0 p-b-30">Help</h4>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Returns </a></li>
+													<ul>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Track Order </a></li>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> Shipping </a></li>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Returns </a></li>
 
-						<li class="p-b-10"><a href="#"
-							class="stext-107 cl7 hov-cl1 trans-04"> FAQs </a></li>
-					</ul>
-				</div>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> Shipping </a></li>
 
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">GET IN TOUCH</h4>
+														<li class="p-b-10"><a href="#"
+															class="stext-107 cl7 hov-cl1 trans-04"> FAQs </a></li>
+													</ul>
+												</div>
 
-					<p class="stext-107 cl7 size-201">Any questions? Let us know in
-						store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
-						on (+1) 96 716 6879</p>
+												<div class="col-sm-6 col-lg-3 p-b-50">
+													<h4 class="stext-301 cl0 p-b-30">GET IN TOUCH</h4>
 
-					<div class="p-t-27">
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16"> <i
-							class="fa fa-facebook"></i>
-						</a> <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16"> <i
-							class="fa fa-instagram"></i>
-						</a> <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16"> <i
-							class="fa fa-pinterest-p"></i>
-						</a>
-					</div>
-				</div>
+													<p class="stext-107 cl7 size-201">Any questions? Let us
+														know in store at 8th floor, 379 Hudson St, New York, NY
+														10018 or call us on (+1) 96 716 6879</p>
 
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">Newsletter</h4>
+													<div class="p-t-27">
+														<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+															<i class="fa fa-facebook"></i>
+														</a> <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+															<i class="fa fa-instagram"></i>
+														</a> <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+															<i class="fa fa-pinterest-p"></i>
+														</a>
+													</div>
+												</div>
 
-					<form>
-						<div class="wrap-input1 w-full p-b-4">
-							<input class="input1 bg-none plh1 stext-107 cl7" type="text"
-								name="email" placeholder="email@example.com">
-							<div class="focus-input1 trans-04"></div>
-						</div>
+												<div class="col-sm-6 col-lg-3 p-b-50">
+													<h4 class="stext-301 cl0 p-b-30">Newsletter</h4>
 
-						<div class="p-t-18">
-							<button
-								class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-								Subscribe</button>
-						</div>
-					</form>
-				</div>
-			</div>
+													<form>
+														<div class="wrap-input1 w-full p-b-4">
+															<input class="input1 bg-none plh1 stext-107 cl7"
+																type="text" name="email" placeholder="email@example.com">
+															<div class="focus-input1 trans-04"></div>
+														</div>
 
-			<div class="p-t-40">
-				<div class="flex-c-m flex-w p-b-18">
-					<a href="#" class="m-all-1"> <img
-						src="images/icons/icon-pay-01.png" alt="ICON-PAY">
-					</a> <a href="#" class="m-all-1"> <img
-						src="images/icons/icon-pay-02.png" alt="ICON-PAY">
-					</a> <a href="#" class="m-all-1"> <img
-						src="images/icons/icon-pay-03.png" alt="ICON-PAY">
-					</a> <a href="#" class="m-all-1"> <img
-						src="images/icons/icon-pay-04.png" alt="ICON-PAY">
-					</a> <a href="#" class="m-all-1"> <img
-						src="images/icons/icon-pay-05.png" alt="ICON-PAY">
-					</a>
-				</div>
+														<div class="p-t-18">
+															<button
+																class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+																Subscribe</button>
+														</div>
+													</form>
+												</div>
+											</div>
 
-				<p class="stext-107 cl6 txt-center">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					Copyright &copy;
-					<script>document.write(new Date().getFullYear());</script>
-					All rights reserved | Made with <i class="fa fa-heart-o"
-						aria-hidden="true"></i> by <a href="https://colorlib.com"
-						target="_blank">Colorlib</a>
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+											<div class="p-t-40">
+												<div class="flex-c-m flex-w p-b-18">
+													<a href="#" class="m-all-1"> <img
+														src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+													</a> <a href="#" class="m-all-1"> <img
+														src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+													</a> <a href="#" class="m-all-1"> <img
+														src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+													</a> <a href="#" class="m-all-1"> <img
+														src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+													</a> <a href="#" class="m-all-1"> <img
+														src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+													</a>
+												</div>
 
-				</p>
-			</div>
-		</div>
-	</footer>
+												<p class="stext-107 cl6 txt-center">
+													<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+													Copyright &copy;
+													<script>document.write(new Date().getFullYear());</script>
+													All rights reserved | Made with <i class="fa fa-heart-o"
+														aria-hidden="true"></i> by <a href="https://colorlib.com"
+														target="_blank">Colorlib</a>
+													<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+												</p>
+											</div>
+										</div>
+									</footer>
 
 
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top"> <i
-			class="zmdi zmdi-chevron-up"></i>
-		</span>
-	</div>
-	<!--===============================================================================================-->
-	 <!-- 다음 우편번호 API 스크립트 추가 -->
-    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-    <!-- 자바스크립트 -->
-    <script>
-        // 모달 열기 함수
-        function openModal() {
-            document.getElementById('addressModal').style.display = 'block';
-        }
-
-        // 모달 닫기 함수
-        function closeModal() {
-            document.getElementById('addressModal').style.display = 'none';
-        }
-
-        // 다음 우편번호 API를 사용한 주소 검색 함수
-        function openZipCodeSearch() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    document.getElementById('addr_code').value = data.zonecode;
-                    document.getElementById('addr').value = data.address;
-                    document.getElementById('addr_detail').focus();
-                }
-            }).open();
-        }
-
-        // 모달 외부를 클릭하면 닫히게 하기
-        window.onclick = function(event) {
-            const modal = document.getElementById('addressModal');
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
+									<!-- Back to top -->
+									<div class="btn-back-to-top" id="myBtn">
+										<span class="symbol-btn-back-to-top"> <i
+											class="zmdi zmdi-chevron-up"></i>
+										</span>
+									</div>
 <!--===============================================================================================-->
-    </script>
-			<script>
-			    // 팝업 열기 함수
-			    function showPopup() {
-			        document.getElementById('overlay').style.display = 'block';
-			        document.getElementById('popup').style.display = 'block';
-			        
-			        // 서버에 AJAX 요청을 보내 배송지 정보 가져오기
-			        fetch('/getAddressInfo') // 실제 엔드포인트로 변경
-			            .then(response => response.json())
-			            .then(data => {
-			                // 가져온 데이터를 팝업 창에 표시
-			                document.getElementById('addressInfo').innerHTML = `
-			                    <p>우편번호: ${data.postcode}</p>
-			                    <p>주소: ${data.address}</p>
-			                    <p>상세 주소: ${data.address_detail}</p>
-			                `;
-			            })
-			            .catch(error => console.error('Error:', error));
+<!-- 다음 우편번호 API 스크립트 추가 -->
+<script
+src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+// 모달 열기 함수
+function openModal() {
+    document.getElementById("addressModal").style.display = "block"; // 모달 열기
+}
+
+// 모달 닫기 함수
+function closeModal() {
+    document.getElementById("addressModal").style.display = "none"; // 모달 닫기
+}
+
+// Daum 우편번호 API를 활용한 주소 검색
+function execDaumPostcode() {
+									    new daum.Postcode({
+									        oncomplete: function(data) {
+									            // 주소 데이터를 받아와서 HTML 요소에 자동으로 입력합니다.
+									            document.getElementById("addr_code").value = data.zonecode; // 우편번호
+									            document.getElementById("addr").value = data.address; // 기본 주소
+
+									            // 상세주소 입력 필드로 포커스 이동
+									            document.getElementById("addr_detail").focus();
+									        }
+									    }).open();
+									}
+
+</script>
+									<!--===============================================================================================-->
+									</script>
+									<script>
+			function showPopup(addr_id) {
+			    if (!addr_id) {
+			        console.error("주소 ID가 전달되지 않았습니다.");
+			        return;
 			    }
-			
-			    // 팝업 닫기 함수
-			    function closePopup() {
-			        document.getElementById('overlay').style.display = 'none';
-			        document.getElementById('popup').style.display = 'none';
-			    }
-			</script>
-	<!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+
+			    // 주소 데이터를 가져오기 위한 fetch 호출
+			    fetch(`/address/get/${addr_id}`)
+			        .then(response => {
+			            if (!response.ok) {
+			                throw new Error("주소 데이터를 가져오는데 실패했습니다: " + response.status);
+			            }
+			            return response.json();
+			        })
+			        .then(data => {
+			            // 데이터가 정상적으로 로드된 경우 폼 필드에 데이터 설정
+
+			          
+			            document.getElementById("addr_name").value = data.addr_name;
+			            document.getElementById("addr_id").value = data.addr_id;
+			            document.getElementById("addr").value = data.addr;
+			            document.getElementById("addr_detail").value = data.addr_detail;
+			            document.getElementById("addr_code").value = data.addr_code;
+
+			            // 모달을 화면에 표시
+			            document.getElementById("editModal").style.display = "block";
+			        })
+			        .catch(error => {
+			            console.error("주소 데이터를 불러오는데 실패했습니다:", error);
+			        });
+			}
+
+			function closeEditPopup() {
+			    document.getElementById("editModal").style.display = "none";
+			}
+</script>
 	<script>
+									
+									</script>
+									<!--===============================================================================================-->
+									<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+									<!--===============================================================================================-->
+									<script src="vendor/animsition/js/animsition.min.js"></script>
+									<!--===============================================================================================-->
+									<script src="vendor/bootstrap/js/popper.js"></script>
+									<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+									<!--===============================================================================================-->
+									<script src="vendor/select2/select2.min.js"></script>
+									<script>
 		$(".js-select2").each(function(){
 			$(this).select2({
 				minimumResultsForSearch: 20,
@@ -803,11 +880,11 @@
 			});
 		})
 	</script>
-	<!--===============================================================================================-->
-	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script>
+									<!--===============================================================================================-->
+									<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+									<!--===============================================================================================-->
+									<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+									<script>
 		$('.js-pscroll').each(function(){
 			$(this).css('position','relative');
 			$(this).css('overflow','hidden');
@@ -822,12 +899,12 @@
 			})
 		});
 	</script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script th:inline="javascript">
+									<!--===============================================================================================-->
+									<script src="js/main.js"></script>
+									<script
+										src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+									<script src="vendor/sweetalert/sweetalert.min.js"></script>
+									<script th:inline="javascript">
 		
 		
 	</script>
