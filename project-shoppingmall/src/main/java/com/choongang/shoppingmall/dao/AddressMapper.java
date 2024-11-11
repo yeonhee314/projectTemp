@@ -15,6 +15,12 @@ public interface AddressMapper {
 	//배송지 목록 확인
 	List<AddressVO> findAddressListByUserId(int userId);
 	
-	void updateAddress(AddressVO address);
+	//배송지 목록(수정) 확인
+	AddressVO selectAddressByAddrId(int addr_id);
+	
+	//배송지 수정 
+	void updateAddress(AddressVO addressVO);
+
+
     
 }

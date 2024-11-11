@@ -6,30 +6,26 @@
 	<!-- namespace와 인터페이스 이름이 일치해야 자동으로 구현된다. -->
 	
 	<!-- 배송지 추가 -->
-	<insert id="insertAddress" parameterType="map">
+	<insert id="insertAddress" parameterType="AddressVO">
 		INSERT INTO address (addr_id, user_id, addr_name, addr, addr_detail, addr_code)
         VALUES (addr_id_seq.NEXTVAL, #{userId}, #{addr_name}, #{addr}, #{addr_detail}, #{addr_code})
 	</insert>
 	
 	<!-- 배송지 목록확인-->
 	 <select id="findAddressListByUserId" resultType="AddressVO">
-        SELECT user_id, addr_name, addr_code, addr, addr_detail
+        SELECT user_id,addr_id,addr_name, addr_code, addr, addr_detail
         FROM address
         WHERE user_id = #{userId}  <!-- userId에 해당하는 주소만 조회 -->
     </select>
+
+    <select id="selectAddressByAddrId" resultType="AddressVO">
+        SELECT * FROM address WHERE addr_id = #{addr_id}
+    </select>
     
-    
-    <!-- 배송지 수정
-    
-    <update id="updateAddress" parameterType="AddressVO">
-    UPDATE address
-    SET addr_name = #{addrName},
-        addr_code = #{addrCode},
-        addr = #{addr},
-        addr_detail = #{addrDetail}
-    WHERE addr_id = #{addr_id}
-	</update>
-	-->
-    <!-- 배송지 삭제-->
+     <update id="updateAddress">
+        UPDATE address
+        SET addr_name = #{addr_name}, addr = #{addr}, addr_detail = #{addr_detail},addr_code = #{addr_code}
+        WHERE addr_id = #{addr_id}
+    </update>
     
 </mapper>  

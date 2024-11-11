@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.shoppingmall.service.QuestionCommentService;
@@ -34,33 +38,32 @@ import com.choongang.shoppingmall.vo.WishVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@Validated
 public class MypageController {
-	
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private WishService wishService;
 	@Autowired
 	private QuestionService questionService;
-	@Autowired 
+	@Autowired
 	private AddressService addressService;
-    	@Autowired
-    	private QuestionCommentService questionCommentService;
+	@Autowired
+	private QuestionCommentService questionCommentService;
 
-
-
-	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication != null && authentication.isAuthenticated()
+				&& !(authentication instanceof AnonymousAuthenticationToken);
 	}
-	
+
 	// 회원 정보 가져오기
 	public UserVO getUserInfo() {
 		UserVO userVO = new UserVO();
 		List<WishVO> wishList = null;
-		if(isUserLoggedin()) {
+		if (isUserLoggedin()) {
 			String username = SecurityContextHolder.getContext().getAuthentication().getName();
 			userVO = userService.selectByUsername(username);
 			wishList = wishService.selectWishByUserId(userVO.getUser_id());
@@ -68,113 +71,129 @@ public class MypageController {
 		}
 		return userVO;
 	}
-	
-    // 마이페이지
-    @GetMapping("/myPage.html")
+
+	// 마이페이지
+	@GetMapping("/myPage.html")
 	public String myPage(Model model) {
-    	boolean isLogin = isUserLoggedin();
+		boolean isLogin = isUserLoggedin();
 		UserVO userVO = getUserInfo();
-		if (!isLogin) 
+		if (!isLogin)
 			return "redirect:/login";
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("uservo", userVO);
-    	
+
 		return "myPage";
 	}
-	
+
 	// 후기 관리
 	@GetMapping("/my-reviewList.html")
 	public String reviewList(Model model) {
-		if(!isUserLoggedin())
+		if (!isUserLoggedin())
 			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
-		
+
 		return "/my-reviewList.html";
 	}
-	
+
 	// 문의 내역
 	@GetMapping("/my-question.html")
 	public String questionList(Model model) {
-		if(!isUserLoggedin())
+		if (!isUserLoggedin())
 			return "redirect:/login";
-		
+
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
-		List<QuestionVO> list = questionService.selectQuestionListByUserId(userVO.getUser_id());        
+		List<QuestionVO> list = questionService.selectQuestionListByUserId(userVO.getUser_id());
 		List<QuestionCommentVO> commList = questionService.getCommList(userVO.getUser_id());
-		
+
 		model.addAttribute("list", list);
-        		model.addAttribute("commList", commList);
+		model.addAttribute("commList", commList);
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
-		
+
 		return "/my-question.html";
 	}
 
-					@GetMapping("/my-addrList.html")
-					public String addressList(HttpSession session,Model model) throws SQLException {
+	@GetMapping("/my-addrList.html")
+	public String addressList(HttpSession session, Model model) throws SQLException {
 
-						int userId = (int) session.getAttribute("userId");
-						
-						List<AddressVO> addressList = addressService.getAddressList(userId);
-		
-						UserVO user = userService.getUserById(userId);
+		int userId = (int) session.getAttribute("userId");
 
-						if(!isUserLoggedin())
-							return "redirect:/login";
-						UserVO userVO = getUserInfo();
-						boolean isLogin = isUserLoggedin();
-						
-						model.addAttribute("uservo", userVO);
-						model.addAttribute("isLogin", isLogin);
-						model.addAttribute("user", user);
-						model.addAttribute("addressVO", new AddressVO());
-						model.addAttribute("addressList",addressList);
-						
-						return "/my-addrList.html";
-					}
+		List<AddressVO> addressList = addressService.getAddressList(userId);
 
-    // 문의 내역 삭제
-    @PostMapping("/deleteQuestion")
-    public String deleteQuestion(@RequestParam("question_id") int question_id) {
-        QuestionVO questionVO = questionService.selectById(question_id);
-        questionService.deleteToQuestion(questionVO);
-        return "redirect:/my-question.html";
-    }
-										
-										
+		UserVO user = userService.getUserById(userId);
+
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
+
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("user", user);
+		model.addAttribute("addressVO", new AddressVO());
+		model.addAttribute("addressList", addressList);
+
+		return "/my-addrList.html";
+	}
+	@GetMapping("/address/get/{addr_id}")
+	  @ResponseBody
+	  public ResponseEntity<AddressVO> getAddressById(@PathVariable("addr_id") int addr_id) {
+	      AddressVO address = addressService.getAddressByAddrId(addr_id);
+	      
+	      if (address != null) {
+	          return ResponseEntity.ok(address);
+	      } else {
+	          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	      }
+	  }
+	
+	// 배송지 수정 처리
+	    @PostMapping("/address/update")
+	    public String updateAddress(AddressVO addressVO) {
+	        addressService.updateAddress(addressVO);
+	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	    }
+
+	// 문의 내역 삭제
+	@PostMapping("/deleteQuestion")
+	public String deleteQuestion(@RequestParam("question_id") int question_id) {
+		QuestionVO questionVO = questionService.selectById(question_id);
+		questionService.deleteToQuestion(questionVO);
+		return "redirect:/my-question.html";
+	}
+
 	// 회원 정보 확인
-		@GetMapping("/my-modify.html")
-		public String getProfile(HttpSession session,Model model) throws SQLException {
-			if(!isUserLoggedin())
-				return "redirect:/login";
-			UserVO userVO = getUserInfo();
-			boolean isLogin = isUserLoggedin();
-			
-			int userId=(int) session.getAttribute("userId");
-			UserVO user = userService.getUserById(userId);
-			
-			//model.addAttribute("list", list);
-			model.addAttribute("uservo", userVO);
-			model.addAttribute("isLogin", isLogin);
-			model.addAttribute("user", user);
-			
-			return "/my-modify.html";
-		}
-		
-	//회원 정보 수정
-		@PostMapping("/updateProfile")
-		public String updateProfile(UserVO userVO,HttpSession session) throws SQLException {
-			int userId=(int) session.getAttribute("userId");
-			userVO.setUser_id(userId);
-			userService.updateUser(userVO);
-			
-			
-			return "redirect:/my-modify.html";
-			
-		}
-		
+	@GetMapping("/my-modify.html")
+	public String getProfile(HttpSession session, Model model) throws SQLException {
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
+
+		int userId = (int) session.getAttribute("userId");
+		UserVO user = userService.getUserById(userId);
+
+		// model.addAttribute("list", list);
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("user", user);
+
+		return "/my-modify.html";
+	}
+
+	// 회원 정보 수정
+	@PostMapping("/updateProfile")
+	public String updateProfile(UserVO userVO, HttpSession session) throws SQLException {
+		int userId = (int) session.getAttribute("userId");
+		userVO.setUser_id(userId);
+		userService.updateUser(userVO);
+
+		return "redirect:/my-modify.html";
+
+	}
+
 }
