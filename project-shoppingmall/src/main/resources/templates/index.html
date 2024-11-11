@@ -1313,7 +1313,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		$(".filter-button").on("click", function(event){
 			const category = $(this).data("category");
 			// console.log("category_id : ", category);
-			window.location.href = 'index.html?category_id=' + category + '#target-section';
+			if(category == 0){
+				window.location.href = 'index.html#target-section';
+			}else{
+				window.location.href = 'index.html?field=category_id&search=' + category + '#target-section';
+			}
 		});
 		
 	</script>
