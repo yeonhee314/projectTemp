@@ -1,17 +1,26 @@
 .paging {
 	position: relative;
-	width: 1400px;
+	width: 1420px;
 	left: 450px;
 	top: -190px;
 }
 .pdStatus {
 	position: relative;
-	width: 1400px;
+	width: 1420px;
 	left: 450px;
 	top: -190px;
 }
 .stocktTh {
 	display: none;
+}
+.stockBtn {
+	height: 22px;
+	line-height:18px;
+	margin-top: 10px;
+	background-color: white; 
+	border: 0.5px solid grey;
+	border-radius: 3px;
+	font-weight: bold;
 }
 .total {
 	height: 20px;
@@ -19,7 +28,7 @@
 }
 .pdAdd {
 	text-align: right;
-	width: 1150px;
+	width: 1120px;
 }
 .popUpBg {
 	position: fixed;
@@ -51,7 +60,7 @@
 	font-size: 1rem;
 	border-bottom: 1px solid grey;
 	text-indent: 30px;
-	line-height: 40px;
+	line-height: 45px;
 }
 .list {
 	background-color: white;

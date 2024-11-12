@@ -16,7 +16,7 @@ li {
 }
 .info {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 250px;
+	width: 450px; height: 250px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
@@ -24,7 +24,7 @@ li {
 }
 .email {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 40px; line-height: 40px;
+	width: 450px; height: 40px; line-height: 40px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
@@ -32,7 +32,7 @@ li {
 }
 .history {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 180px;
+	width: 450px; height: 180px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
@@ -43,7 +43,7 @@ li {
 }
 .point {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 180px;
+	width: 450px; height: 180px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
@@ -51,7 +51,7 @@ li {
 }
 .orderList {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 50px;
+	width: 450px; height: 50px;
 	line-height: 50px;
 	position: relative;
 	margin: 50px;

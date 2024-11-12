@@ -238,6 +238,7 @@ $(document).ready(function(){
 				<tr style="justify-content: center;">
 					<th class="total" style="color:blue;"><a href="/admin/products" style="font-weight: bold;">전체</a>[[${pv.pageInfo}]]</th>
 					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=Y">판매중 </a>[[${yCount}]]</td>
+					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=N">미판매 </a>[[${nCount}]]</td>
 					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_stock&search=0">품절 </a>[[${soldout}]]</td>
 					<th class="pdAdd">
 						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 12pt;" onclick="location.href='/admin/products/form'"/>
@@ -249,7 +250,7 @@ $(document).ready(function(){
                   <col width="2%" />
                   <col width="5%" />
                   <col width="6%" />
-                  <col width="40%" />
+                  <col width="42%" />
                   <col width="10%" />
                   <col width="8%" />
                   <col width="10%" />
@@ -265,7 +266,7 @@ $(document).ready(function(){
 					<th>판매가</th>
 					<th>카테고리</th>
 					<th class="stock">재고</th>
-					<th class="stockTh"><input type="button" class="stockBtn" value="재고변경" style="height: 22px; line-height:18px; margin-top: 10px;"/></th>
+					<th class="stockTh"><input type="button" class="stockBtn" value="재고변경"/></th>
 					<th>상태</th>
 					<th>등록일</th>
 				</tr>
@@ -278,7 +279,7 @@ $(document).ready(function(){
 					<tr th:each="vo: ${pv.list}" class="list">		
 						<td><input type="checkbox" th:value="${vo.product_id}" name="checkbox" class="checkbox"/></td>
 						<td>[[${vo.product_id}]]</td>
-						<td><img th:src="@{'/images/products/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
+						<td><img th:src="@{'/images/products/product' + ${vo.product_id} +'/product-'+ ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
 						<td>[[${vo.category_name}]]</td>

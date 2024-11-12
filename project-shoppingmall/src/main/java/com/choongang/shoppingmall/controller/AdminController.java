@@ -119,6 +119,7 @@ public class AdminController {
 		model.addAttribute("cv", cv);
 		model.addAttribute("ppv", productPagingVO);
 		model.addAttribute("yCount", productService.selectYCount());
+		model.addAttribute("nCount", productService.selectNCount());
 		model.addAttribute("soldout", productService.selectSoldOutCount());
 		model.addAttribute("field", field);
 		model.addAttribute("search", search);
@@ -227,7 +228,7 @@ public class AdminController {
 			productVO.setImg_count(uploadFile.length);
 			productService.insert(productVO);
 			String projectDir = System.getProperty("user.dir");
-			String filePath = projectDir + "/src/main/resources/static/images/products/";
+			String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
 			File file = new File(filePath); 
 			if(!file.exists()) file.mkdirs();
 			// 파일 처리

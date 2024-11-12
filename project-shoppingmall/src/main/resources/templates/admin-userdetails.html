@@ -92,8 +92,8 @@ $(function(){
 							<li> &nbsp; </li>
 							<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
 							<li>&nbsp;</li>
-							<li><a th:href="@{/admin/review?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">후기 : [[${reviewCount}]]건</a></li>
-							<li><a th:href="@{/admin/qna?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">문의 : [[${qnaCount}]]건</a></li>
+							<li>후기 : <a th:href="@{/admin/review?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}" style="color: blue;">[[${reviewCount}]]</a> 건</li>
+							<li>문의 : <a th:href="@{/admin/qna?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}" style="color: blue;">[[${qnaCount}]]</a> 건</li>
 						</ul>
 					</div>
 					<div class="point" >
@@ -108,7 +108,7 @@ $(function(){
 							<tr>
 								<td>
 									<form th:action="@{/pointOk}" method="post" id="pointForm">
-										<select name="pnm" id="pnm">
+										<select name="pnm" id="pnm" style="width: 80px;">
 											<option value="plus">지급</option>
 											<option value="minus">차감</option>
 										</select>

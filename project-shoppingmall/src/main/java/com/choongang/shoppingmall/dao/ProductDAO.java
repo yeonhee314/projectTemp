@@ -26,6 +26,8 @@ public interface ProductDAO {
 	String selectProductNameById(int product_id) throws SQLException;
 	// 판매중인 상품 개수
 	int selectYCount() throws SQLException;
+	// 미판매 상품 개수
+	int selectNCount() throws SQLException;
 	// 품절된 상품 개수
 	int selectSoldOutCount() throws SQLException;
 	void insert(ProductVO productVO) throws SQLException;

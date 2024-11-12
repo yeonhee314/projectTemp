@@ -54,10 +54,10 @@
 	        $(this).hide();
 	    });   
 	    $("#product_price").on('change',function() {
-	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
+	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
 	    $("#discount").on('change',function() {
-	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
+	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
 	 });  
 	// 상품명 중복체크

@@ -198,4 +198,14 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 	}
+	@Override
+	public int selectNCount() {
+		int count = 0;
+		try {
+			count = productDAO.selectNCount();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }

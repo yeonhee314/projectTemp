@@ -31,10 +31,10 @@
 	    });
 	    $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
 	    $("#product_price").on('change',function() {
-	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
+	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
 	    $("#discount").on('change',function() {
-	        $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
+	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
 	});
 	function productCheck(){

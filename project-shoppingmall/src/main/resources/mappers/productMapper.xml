@@ -114,6 +114,9 @@
 	<select id="selectYCount" resultType="int">
 		select count(*) from product where product_status = 'Y'
 	</select>
+	<select id="selectNCount" resultType="int">
+		select count(*) from product where product_status = 'N'
+	</select>
 	<!-- 품절 상품 개수 -->
 	<select id="selectSoldOutCount" resultType="int">
 		select count(*) from product where product_stock = '0'
