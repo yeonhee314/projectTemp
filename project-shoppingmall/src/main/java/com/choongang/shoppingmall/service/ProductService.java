@@ -24,4 +24,5 @@ public interface ProductService {
 	void update(ProductVO productVO);
 	void delete(int product_id);
 	void updateStatus(ProductVO productVO);
+	void updateStock(ProductVO productVO);
 }

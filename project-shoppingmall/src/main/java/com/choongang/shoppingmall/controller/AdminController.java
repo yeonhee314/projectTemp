@@ -62,7 +62,6 @@ public class AdminController {
 	
 	ResourceLoader resourceLoader;
 	
-	
 	// 관리자 페이지 접근
 	@GetMapping("/admin")
 	public String admin() {
@@ -136,6 +135,14 @@ public class AdminController {
 	@PostMapping("/pdStatusOk")
 	public String pdStatusOkPost(@ModelAttribute ProductVO productVO, Model model) {
 		productService.updateStatus(productVO);
+		return "redirect:/admin/products";
+	}
+	// 상품 재고 변경
+	@PostMapping("/pdStock")
+	public String pdStockUpdate(@RequestParam (required = false, name = "sc") String sc,
+			@ModelAttribute ProductVO productVO, Model model) {
+		model.addAttribute("sc", sc);
+		productService.updateStock(productVO);
 		return "redirect:/admin/products";
 	}
 	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
@@ -223,7 +230,6 @@ public class AdminController {
 			String filePath = projectDir + "/src/main/resources/static/images/products/";
 			File file = new File(filePath); 
 			if(!file.exists()) file.mkdirs();
-			
 			// 파일 처리
 			List<FileVO> list = new ArrayList<>();
 			if(uploadFile!=null && uploadFile.length>0) {
@@ -275,13 +281,11 @@ public class AdminController {
 			@ModelAttribute(value = "vo") ProductVO productVO,
 			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
 		//productVO.setImg_count(uploadFile.length);
-		
 		productService.update(productVO);
 		String projectDir = System.getProperty("user.dir");
 		String filePath = projectDir + "/src/main/resources/static/images/products/";
 		File file = new File(filePath); 
 		if(!file.exists()) file.mkdirs();
-		
 		// 파일 처리
 		List<FileVO> list = new ArrayList<>();
 		if(uploadFile!=null && uploadFile.length>0) {

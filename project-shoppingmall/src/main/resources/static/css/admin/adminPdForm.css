@@ -14,7 +14,7 @@
 	font-weight: bold;
 }
 .formbox {
-	position: fixed;
+	position: relative;
 	top: 100px; left: 280px;
 	width: 700px; height: 700px;
 	background-color: #ffffff;
@@ -113,6 +113,7 @@ img {
 #totalPriceDiv {
 	margin-left: -50px;
 }
+
 .category {
 	width: 120px;
 }

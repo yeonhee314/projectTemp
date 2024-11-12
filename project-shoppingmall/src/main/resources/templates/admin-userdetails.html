@@ -27,7 +27,10 @@ $(function(){
 </script>
 </head>
 <body>
-	<div class="bg">
+	<header>
+		회원 상세 정보
+	</header>
+	<nav>
 		<div class="menu-bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
@@ -51,70 +54,74 @@ $(function(){
 				SHOP
 			</div>
 		</div>
-			<table class="admin-main">
-				<tr>
-					<td colspan="6" class="main">회원상세정보</td>
-				</tr>
-				<tr>
-					<td onClick="location.href='/admin/users'" class="back"><i class="bi bi-arrow-left-circle">회원 목록</i></td>
-				</tr>
-			</table>
-			<div class="info" >
-				<ul>
-					<label>유저정보</label>
-					<li> &nbsp; </li>
-					<li>ID : [[${details.username}]]</li>
-					<li>닉네임: [[${details.nickname}]]</li>
-					<li>이름: [[${details.name}]]</li>
-					<li>생년월일 : [[${#dates.format(details.birth_date,'yyyy-MM-dd')}]]</li>
-					<li>이메일 : [[${details.email}]]</li>
-					<li>핸드폰 : [[${details.phone}]]</li>
-					<li>회원등급 : [[${details.user_level}]]</li>
-				</ul>
+	</nav>
+	<section class="bg">
+			<div class="back">
+				<i class="bi bi-arrow-left-circle" onclick="location.href='/admin/users'">회원 목록</i>
 			</div>
-			<div class="history" >
-				<ul>
-					<label>활동정보</label>
-					<li> &nbsp; </li>
-					<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
-					<li>&nbsp;</li>
-					<li><a th:href="@{/admin/review?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">후기 : [[${reviewCount}]]건</a></li>
-					<li><a th:href="@{/admin/qna?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">문의 : [[${qnaCount}]]건</a></li>
-				</ul>
+			<div class="bigbox">
+				<div class="box1">
+					<div class="info">
+						<ul>
+							<label>유저정보</label>
+							<li> &nbsp; </li>
+							<li>ID : [[${details.username}]]</li>
+							<li>닉네임: [[${details.nickname}]]</li>
+							<li>이름: [[${details.name}]]</li>
+							<li>생년월일 : [[${#dates.format(details.birth_date,'yyyy-MM-dd')}]]</li>
+							<li>이메일 : [[${details.email}]]</li>
+							<li>핸드폰 : [[${details.phone}]]</li>
+							<li>회원등급 : [[${details.user_level}]]</li>
+						</ul>
+					</div>
+					<div class="email" >
+						<ul>
+							<li>이메일 수신여부 : [[${details.news_email}]]</li>
+						</ul>
+					</div>
+					<div class="orderList" >
+						<ul>
+							<li> 주문내역 (구현예정)</li>
+						</ul>
+					</div>
+				</div>
+				<div class="box2">
+					<div class="history" >
+						<ul>
+							<label>활동정보</label>
+							<li> &nbsp; </li>
+							<li>가입일 : [[${#dates.format(details.regdate,'yyyy-MM-dd')}]]</li>
+							<li>&nbsp;</li>
+							<li><a th:href="@{/admin/review?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">후기 : [[${reviewCount}]]건</a></li>
+							<li><a th:href="@{/admin/qna?p=1&s=10&b=10&field=user_id&search=}+${details.user_id}">문의 : [[${qnaCount}]]건</a></li>
+						</ul>
+					</div>
+					<div class="point" >
+						<table style="text-indent: 15px;">
+							<tr>
+								<td>
+									<label>포인트</label>
+								</td>
+							<tr>
+								<td>보유 포인트 : [[${details.user_point}]]</td>
+							</tr>
+							<tr>
+								<td>
+									<form th:action="@{/pointOk}" method="post" id="pointForm">
+										<select name="pnm" id="pnm">
+											<option value="plus">지급</option>
+											<option value="minus">차감</option>
+										</select>
+										<input type="hidden" name="user_id" th:value="${details.user_id}"/>
+										<input type="number" name="user_point" id="user_point" onsubmit="pointCheck()" style="width: 150px;" placeholder="포인트입력" max="999999"/>
+										<input type="submit" class="btn btn-info btn-sm" value="확인"/>
+									</form>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
-			<table class="point" style="text-indent: 15px;">
-				<tr>
-					<td>
-						<label>포인트</label>
-					</td>
-				<tr>
-					<td>보유 포인트 : [[${details.user_point}]]</td>
-				</tr>
-				<tr>
-					<td>
-						<form th:action="@{/pointOk}" method="post" id="pointForm">
-							<select id="pnm" name="pnm">
-								<option value="plus">지급</option>
-								<option value="minus">차감</option>
-							</select>
-							<input type="hidden" name="user_id" th:value="${details.user_id}"/>
-							<input type="number" name="user_point" id="user_point" onsubmit="pointCheck()" style="width: 150px;" placeholder="포인트입력" max="999999"/>
-							<input type="submit" class="btn btn-info btn-sm" value="확인"/>
-						</form>
-					</td>
-				</tr>
-			</table>
-			<div class="email" >
-				<ul>
-					<li>이메일 수신여부 : [[${details.news_email}]]</li>
-				</ul>
-			</div>
-			<div class="orderList" >
-				<ul>
-					<li> 주문내역 (구현예정)</li>
-				</ul>
-			</div>
-			
-	</div>
+	</section>
 </body>
 </html>

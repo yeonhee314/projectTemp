@@ -32,4 +32,6 @@ public interface ProductDAO {
 	void update(ProductVO productVO) throws SQLException;
 	void delete(int product_id) throws SQLException;
 	void updateStatus(ProductVO productVO) throws SQLException;
+	// 상품 재고 변경
+	void updateStock(ProductVO productVO) throws SQLException;
 }

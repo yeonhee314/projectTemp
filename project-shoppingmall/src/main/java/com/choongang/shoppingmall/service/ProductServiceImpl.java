@@ -188,4 +188,14 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 	}
+	// 상품 재고 변경
+	@Override
+	public void updateStock(ProductVO productVO) {
+		try {
+			productDAO.updateStock(productVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
