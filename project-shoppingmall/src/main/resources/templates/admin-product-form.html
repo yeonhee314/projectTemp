@@ -17,21 +17,23 @@
 	$(function() {
 			// 이미지 미리보기
 		$("#upFile").on('change',function(){
-			var files = event.target.files.length;
-			for(var i=0; i<files; i++){
-				const img = document.createElement("img");
-				
+			var files = event.target.files;
+			var filesArr = Array.prototype.slice.call(files);
+			var index = 0;
+			filesArr.forEach(function(f) {
+			var str = '<div>';
 			var reader = new FileReader();
 			reader.onload = function(e) {
-		        img.setAttribute("src", e.target.result);
-		       
+		       str += '<img src="' + e.target.result + '" width=50 height=50/>';
+		       str += '<button type="button" class="delfile" id="' + index +'">X</button>';
+				str += '</div>';
+		       $("#previewBox").append(str);
+		       index++;
 		    }
-			reader.readAsDataURL(event.target.files[i]);
-			$("#previewBox").append(img);
-
-			}
-		    $("#preview").show();
-			  $(".upload-name").val(files+"개");
+			reader.readAsDataURL(f);
+			})
+			
+			  $(".upload-name").val(files.length+"개");
 			  if ($(this).val() != "") {
 		            $("#fileReset").show();
 		        } else {
@@ -39,17 +41,15 @@
 		        }
 			});
 		$("#fileReset").click(function() {
-	        $("#upFile").val('');
+			$("#upFile").val('');
 	        $(".upload-name").val('');
 	        $("#previewBox").empty();
-	        $("#preview").hide();
 	        $(this).hide();
 	    });   
 	    $("#reset").click(function() {
 	        $("#upFile").val('');
 	        $(".upload-name").val('');
 	        $("#previewBox").empty();
-	        $("#preview").hide();
 	        $("#fileReset").hide();
 	        $(this).hide();
 	    });   
@@ -60,6 +60,7 @@
 	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
 	 });  
+	
 	// 상품명 중복체크
 	function productCheck(){
 		var product_name = $("#product_name").val();
@@ -88,6 +89,7 @@
 			value = value.replace(/^0+/, '');
 		}
 	}
+	
 </script>
 </head>
 <body>
@@ -130,7 +132,7 @@
 		  </div>
 		</div>
 			<div class="filebox">
-				<input class="upload-name" value="첨부파일" placeholder="첨부파일">
+				<input class="upload-name" value="첨부파일" readonly="readonly" placeholder="첨부파일">
 				<label for="upFile" style="height: 30px; line-height: 30px;">사진첨부</label>
 				<button id="fileReset" class="btn btn-secondary btn-sm">초기화</button>
 				<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple/>

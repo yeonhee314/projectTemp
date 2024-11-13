@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -281,10 +280,10 @@ public class AdminController {
 			@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
 			@ModelAttribute(value = "vo") ProductVO productVO,
 			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
-		//productVO.setImg_count(uploadFile.length);
+		productVO.setImg_count(uploadFile.length + productVO.getImg_count());
 		productService.update(productVO);
 		String projectDir = System.getProperty("user.dir");
-		String filePath = projectDir + "/src/main/resources/static/images/products/";
+		String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
 		File file = new File(filePath); 
 		if(!file.exists()) file.mkdirs();
 		// 파일 처리
@@ -292,12 +291,6 @@ public class AdminController {
 		if(uploadFile!=null && uploadFile.length>0) {
 			for(MultipartFile f : uploadFile) {
 				if(!f.isEmpty()) { 
-					// 현재는 미사용
-					FileVO fvo = new FileVO(
-									UUID.randomUUID().toString(), 
-									f.getOriginalFilename(),
-									f.getContentType());
-					list.add(fvo);
 					// 파일명 중복처리
 					String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
 					File newFile = new File(filePath, filename);
@@ -329,10 +322,20 @@ public class AdminController {
 	public String pdDeleteOkGet() {
 		return "redirect:/admin/products";
 	}
+	// 상품 삭제
 	@PostMapping("/pdDeleteOk")
 	public String pdDeleteOkPost(@ModelAttribute ProductVO productVO) {
 		productService.delete(productVO.getProduct_id());
-		
+		String projectDir = System.getProperty("user.dir");
+		String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
+		File file = new File(filePath);
+		if(file.exists()) {
+			File[] files = file.listFiles();
+			for (int i=0; i<files.length; i++) {
+				files[i].delete();
+			}
+			file.delete();
+		}
 		return "redirect:/admin/products";
 	}
 	// 문의 관리

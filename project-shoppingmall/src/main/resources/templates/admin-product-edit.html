@@ -17,7 +17,7 @@
 	$(function() {
 		$("#upFile").on('change',function(){
 			  var fileName = $("#upFile").val();
-			  $(".upload-name").val(fileName);
+			  $(".upload_name").val(fileName);
 			  if ($(this).val() != "") {
 		            $("#fileReset").show();
 		        } else {
@@ -26,7 +26,7 @@
 			});
 	    $("#fileReset").click(function() {
 	        $("#upFile").val('');
-	        $(".upload-name").val('');
+	        $("#previewBox").empty();
 	        $(this).hide();
 	    });
 	    $("#totalprice").val($("#product_price").val()*(1-$("#discount").val()/100));
@@ -107,7 +107,8 @@
 				  </div>
 				</div>
 					<div class="filebox">
-						<input class="upload-name" value="첨부파일" placeholder="첨부파일">
+						<input class="upload_name" value="첨부파일" placeholder="첨부파일">
+						<input type="hidden" name="img_count" th:value="${pd.img_count}" />
 						<label for="upFile">사진첨부</label>
 						<button id="fileReset" class="btn btn-secondary btn-sm">초기화</button>
 						<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple />

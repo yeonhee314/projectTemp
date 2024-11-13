@@ -168,7 +168,7 @@ $(function(){
 	  })
 	  $(".stockBtn").click(function(){
 		$(".popUpBg").show();
-		$(".stockPopup").fadeIn(300);
+		$(".stockPopup").fadeIn(200);
 	  })
 	  $("#stockClose").click(function(){
 		  $(".popUpBg").hide();
@@ -330,7 +330,7 @@ $(document).ready(function(){
 				<form th:action="@{/pdStock}" method="post" class="stockForm">
 					<input type="hidden" name="product_id" id="product_id"/>
 					<input type="hidden" name="sc" id="sc" />
-					<input type="text" id="product_stock" name="product_stock" required="required" autofocus="autofocus" placeholder="수량입력"/>
+					<input type="number" id="product_stock" name="product_stock" min="0" max="99999" required="required" autofocus="autofocus" placeholder="수량입력"/>
 					<br />
 					<br />
 					<input type="radio" name="check" value="ch"/>변경
