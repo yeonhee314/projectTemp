@@ -1,10 +1,8 @@
 package com.choongang.shoppingmall.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +28,6 @@ import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.CartVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
-import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.ReviewVO;
@@ -143,7 +140,25 @@ public class HomeController {
 	}
 
 	@GetMapping("/product.html")
-	public String product() {
+	public String product(@ModelAttribute CommVO commVO, 
+						  @RequestParam(required = false, name = "field") String field,
+						  @RequestParam(required = false, name = "search") String search,
+							Model model) {
+		PagingVO<ProductVO> pv = productService.getProductList(commVO.getCurrentPage(), commVO.getSizeOfPage(),
+				commVO.getSizeOfBlock(), field, search);
+		List<CategoryVO> categorylist = categoryService.selectCategory();
+		boolean isLogin = isUserLoggedin();
+		UserVO userVO = getUserInfo();
+
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("pv", pv);
+		model.addAttribute("categorylist", categorylist);
+		model.addAttribute("field", field);
+		model.addAttribute("search", search);
+		model.addAttribute("newLine", "\n");
+		model.addAttribute("br", "<br>");
+		
 		return "product";
 	}
 
@@ -212,7 +227,6 @@ public class HomeController {
 		// log.info("로그"+cartItems);
 
 		return "shoping-cart";
-
 	}
 
 	@GetMapping("/wishlist.html")
@@ -237,65 +251,47 @@ public class HomeController {
 		return "question";
 	}
 
-	@GetMapping("/orders.html") 
-	public String orders(Model model) throws SQLException { // (throws SQLException) 에러 페이지 임시 조치
-		UserVO userVO = getUserInfo(); // 유저 정보 가져오기
-
-		// 유저가 로그인했는지 확인
-		if (userVO == null || userVO.getUser_id() == 0) {
-			return "login"; // 로그인 페이지로 이동
-		}
-
-		List<OrdersVO> ordersList = orderService.getOrdersByUserId(userVO.getUser_id());
-		List<CartVO> cartItems = cartService.getCartItems(userVO.getUser_id());
-		List<Integer> cartCount = cartItems.stream().map(CartVO::getCartCount).collect(Collectors.toList());
-		// 상품 정보와 장바구니 항목별 총 결제 금액 계산
-		List<Integer> cartPrices = new ArrayList<>();
-		int totalCartPrice = 0; // 총 결제 금액 초기화
-
-		for (CartVO cartItem : cartItems) {
-			ProductVO productVO = productService.selectByProductId(cartItem.getProductId());
-			int cartPrice = productVO.getProduct_price() * cartItem.getCartCount();
-			cartPrices.add(cartPrice); 
-		}
+	// 상세 페이지에서 바로 구매
+	@GetMapping("/direct-orders.html") 
+	public String directOrders(@RequestParam("product_id") Integer product_id,
+							   @RequestParam("productOption") String productOption,
+							   @RequestParam("count") int count,
+							   Model model){ 
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		UserVO userVO = getUserInfo();
+		ProductVO productVO = productService.selectByProductId(product_id);
 		
-		// 전화번호 포맷팅
-		String formattedPhone = OrderController.formatPhoneNumber(userVO.getPhone());
-		
-		
-		// 총 결제 금액 계산
-		totalCartPrice = cartPrices.stream().mapToInt(Integer::intValue).sum();
-		ProductVO productVO = null;
-		if (!cartItems.isEmpty()) {
-			productVO = productService.selectByProductId(cartItems.get(0).getProductId());
-		}
-		// 할인가 계산
-				int totalPrice = cartItems.stream()
-						.mapToInt(
-								item -> item.getDiscountPrice(item.getProductPrice(), item.getDiscount()) * item.getCartCount())
-						.sum();
-
-		model.addAttribute("uservo", userVO);
+		model.addAttribute("count", count);
+		model.addAttribute("productoption", productOption);
 		model.addAttribute("productvo", productVO);
-		model.addAttribute("ordersList", ordersList);
-		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("cartCount", cartCount);
-		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("totalCartPrice", totalCartPrice); 
-		model.addAttribute("formattedPhone", formattedPhone);
+		model.addAttribute("uservo", userVO);
 		
-
-		return "orders"; 
+		return "orders";
 	}
-
+	
+	// 장바구니에서 구매
+	@GetMapping("/cart-orders.html") 
+	public String cartOrders(Model model) throws SQLException{ 
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		UserVO userVO = getUserInfo();
+		int userId = userVO.getUser_id();
+		List<CartVO> cartItems = cartService.getCartItems(userId);
+		int totalPrice = cartItems.stream().mapToInt(item -> item.getDiscountPrice(item.getProductPrice(), item.getDiscount()) * item.getCartCount()).sum();
+		
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("cartItems", cartItems);
+		
+		return "orders";
+	}
+	
+	
+	// TODO : 주문완료 페이지 구현 필요
 	@GetMapping("/orderComplete.html")
 	public String orderComplete(Model model) {
 		UserVO userVO = getUserInfo();	// 유저 정보 가져오기
-		
-		// 유저가 로그인했는지 확인
-		if (userVO == null || userVO.getUser_id() == 0) {
-			return "login"; // 로그인 페이지로 이동
-		}
 		
 		model.addAttribute("uservo", userVO);
 		return "orderComplete"; 

@@ -363,7 +363,7 @@
 				Home
 				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 			</a>
-			<a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
+			<a th:href="'product.html?p=1&s=8&b=8&field=category_id&search=' + ${categoryvo.category_id}" class="stext-109 cl8 hov-cl1 trans-04">
 				[[${categoryvo.category_name}]]
 				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 			</a>
@@ -388,8 +388,7 @@
 									<div class="item-slick3" th:data-thumb="'images/products/product' + ${productvo.product_id} + '/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 										<div class="wrap-pic-w pos-relative">
 											<img th:src="'images/products/product' + ${productvo.product_id} + '/product-'+ ${productvo.product_id} + '-' + ${item} + '.jpg'" alt="IMG-PRODUCT">
-											
-											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" th:href="'images/products/product' + ${productvo.product_id} + '/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
+											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" th:href="'images/product-' + ${productvo.product_id} + '-' + ${item} + '.jpg'">
 												<i class="fa fa-expand"></i>
 											</a>
 										</div>
@@ -425,8 +424,6 @@
 						<p class="stext-102 cl3 p-t-23">
 							[[${productvo.description}]]
 						</p>
-						
-						
 						
 						<form id="cartForm" action="/cart/add" method="post">
 						<div class="p-t-33">
@@ -482,18 +479,31 @@
 													<th:block th:if="${productvo.product_stock <= 0}">
 				   								 		<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15" disabled>Sold out</button>
 													</th:block>
-													<th:block th:if="${productvo.product_stock > 0}">
 													
-													<th:block th:if="${isLogin}">
-														<button type="button"
-																class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-																th:onclick="handleAddToCart([[${uservo}]])">장바구니 추가</button>
-													</th:block>
-													<th:block th:if="${!isLogin}">
-														<button type="button"
-																class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-																onclick="loginConfirm()">장바구니 추가</button>
-													</th:block>
+													<th:block th:if="${productvo.product_stock > 0}">
+													<div style="display: flex; gap: 10px; margin-top: 10px;">
+														<!-- 로그인한 경우-->
+														<th:block th:if="${isLogin}">
+															<button type="button"
+																	class="stext-101 cl0 size-101 bg6 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																	th:onclick="handleAddToCart([[${uservo}]])"
+																	style="color: #717fe0; border: 1px solid #717fe0;">장바구니 추가</button>
+															<button type="button"
+																	class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																	th:onclick="order([[${uservo}]], [[${productvo.product_id}]])">바로 구매</button>		
+														</th:block>
+														<!-- 로그인 하지 않은 경우 -->
+														<th:block th:if="${!isLogin}">
+															<button type="button"
+																	class="stext-101 cl0 size-101 bg6 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																	th:onclick="loginConfirm()"
+																	style="color: #717fe0; border: 1px solid #717fe0;">장바구니 추가</button>
+															<button type="button"
+																	class="stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+																	th:onclick="loginConfirm()">바로 구매</button>		
+														</th:block>
+													</div>
+	
 													<input type="hidden" name="isResume" value=true />
 													</form>
 											    </div>
@@ -1339,6 +1349,27 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		        });
 	        }
 	    }
+	 
+	 function order(uservo, product_id){
+		 const optionSelect = document.querySelector("select[name='productOption']");
+		 const productOption = optionSelect.value;
+		 const cartCount = document.querySelector(".num-product").value;
+		 const userVO = uservo;
+			
+	        // 옵션 선택 여부 확인
+	        if (!optionSelect.value || optionSelect.value === "옵션을 선택하세요.") {
+	            Swal.fire({
+	                icon: 'warning',
+	                title: '옵션 미선택',
+	                text: '옵션을 선택해주세요.',
+	                confirmButtonText: '확인'
+	            });
+	            return;
+	        }else{
+				// TODO : POST로 전송하기
+	    		window.location.href= 'direct-orders.html?product_id=' + product_id + '&productOption=' + productOption + '&count=' + cartCount;
+	        }
+	 }
 	</script>
 
 <!--===============================================================================================-->	
