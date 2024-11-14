@@ -128,14 +128,14 @@
 	<update id="updateStock" parameterType="ProductVO">
 		update product set product_stock
 		<choose>
-			<when test="sc == 'ch'.toString()">
+			<when test="sc == 'change'.toString()">
 			= #{product_stock} where product_id=#{product_id}
 			</when>
-			<when test="sc == 'plus'.toString()">
-			= product_stock + #{product_stock} where product_id=#{product_id}
+			<when test="sc == 'minus'.toString()">
+			= product_stock - #{product_stock} where product_id=#{product_id}
 			</when>
 			<otherwise>
-			= product_stock - #{product_stock} where product_id=#{product_id}
+			= product_stock + #{product_stock} where product_id=#{product_id}
 			</otherwise>
 		</choose>
 	</update>

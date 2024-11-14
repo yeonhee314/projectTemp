@@ -214,8 +214,8 @@ public class AdminController {
 			return "redirect:/admin/products";
 		}
 		@PostMapping("/pdAddOk")
-		public String pdAddOkPost(@RequestParam(required = false, name = "content") String content,
-				@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+		public String pdAddOkPost(
+				@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
 				@ModelAttribute(value = "vo") ProductVO productVO,
 				@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
 			int count = productService.selectCountByProductName(productVO.getProduct_name());
@@ -224,7 +224,11 @@ public class AdminController {
 				model.addAttribute("url","/admin/products/form");
 				return "alert";
 			}
-			productVO.setImg_count(uploadFile.length);
+			if(!upFile[0].isEmpty()) {
+				productVO.setImg_count(upFile.length);
+			}else {
+				productVO.setImg_count(0);
+			}
 			productService.insert(productVO);
 			String projectDir = System.getProperty("user.dir");
 			String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
@@ -232,8 +236,8 @@ public class AdminController {
 			if(!file.exists()) file.mkdirs();
 			// 파일 처리
 			List<FileVO> list = new ArrayList<>();
-			if(uploadFile!=null && uploadFile.length>0) {
-				for(MultipartFile f : uploadFile) {
+			if(upFile!=null && upFile.length>0) {
+				for(MultipartFile f : upFile) {
 					if(!f.isEmpty()) { 
 						// 파일명 중복처리
 						String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
@@ -258,7 +262,6 @@ public class AdminController {
 					}
 				}
 			}
-			model.addAttribute("content", content);
 			model.addAttribute("list", list);
 			return "redirect:/admin/products";
 		}
@@ -276,11 +279,13 @@ public class AdminController {
 		return "redirect:/admin/products";
 	}
 	@PostMapping("/pdUpdateOk")
-	public String pdUpdateOkPost(@RequestParam(required = false, name = "content") String content,
-			@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+	public String pdUpdateOkPost(
+			@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
 			@ModelAttribute(value = "vo") ProductVO productVO,
 			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
-		productVO.setImg_count(uploadFile.length + productVO.getImg_count());
+		if(!upFile[0].isEmpty()) {
+			productVO.setImg_count(upFile.length + productVO.getImg_count());
+		}
 		productService.update(productVO);
 		String projectDir = System.getProperty("user.dir");
 		String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
@@ -288,8 +293,8 @@ public class AdminController {
 		if(!file.exists()) file.mkdirs();
 		// 파일 처리
 		List<FileVO> list = new ArrayList<>();
-		if(uploadFile!=null && uploadFile.length>0) {
-			for(MultipartFile f : uploadFile) {
+		if(upFile!=null && upFile.length>0) {
+			for(MultipartFile f : upFile) {
 				if(!f.isEmpty()) { 
 					// 파일명 중복처리
 					String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
@@ -314,7 +319,6 @@ public class AdminController {
 				}
 			}
 		}
-		model.addAttribute("content", content);
 		model.addAttribute("list", list);
 		return "redirect:/admin/products";
 	}

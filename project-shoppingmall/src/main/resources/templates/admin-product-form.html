@@ -17,38 +17,55 @@
 	$(function() {
 			// 이미지 미리보기
 		$("#upFile").on('change',function(){
-			var files = event.target.files;
+			$("#previewBox").empty();
+			var input = document.getElementById("upFile");
+			var files = input.files;
 			var filesArr = Array.prototype.slice.call(files);
-			var index = 0;
-			filesArr.forEach(function(f) {
-			var str = '<div>';
+			var a = 0;
+			for (var i=0; i < files.length; i++) {
 			var reader = new FileReader();
-			reader.onload = function(e) {
-		       str += '<img src="' + e.target.result + '" width=50 height=50/>';
-		       str += '<button type="button" class="delfile" id="' + index +'">X</button>';
-				str += '</div>';
-		       $("#previewBox").append(str);
-		       index++;
+			reader.readAsDataURL(files[i]);
+			reader.onloadend = function(e) {
+				var lastModified = files[a].lastModified;
+		       $("#previewBox").append('<div class="img_div" id="'+lastModified+'"><div class="i_div"><i class="bi bi-x-square" key="'+lastModified+'"></i></div><img id="view" src="'+e.target.result+'" class="img_div_img"/></div>');
+		       a++;
 		    }
-			reader.readAsDataURL(f);
-			})
-			
-			  $(".upload-name").val(files.length+"개");
+		}
+			$(".upload_name").val("파일 : " + files.length + "개");
 			  if ($(this).val() != "") {
 		            $("#fileReset").show();
 		        } else {
 		        	$("#fileReset").hide();
 		        }
+		});  
+			$(document).on("click", ".i_div", function(e){
+				var input = $("#upFile").prop('files');
+				const dataTranster = new DataTransfer();
+				var target = e.target;
+				var removeId = $(target).attr("key");
+				Array.from(input).filter(file => file.lastModified != removeId)
+				.forEach(file => {
+					dataTranster.items.add(file);
+				});
+				$("#upFile")[0].files = dataTranster.files;
+				$(".upload_name").val(dataTranster.files.length+"개");
+				if (dataTranster.files.length == 0) {        
+		        	$("#fileReset").hide();
+		        	$(".upload_name").val('');
+		        }
+				$("#"+removeId).remove();
+				var input = $("upFile")[0].files;	
 			});
 		$("#fileReset").click(function() {
 			$("#upFile").val('');
-	        $(".upload-name").val('');
+	        $(".upload_name").val('');
 	        $("#previewBox").empty();
 	        $(this).hide();
+	        return false;
 	    });   
 	    $("#reset").click(function() {
 	        $("#upFile").val('');
-	        $(".upload-name").val('');
+	        $(".upload_name").val('');
 	        $("#previewBox").empty();
 	        $("#fileReset").hide();
 	        $(this).hide();
@@ -59,8 +76,13 @@
 	    $("#discount").on('change',function() {
 	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
-	 });  
-	
+	});
+	function price() {
+		 $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
+	}
+	function discount() {
+		 $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
+	}
 	// 상품명 중복체크
 	function productCheck(){
 		var product_name = $("#product_name").val();
@@ -89,7 +111,6 @@
 			value = value.replace(/^0+/, '');
 		}
 	}
-	
 </script>
 </head>
 <body>
@@ -132,10 +153,10 @@
 		  </div>
 		</div>
 			<div class="filebox">
-				<input class="upload-name" value="첨부파일" readonly="readonly" placeholder="첨부파일">
-				<label for="upFile" style="height: 30px; line-height: 30px;">사진첨부</label>
+				<input class="upload_name" readonly="readonly" placeholder="등록된 파일 없음" style="text-indent: 5px;">
+				<label for="upFile" style="height: 30px; line-height: 30px; margin-top: 10px;">사진첨부</label>
 				<button id="fileReset" class="btn btn-secondary btn-sm">초기화</button>
-				<input type="file" name="uploadFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple/>
+				<input type="file" name="upFile" class="form-control-sm" accept=".jpg,.png,.gif" id="upFile" multiple/>
 			</div>
 			<div>
 				<span>미리보기</span>
@@ -158,11 +179,11 @@
 		<div class="price">
 			<div class="input-group mb-2">
 				<label class="input-group-text" style="font-size: 12pt;">정가</label>
-				<input type="number" name="product_price" id="product_price" onsubmit="priceCheck()" required="required" min="0" max="9999999"/>
+				<input type="number" name="product_price" id="product_price" onkeydown="price()" onsubmit="priceCheck()" required="required" min="0" max="9999999"/>
 			</div>
 			<div class="input-group mb-2" id="discountDiv">
 				<label class="input-group-text" >할인율</label>
-				<input type="number" name="discount" id="discount" value="0" min="0" max="100" placeholder="할인율"/>
+				<input type="number" name="discount" id="discount" onkeydown="discount()" value="0" min="0" max="99" placeholder="할인율"/>
 				<span class="input-group-text">%</span>
 			</div>
 			<div class="input-group mb-2" id="totalPriceDiv">
@@ -184,7 +205,7 @@
 		</div>
 		<div class="input-group mb-2">
 			<label class="input-group-text" id="option">옵션</label>
-			<input type="text" name="product_option" id="product_option" required="required" size="30" placeholder=" ,구분으로 연속입력"/>
+			<input type="text" name="product_option" id="product_option" required="required" size="40" placeholder=" ,구분으로 연속입력"/>
 		</div>
 		<div style="text-align: right;width: 650px;">
 		<input type="button" onclick="location.href='/admin/products'" class="btn btn-secondary" value="취소"/>

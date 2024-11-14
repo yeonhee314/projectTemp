@@ -158,12 +158,24 @@ $(function(){
 		}
 	 });
 	  $(".stockForm").submit(function(){
-		  if(!confirm('확인을 누르면 처리됩니다')){
-			return false;
+		if($('input[name=check]:checked').val() == 'change') {
+		  if(!confirm($("#product_stock").val() + '개로 변경하겠습니까?')){
+			  return false;
+			}
 		}
-	 });
+	    if($('input[name=check]:checked').val() == 'plus') {
+		  if(!confirm($("#product_stock").val() + '개를 추가하겠습니까?')){
+			  return false;
+			}
+	    }
+		if($('input[name=check]:checked').val() == 'minus'){
+		  if(!confirm($("#product_stock").val() + '개를 차감하겠습니까?')){
+			  return false;
+			}
+		}
+	});
 	  $('input:radio[name="check"]').change(function(){
-		var rc = $('input:radio[name="check"]:checked').val();
+		var rc = $('input[name=check]:checked').val();
 		$("#sc").val(rc);
 	  })
 	  $(".stockBtn").click(function(){
@@ -333,7 +345,7 @@ $(document).ready(function(){
 					<input type="number" id="product_stock" name="product_stock" min="0" max="99999" required="required" autofocus="autofocus" placeholder="수량입력"/>
 					<br />
 					<br />
-					<input type="radio" name="check" value="ch"/>변경
+					<input type="radio" name="check" value="change" required="required"/>변경
 					<input type="radio" name="check" value="plus"/>추가
 					<input type="radio" name="check" value="minus"/>차감
 					&nbsp;&nbsp;&nbsp;
