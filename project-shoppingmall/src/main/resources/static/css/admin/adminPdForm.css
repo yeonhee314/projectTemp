@@ -13,10 +13,13 @@
 	cursor: pointer;
 	font-weight: bold;
 }
+#editor {
+	margin-bottom: 10px;
+}
 .formbox {
 	position: relative;
 	top: 70px; left: 280px;
-	width: 700px; height: 800px;
+	width: 850px; height: 800px;
 	background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);

@@ -103,7 +103,7 @@ $(function(){
 									<label>포인트</label>
 								</td>
 							<tr>
-								<td>보유 포인트 : [[${details.user_point}]]</td>
+								<td>보유 포인트 : <span style="color: blue;">[[${details.user_point}]]</span></td>
 							</tr>
 							<tr>
 								<td>
@@ -114,7 +114,7 @@ $(function(){
 										</select>
 										<input type="hidden" name="user_id" th:value="${details.user_id}"/>
 										<input type="number" name="user_point" id="user_point" onsubmit="pointCheck()" style="width: 150px;" placeholder="포인트입력" max="999999"/>
-										<input type="submit" class="btn btn-info btn-sm" value="확인"/>
+										<input type="submit" class="btn btn-primary btn-sm" value="확인"/>
 									</form>
 								</td>
 							</tr>
