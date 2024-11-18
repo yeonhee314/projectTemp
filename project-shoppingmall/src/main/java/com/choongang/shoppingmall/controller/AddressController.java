@@ -27,8 +27,8 @@ public class AddressController {
 	
 	// 배송지 추가
 	@PostMapping("/address/add")
-	public String addAddress(@RequestParam("addr_name")String addr_name,@RequestParam("addr") String addr, @RequestParam("addr_detail")
-							String addr_detail,@RequestParam("addr_code")String addr_code,@RequestParam("addr_id") int addr_id,
+	public String addAddress(@RequestParam("name")String name,@RequestParam("address") String address, @RequestParam("address_detail")
+							String address_detail,@RequestParam("postcode")String postcode,@RequestParam("addr_id") int addr_id,
 			HttpSession session,RedirectAttributes redirectAttributes,Model model) throws SQLException {
 		
         // 사용자 로그인 여부 확인
@@ -40,7 +40,7 @@ public class AddressController {
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
-        addressService.addAddress(userId, addr_id, addr_name, addr, addr_detail, addr_code);
+        addressService.addAddress(userId, addr_id, name, address, address_detail, postcode);
         redirectAttributes.addFlashAttribute("message", "배송지 추가 완료");
        
 		return "redirect:/my-addrList.html";

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.choongang.shoppingmall.dao.AddressMapper;
 import com.choongang.shoppingmall.vo.AddressVO;
@@ -15,14 +16,14 @@ public class AddressService {
 	@Autowired
 	private AddressMapper addressMapper;
 	
-    public void addAddress(int userId,int addr_id,String addr_name, String addr, String addr_detail,String addr_code) {
+    public void addAddress(int userId, int addr_id, String name, String address, String address_detail,String postcode) {
         AddressVO addressVO = new AddressVO();
         addressVO.setUserId(userId);
         addressVO.setAddr_id(addr_id);
-        addressVO.setAddr_name(addr_name);
-        addressVO.setAddr(addr);
-        addressVO.setAddr_detail(addr_detail);
-        addressVO.setAddr_code(addr_code);
+        addressVO.setName(name);
+        addressVO.setAddress(address);
+        addressVO.setAddress_detail(address_detail);
+        addressVO.setPostcode(postcode);
 		addressMapper.insertAddress(addressVO);
 	}
 	
@@ -41,4 +42,15 @@ public class AddressService {
 	public void deleteAddress(int addr_id) {
 		addressMapper.deleteAddress(addr_id);
 	}
+	
+	 @Transactional
+	    public void updateUserAddress(int userId, int addr_id,String name, String postcode, String address, String address_detail){
+	        // 선택한 배송지 주소 가져오기
+	        AddressVO addressVO = addressMapper.selectAddressByAddrId(addr_id);
+	        if (addressVO != null) {
+	            // 유저 주소 업데이트
+	        	addressMapper.updateUserAddress(userId, addr_id,addressVO.getName(),addressVO.getPostcode() ,addressVO.getAddress(), addressVO.getAddress_detail());
+	        }
+	    }
+	
 }

@@ -7,13 +7,13 @@
 	
 	<!-- 배송지 추가 -->
 	<insert id="insertAddress" parameterType="map">
-		INSERT INTO address (addr_id, user_id, addr_name, addr, addr_detail, addr_code)
-        VALUES (addr_id_seq.NEXTVAL, #{userId}, #{addr_name}, #{addr}, #{addr_detail}, #{addr_code})
+		INSERT INTO address (addr_id, user_id, name, address, address_detail, postcode)
+        VALUES (addr_id_seq.NEXTVAL, #{userId}, #{name}, #{address}, #{address_detail}, #{postcode})
 	</insert>
 	
 	<!-- 배송지 목록확인-->
 	 <select id="findAddressListByUserId" resultType="AddressVO">
-        SELECT user_id,addr_id,addr_name, addr_code, addr, addr_detail
+        SELECT user_id, addr_id, name, postcode, address, address_detail
         FROM address
         WHERE user_id = #{userId}  <!-- userId에 해당하는 주소만 조회 -->
     </select>
@@ -24,9 +24,9 @@
     </select>
     
     <!-- 배송지 목록 수정-->
-     <update id="updateAddress">
+     <update id="updateAddress" parameterType="AddressVO">
         UPDATE address
-        SET addr_name = #{addr_name}, addr = #{addr}, addr_detail = #{addr_detail},addr_code = #{addr_code}
+        SET name = #{name}, address = #{address}, address_detail = #{address_detail}, postcode= #{postcode}
         WHERE addr_id = #{addr_id}
     </update>
     
@@ -35,5 +35,15 @@
     DELETE FROM address WHERE addr_id = #{addr_id}
 	</delete>
     
+    <!-- 기본 배송지 변경-->
+    <update id="updateUserAddress" parameterType="AddressVO">
+        UPDATE users
+    	SET 
+    	name = #{name},
+    	postcode = #{postcode},
+    	address = #{address},
+        address_detail = #{address_detail}
+    	WHERE user_id = #{userId}
+	</update>
     
 </mapper>  

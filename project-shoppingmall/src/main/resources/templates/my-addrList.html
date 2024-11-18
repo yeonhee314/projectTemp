@@ -90,18 +90,18 @@
 	z-index: 1000;
 }
 
-.addr_code {
+.postcode {
 	display: flex;
 	align-items: center;
 }
 
-.addr_code input[type="text"] {
+.postcode input[type="text"] {
 	width: 70%;
 	display: inline-block;
 	margin-right: 5px;
 }
 
-.addr_code button {
+.postcode button {
 	width: 150%;
 	display: inline-block;
 	background-color: #007bff;
@@ -178,6 +178,13 @@
 .btn-primary {
 	background-color: #007bff; /* 파란색 배경 */
 	color: white; /* 흰색 글자 */
+	
+	
+}
+.btn-info {
+	color: white; /* 흰색 글자 */
+	font-size: 15px; /* 글자 크기 */
+
 }
 
 /* 수정 버튼 호버 효과 */
@@ -190,6 +197,7 @@
 .btn-danger {
 	background-color: #dc3545; /* 빨간색 배경 */
 	color: white; /* 흰색 글자 */
+	text-align: right;
 }
 
 /* 삭제 버튼 호버 효과 */
@@ -531,7 +539,7 @@
 							<li class="shopMain question"><a href="/my-question.html">문의
 									내역</a></li>
 							<li class="shopMain address active"><a
-								href="/my-addrList.html">배송지 관리</a></li>
+								href="/my-addressList.html">배송지 관리</a></li>
 							<li class="shopMain profile "><a href="/my-modify.html">개인
 									정보 수정</a></li>
 						</ul>
@@ -552,28 +560,34 @@
 											배송지</b></label>
 
 									<div class="input-group">
-										<input type="text" id="fullAddress" name="fullAddress"
-											th:value="${'[' + user.postcode + '] ' + user.address + ' ' + user.address_detail}"
+										<input type="text" id="fulladdress" name="fulladdress"
+											th:value="${'받는사람: '+ user.name +'  '+ '[' + user.postcode + '] ' + user.address + ' ' + user.address_detail}"
 											disabled="disabled" />
-										<button type="button" onclick="showPopup()">수정</button>
+										
 										 
 										<table id="addressTable" class="table table-striped">
 											<!-- 배송지 목록 -->
 											<tr th:each="address : ${addressList}">
-												<td colspan="6"><span><strong>받는사람 :</strong> <span
-														th:text="${address.addr_name}"></span> <span
-														th:text="${address.addr_code}"></span> <span
-														th:text="${address.addr}"></span> <span
-														th:text="${address.addr_detail}"></span> </span> <span
-													style="float: right;">
+												<td colspan="6" style="text-align: center;"><span><strong>받는사람 :</strong> <span
+														th:text="${address.name}"></span> <span
+														th:text="${address.postcode}"></span> 
+														<span
+														th:text="${address.address}"></span> <span
+														th:text="${address.address_detail}"></span> </span> <span style="float: right;">
+														</span>
 														<button class="btn btn-primary" type="button"
-															th:onclick="'showPopup(' + ${address.addr_id} + ')'">수정</button>
+															th:onclick="'showPopup(' + ${address.addr_id} + ')'"
+															style="text-align: center">수정</button>
 															<!-- 삭제 버튼 -->
 															   <input type="button" class="btn btn-danger" value="삭제"
 												                th:onclick="|location.href='@{/address/delete(addr_id=${address.addr_id})}'|">
-												            </td>
-												</span>
-												</td>
+												                 <form action="/address/select" method="post" onsubmit="return confirmAddress();">
+										                    <input type="hidden" name="userId" th:value="${userId}" />
+										                    <input type="hidden" name="addr_id" th:value="${address.addr_id}" />
+										                    <button type="submit" class="btn btn-info">기본배송지로 설정</button>
+										                </form>
+										                </td>
+										     
 											</tr>
 
 											<!-- 수정 모달 -->
@@ -585,25 +599,25 @@
 														th:object="${addressVO}" method="post">
 														<input type="hidden" id="addr_id" name="addr_id">
 														<div>
-															<label for="addr_name">받는사람:</label> <input type="text"
-																id="addr_name" name="addr_name"
+															<label for="name">받는사람:</label> <input type="text"
+																id="name" name="name"
 																style="width: 200px; display: inline-block;" />
 														</div>
 														<div>
-															<label for="addr_code">우편번호:</label> <input type="text"
-																id="addr_code" name="addr_code" readonly
+															<label for="postcode">우편번호:</label> <input type="text"
+																id="postcode" name="postcode" readonly
 																style="width: 200px; display: inline-block;" />
 															<button class="btn btn-success" type="button"
 																onclick="execDaumPostcode()"
 																style="display: inline-block;" >우편번호 찾기</button>
 														</div>
 														<div>
-															<label for="addr">배송 주소:</label> <input type="text"
-																id="addr" name="addr" style="width: 100%;" />
+															<label for="address">배송 주소:</label> <input type="text"
+																id="address" name="address" style="width: 100%;" />
 														</div>
 														<div>
-															<label for="addr_detail">상세 주소:</label> <input
-																type="text" id="addr_detail" name="addr_detail"
+															<label for="address_detail">상세 주소:</label> <input
+																type="text" id="address_detail" name="address_detail"
 																style="width: 100%;" />
 														</div>
 														<div class="button-container">
@@ -638,26 +652,26 @@
 														method="post">
 														<input type="hidden" id="addr_id" name="addr_id" value="0">
 														<div>
-															<input type="text" id="addr_name" name="addr_name"
+															<input type="text" id="name" name="name"
 																placeholder="받으시는 분 이름을 입력하세요." required>
 														</div>
 
 														<hr>
 
 														<label>배송 주소</label>
-														<div class="addr_code">
-															<label for="addr_code"></label><input type="text" id="addr_code" name="addr_code"
+														<div class="postcode">
+															<label for="postcode"></label><input type="text" id="postcode" name="postcode"
 																style="width: 60%;"placeholder="우편 번호" required>
 															<button type="button" onclick="execDaumPostcode()"
 																style="width: 40%; margin-left: 5px;">우편 번호 찾기</button>
 														</div>
 
 														<div>
-															<input type="text" id="addr" name="addr" placeholder="주소" required >
+															<input type="text" id="address" name="address" placeholder="주소" required >
 														</div>
 
 														<div>
-															<input type="text" id="addr_detail" name="addr_detail"
+															<input type="text" id="address_detail" name="address_detail"
 																placeholder="상세주소를 입력하세요" required >
 														</div>
 
@@ -797,6 +811,12 @@
 										</span>
 									</div>
 <!--===============================================================================================-->
+<script>
+    function confirmAddress() {
+        alert("기본 배송지가 변경되었습니다.");
+        return true; // 폼 제출 진행
+    }
+</script>
 <!-- 다음 우편번호 API 스크립트 추가 -->
 <script
 src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -816,11 +836,11 @@ function execDaumPostcode() {
 									    new daum.Postcode({
 									        oncomplete: function(data) {
 									            // 주소 데이터를 받아와서 HTML 요소에 자동으로 입력합니다.
-									            document.getElementById("addr_code").value = data.zonecode; // 우편번호
-									            document.getElementById("addr").value = data.address; // 기본 주소
+									            document.getElementById("postcode").value = data.zonecode; // 우편번호
+									            document.getElementById("address").value = data.address; // 기본 주소
 
 									            // 상세주소 입력 필드로 포커스 이동
-									            document.getElementById("addr_detail").focus();
+									            document.getElementById("address_detail").focus();
 									        }
 									    }).open();
 									}
@@ -847,11 +867,11 @@ function execDaumPostcode() {
 			            // 데이터가 정상적으로 로드된 경우 폼 필드에 데이터 설정
 
 			          
-			            document.getElementById("addr_name").value = data.addr_name;
+			            document.getElementById("name").value = data.name;
 			            document.getElementById("addr_id").value = data.addr_id;
-			            document.getElementById("addr").value = data.addr;
-			            document.getElementById("addr_detail").value = data.addr_detail;
-			            document.getElementById("addr_code").value = data.addr_code;
+			            document.getElementById("address").value = data.address;
+			            document.getElementById("address_detail").value = data.address_detail;
+			            document.getElementById("postcode").value = data.postcode;
 
 			            // 모달을 화면에 표시
 			            document.getElementById("editModal").style.display = "block";

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -160,6 +161,7 @@ public class MypageController {
 	        addressService.updateAddress(addressVO);
 	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
 	    }
+	 
 	
 	//배송지 삭제 
 	    @GetMapping("/address/delete")
@@ -168,7 +170,35 @@ public class MypageController {
 	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
 	    }
 	   
-	    
+	    // 배송지 선택 -> 유저 주소로 변경 
+	    @PostMapping("/address/select")
+	    public String selectAddress(HttpSession session,Model model
+	    							,@RequestParam("addr_id") int addr_id
+	    							,@RequestParam(name = "name",required = false) String name 
+	    							,@RequestParam(name = "postcode",required = false) String postcode 
+	    							,@RequestParam(name = "address",required = false) String address
+	    							,@RequestParam(name = "address_detail",required = false) String address_detail) throws SQLException {
+	    	
+	    	int userId = (int) session.getAttribute("userId");
+
+			List<AddressVO> addressList = addressService.getAddressList(userId);
+
+			UserVO user = userService.getUserById(userId);
+
+			if (!isUserLoggedin())
+				return "redirect:/login";
+			UserVO userVO = getUserInfo();
+			boolean isLogin = isUserLoggedin();
+
+			model.addAttribute("uservo", userVO);
+			model.addAttribute("isLogin", isLogin);
+			model.addAttribute("user", user);
+			model.addAttribute("addressVO", new AddressVO());
+			model.addAttribute("addressList", addressList);
+		
+	    	addressService.updateUserAddress(userId,addr_id, name,postcode,address,address_detail);
+	    	 return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	    }  
 
 	// 문의 내역 삭제
 	@PostMapping("/deleteQuestion")
