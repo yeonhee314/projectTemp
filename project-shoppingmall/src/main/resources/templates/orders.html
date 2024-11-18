@@ -390,9 +390,8 @@
 												</div>
 												<div class="m-b-10px">
 													<span class="stext-106 phone-number" th:text="${uservo.phone}" style="display: block; margin-bottom: 10px;"></span>
-													<select name="" id="" >
-														<option class="stext-106" value="배송 요청 사항을 선택해주세요.">배송 요청 사항을 선택해주세요.</option>
-														<option class="stext-106" value="배송 요청 사항을 선택해주세요.">배송 요청 사항을 선택해주세요.</option>
+													<select name="request_type" id="request_type" required="required">
+														<option class="stext-106" value="">배송 요청 사항을 선택해주세요.</option>
 														<option value="부재 시 경비실에 맡겨주세요.">부재 시 경비실에 맡겨주세요.</option>
 														<option value="부재 시 전화 또는 문자 주세요.">부재 시 전화 또는 문자 주세요.</option>
 														<option value="배송 전 연락주세요.">배송 전 연락주세요.</option>
@@ -691,6 +690,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <!--===============================================================================================-->
 	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script th:inline="javascript">
 		$('.js-pscroll').each(function(){
 			$(this).css('position','relative');
@@ -715,7 +715,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			$('.phone-number').html(resultStr);
 		});
 		
-		// 장바구니 주문 총 상품금액 동적 rowspan 적용
+		// 장바구니 주문 : 총 상품금액 동적 rowspan 적용
 		var cartItems = /*[[${cartItems}]]*/;
 		if(cartItems != null){
 			var cartSize = cartItems.length;
@@ -745,6 +745,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			buyer_phone = phone.slice(0, 3) + innerChar + phone.slice(3, 7) + innerChar + phone.slice(7, 11);
 			buyer_addr = /*[[${uservo.address}]]*/;
 			buyer_postcode = /*[[${uservo.postcode}]]*/;
+			merchant_uid = 'mid_' + new Date().getTime();
 		}
 		// 상품 페이지에서 바로 구매
 		else{
@@ -753,7 +754,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			var count = /*[[${count}]]*/;
 			var price =  productvo.discount != 0 ? 
 					(productvo.product_price - (productvo.product_price * productvo.discount / 100)) * count : productvo.product_price * count;
-			
+			merchant_uid = 'mid_' + new Date().getTime();
 			product_name = name;
 			product_price = price;
 			buyer_name = /*[[${uservo.name}]]*/;
@@ -761,17 +762,64 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			buyer_addr = /*[[${uservo.address}]]*/;
 			buyer_postcode = /*[[${uservo.postcode}]]*/;
 		}
-
 		
+		function addToOrder(merchant_uid, totalPrice, paymentType, status, address, request_option){
+			var userId = /*[[${uservo.user_id}]]*/;
+			fetch('/addToOrder',{
+				method : 'POST',
+				headers: {
+					'Content-Type' : 'application/json',
+				},
+				body: JSON.stringify({
+					user_id: userId, 
+					merchant_uid: merchant_uid, 
+					total_price: totalPrice, 
+					payment_type: paymentType, 
+					status: status, 
+					address: address, 
+					request_type: request_option}),
+			}).then(response =>{
+				console.log('response status : ', response.status);	// 서버 응답상태 확인
+				if(!response.ok){
+					return response.text().then(errorMsg => {
+						console.error('server response error : ', errorMsg);
+						throw new Error('Network response was not ok');
+					});
+				}
+				return response.text();
+			}).then(data => {
+		        console.log('Response Data:', data);
+		    })
+		    .catch(error => {
+		        console.error('Error:', error);
+		    });
+		}
+		
+		
+		// 구매 버튼 클릭
 		$('.payment-button').on("click", function(){
 			event.preventDefault();
+			var request_option = document.getElementById("request_type");
+			request_option = request_option.options[request_option.selectedIndex].value;
+			//console.log(request_option);
+			if (!request_option || request_option === '') {
+	            Swal.fire({
+	                icon: 'warning',
+	                title: '배송 요청사항 미선택',
+	                text: '옵션을 선택해주세요.',
+	                confirmButtonText: '확인'
+	            });
+	            return;
+	        }
+			
+			// 신용카드 
 			var paymentType = document.querySelector('input[type=radio][name=payment]:checked').value;
 			if(paymentType == 'credit-card'){
 				console.log('credit-card');
 				IMP.request_pay({
 					pg: 'html5_inicis',
 					pay_method: 'card',
-					merchant_uid : `mid_${new Date().getTime()}`,
+					merchant_uid : 'mid_' + new Date().getTime(),
 					name: product_name,
 					amount: product_price,
 					buyer_name: buyer_name,
@@ -780,17 +828,21 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					buyer_postcode: buyer_postcode
 				}, function(response){
 					if(response.success){
-						
+						alert('결제가 완료되었습니다.');
+						addToOrder(merchant_uid, product_price, '신용카드', '결제완료', buyer_addr, request_option);
+						window.location.href = 'orderComplete.html';
 					}else{
 						alert(response.error_msg);
 					}
 				});
-			}else if(paymentType == 'kakaopay'){
+			}
+			// 카카오페이
+			else if(paymentType == 'kakaopay'){
 				console.log('kakaopay');
 				IMP.request_pay({
 					pg: 'kakaopay',
 					pay_method: 'card',
-					merchant_uid : `mid_${new Date().getTime()}`,
+					merchant_uid : 'mid_' + new Date().getTime(),
 					name: product_name,
 					amount: product_price,
 					buyer_name: buyer_name,
@@ -799,16 +851,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					buyer_postcode: buyer_postcode
 				}, function(response){
 					if(response.success){
+						addToOrder(merchant_uid, product_price, '카카오페이', '결제완료', buyer_addr, request_option);
+						window.location.href = 'orderComplete.html';
 					}else{
 						alert(response.error_msg);
 					}
 				});
-			}else if(paymentType == 'toss'){
+			}
+			// 토스
+			else if(paymentType == 'toss'){
 				console.log('toss');
 				IMP.request_pay({
 					pg: 'uplus',
 					pay_method: 'card',
-					merchant_uid : `mid_${new Date().getTime()}`,
+					merchant_uid : 'mid_' + new Date().getTime(),
 					name: product_name,
 					amount: product_price,
 					buyer_name: buyer_name,
@@ -817,6 +873,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					buyer_postcode: buyer_postcode
 				}, function(response){
 					if(response.success){
+						addToOrder(merchant_uid, product_price, '토스', '결제완료', buyer_addr, request_option);
+						window.location.href = 'orderComplete.html';
 					}else{
 						alert(response.error_msg);
 					}
@@ -824,8 +882,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			}else if(paymentType == 'bank-transfer'){
 				console.log('bank-transfer');
 			}
-			
 		});
+		
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>

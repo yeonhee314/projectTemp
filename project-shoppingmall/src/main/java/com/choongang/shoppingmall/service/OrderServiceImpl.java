@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.choongang.shoppingmall.dao.OrderDAO;
+import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
 @Service("orderService")
@@ -14,7 +16,6 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderDAO orderDAO;
 	
-	// 주문 저장
 	@Override
 	public void addToOrder(OrdersVO vo) {
 		try {

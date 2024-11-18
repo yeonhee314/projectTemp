@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CartService;
 import com.choongang.shoppingmall.service.CategoryService;
-import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
@@ -50,8 +49,6 @@ public class HomeController {
 	private WishService wishService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private OrderService orderService;
 	@Autowired
 	private CartService cartService;
 
@@ -287,8 +284,6 @@ public class HomeController {
 		return "orders";
 	}
 	
-	
-	// TODO : 주문완료 페이지 구현 필요
 	@GetMapping("/orderComplete.html")
 	public String orderComplete(Model model) {
 		UserVO userVO = getUserInfo();	// 유저 정보 가져오기
