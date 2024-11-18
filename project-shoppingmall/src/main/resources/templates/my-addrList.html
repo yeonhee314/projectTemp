@@ -590,7 +590,7 @@
 																style="width: 200px; display: inline-block;" />
 															<button class="btn btn-success" type="button"
 																onclick="execDaumPostcode()"
-																style="display: inline-block;">우편번호 찾기</button>
+																style="display: inline-block;" >우편번호 찾기</button>
 														</div>
 														<div>
 															<label for="addr">배송 주소:</label> <input type="text"
@@ -631,7 +631,7 @@
 
 													<form th:action="@{/address/add}" th:object="${addressVO}"
 														method="post">
-														<input type="hidden" id="addr_id" name="addr_id">
+														<input type="hidden" id="addr_id" name="addr_id" value="0">
 														<div>
 															<input type="text" id="addr_name" name="addr_name"
 																placeholder="받으시는 분 이름을 입력하세요." required>
@@ -642,18 +642,18 @@
 														<label>배송 주소</label>
 														<div class="addr_code">
 															<label for="addr_code"></label><input type="text" id="addr_code" name="addr_code"
-																style="width: 60%;"placeholder="우편 번호">
+																style="width: 60%;"placeholder="우편 번호" required>
 															<button type="button" onclick="execDaumPostcode()"
 																style="width: 40%; margin-left: 5px;">우편 번호 찾기</button>
 														</div>
 
 														<div>
-															<input type="text" id="addr" name="addr" placeholder="주소">
+															<input type="text" id="addr" name="addr" placeholder="주소" required >
 														</div>
 
 														<div>
 															<input type="text" id="addr_detail" name="addr_detail"
-																placeholder="상세주소를 입력하세요">
+																placeholder="상세주소를 입력하세요" required >
 														</div>
 
 														<hr>

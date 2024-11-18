@@ -6,7 +6,7 @@
 	<!-- namespace와 인터페이스 이름이 일치해야 자동으로 구현된다. -->
 	
 	<!-- 배송지 추가 -->
-	<insert id="insertAddress" parameterType="AddressVO">
+	<insert id="insertAddress" parameterType="map">
 		INSERT INTO address (addr_id, user_id, addr_name, addr, addr_detail, addr_code)
         VALUES (addr_id_seq.NEXTVAL, #{userId}, #{addr_name}, #{addr}, #{addr_detail}, #{addr_code})
 	</insert>
@@ -17,11 +17,13 @@
         FROM address
         WHERE user_id = #{userId}  <!-- userId에 해당하는 주소만 조회 -->
     </select>
-
+    
+	<!-- 배송지 목록 수정 확인-->
     <select id="selectAddressByAddrId" resultType="AddressVO">
         SELECT * FROM address WHERE addr_id = #{addr_id}
     </select>
     
+    <!-- 배송지 목록 수정-->
      <update id="updateAddress">
         UPDATE address
         SET addr_name = #{addr_name}, addr = #{addr}, addr_detail = #{addr_detail},addr_code = #{addr_code}
