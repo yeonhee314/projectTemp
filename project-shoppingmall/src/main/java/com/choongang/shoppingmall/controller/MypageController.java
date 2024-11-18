@@ -116,7 +116,8 @@ public class MypageController {
 
 		return "/my-question.html";
 	}
-
+	
+	//배송지 추가 
 	@GetMapping("/my-addrList.html")
 	public String addressList(HttpSession session, Model model) throws SQLException {
 
@@ -139,6 +140,8 @@ public class MypageController {
 
 		return "/my-addrList.html";
 	}
+	
+	//배송지 수정목록 확인
 	@GetMapping("/address/get/{addr_id}")
 	  @ResponseBody
 	  public ResponseEntity<AddressVO> getAddressById(@PathVariable("addr_id") int addr_id) {
@@ -157,6 +160,15 @@ public class MypageController {
 	        addressService.updateAddress(addressVO);
 	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
 	    }
+	
+	//배송지 삭제 
+	    @GetMapping("/address/delete")
+	    public String deleteAddress(@RequestParam("addr_id") int addr_id) {
+	        addressService.deleteAddress(addr_id);
+	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	    }
+	   
+	    
 
 	// 문의 내역 삭제
 	@PostMapping("/deleteQuestion")

@@ -37,4 +37,8 @@ public class AddressService {
 	public void updateAddress(AddressVO addressVO) {
         addressMapper.updateAddress(addressVO);
     }
+	
+	public void deleteAddress(int addr_id) {
+		addressMapper.deleteAddress(addr_id);
+	}
 }

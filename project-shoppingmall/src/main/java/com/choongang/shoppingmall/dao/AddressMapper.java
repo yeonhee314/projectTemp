@@ -20,7 +20,9 @@ public interface AddressMapper {
 	
 	//배송지 수정 
 	void updateAddress(AddressVO addressVO);
-
+	
+	//배송지 삭제
+	int deleteAddress(int addr_id);
 
     
 }

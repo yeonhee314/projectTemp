@@ -30,4 +30,10 @@
         WHERE addr_id = #{addr_id}
     </update>
     
+    <!-- 배송지 삭제-->
+    <delete id="deleteAddress" parameterType="int">
+    DELETE FROM address WHERE addr_id = #{addr_id}
+	</delete>
+    
+    
 </mapper>  

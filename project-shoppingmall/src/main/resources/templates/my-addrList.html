@@ -556,6 +556,7 @@
 											th:value="${'[' + user.postcode + '] ' + user.address + ' ' + user.address_detail}"
 											disabled="disabled" />
 										<button type="button" onclick="showPopup()">수정</button>
+										 
 										<table id="addressTable" class="table table-striped">
 											<!-- 배송지 목록 -->
 											<tr th:each="address : ${addressList}">
@@ -567,8 +568,12 @@
 													style="float: right;">
 														<button class="btn btn-primary" type="button"
 															th:onclick="'showPopup(' + ${address.addr_id} + ')'">수정</button>
-
-												</span></td>
+															<!-- 삭제 버튼 -->
+															   <input type="button" class="btn btn-danger" value="삭제"
+												                th:onclick="|location.href='@{/address/delete(addr_id=${address.addr_id})}'|">
+												            </td>
+												</span>
+												</td>
 											</tr>
 
 											<!-- 수정 모달 -->
