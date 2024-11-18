@@ -29,11 +29,11 @@
 .pageList{
 	position: relative;
 	top: 20px;
-	left: 500px;
+	left: 550px;
 }
 .QuestionSearch {
 	position: relative;
-	left: 850px; top: 150px;
+	left: 800px; top: 130px;
 	width:320px;
 	height:30px;
 	line-height: 30px;
@@ -46,6 +46,9 @@ a {
 .index select {
 	background-color: rgb(236,240,244,0.8);
 }
+option {
+	background-color: white;
+}
 .QuestionSearch input,select{
 	border: none;
 }
@@ -56,4 +59,7 @@ a {
 	background-repeat: no-repeat;
 	background-size: contain;
 	border: none;
+}
+.hide {
+	display: none;
 }

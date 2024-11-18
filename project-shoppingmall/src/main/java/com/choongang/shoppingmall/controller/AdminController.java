@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -61,7 +60,6 @@ public class AdminController {
 	private UserService userService;
 	
 	ResourceLoader resourceLoader;
-	
 	
 	// 관리자 페이지 접근
 	@GetMapping("/admin")
@@ -120,6 +118,7 @@ public class AdminController {
 		model.addAttribute("cv", cv);
 		model.addAttribute("ppv", productPagingVO);
 		model.addAttribute("yCount", productService.selectYCount());
+		model.addAttribute("nCount", productService.selectNCount());
 		model.addAttribute("soldout", productService.selectSoldOutCount());
 		model.addAttribute("field", field);
 		model.addAttribute("search", search);
@@ -136,6 +135,14 @@ public class AdminController {
 	@PostMapping("/pdStatusOk")
 	public String pdStatusOkPost(@ModelAttribute ProductVO productVO, Model model) {
 		productService.updateStatus(productVO);
+		return "redirect:/admin/products";
+	}
+	// 상품 재고 변경
+	@PostMapping("/pdStock")
+	public String pdStockUpdate(@RequestParam (required = false, name = "sc") String sc,
+			@ModelAttribute ProductVO productVO, Model model) {
+		model.addAttribute("sc", sc);
+		productService.updateStock(productVO);
 		return "redirect:/admin/products";
 	}
 	// 카테고리 중복확인(숫자 1개를 넘긴다. 0이면 사용가능 0이아니면 사용 불가능)
@@ -207,8 +214,8 @@ public class AdminController {
 			return "redirect:/admin/products";
 		}
 		@PostMapping("/pdAddOk")
-		public String pdAddOkPost(@RequestParam(required = false, name = "content") String content,
-				@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+		public String pdAddOkPost(
+				@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
 				@ModelAttribute(value = "vo") ProductVO productVO,
 				@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
 			int count = productService.selectCountByProductName(productVO.getProduct_name());
@@ -217,17 +224,20 @@ public class AdminController {
 				model.addAttribute("url","/admin/products/form");
 				return "alert";
 			}
-			productVO.setImg_count(uploadFile.length);
+			if(!upFile[0].isEmpty()) {
+				productVO.setImg_count(upFile.length);
+			}else {
+				productVO.setImg_count(0);
+			}
 			productService.insert(productVO);
 			String projectDir = System.getProperty("user.dir");
-			String filePath = projectDir + "/src/main/resources/static/images/products/";
+			String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
 			File file = new File(filePath); 
 			if(!file.exists()) file.mkdirs();
-			
 			// 파일 처리
 			List<FileVO> list = new ArrayList<>();
-			if(uploadFile!=null && uploadFile.length>0) {
-				for(MultipartFile f : uploadFile) {
+			if(upFile!=null && upFile.length>0) {
+				for(MultipartFile f : upFile) {
 					if(!f.isEmpty()) { 
 						// 파일명 중복처리
 						String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
@@ -252,7 +262,6 @@ public class AdminController {
 					}
 				}
 			}
-			model.addAttribute("content", content);
 			model.addAttribute("list", list);
 			return "redirect:/admin/products";
 		}
@@ -270,29 +279,23 @@ public class AdminController {
 		return "redirect:/admin/products";
 	}
 	@PostMapping("/pdUpdateOk")
-	public String pdUpdateOkPost(@RequestParam(required = false, name = "content") String content,
-			@RequestParam(required = false, name = "uploadFile") MultipartFile[] uploadFile,
+	public String pdUpdateOkPost(
+			@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
 			@ModelAttribute(value = "vo") ProductVO productVO,
 			@ModelAttribute CategoryVO vo, Model model, HttpServletRequest request) throws IOException{
-		//productVO.setImg_count(uploadFile.length);
-		
+		if(!upFile[0].isEmpty()) {
+			productVO.setImg_count(upFile.length + productVO.getImg_count());
+		}
 		productService.update(productVO);
 		String projectDir = System.getProperty("user.dir");
-		String filePath = projectDir + "/src/main/resources/static/images/products/";
+		String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
 		File file = new File(filePath); 
 		if(!file.exists()) file.mkdirs();
-		
 		// 파일 처리
 		List<FileVO> list = new ArrayList<>();
-		if(uploadFile!=null && uploadFile.length>0) {
-			for(MultipartFile f : uploadFile) {
+		if(upFile!=null && upFile.length>0) {
+			for(MultipartFile f : upFile) {
 				if(!f.isEmpty()) { 
-					// 현재는 미사용
-					FileVO fvo = new FileVO(
-									UUID.randomUUID().toString(), 
-									f.getOriginalFilename(),
-									f.getContentType());
-					list.add(fvo);
 					// 파일명 중복처리
 					String filename = "product-"+ productVO.getProduct_id()+"-"+ "1.jpg";
 					File newFile = new File(filePath, filename);
@@ -316,7 +319,6 @@ public class AdminController {
 				}
 			}
 		}
-		model.addAttribute("content", content);
 		model.addAttribute("list", list);
 		return "redirect:/admin/products";
 	}
@@ -324,10 +326,20 @@ public class AdminController {
 	public String pdDeleteOkGet() {
 		return "redirect:/admin/products";
 	}
+	// 상품 삭제
 	@PostMapping("/pdDeleteOk")
 	public String pdDeleteOkPost(@ModelAttribute ProductVO productVO) {
 		productService.delete(productVO.getProduct_id());
-		
+		String projectDir = System.getProperty("user.dir");
+		String filePath = projectDir + "/src/main/resources/static/images/products/product"+productVO.getProduct_id();
+		File file = new File(filePath);
+		if(file.exists()) {
+			File[] files = file.listFiles();
+			for (int i=0; i<files.length; i++) {
+				files[i].delete();
+			}
+			file.delete();
+		}
 		return "redirect:/admin/products";
 	}
 	// 문의 관리

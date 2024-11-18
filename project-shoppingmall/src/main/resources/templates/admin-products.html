@@ -157,7 +157,49 @@ $(function(){
 			return false;
 		}
 	 });
-	  
+	  $(".stockForm").submit(function(){
+		if($('input[name=check]:checked').val() == 'change') {
+		  if(!confirm($("#product_stock").val() + '개로 변경하겠습니까?')){
+			  return false;
+			}
+		}
+	    if($('input[name=check]:checked').val() == 'plus') {
+		  if(!confirm($("#product_stock").val() + '개를 추가하겠습니까?')){
+			  return false;
+			}
+	    }
+		if($('input[name=check]:checked').val() == 'minus'){
+		  if(!confirm($("#product_stock").val() + '개를 차감하겠습니까?')){
+			  return false;
+			}
+		}
+	});
+	  $('input:radio[name="check"]').change(function(){
+		var rc = $('input[name=check]:checked').val();
+		$("#sc").val(rc);
+	  })
+	  $(".stockBtn").click(function(){
+		$(".popUpBg").show();
+		$(".stockPopup").fadeIn(200);
+	  })
+	  $("#stockClose").click(function(){
+		  $(".popUpBg").hide();
+		  $(".stockPopup").fadeOut(200);
+	  })
+})
+$(document).ready(function(){
+	$(".stockTh").hide();
+	$(".checkbox").change(function(){
+		if($(this).is(':checked')) {
+			$(".stockTh").show();
+			$(".stock").hide();
+			$("#product_id").val($(this).val());
+		}
+		else {
+			$(".stockTh").hide();
+			$(".stock").show();
+		}
+	 })
 })
 </script>
 </head>
@@ -204,26 +246,29 @@ $(function(){
 				</td>
 			</tr>
 		</table>
-			<table class="paging">
-				<tr>
-					<td colspan="2" class="total" style="color:blue;"><a href="/admin/products" style="font-weight: bold;">전체</a>[[${pv.pageInfo}]]</td>
+			<table class="pdStatus">
+				<tr style="justify-content: center;">
+					<th class="total" style="color:blue;"><a href="/admin/products" style="font-weight: bold;">전체</a>[[${pv.pageInfo}]]</th>
 					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=Y">판매중 </a>[[${yCount}]]</td>
+					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=N">미판매 </a>[[${nCount}]]</td>
 					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_stock&search=0">품절 </a>[[${soldout}]]</td>
-					<td colspan="6" class="pdAdd">
+					<th class="pdAdd">
 						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 12pt;" onclick="location.href='/admin/products/form'"/>
-					</td>
+					</th>
 				</tr>
+			</table>
+			<table class="paging">
 				<colgroup>
-                  <col width="3%" />
+                  <col width="2%" />
                   <col width="5%" />
-                  <col width="7%" />
-                  <col width="45%" />
+                  <col width="6%" />
+                  <col width="42%" />
                   <col width="10%" />
                   <col width="8%" />
-                  <col width="5%" />
+                  <col width="10%" />
                   <col width="7%" />
-                  <col width="12%" />
-                  <col width="6%" />
+                  <col width="15%" />
+                  <col width="4%" />
                 </colgroup>
 				<tr class="index">
 					<th><input type="checkbox" /></th>
@@ -232,7 +277,8 @@ $(function(){
 					<th>상품명</th>
 					<th>판매가</th>
 					<th>카테고리</th>
-					<th>재고</th>
+					<th class="stock">재고</th>
+					<th class="stockTh"><input type="button" class="stockBtn" value="재고변경"/></th>
 					<th>상태</th>
 					<th>등록일</th>
 				</tr>
@@ -243,9 +289,9 @@ $(function(){
 				</th:block>
 				<th:block>
 					<tr th:each="vo: ${pv.list}" class="list">		
-						<td><input type="checkbox" th:value="${vo.product_id}"/></td>
+						<td><input type="checkbox" th:value="${vo.product_id}" name="checkbox" class="checkbox"/></td>
 						<td>[[${vo.product_id}]]</td>
-						<td><img th:src="@{'/images/products/product-' + ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
+						<td><img th:src="@{'/images/products/product' + ${vo.product_id} +'/product-'+ ${vo.product_id} + '-1.jpg'}" alt="IMG" onerror="this.onerror=null; this.src='/images/noimg.jpg'" width="50" height="45"/></td>
 						<td><a th:href="@{/admin/products/edit(product_id=${vo.product_id})}">[[${vo.product_name}]]</a></td>
 						<td>[[${#numbers.formatInteger(vo.product_price,3,'COMMA')}]]원</td>
 						<td>[[${vo.category_name}]]</td>
@@ -273,7 +319,6 @@ $(function(){
 				<td>[(${pv.pageList})]</td>
 			</tr>
 			</table>
-		
 				<form th:action="@{/admin/products}" method="get" class="productSearch">
 						<input type="hidden" name="p" th:value="${ppv.p}" />
 						<input type="hidden" name="s" th:value="${ppv.s}" />
@@ -285,6 +330,29 @@ $(function(){
 						<input type="submit" id="submit" value=""/>
 					</form>
 	</section>
+	<!-- 재고변경 팝업 -->
+		<div class="popUpBg"></div>
+			<div class="stockPopup">
+				<div class="inBox">
+					<div style="display: flex; justify-content: space-between;">
+						<label style="font-weight: bold; font-size: 14pt;">재고변경</label>
+						<input type="button" class="btn btn-light btn-sm" id="stockClose" value="X"/>
+					</div>
+				<br />
+				<form th:action="@{/pdStock}" method="post" class="stockForm">
+					<input type="hidden" name="product_id" id="product_id"/>
+					<input type="hidden" name="sc" id="sc" />
+					<input type="number" id="product_stock" name="product_stock" min="0" max="99999" required="required" autofocus="autofocus" placeholder="수량입력"/>
+					<br />
+					<br />
+					<input type="radio" name="check" value="change" required="required"/>변경
+					<input type="radio" name="check" value="plus"/>추가
+					<input type="radio" name="check" value="minus"/>차감
+					&nbsp;&nbsp;&nbsp;
+					<input type="submit" class="btn btn-info btn-sm" value="적용"/>
+				</form>
+				</div>
+			</div>	
 	<!-- 카테고리 관리 모달팝업창 -->
 <div id="myModal" class="modal">
   <div class="modal-dialog">

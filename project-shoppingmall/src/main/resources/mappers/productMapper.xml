@@ -38,7 +38,6 @@
 	</select>
 	<!-- 한 페이지 얻기 -->
 	<select id="selectProductList" parameterType="hashmap" resultType="ProductVO">
-		
 		select 
 			R.*
 		from
@@ -115,11 +114,29 @@
 	<select id="selectYCount" resultType="int">
 		select count(*) from product where product_status = 'Y'
 	</select>
+	<select id="selectNCount" resultType="int">
+		select count(*) from product where product_status = 'N'
+	</select>
 	<!-- 품절 상품 개수 -->
 	<select id="selectSoldOutCount" resultType="int">
 		select count(*) from product where product_stock = '0'
 	</select>
 	<update id="updateStatus" parameterType="ProductVO">
 		update product set product_status=#{product_status} where product_id=#{product_id}
+	</update>
+	<!-- 상품 재고 변경 -->
+	<update id="updateStock" parameterType="ProductVO">
+		update product set product_stock
+		<choose>
+			<when test="sc == 'change'.toString()">
+			= #{product_stock} where product_id=#{product_id}
+			</when>
+			<when test="sc == 'minus'.toString()">
+			= product_stock - #{product_stock} where product_id=#{product_id}
+			</when>
+			<otherwise>
+			= product_stock + #{product_stock} where product_id=#{product_id}
+			</otherwise>
+		</choose>
 	</update>
 </mapper>  

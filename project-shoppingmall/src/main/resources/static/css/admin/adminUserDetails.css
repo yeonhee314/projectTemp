@@ -1,46 +1,67 @@
 li {
 	list-style-type: none;
 }
+.bigbox {
+	position: relative;
+	left: 250px; top: 100px;
+	width: 1400px; height: 700px;
+	display: flex;
+	justify-content: center;
+}
+.box1 {
+	width: 700px;
+}
+.box2 {
+	width: 700px;
+}
 .info {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 250px;
-	position: fixed; left: 300px; top: 60px;
+	width: 450px; height: 250px;
+	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 .email {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 40px; line-height: 40px;
-	position: fixed; left: 300px; top: 330px;
+	width: 450px; height: 40px; line-height: 40px;
+	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 .history {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 180px;
-	position: fixed; left: 800px; top: 60px;
+	width: 450px; height: 180px;
+	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
+#pointForm {
+	margin: 50px;
+}
 .point {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 180px;
-	position: fixed; left: 800px; top: 260px;
+	width: 450px; height: 180px;
+	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 .orderList {
 	border: 1px solid rgb(192, 192, 192);
-	width: 400px; height: 50px;
+	width: 450px; height: 50px;
 	line-height: 50px;
-	position: fixed; left: 300px; top: 400px;
+	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+.back {
+	position: relative;
+	left: 300px; top: 80px;
+	width: 100px; height:30px;
 }
 .back:hover{
 	font-weight: bold;

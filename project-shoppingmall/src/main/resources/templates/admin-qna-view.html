@@ -10,7 +10,7 @@
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
-<link rel="stylesheet" type="text/css"href="/css/admin/adminQuestion.css">
+<link rel="stylesheet" type="text/css"href="/css/admin/adminQnaView.css">
 <script type="text/javascript">
 	$(function(){
 		  $(".commentDeleteForm").submit(function(){
@@ -27,7 +27,10 @@
 </script>
 </head>
 <body>
-	<div class="bg">
+	<header>
+		1:1 문의 내역
+	</header>
+	<nav>
 		<div class="menu-bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
@@ -51,10 +54,11 @@
 				SHOP
 			</div>
 		</div>
-		<section class="couns-container">
+	</nav>
+	<section class="bg">
+		<div class="couns-container">
 			<div id="frmapply">
 				<div class="customer">
-						<h4>1:1 문의 내역</h4>
 					<div class="tab_content">
 						<table>
 							<colgroup>
@@ -137,7 +141,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
 </body>
 </html>

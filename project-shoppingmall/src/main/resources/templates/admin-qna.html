@@ -59,7 +59,8 @@
 					<th>글번호</th>
 					<th>유저</th>
 					<th>제목</th>
-					<th><select style="font-weight: bold; height: 30px;" onchange="window.open(value,'_self')">
+					<th>
+						<select style="font-weight: bold; height: 30px;" onchange="window.open(value,'_self')">
 							<option value="/admin/qna">문의유형</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=취소문의" th:selected="${search}==취소문의">취소문의</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=배송문의" th:selected="${search}==배송문의">배송문의</option>
@@ -69,7 +70,8 @@
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=AS문의" th:selected="${search}==문의">AS문의</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=오류문의" th:selected="${search}==오류문의">오류문의</option>
 							<option value="/admin/qna?p=1&s=10&b=10&field=inquiryType&search=기타" th:selected="${search}==기타">기타</option>
-						</select></th>
+						</select>
+					</th>
 					<th>작성일</th>
 					<th>답변여부</th>
 				</tr>
@@ -81,11 +83,12 @@
 						<td>[[${vo.inquiryType}]]</td>
 						<td>[[${#dates.format(vo.question_regdate,'yy-MM-dd(E) HH:mm')}]]</td>
 						<td>[[${vo.question_status}]]</td>
+						<td class="hide">[[${vo.user_id}]]</td>
 					</tr>
 				</th:block>
 				<tr class="pageList">
-				<td>[(${qv.pageList})]</td>
-			</tr>
+					<td>[(${qv.pageList})]</td>
+				</tr>
 			</table>
 			<form th:action="@{/admin/qna}" method="get" class="QuestionSearch">
 				<input type="hidden" name="p" th:value="${ppv.p}" />

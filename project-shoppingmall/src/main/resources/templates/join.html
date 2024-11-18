@@ -269,7 +269,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>회원가입</h1>
+        <h1>
+        	<!-- Logo desktop -->
+			<a href="index.html" class="logo"> 
+			<img src="images/icons/logo-01.png" alt="IMG-LOGO">
+			</a>
+		</h1>
         <form id="joinForm" action="/join" method="post">
             <label for="username">아이디:</label>
    			<input name="username" id="username" type="text" onkeyup="checkDuplicate('username')" class="form-control" placeholder="아이디 입력" autofocus="autofocus" style="margin-bottom: 8px;"/>

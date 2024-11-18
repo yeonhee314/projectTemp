@@ -19,9 +19,11 @@ public interface ProductService {
 	int selectCountByProductName(String product_name);
 	String selectProductNameById(int product_id);
 	int selectYCount();
+	int selectNCount();
 	int selectSoldOutCount();
 	void insert(ProductVO productVO);
 	void update(ProductVO productVO);
 	void delete(int product_id);
 	void updateStatus(ProductVO productVO);
+	void updateStock(ProductVO productVO);
 }

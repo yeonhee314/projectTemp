@@ -20,6 +20,7 @@ public class ProductVO {
 	
 	// 참조 컬럼
 	private String category_name;
+	private String sc; // 재고 변경 파라미터
 	// 할인가 계산
 	public int getDiscountPrice(int price, int discount) {
 		return price - (price * discount / 100);
