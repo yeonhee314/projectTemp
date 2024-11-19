@@ -13,4 +13,9 @@
    		insert into order_item(order_item_id, order_id, user_id, product_id, quantity, order_price)
     	values(order_item_id_seq.nextval, #{order_id}, #{user_id}, #{product_id}, #{quantity}, #{order_price})
 	</insert>
+	
+	<!-- 가장 큰 주문 번호 가져오기 -->
+	<select id="selectMaxOrderId" resultType="int">
+		select max(order_id) FROM orders
+	</select>
 </mapper>

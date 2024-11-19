@@ -24,4 +24,24 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void addToOrderItems(Order_ItemVO vo) {
+		try {
+			orderDAO.addToOrderItems(vo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public int selectMaxOrderId() {
+		try {
+			return orderDAO.selectMaxOrderId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
