@@ -912,15 +912,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				 }
 			}else{
 				 var map = new Map();
-				 map.set(productvo.product_id, count);
-				 
 				 map.set('user_id', userId);
 				 map.set('product_id', productvo.product_id);
 				 map.set('quantity', count);
 				 if(productvo.discount != 0){
 					 map.set('price', (productvo.product_price - (productvo.product_price * productvo.discount / 100)) * count);
 				 }else{
-					 map.set('price', cartItems[i].productPrice * count);					 
+					 map.set('price', productvo.product_price * count);					 
 				 }
 				 array.push(Object.fromEntries(map));
 			}

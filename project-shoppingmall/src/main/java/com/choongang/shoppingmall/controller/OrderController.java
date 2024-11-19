@@ -46,7 +46,12 @@ public class OrderController {
 	public void addToOrderItem(@RequestBody List<Map<String, Object>> ordersItem) {
 		for(Map<String, Object> item : ordersItem) {
 			Order_ItemVO vo = new Order_ItemVO();
-			vo.setOrder_id(orderService.selectMaxOrderId());
+			if(orderService.selectMaxOrderId() == null)
+			{
+				vo.setOrder_id((int)orderService.selectFirstOrdersId());
+			}else {
+				vo.setOrder_id((int)orderService.selectMaxOrderId());
+			}
 			vo.setUser_id((Integer)item.get("user_id"));
 			vo.setProduct_id((Integer)item.get("product_id"));
 			vo.setQuantity((Integer)item.get("quantity"));

@@ -14,5 +14,7 @@ public interface OrderDAO {
 	// 주문 상품 리스트 저장
 	void addToOrderItems(Order_ItemVO vo) throws SQLException;
 	// 가장 큰 주문번호 가져오기
-	int selectMaxOrderId() throws SQLException;
+	Integer selectMaxOrderId() throws SQLException;
+	// 첫번째 주문 데이터 가져올때만 사용한다.
+	Integer selectFirstOrdersId() throws SQLException;
 }

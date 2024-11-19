@@ -36,12 +36,22 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public int selectMaxOrderId() {
+	public Integer selectMaxOrderId() {
 		try {
 			return orderDAO.selectMaxOrderId();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return null;
+	}
+
+	@Override
+	public Integer selectFirstOrdersId() {
+		try {
+			return orderDAO.selectFirstOrdersId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -6,5 +6,6 @@ import com.choongang.shoppingmall.vo.OrdersVO;
 public interface OrderService {
 	void addToOrder(OrdersVO vo);
 	void addToOrderItems(Order_ItemVO vo);
-	int selectMaxOrderId();
+	Integer selectMaxOrderId();
+	Integer selectFirstOrdersId();
 }
