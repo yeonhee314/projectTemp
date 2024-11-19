@@ -427,11 +427,11 @@
 													<td style="text-align: center; border-bottom: 1px solid rgba(169, 169, 169, 0.5);">[[${item.cartCount}]]</td>
 													<td style="text-align: center; border-bottom: 1px solid rgba(169, 169, 169, 0.5);">
 														<th:block th:if="${item.discount != 0}">
-															<span class="txt_notice strikethrough" th:text="${#numbers.formatInteger(item.productPrice, 3, 'COMMA')+ ' 원'}"></span><br>
-															<span class="mtext-60 cl2" th:text="${#numbers.formatInteger(item.getDiscountPrice(item.productPrice, item.discount), 3, 'COMMA') + ' 원'}"></span>
+															<span class="txt_notice strikethrough" th:text="${#numbers.formatInteger(item.productPrice * item.cartCount, 3, 'COMMA')+ ' 원'}"></span><br>
+															<span class="mtext-60 cl2" th:text="${#numbers.formatInteger(item.getDiscountPrice(item.productPrice * item.cartCount, item.discount), 3, 'COMMA') + ' 원'}"></span>
 														</th:block>
 														<th:block th:if="${item.discount == 0}">
-															<span class="mtext-60 cl2" th:text="${#numbers.formatInteger(item.productPrice, 3, 'COMMA')+ ' 원'}"></span>
+															<span class="mtext-60 cl2" th:text="${#numbers.formatInteger(item.productPrice * item.cartCount, 3, 'COMMA') + ' 원'}"></span>
 														</th:block>
 													</td>
 													<td class="total-price" style="border-bottom: 1px solid rgba(169, 169, 169, 0.5); text-align:center; vertical-align: middle;">
@@ -460,14 +460,14 @@
 												<!-- 할인하는 경우 -->
 												<th:block th:if="${productvo.discount} != 0">
 													<td  style="text-align: center;">
-														<span class="txt_notice strikethrough" th:text="${#numbers.formatInteger(productvo.product_price, 3, 'COMMA')+ ' ₩'}"></span><br>
-														<span th:text="${#numbers.formatInteger(productvo.getDiscountPrice(productvo.product_price, productvo.discount), 3, 'COMMA') + ' ₩'}"></span>
+														<span class="txt_notice strikethrough" th:text="${#numbers.formatInteger(productvo.product_price* count, 3, 'COMMA')+ ' ₩'}"></span><br>
+														<span th:text="${#numbers.formatInteger(productvo.getDiscountPrice(productvo.product_price* count, productvo.discount), 3, 'COMMA') + ' ₩'}"></span>
 													</td>
 													<td style="text-align: center;"><span th:text="${#numbers.formatInteger(productvo.getDiscountPrice(productvo.product_price, productvo.discount) * count, 3, 'COMMA') + ' ₩'}"></span></td>
 												</th:block>
 												<!-- 할인 없는 경우 -->
 												<th:block th:if="${productvo.discount} == 0">
-													<td style="text-align: center;"><span th:text="${#numbers.formatInteger(productvo.product_price, 3, 'COMMA') + ' ₩'}"></span></td>
+													<td style="text-align: center;"><span th:text="${#numbers.formatInteger(productvo.product_price  * count, 3, 'COMMA') + ' ₩'}"></span></td>
 													<td style="text-align: center;"><span th:text="${#numbers.formatInteger(productvo.product_price * count, 3, 'COMMA') + ' ₩'}"></span></td>
 												</th:block>
 											</tr>
@@ -500,10 +500,13 @@
 										</td>
 									</tr>
 									<tr>
+										<!-- TODO : 추 후 추가 기능으로 구현 - 무통장입금 -->
+										<!-- 
 										<td style="border-bottom: 1px solid rgba(169, 169, 169, 0.5); height:80px;">
 											<input class="form-check-input m-l-10" name="payment" type="radio" value="bank-transfer" id="bank-transfer"/>&nbsp
 											<label class="m-l-30 mtext-60" for="form-check-input">무통장입금</label>
 										</td>
+										 -->
 									</tr>
 								</table>
 								<br />
@@ -763,6 +766,100 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			buyer_postcode = /*[[${uservo.postcode}]]*/;
 		}
 		
+		// 구매 버튼 클릭
+		$('.payment-button').on("click", function(){
+			event.preventDefault();
+			var request_option = document.getElementById("request_type");
+			request_option = request_option.options[request_option.selectedIndex].value;
+			//console.log(request_option);
+			if (!request_option || request_option === '') {
+				document.getElementsByName("request_type")[0].focus();
+	            Swal.fire({
+	                icon: 'warning',
+	                title: '배송 요청사항 미선택',
+	                text: '옵션을 선택해주세요.',
+	                confirmButtonText: '확인'
+	            });
+	            return;
+	        }
+			
+			// 신용카드 
+			var paymentType = document.querySelector('input[type=radio][name=payment]:checked').value;
+			if(paymentType == 'credit-card'){
+				console.log('credit-card');
+				IMP.request_pay({
+					pg: 'html5_inicis',
+					pay_method: 'card',
+					merchant_uid : 'mid_' + new Date().getTime(),
+					name: product_name,
+					amount: product_price,
+					buyer_name: buyer_name,
+					buyer_tel: buyer_phone,
+					buyer_addr:buyer_addr,
+					buyer_postcode: buyer_postcode
+				}, function(response){
+					if(response.success){
+						alert('결제가 완료되었습니다.');
+						addToOrder(merchant_uid, product_price, '신용카드', '결제완료', buyer_addr, request_option);
+						addToOrderItem();
+						window.location.href = 'orderComplete.html';
+					}else{
+						alert(response.error_msg);
+					}
+				});
+			}
+			// 카카오페이
+			else if(paymentType == 'kakaopay'){
+				console.log('kakaopay');
+				IMP.request_pay({
+					pg: 'kakaopay',
+					pay_method: 'card',
+					merchant_uid : 'mid_' + new Date().getTime(),
+					name: product_name,
+					amount: product_price,
+					buyer_name: buyer_name,
+					buyer_tel: buyer_phone,
+					buyer_addr:buyer_addr,
+					buyer_postcode: buyer_postcode
+				}, function(response){
+					if(response.success){
+						addToOrder(merchant_uid, product_price, '카카오페이', '결제완료', buyer_addr, request_option);
+						addToOrderItem();
+						window.location.href = 'orderComplete.html';
+					}else{
+						alert(response.error_msg);
+					}
+				});
+			}
+			// 토스
+			else if(paymentType == 'toss'){
+				console.log('toss');
+				IMP.request_pay({
+					pg: 'uplus',
+					pay_method: 'card',
+					merchant_uid : 'mid_' + new Date().getTime(),
+					name: product_name,
+					amount: product_price,
+					buyer_name: buyer_name,
+					buyer_tel: buyer_phone,
+					buyer_addr:buyer_addr,
+					buyer_postcode: buyer_postcode
+				}, function(response){
+					if(response.success){
+						addToOrder(merchant_uid, product_price, '토스', '결제완료', buyer_addr, request_option);
+						addToOrderItem();
+						window.location.href = 'orderComplete.html';
+					}else{
+						alert(response.error_msg);
+					}
+				});
+			}
+			else if(paymentType == 'bank-transfer'){
+				console.log('bank-transfer');
+			}
+		});
+		
+		// 주문 DB 저장
 		function addToOrder(merchant_uid, totalPrice, paymentType, status, address, request_option){
 			var userId = /*[[${uservo.user_id}]]*/;
 			fetch('/addToOrder',{
@@ -795,95 +892,52 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		    });
 		}
 		
-		
-		// 구매 버튼 클릭
-		$('.payment-button').on("click", function(){
-			event.preventDefault();
-			var request_option = document.getElementById("request_type");
-			request_option = request_option.options[request_option.selectedIndex].value;
-			//console.log(request_option);
-			if (!request_option || request_option === '') {
-	            Swal.fire({
-	                icon: 'warning',
-	                title: '배송 요청사항 미선택',
-	                text: '옵션을 선택해주세요.',
-	                confirmButtonText: '확인'
-	            });
-	            return;
-	        }
+		// 주문 상품 DB저장
+		function addToOrderItem(){
+			var userId = /*[[${uservo.user_id}]]*/;
+			var array = [];
+			if(cartItems != null){
+				 for(var i = 0; i < cartItems.length; i++){
+					 var map = new Map();
+					 console.log(cartItems[i]);
+					 map.set('user_id', userId);
+					 map.set('product_id', cartItems[i].productId);
+					 map.set('quantity', cartItems[i].cartCount);
+					 if(cartItems[i].discount != 0){
+						 map.set('price', (cartItems[i].productPrice - (cartItems[i].productPrice * cartItems[i].discount / 100)) * cartItems[i].cartCount);
+					 }else{
+						 map.set('price', cartItems[i].productPrice * cartItems[i].cartCount);					 
+					 }
+					 array.push(Object.fromEntries(map));
+				 }
+			}else{
+				 var map = new Map();
+				 map.set('user_id', userId);
+				 map.set('product_id', productvo.product_id);
+				 map.set('quantity', count);
+				 if(productvo.discount != 0){
+					 map.set('price', (productvo.product_price - (productvo.product_price * productvo.discount / 100)) * count);
+				 }else{
+					 map.set('price', productvo.product_price * count);					 
+				 }
+				 array.push(Object.fromEntries(map));
+			}
 			
-			// 신용카드 
-			var paymentType = document.querySelector('input[type=radio][name=payment]:checked').value;
-			if(paymentType == 'credit-card'){
-				console.log('credit-card');
-				IMP.request_pay({
-					pg: 'html5_inicis',
-					pay_method: 'card',
-					merchant_uid : 'mid_' + new Date().getTime(),
-					name: product_name,
-					amount: product_price,
-					buyer_name: buyer_name,
-					buyer_tel: buyer_phone,
-					buyer_addr:buyer_addr,
-					buyer_postcode: buyer_postcode
-				}, function(response){
-					if(response.success){
-						alert('결제가 완료되었습니다.');
-						addToOrder(merchant_uid, product_price, '신용카드', '결제완료', buyer_addr, request_option);
-						window.location.href = 'orderComplete.html';
-					}else{
-						alert(response.error_msg);
-					}
-				});
-			}
-			// 카카오페이
-			else if(paymentType == 'kakaopay'){
-				console.log('kakaopay');
-				IMP.request_pay({
-					pg: 'kakaopay',
-					pay_method: 'card',
-					merchant_uid : 'mid_' + new Date().getTime(),
-					name: product_name,
-					amount: product_price,
-					buyer_name: buyer_name,
-					buyer_tel: buyer_phone,
-					buyer_addr:buyer_addr,
-					buyer_postcode: buyer_postcode
-				}, function(response){
-					if(response.success){
-						addToOrder(merchant_uid, product_price, '카카오페이', '결제완료', buyer_addr, request_option);
-						window.location.href = 'orderComplete.html';
-					}else{
-						alert(response.error_msg);
-					}
-				});
-			}
-			// 토스
-			else if(paymentType == 'toss'){
-				console.log('toss');
-				IMP.request_pay({
-					pg: 'uplus',
-					pay_method: 'card',
-					merchant_uid : 'mid_' + new Date().getTime(),
-					name: product_name,
-					amount: product_price,
-					buyer_name: buyer_name,
-					buyer_tel: buyer_phone,
-					buyer_addr:buyer_addr,
-					buyer_postcode: buyer_postcode
-				}, function(response){
-					if(response.success){
-						addToOrder(merchant_uid, product_price, '토스', '결제완료', buyer_addr, request_option);
-						window.location.href = 'orderComplete.html';
-					}else{
-						alert(response.error_msg);
-					}
-				});
-			}else if(paymentType == 'bank-transfer'){
-				console.log('bank-transfer');
-			}
-		});
-		
+			fetch('/addToOrderItem', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/json',
+		        },
+		        body: JSON.stringify(array),
+		    })
+		        .then((response) => response.json())
+		        .then((data) => {
+		            console.log("주문 상품 DB 저장 성공 : ", data);
+		        })
+		        .catch((error) => {
+		            console.error("주문 상품 DB 저장 실패 : ", error);
+		        });
+		}
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>

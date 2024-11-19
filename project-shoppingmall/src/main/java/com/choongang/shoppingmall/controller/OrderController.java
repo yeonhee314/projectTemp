@@ -1,5 +1,6 @@
 package com.choongang.shoppingmall.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.OrderService;
+import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
 @Controller
@@ -37,7 +39,25 @@ public class OrderController {
 		vo.setRequest_type(request_type);
 		
 		orderService.addToOrder(vo);
-		// TODO : order id가 가장 큰 값 가져오기
+	}
+	
+	@PostMapping("/addToOrderItem")
+	@ResponseBody
+	public void addToOrderItem(@RequestBody List<Map<String, Object>> ordersItem) {
+		for(Map<String, Object> item : ordersItem) {
+			Order_ItemVO vo = new Order_ItemVO();
+			if(orderService.selectMaxOrderId() == null)
+			{
+				vo.setOrder_id((int)orderService.selectFirstOrdersId());
+			}else {
+				vo.setOrder_id((int)orderService.selectMaxOrderId());
+			}
+			vo.setUser_id((Integer)item.get("user_id"));
+			vo.setProduct_id((Integer)item.get("product_id"));
+			vo.setQuantity((Integer)item.get("quantity"));
+			vo.setOrder_price((Integer)item.get("price"));
+			orderService.addToOrderItems(vo);
+		}
 	}
 }
 

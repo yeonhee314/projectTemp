@@ -26,6 +26,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public int selectOrderCount(HashMap<String, String> map) {
 		int count = 0;
 		try {
@@ -56,5 +57,34 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}	
 		return ov;
+=======
+	public void addToOrderItems(Order_ItemVO vo) {
+		try {
+			orderDAO.addToOrderItems(vo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public Integer selectMaxOrderId() {
+		try {
+			return orderDAO.selectMaxOrderId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Integer selectFirstOrdersId() {
+		try {
+			return orderDAO.selectFirstOrdersId();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+>>>>>>> 83d109c60521b2b0994c39053faa0a3e1e2c6849
 	}
 }
