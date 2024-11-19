@@ -1,12 +1,9 @@
 package com.choongang.shoppingmall.service;
 
-<<<<<<< HEAD
 import java.util.HashMap;
 
 import com.choongang.shoppingmall.vo.AdminOrderPagingVO;
-=======
 import com.choongang.shoppingmall.vo.Order_ItemVO;
->>>>>>> 83d109c60521b2b0994c39053faa0a3e1e2c6849
 import com.choongang.shoppingmall.vo.OrdersVO;
 
 public interface OrderService {
