@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.choongang.shoppingmall.service.CategoryService;
+import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.QuestionService;
@@ -25,10 +26,12 @@ import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.UsersBoardService;
 import com.choongang.shoppingmall.vo.AdminCategoryPagingVO;
+import com.choongang.shoppingmall.vo.AdminOrderPagingVO;
 import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.FileVO;
+import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
@@ -58,6 +61,8 @@ public class AdminController {
 	private ReviewService reviewService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private OrderService orderService;
 	
 	ResourceLoader resourceLoader;
 	
@@ -444,7 +449,9 @@ public class AdminController {
 				@RequestParam (required = false, name = "search") String search,
 				@ModelAttribute ProductPagingVO ppv ,
 				Model model) {
+			AdminOrderPagingVO<OrdersVO> ov = orderService.selectAdminOrderList(ppv.getCurrentPage(), ppv.getSizeOfPage(), ppv.getSizeOfBlock(), field, search);
 			model.addAttribute("ppv", ppv);
+			model.addAttribute("ov", ov);
 			model.addAttribute("field", field);
 			model.addAttribute("search", search);
 			model.addAttribute("newLine", "\n");

@@ -9,8 +9,8 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
-<link rel="stylesheet" type="text/css" href="/css/admin/adminReview.css">
+<link rel="stylesheet" type="text/css" href="../css/admin/admin.css">
+<link rel="stylesheet" type="text/css" href="../css/admin/adminOrder.css">
 </head>
 <body>
 	<header>
@@ -42,47 +42,51 @@
 		</div>
 	</nav>
 	<section class="bg">
-			<table class="admin-main">
-				<tr>
-					<td colspan="7" class="main">주문 관리</td>
+		<div class="orderbar">
+		
+		</div>
+		<table class="paging">
+			<tr>
+				<td colspan="7" class="main">주문 관리</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="total">[[${ov.pageInfo}]]</td>
+			</tr>
+			<tr class="index">
+				<th>주문번호</th>
+				<th>유저번호</th>
+				<th>상품번호</th>
+				<th>최종결제금액</th>
+				<th>주문상태</th>
+				<th>주문일</th>
+			</tr>
+			<th:block>
+				<tr th:each="vo: ${ov.list}" class="list" th:onclick="location.href='/admin/orders/view?order_id=[[${vo.order_id}]]'">
+					<td>[[${vo.order_id}]]</td>
+					<td>[[${vo.user_id}]]</td>
+					<td>[[${vo.merchant_uid}]]</td>
+					<td>[[${vo.total_price}]]</td>
+					<td>[[${vo.status}]]</td>
+					<td>[[${#dates.format(vo.order_date,'yy-MM-dd(E) HH:mm')}]]</td>
+					<td></td>
 				</tr>
-				<tr>
-					<td colspan="6" class="total">[[${ov.pageInfo}]]</td>
-				</tr>
-				<tr class="index">
-					<th>글번호</th>
-					<th>유저번호</th>
-					<th>상품번호</th>
-					<th>카테고리</th>
-					<th>제목</th>
-					<th>작성일</th>
-				</tr>
-				<th:block>
-					<tr th:each="vo: ${ov.list}" class="list" th:onclick="location.href='/admin/orders/view?order_id=[[${vo.order_id}]]'">
-						<td>[[${vo.order_id}]]</td>
-						<td>[[${vo.user_id}]]</td>
-						<td>[[${vo.product_id}]]</td>
-						<td>[[${vo.category_id}]]</td>
-						<td>[[${#dates.format(vo.order_date,'yy-MM-dd(E) HH:mm')}]]</td>
-						<td></td>
-					</tr>
-				</th:block>
-			</table>
-			<div class="pageList">
-				<div>[(${ov.pageList})]</div>
-			</div>
-			<form th:action="@{/admin/orders}" method="get" class="OrderSearch">
-				<input type="hidden" name="p" th:value="${ppv.p}" />
-				<input type="hidden" name="s" th:value="${ppv.s}" />
-				<input type="hidden" name="b" th:value="${ppv.b}" />
-				<select name="field" id="field">
-					<option value="product_id">상품번호</option>
-					<option value="user_id">유저번호</option>
-					<option value="category_id">카테고리</option>
-				</select>
-				<input type="text" name="search" id="search"/>
-				<input type="submit" value="검색"/>
-			</form>
+			</th:block>
+		</table>
+		<div class="pageList">
+			<div>[(${ov.pageList})]</div>
+		</div>
+		<form th:action="@{/admin/orders}" method="get" class="orderSearch">
+			<input type="hidden" name="p" th:value="${ppv.p}" />
+			<input type="hidden" name="s" th:value="${ppv.s}" />
+			<input type="hidden" name="b" th:value="${ppv.b}" />
+			<select name="field" id="field">
+				<option value="order_id">상품번호</option>
+				<option value="user_id">유저번호</option>
+				<option value="status">주문상태</option>
+			</select>
+			<input type="text" name="search" id="search"/>
+			<input type="submit" value="검색"/>
+		</form>
 	</section>
 </body>
 </html>
