@@ -2,6 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace ="com.choongang.shoppingmall.dao.OrderDAO">
+	<!-- 주문개수 세기 -->
+	<select id="selectOrderCount" resultType="int" parameterType="hashmap">
+		select count(*) from orders
+		<where>
+			<choose>
+				<when test="search != null and search != '0'.toString()">
+					${field} like '%'||#{search}||'%'
+				</when>
+				<when test="search == 0">
+					${field} like #{search}
+				</when>
+			</choose>
+		</where>
+	</select>
+	<!-- 한 페이지 얻기 -->
+	<select id="selectAdminOrderList" parameterType="hashmap" resultType="OrdersVO">
+		select 
+			R.*
+		from
+		(
+			select 
+				rownum rnum, Q.*
+			from
+				(select * from orders
+				<where>
+					<choose>
+						<when test="search != null and search != '0'.toString()">
+							${field} like '%'||#{search}||'%'
+						</when>
+						<when test="search == 0">
+							${field} like #{search}
+						</when>
+					</choose>
+				</where>
+				order by order_id desc) Q
+			where
+			<![CDATA[
+				rownum<=#{endNo}
+				]]>
+		) R
+		where
+		<![CDATA[
+			rnum >= #{startNo}
+		]]>
+	</select>
+	
 	<!-- 주문 테이블 저장 -->
 	<insert id="addToOrder" parameterType="OrdersVO">
     	insert into orders(order_id, user_id, merchant_uid, total_price, payment_type, status, address, order_date, request_type)
