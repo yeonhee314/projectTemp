@@ -86,6 +86,19 @@ public class MypageController {
 		return "myPage";
 	}
 
+	// 회원혜택 (쿠폰/적립금)
+		@GetMapping("/my-mileage.html")
+		public String mymileage(Model model) {
+			boolean isLogin = isUserLoggedin();
+			UserVO userVO = getUserInfo();
+			if (!isLogin)
+				return "redirect:/login";
+			model.addAttribute("isLogin", isLogin);
+			model.addAttribute("uservo", userVO);
+
+			return "/my-mileage.html";
+		}
+		
 	// 후기 관리
 	@GetMapping("/my-reviewList.html")
 	public String reviewList(Model model) {
