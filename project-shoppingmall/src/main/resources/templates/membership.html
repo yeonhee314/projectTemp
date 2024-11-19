@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>회원등급</title>
+</head>
+<style>
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+th {
+	background-color: #f4f4f4;
+	font-weight: bold;
+}
+
+tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+tr:hover {
+	background-color: #f1f1f1;
+}
+
+/* active 클래스가 있을 경우 활성화 표시 */
+.active2 {
+	background-color: #ffeb3b; /* 황색 배경 */
+	font-weight: bold;
+}
+</style>
+<body>
+	<table border="1"
+		style="border-collapse: collapse; width: 100%; text-align: center;">
+		<thead>
+			<tr>
+				<th>등급명</th>
+				<th>달성 조건</th>
+				<th>할인율</th>
+				<th>혜택</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:classappend="${uservo.user_level == '웰컴'} ? 'active2' : ''">
+					<li class="nav-item"><a class="nav-link" href="#"> </a></li>
+				<td>Welcome</td>
+				<td>신규가입 회원 <br>6개월 이상 비구매자
+				</td>
+				<td>-</td>
+				<td>신규회원 전용 1회 20% 쿠폰</td>
+			</tr>
+			<tr class="${"브론즈".equals(user_level) ? "active" : ""}">
+				<td>Bronze</td>
+				<td>최근 6개월 동안<br>구매상품건수 1건 이상
+				</td>
+				<td>10%</td>
+				<td>할인 쿠폰</td>
+			</tr>
+			<tr class="${"실버".equals(user_level) ? "active" : ""}">
+				<td>Silver</td>
+				<td>최근 6개월 동안<br>구매상품건수 2건 이상
+				</td>
+				<td>15%</td>
+				<td>할인 쿠폰+무료배송</td>
+			</tr>
+			<tr class="${"골드".equals(user_level) ? "active" : ""}">
+				<td>Gold</td>
+				<td>최근 6개월 동안<br>구매상품건수 3건 이상
+				</td>
+				<td>20%</td>
+				<td>할인 쿠폰+무료배송+더블쿠폰</td>
+			</tr>
+			<tr class="${"VIP".equals(user_level) ? "active" : ""}">
+				<td>VIP</td>
+				<td>최근 6개월 동안<br>구매상품건수 4건 이상
+				</td>
+				<td>30%</td>
+				<td>할인 쿠폰+무료배송+더블쿠폰+생일쿠폰</td>
+			</tr>
+			<tr class="${"VVIP".equals(user_level) ? "active" : ""}">
+				<td>VVIP</td>
+				<td>최근 6개월 동안<br>구매상품건수 5건 이상
+				</td>
+				<td>35%</td>
+				<td>할인 쿠폰+무로배송+더블쿠폰+생일쿠폰+무료교환</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

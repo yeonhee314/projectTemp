@@ -47,6 +47,51 @@
 	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<style>
+.tab-header {
+	background-color: #f9f9f9; /* 기본 배경색 */
+	transition: background-color 0.3s; /* 부드러운 전환 효과 */
+}
+
+/* .tab-header:hover {
+	background-color: #4997D0; 마우스 오버 시 배경색 
+} 
+*/
+.tab-header.active {
+	background-color: #4997D0; /* 활성화된 탭 배경색 */
+	font-weight: bold; /* 활성화된 탭 강조 */
+}
+
+@media (max-width: 768px) {
+    .tab-header {
+        font-size: 14px; /* 글자 크기 조정 */
+        padding: 8px; /* 패딩 축소 */
+    }
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+th {
+	background-color: #f4f4f4;
+	font-weight: bold;
+}
+
+
+/* active 클래스가 있을 경우 활성화 표시 */
+
+.active2 {
+	background-color: #ffeb3b; /* 황색 배경 */
+	font-weight: bold;
+}
+</style>
 </head>
 <body class="animsition">
 
@@ -61,15 +106,15 @@
 						over $100</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25"> 
-							<b>고객 센터</b>
+						<a th:href="@{question.html}"
+							class="customer flex-c-m trans-04 p-lr-25"> <b>고객 센터</b>
 						</a>
 
 						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
 						<th:block th:if="${isLogin}">
 							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
-								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> 
-									<b>관리자 모드</b>
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> <b>관리자
+										모드</b>
 								</a>
 							</th:block>
 						</th:block>
@@ -131,7 +176,8 @@
 							<!-- 마이페이지 -->
 							<a th:href="@{myPage.html}"
 								class="header-icon-text dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY PAGE</b></span>
+								<i class="zmdi zmdi-account"></i> <span class="stext-109"><b>MY
+										PAGE</b></span>
 							</a>
 							<!-- 위시리스트 -->
 							<div id="wish-container">
@@ -327,15 +373,16 @@
 
 
 	<!-- 마이페이지 -->
-	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY PAGE</h3>
+	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY
+		PAGE</h3>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-11">
 				<div class="card mb-4">
 					<div class="card-body">
-						<div class="description01">
-							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b> 님 
-							<a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
+						<div class="description01"> 
+							<span class="icon">★[[${uservo.user_level}]]★</span> <span><b>[[${uservo.name}]]</b>
+								님 <a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
 						</div>
 						<p class="myshop_benefit_display_no_benefit txt_notice">
 							<strong><span><br>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
@@ -345,13 +392,15 @@
 				</div>
 
 				<ul class="list-group">
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 주문</b> 
-						<span id="xans_myshop_bankbook_order_price">0원 (<span id="xans_myshop_bankbook_order_count">0</span>회)</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 주문</b> <span id="xans_myshop_bankbook_order_price">0원
+							(<span id="xans_myshop_bankbook_order_count">0</span>회)
+					</span>
 					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 적립금</b>
-						<span id="xans_myshop_bankbook_total_mileage">0원</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 적립금</b> <span id="xans_myshop_bankbook_total_mileage">0원</span>
 					</li>
 				</ul>
 			</div>
@@ -362,38 +411,104 @@
 				<div
 					class="mypage_leftcon headroomLeft headroom headroom--not-bottom headroom--pinned headroom--top">
 					<div class="myshopMain xans-element- xans-myshop xans-myshop-main">
-						<h2><b>나의 쇼핑</b></h2>
+						<h2>
+							<b>나의 쇼핑</b>
+						</h2>
 						<ul>
 							<li class="shopMain order"><a href="/myPage.html">주문내역</a></li>
-							<li class="shopMain mileage active"><a href="/my-mileage.html">적립금/쿠폰</a></li>
-							<li class="shopMain board"><a href="/my-reviewList.html">후기 관리</a></li>
-							<li class="shopMain question"><a href="/my-question.html">문의 내역</a></li>
-							<li class="shopMain address"><a href="/my-addrList.html">배송지 관리</a></li>
-							<li class="shopMain profile"><a href="/my-modify.html">개인 정보 수정</a></li>
+							<li class="shopMain mileage active"><a
+								href="/my-mileage.html">적립금/쿠폰</a></li>
+							<li class="shopMain board"><a href="/my-reviewList.html">후기
+									관리</a></li>
+							<li class="shopMain question"><a href="/my-question.html">문의
+									내역</a></li>
+							<li class="shopMain address"><a href="/my-addrList.html">배송지
+									관리</a></li>
+							<li class="shopMain profile"><a href="/my-modify.html">개인
+									정보 수정</a></li>
 						</ul>
 					</div>
 				</div>
-				<div class="card-order">
-					<div class="card-header">
-						<h5><b>회원 혜택</b></h5>
-					</div>
-					<div class="card-body">
-						<table class="table table-striped">
-							<thead>
-								<tr class="table-menu">
-									<th>회원등급/쿠폰</th>
-									<th>적립금</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<!-- 주문 내역 불러오기(상품 사진, 상품며으 옵션, 배송일) -->
-									<!-- 리뷰 작성버튼/숨기기 버튼 -->
-									<td colspan="2" class="text-center empty-tb">주문 내역이 없습니다.</td>
-								</tr>
-							</tbody>
-						</table>
-						
+				<div class="card-body">
+					<table class="table table-striped">
+						<thead>
+							<tr class="table-menu">
+							<h5><b>회원 혜택</b></h5>
+								<!-- 회원등급/쿠폰 탭 -->
+								<th id="tab-membership" class="tab-header"
+									style="width: 50%; text-align: center; padding: 10px; cursor: pointer;"
+									onclick="activateTab('membership')">회원등급/쿠폰</th>
+								<!-- 적립금 탭 -->
+								<th id="tab-points" class="tab-header"
+									style="width: 50%; text-align: center; padding: 10px; cursor: pointer;"
+									onclick="activateTab('points')">적립금</th>
+							</tr>
+						</thead>
+					</table>
+					<!-- 동적으로 내용이 바뀔 영역 -->
+					<div id="content-area"
+						style="padding: 20px; border-top: 1px solid #ccc;">
+						  <h5>회원 등급 기준</h5>
+						  	<h6>현재 회원 등급 : [[${uservo.user_level}]] </h6>
+						  	  <hr>
+    						<body>
+	<table border="1"
+		style="border-collapse: collapse; width: 100%; text-align: center;">
+		<thead>
+			<tr>
+				<th>등급명</th>
+				<th>달성 조건</th>
+				<th>할인율</th>
+				<th>혜택</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:classappend="${uservo.user_level == '웰컴'} ? 'active2' : ''">
+					<li class="nav-item"><a class="nav-link" href="#"> </a></li>
+				<td>Welcome</td>
+				<td>신규가입 회원 <br>6개월 이상 비구매자
+				</td>
+				<td>-</td>
+				<td>신규회원 전용 1회 20% 쿠폰</td>
+			</tr>
+			<tr class="${"브론즈".equals(user_level) ? "active" : ""}">
+				<td>Bronze</td>
+				<td>최근 6개월 동안<br>구매상품건수 1건 이상
+				</td>
+				<td>10%</td>
+				<td>할인 쿠폰</td>
+			</tr>
+			<tr class="${"실버".equals(user_level) ? "active" : ""}">
+				<td>Silver</td>
+				<td>최근 6개월 동안<br>구매상품건수 2건 이상
+				</td>
+				<td>15%</td>
+				<td>할인 쿠폰+무료배송</td>
+			</tr>
+			<tr class="${"골드".equals(user_level) ? "active" : ""}">
+				<td>Gold</td>
+				<td>최근 6개월 동안<br>구매상품건수 3건 이상
+				</td>
+				<td>20%</td>
+				<td>할인 쿠폰+무료배송+더블쿠폰</td>
+			</tr>
+			<tr class="${"VIP".equals(user_level) ? "active" : ""}">
+				<td>VIP</td>
+				<td>최근 6개월 동안<br>구매상품건수 4건 이상
+				</td>
+				<td>30%</td>
+				<td>할인 쿠폰+무료배송+더블쿠폰+생일쿠폰</td>
+			</tr>
+			<tr class="${"VVIP".equals(user_level) ? "active" : ""}">
+				<td>VVIP</td>
+				<td>최근 6개월 동안<br>구매상품건수 5건 이상
+				</td>
+				<td>35%</td>
+				<td>할인 쿠폰+무로배송+더블쿠폰+생일쿠폰+무료교환</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
 					</div>
 				</div>
 			</div>
@@ -496,7 +611,9 @@
 				<p class="stext-107 cl6 txt-center">
 					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 					Copyright &copy;
-					<script>document.write(new Date().getFullYear());</script>
+					<script>
+						document.write(new Date().getFullYear());
+					</script>
 					All rights reserved | Made with <i class="fa fa-heart-o"
 						aria-hidden="true"></i> by <a href="https://colorlib.com"
 						target="_blank">Colorlib</a>
@@ -515,6 +632,51 @@
 		</span>
 	</div>
 
+
+	<script>
+	function activateTab(tabName) {
+	    // 모든 탭의 활성화 상태 제거
+	    const tabs = document.querySelectorAll('.tab-header');
+	    tabs.forEach(tab => tab.classList.remove('active'));
+
+	    // 클릭된 탭에 활성화 클래스 추가
+	    const activeTab = document.getElementById(`tab-${tabName}`);
+	    activeTab.classList.add('active');
+
+	    // 콘텐츠 로드
+	    loadContent(tabName);
+	}
+
+	function loadContent(section) {
+	    // URL 설정
+	    let url = '';
+	    if (section === 'membership') {
+	        url = '/api/membership';
+	    } else if (section === 'points') {
+	        url = '/api/points';
+	    }
+
+	    // AJAX 요청
+	    fetch(url)
+	        .then(response => {
+	            if (!response.ok) {
+	                throw new Error('네트워크 응답에 문제가 있습니다.');
+	            }
+	            return response.text();
+	        })
+	        .then(data => {
+	            // 콘텐츠 영역 업데이트
+	            document.getElementById('content-area').innerHTML = data;
+	        })
+	        .catch(error => {
+	            console.error('데이터를 불러오는 중 문제가 발생했습니다:', error);
+	            document.getElementById('content-area').innerHTML = '<p>콘텐츠를 로드할 수 없습니다.</p>';
+	        });
+	}
+
+</script>
+
+
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 	<!--===============================================================================================-->
@@ -525,10 +687,10 @@
 	<!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
-		$(".js-select2").each(function(){
+		$(".js-select2").each(function() {
 			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
+				minimumResultsForSearch : 20,
+				dropdownParent : $(this).next('.dropDownSelect2')
 			});
 		})
 	</script>
@@ -537,16 +699,16 @@
 	<!--===============================================================================================-->
 	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
-		$('.js-pscroll').each(function(){
-			$(this).css('position','relative');
-			$(this).css('overflow','hidden');
+		$('.js-pscroll').each(function() {
+			$(this).css('position', 'relative');
+			$(this).css('overflow', 'hidden');
 			var ps = new PerfectScrollbar(this, {
-				wheelSpeed: 1,
-				scrollingThreshold: 1000,
-				wheelPropagation: false,
+				wheelSpeed : 1,
+				scrollingThreshold : 1000,
+				wheelPropagation : false,
 			});
 
-			$(window).on('resize', function(){
+			$(window).on('resize', function() {
 				ps.update();
 			})
 		});
@@ -557,7 +719,6 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script th:inline="javascript">
-		
 		
 	</script>
 </body>
