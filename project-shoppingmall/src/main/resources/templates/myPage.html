@@ -61,15 +61,15 @@
 						over $100</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a th:href="@{question.html}" class="customer flex-c-m trans-04 p-lr-25"> 
-							<b>고객 센터</b>
+						<a th:href="@{question.html}"
+							class="customer flex-c-m trans-04 p-lr-25"> <b>고객 센터</b>
 						</a>
 
 						<!-- 관리자 모드 버튼 : 관리자일 경우 활성화한다. -->
 						<th:block th:if="${isLogin}">
 							<th:block th:if="${uservo.user_role=='ROLE_ADMIN'}">
-								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> 
-									<b>관리자 모드</b>
+								<a href="/admin" class="flex-c-m trans-04 p-lr-25"> <b>관리자
+										모드</b>
 								</a>
 							</th:block>
 						</th:block>
@@ -328,15 +328,16 @@
 
 
 	<!-- 마이페이지 -->
-	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY PAGE</h3>
+	<h3 class="review-title ltext-103 cl5 p-b-32">&nbsp&nbsp&nbsp&nbsp&nbspMY
+		PAGE</h3>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-11">
 				<div class="card mb-4">
 					<div class="card-body">
 						<div class="description01">
-							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b> 님 
-							<a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
+							<span class="icon">★등급★</span> <span><b>[[${uservo.name}]]</b>
+								님 <a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
 						</div>
 						<p class="myshop_benefit_display_no_benefit txt_notice">
 							<strong><span><br>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
@@ -346,13 +347,15 @@
 				</div>
 
 				<ul class="list-group">
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 주문</b> 
-						<span id="xans_myshop_bankbook_order_price">0원 (<span id="xans_myshop_bankbook_order_count">0</span>회)</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 주문</b> <span id="xans_myshop_bankbook_order_price">0원
+							(<span id="xans_myshop_bankbook_order_count">0</span>회)
+					</span>
 					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<b>총 적립금</b>
-						<span id="xans_myshop_bankbook_total_mileage">0원</span>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<b>총 적립금</b> <span id="xans_myshop_bankbook_total_mileage">0원</span>
 					</li>
 				</ul>
 			</div>
@@ -363,27 +366,35 @@
 				<div
 					class="mypage_leftcon headroomLeft headroom headroom--not-bottom headroom--pinned headroom--top">
 					<div class="myshopMain xans-element- xans-myshop xans-myshop-main">
-						<h2><b>나의 쇼핑</b></h2>
+						<h2>
+							<b>나의 쇼핑</b>
+						</h2>
 						<ul>
 							<li class="shopMain order active"><a href="/myPage.html">주문내역</a></li>
 							<li class="shopMain mileage"><a href="/my-mileage.html">적립금/쿠폰</a></li>
-							<li class="shopMain board"><a href="/my-reviewList.html">후기 관리</a></li>
-							<li class="shopMain question"><a href="/my-question.html">문의 내역</a></li>
-							<li class="shopMain address"><a href="/my-addrList.html">배송지 관리</a></li>
-							<li class="shopMain profile"><a href="/my-modify.html">개인 정보 수정</a></li>
+							<li class="shopMain board"><a href="/my-reviewList.html">후기
+									관리</a></li>
+							<li class="shopMain question"><a href="/my-question.html">문의
+									내역</a></li>
+							<li class="shopMain address"><a href="/my-addrList.html">배송지
+									관리</a></li>
+							<li class="shopMain profile"><a href="/my-modify.html">개인
+									정보 수정</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="card-order">
 					<div class="card-header">
-						<h5><b>주문조회</b></h5>
+						<h5>
+							<b>주문조회</b>
+						</h5>
 					</div>
 					<div class="card-body">
 						<form method="GET" id="OrderHistoryForm" class="mb-4">
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label for="order_status">주문처리상태</label> 
-									<select id="order_status" name="order_status" class="form-control">
+									<label for="order_status">주문처리상태</label> <select
+										id="order_status" name="order_status" class="form-control">
 										<option value="all">전체</option>
 										<option value="shipped_before">입금전</option>
 										<option value="shipped_standby">배송준비중</option>
@@ -404,10 +415,11 @@
 										id="history_end_date" name="history_end_date"
 										class="form-control" value="2024-10-30">
 								</div>
-								<button type="submit" class="btn btn-primary" style="display: inline;">조회</button>
+								<button type="submit" class="btn btn-primary"
+									style="display: inline;">조회</button>
 							</div>
 						</form>
-			
+
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -421,12 +433,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td colspan="7" class="text-center empty-tb">주문 내역이 없습니다.</td>
-								</tr>
+									 <tr th:each="orders : ${orders}">
+						                <td th:text="${orders.order_id}"></td>
+						                <p th:text="${#lists.size(orders)} + ' orders found'"></p>  
+            						</tr>
+								
 							</tbody>
 						</table>
-						
+
 					</div>
 				</div>
 			</div>
@@ -529,7 +543,9 @@
 				<p class="stext-107 cl6 txt-center">
 					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 					Copyright &copy;
-					<script>document.write(new Date().getFullYear());</script>
+					<script>
+						document.write(new Date().getFullYear());
+					</script>
 					All rights reserved | Made with <i class="fa fa-heart-o"
 						aria-hidden="true"></i> by <a href="https://colorlib.com"
 						target="_blank">Colorlib</a>
@@ -558,10 +574,10 @@
 	<!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
-		$(".js-select2").each(function(){
+		$(".js-select2").each(function() {
 			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
+				minimumResultsForSearch : 20,
+				dropdownParent : $(this).next('.dropDownSelect2')
 			});
 		})
 	</script>
@@ -570,16 +586,16 @@
 	<!--===============================================================================================-->
 	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
-		$('.js-pscroll').each(function(){
-			$(this).css('position','relative');
-			$(this).css('overflow','hidden');
+		$('.js-pscroll').each(function() {
+			$(this).css('position', 'relative');
+			$(this).css('overflow', 'hidden');
 			var ps = new PerfectScrollbar(this, {
-				wheelSpeed: 1,
-				scrollingThreshold: 1000,
-				wheelPropagation: false,
+				wheelSpeed : 1,
+				scrollingThreshold : 1000,
+				wheelPropagation : false,
 			});
 
-			$(window).on('resize', function(){
+			$(window).on('resize', function() {
 				ps.update();
 			})
 		});
@@ -590,7 +606,6 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script th:inline="javascript">
-	
 		
 	</script>
 </body>
