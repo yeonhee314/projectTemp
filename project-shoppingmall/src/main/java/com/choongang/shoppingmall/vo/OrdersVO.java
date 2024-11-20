@@ -13,7 +13,7 @@ public class OrdersVO {
 	private String merchant_uid;	// 가맹점 자체 고유번호
 	private int total_price; 		// 총 가격
 	private String payment_type;	// 결제 타입
-	private String status;			// 주문 상태
+	private String status;			// 주문 상태(결제 완료, 배송중, 배송완료)
 	private String address;			// 주소
 	private String request_type;	// 요청 사항
 	private Date order_date;		// 주문 날짜

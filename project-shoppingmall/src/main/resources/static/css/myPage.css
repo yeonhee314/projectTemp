@@ -175,3 +175,42 @@ a{
 	margin-bottom: 15px;
 	line-height: 160%;
 }
+
+.tab-header {
+	background-color: #f9f9f9; /* 기본 배경색 */
+	transition: background-color 0.3s; /* 부드러운 전환 효과 */
+}
+
+/* .tab-header:hover {
+	background-color: #4997D0; 마우스 오버 시 배경색 
+} 
+*/
+.tab-header.active {
+	background-color: #a4adec; /* 활성화된 탭 배경색 */
+	/* font-weight: bold; 활성화된 탭 강조 */
+}
+
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+th {
+	background-color: #f4f4f4;
+	font-weight: bold;
+}
+
+
+/* active 클래스가 있을 경우 활성화 표시 */
+
+.active2 {
+	background-color: #ffeb3b; /* 황색 배경 */
+	font-weight: bold;
+}

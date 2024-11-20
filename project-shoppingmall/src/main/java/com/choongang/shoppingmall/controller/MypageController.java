@@ -27,11 +27,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.AddressService;
+import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.AddressVO;
+import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
@@ -52,6 +54,8 @@ public class MypageController {
 	private AddressService addressService;
 	@Autowired
 	private QuestionCommentService questionCommentService;
+	@Autowired
+	private OrderService orderService;
 
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -106,8 +110,14 @@ public class MypageController {
 			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
+		
+		List<MyPageReviewInfo> infoList = orderService.selectByMyReview(userVO.getUser_id());
+		int ableReviewCount = orderService.selectByMyReviewCount(userVO.getUser_id());
+		
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("ableReviewCount", ableReviewCount);
+		model.addAttribute("infoList", infoList);
 
 		return "/my-reviewList.html";
 	}

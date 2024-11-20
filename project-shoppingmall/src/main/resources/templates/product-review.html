@@ -391,11 +391,10 @@
 											</td>
 											<td class="column-2">
 												<div>
-													<span class="stext-109 ta-r">구매옵션 : 화이트</span><br>
-													<span class="stext-109 flex-w flex-r-m" text="구매 유저 아이디"></span>
 													<span class="stext-108 flex-w flex-r-m" th:text="${#dates.format(vo.review_date, 'yyyy.MM.dd')}+'&nbsp&nbsp'"></span>
+													<span class="stext-109 flex-w flex-r-m" th:text="'닉네임 : ' + ${@userService.getUserById(vo.user_id).getUsername()}+'&nbsp&nbsp'"></span>
 												</div>
-												<span class="mtext-103 cl3 p-b-100" th:text="${vo.review_title}"></span><br><br>
+												<span class="mtext-103 cl3 p-b-100" style="margin-top: -50px;" th:text="${vo.review_title}"></span><br><br>
 												<span class="stext-117 cl3 p-b-50" th:text="${vo.review_text}"></span>
 											</td>
 										</tr>
@@ -603,6 +602,5 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
-
 </body>
 </html>

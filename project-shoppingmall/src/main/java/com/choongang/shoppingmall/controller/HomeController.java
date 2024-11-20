@@ -186,11 +186,12 @@ public class HomeController {
 		ProductVO productVO = productService.selectByProductId(product_id);
 		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
 		UserVO userVO = getUserInfo();
-
+		
 		model.addAttribute("pv", pv);
 		model.addAttribute("productvo", productVO);
 		model.addAttribute("categoryvo", categoryVO);
 		model.addAttribute("uservo", userVO);
+		model.addAttribute("userService", userService);
 
 		return "product-review";
 	}

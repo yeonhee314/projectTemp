@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.shoppingmall.dao.OrderDAO;
 import com.choongang.shoppingmall.vo.AdminOrderPagingVO;
+import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
@@ -87,5 +88,27 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}	
 		return ov;
+	}
+
+	@Override
+	public List<MyPageReviewInfo> selectByMyReview(int user_id) {
+		List<MyPageReviewInfo> reviewInfo = null;
+		try {
+			reviewInfo = orderDAO.selectByMyReview(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return reviewInfo;
+	}
+
+	@Override
+	public int selectByMyReviewCount(int user_id) {
+		int count = 0;
+		try {
+			count = orderDAO.selectByMyReviewCount(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }

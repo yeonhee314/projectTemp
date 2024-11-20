@@ -49,7 +49,6 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body class="animsition">
-
 	<!-- Header -->
 	<header class="header-v4">
 		<!-- Header desktop -->
@@ -381,19 +380,12 @@
 						<table class="table table-striped">
 							<thead>
 								<tr class="table-menu">
-									<th>리뷰 작성 (0)</th>
-									<th>작성한 리뷰 (0)</th>
+									<th style="width: 50%; text-align: center; padding: 10px;" id="tab-write" class="active tab-header" onclick="activateTab('write')">리뷰 작성 ([[${ableReviewCount}]])</th>
+									<th style="width: 50%; text-align: center; padding: 10px;" id="tab-wrote" class="tab-header" onclick="activateTab('wrote')">작성한 리뷰 (0)</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<!-- 주문 내역 불러오기(상품 사진, 상품며으 옵션, 배송일) -->
-									<!-- 리뷰 작성버튼/숨기기 버튼 -->
-									<td colspan="2" class="text-center empty-tb">주문 내역이 없습니다.</td>
-								</tr>
-							</tbody>
+								<tbody class="content-area"></tbody>
 						</table>
-						
 					</div>
 				</div>
 			</div>
@@ -557,8 +549,63 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script th:inline="javascript">
-		
-		
+	loadContent('write');
+	function activateTab(tabName) {
+		// 모든 탭의 활성화 상태 제거
+	    const tabs = document.querySelectorAll('.tab-header');
+	    tabs.forEach(tab => tab.classList.remove('active'));
+	    // 클릭된 탭에 활성화 클래스 추가
+	    const activeTab = document.getElementById(`tab-${tabName}`);
+	    activeTab.classList.add('active');
+
+	    // 콘텐츠 로드
+	    loadContent(tabName);
+	}
+	
+	var ableReviewCount = /*[[${ableReviewCount}]]*/;
+	var infoList = /*[[${infoList}]]*/;
+	
+	function loadContent(section) {
+	    // URL 설정
+	    let url = '';
+	    if (section === 'write') {
+	        url = '/api/write-review';
+	    } else if (section === 'wrote') {
+	        url = '/api/wrote-review';
+	    }
+
+	    // AJAX 요청
+	    fetch(url)
+	        .then(response => {
+	            if (!response.ok) {
+	                throw new Error('네트워크 응답에 문제가 있습니다.');
+	            }
+	            return response.text();
+	        })
+	        .then(data => {
+	            // 콘텐츠 영역 업데이트
+		        var contentArea =  document.querySelector('.content-area');
+		        contentArea.innerHTML = '';
+		        console.log(section);
+		        console.log(ableReviewCount);
+	            if(section === 'write'){
+					if(ableReviewCount == 0){
+						var emptyRow = '<tr><td colspan="2" class="text-center empty-tb">리뷰를 작성할 수 있는 상품이 없습니다.</td></tr>';
+						contentArea.innerHTML += emptyRow;
+						return;
+					}
+		            for(var i = 0; i < ableReviewCount; i++){
+						contentArea.innerHTML += data;
+		            }
+	            }else if(section === 'wrote'){
+	            	 contentArea.innerHTML += data;
+	            }
+
+	        })
+	        .catch(error => {
+	            alert('데이터를 불러오는 중 문제가 발생했습니다:', error);
+	        });
+	}
 	</script>
 </body>
 </html>
