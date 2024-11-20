@@ -214,3 +214,7 @@ th {
 	background-color: #ffeb3b; /* 황색 배경 */
 	font-weight: bold;
 }
+
+.question-content{
+	text-align: left;
+}
