@@ -35,6 +35,9 @@ tr:hover {
 	font-weight: bold;
 }
 </style>
+<h5>회원 등급 기준</h5>
+<h6>현재 회원 등급 : [[${uservo.user_level}]]</h6>
+<hr>
 <body>
 	<table border="1"
 		style="border-collapse: collapse; width: 100%; text-align: center;">
@@ -48,7 +51,7 @@ tr:hover {
 		</thead>
 		<tbody>
 			<tr th:classappend="${uservo.user_level == '웰컴'} ? 'active2' : ''">
-					<li class="nav-item"><a class="nav-link" href="#"> </a></li>
+				<li class="nav-item"><a class="nav-link" href="#"> </a></li>
 				<td>Welcome</td>
 				<td>신규가입 회원 <br>6개월 이상 비구매자
 				</td>
