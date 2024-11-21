@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.choongang.shoppingmall.vo.AdminOrderPagingVO;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
@@ -17,4 +18,6 @@ public interface OrderService {
 	void addToOrderItems(Order_ItemVO vo);
 	Integer selectMaxOrderId();
 	Integer selectFirstOrdersId();
+	Map<String, Object> getOrderStatsByUserId(int userId);
+	
 }

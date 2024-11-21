@@ -1,6 +1,7 @@
 package com.choongang.shoppingmall.controller;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,25 +85,48 @@ public class MypageController {
 		UserVO userVO = getUserInfo();
 		if (!isLogin)
 			return "redirect:/login";
+
+		// 사용자의 주문 건수와 총합을 가져오기
+		int userId = userVO.getUser_id(); // 사용자 ID 가져오기
+		Map<String, Object> orderStats = orderService.getOrderStatsByUserId(userId);
+		
+		if (orderStats == null) {
+		    orderStats = new HashMap<>();
+		    orderStats.put("ORDER_COUNT", 0);  // 기본값
+		    orderStats.put("TOTAL_SUM", 0.0);  // 기본값
+		}
+
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("uservo", userVO);
+		model.addAttribute("order_count", orderStats.get("ORDER_COUNT"));
+		model.addAttribute("total_sum", orderStats.get("TOTAL_SUM"));
+
 
 		return "myPage";
 	}
 
 	// 회원혜택 (쿠폰/적립금)
-		@GetMapping("/my-mileage.html")
-		public String mymileage(Model model) {
-			boolean isLogin = isUserLoggedin();
-			UserVO userVO = getUserInfo();
-			if (!isLogin)
-				return "redirect:/login";
-			model.addAttribute("isLogin", isLogin);
-			model.addAttribute("uservo", userVO);
+	@GetMapping("/my-mileage.html")
+	public String mymileage(Model model) {
 
-			return "/my-mileage.html";
-		}
+		boolean isLogin = isUserLoggedin();
+		UserVO userVO = getUserInfo();
 		
+		// 사용자의 주문 건수와 총합을 가져오기
+				int userId = userVO.getUser_id(); // 사용자 ID 가져오기
+				Map<String, Object> orderStats = orderService.getOrderStatsByUserId(userId);
+				
+		if (!isLogin)
+			return "redirect:/login";
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("order_count", orderStats.get("ORDER_COUNT"));
+		model.addAttribute("total_sum", orderStats.get("TOTAL_SUM"));
+		
+
+		return "/my-mileage.html";
+	}
+
 	// 후기 관리
 	@GetMapping("/my-reviewList.html")
 	public String reviewList(Model model) {
@@ -110,10 +134,10 @@ public class MypageController {
 			return "redirect:/login";
 		UserVO userVO = getUserInfo();
 		boolean isLogin = isUserLoggedin();
-		
+
 		List<MyPageReviewInfo> infoList = orderService.selectByMyReview(userVO.getUser_id());
 		int ableReviewCount = orderService.selectByMyReviewCount(userVO.getUser_id());
-		
+
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("ableReviewCount", ableReviewCount);
@@ -140,8 +164,8 @@ public class MypageController {
 
 		return "/my-question.html";
 	}
-	
-	//배송지 추가 
+
+	// 배송지 추가
 	@GetMapping("/my-addrList.html")
 	public String addressList(HttpSession session, Model model) throws SQLException {
 
@@ -164,64 +188,62 @@ public class MypageController {
 
 		return "/my-addrList.html";
 	}
-	
-	//배송지 수정목록 확인
+
+	// 배송지 수정목록 확인
 	@GetMapping("/address/get/{addr_id}")
-	  @ResponseBody
-	  public ResponseEntity<AddressVO> getAddressById(@PathVariable("addr_id") int addr_id) {
-	      AddressVO address = addressService.getAddressByAddrId(addr_id);
-	      
-	      if (address != null) {
-	          return ResponseEntity.ok(address);
-	      } else {
-	          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-	      }
-	  }
-	
+	@ResponseBody
+	public ResponseEntity<AddressVO> getAddressById(@PathVariable("addr_id") int addr_id) {
+		AddressVO address = addressService.getAddressByAddrId(addr_id);
+
+		if (address != null) {
+			return ResponseEntity.ok(address);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+
 	// 배송지 수정 처리
-	    @PostMapping("/address/update")
-	    public String updateAddress(AddressVO addressVO) {
-	        addressService.updateAddress(addressVO);
-	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
-	    }
-	 
-	
-	//배송지 삭제 
-	    @GetMapping("/address/delete")
-	    public String deleteAddress(@RequestParam("addr_id") int addr_id) {
-	        addressService.deleteAddress(addr_id);
-	        return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
-	    }
-	   
-	    // 배송지 선택 -> 유저 주소로 변경 
-	    @PostMapping("/address/select")
-	    public String selectAddress(HttpSession session,Model model
-	    							,@RequestParam("addr_id") int addr_id
-	    							,@RequestParam(name = "name",required = false) String name 
-	    							,@RequestParam(name = "postcode",required = false) String postcode 
-	    							,@RequestParam(name = "address",required = false) String address
-	    							,@RequestParam(name = "address_detail",required = false) String address_detail) throws SQLException {
-	    	
-	    	int userId = (int) session.getAttribute("userId");
+	@PostMapping("/address/update")
+	public String updateAddress(AddressVO addressVO) {
+		addressService.updateAddress(addressVO);
+		return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	}
 
-			List<AddressVO> addressList = addressService.getAddressList(userId);
+	// 배송지 삭제
+	@GetMapping("/address/delete")
+	public String deleteAddress(@RequestParam("addr_id") int addr_id) {
+		addressService.deleteAddress(addr_id);
+		return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	}
 
-			UserVO user = userService.getUserById(userId);
+	// 배송지 선택 -> 유저 주소로 변경
+	@PostMapping("/address/select")
+	public String selectAddress(HttpSession session, Model model, @RequestParam("addr_id") int addr_id,
+			@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "postcode", required = false) String postcode,
+			@RequestParam(name = "address", required = false) String address,
+			@RequestParam(name = "address_detail", required = false) String address_detail) throws SQLException {
 
-			if (!isUserLoggedin())
-				return "redirect:/login";
-			UserVO userVO = getUserInfo();
-			boolean isLogin = isUserLoggedin();
+		int userId = (int) session.getAttribute("userId");
 
-			model.addAttribute("uservo", userVO);
-			model.addAttribute("isLogin", isLogin);
-			model.addAttribute("user", user);
-			model.addAttribute("addressVO", new AddressVO());
-			model.addAttribute("addressList", addressList);
-		
-	    	addressService.updateUserAddress(userId,addr_id, name,postcode,address,address_detail);
-	    	 return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
-	    }  
+		List<AddressVO> addressList = addressService.getAddressList(userId);
+
+		UserVO user = userService.getUserById(userId);
+
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		UserVO userVO = getUserInfo();
+		boolean isLogin = isUserLoggedin();
+
+		model.addAttribute("uservo", userVO);
+		model.addAttribute("isLogin", isLogin);
+		model.addAttribute("user", user);
+		model.addAttribute("addressVO", new AddressVO());
+		model.addAttribute("addressList", addressList);
+
+		addressService.updateUserAddress(userId, addr_id, name, postcode, address, address_detail);
+		return "redirect:/my-addrList.html"; // 배송지 목록으로 리다이렉트
+	}
 
 	// 문의 내역 삭제
 	@PostMapping("/deleteQuestion")

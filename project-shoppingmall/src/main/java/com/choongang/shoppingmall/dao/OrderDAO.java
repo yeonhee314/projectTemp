@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.dao;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,4 +30,6 @@ public interface OrderDAO {
 	Integer selectMaxOrderId() throws SQLException;
 	// 첫번째 주문 데이터 가져올때만 사용한다.
 	Integer selectFirstOrdersId() throws SQLException;
+	
+	Map<String, Object> getOrderStatsByUserId(int userId);
 }
