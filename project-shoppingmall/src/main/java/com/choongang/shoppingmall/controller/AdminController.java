@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -457,5 +460,27 @@ public class AdminController {
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
 			return "admin-orders";
+		}
+		// 토스트 에디터 이미지 처리
+		@ResponseBody
+		@RequestMapping(value = "/image_upload.do", method = RequestMethod.POST)
+		public String imageUpload(@RequestParam("image")MultipartFile multipartFile,
+								  HttpServletRequest request) {
+			String projectDir = System.getProperty("user.dir");
+			String filePath = projectDir +  "/src/main/resources/static/images/products/toast";
+			File file = new File(filePath);
+			if(!file.exists()) file.mkdirs();
+			String fileName = multipartFile.getOriginalFilename();
+			int lastIndex = fileName.lastIndexOf(".");
+			String ext = fileName.substring(lastIndex, fileName.length());
+			String newFileName = LocalDate.now() + "_" + System.currentTimeMillis() + ext;
+
+			try {
+				File image = new File(filePath, newFileName);
+				multipartFile.transferTo(image);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			return "/images/products/toast/" + newFileName;
 		}
 }

@@ -113,8 +113,8 @@
 			}
 	}
 	function priceCheck(){
-		let value = $("#product_price").val();
-		let price_regex = /^[1-9]+[0-9]+$/;
+		var value = $("#product_price").val();
+		var price_regex = /^[1-9]+[0-9]+$/;
 		if(!price_regex.test(value)){ 
 			value = value.replace(/^0+/, '');
 		}
@@ -170,7 +170,59 @@
 				<span>미리보기</span>
 				<div class="form-group" id="previewBox" style="display:flex;"></div>
 			</div>
-		<div class="input-group mb-2" id="cgdiv">
+		
+		<div id="editor"></div>
+		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+		<script>
+			const editor = new toastui.Editor({
+				el: document.querySelector("#editor"),
+				toolbarItems: [
+				    ['heading', 'bold', 'italic'],
+				    ['hr', 'quote'],
+				    ['ul', 'ol', 'task', 'indent', 'outdent'],
+				    ['table', 'image', 'link'],
+				    ['code', 'codeblock'],		    
+				  ],
+				previewStyle: 'vertical',
+				height: '370px',
+				width: '600px',
+				initialEditType: 'markdown',
+				initialValue: '',
+				hideModeSwitch:true,
+				
+				hooks: {
+				    addImageBlobHook: function (blob, callback) {
+				      const formData = new FormData();
+				      formData.append("image", blob);
+				      formData.append("uri", window.location.pathname);
+				      const imageURL = imageUpload(formData);
+				      callback(imageURL, "image");
+				    }
+				  }
+				});
+				function imageUpload(formData) {
+				  var imageURL;
+
+				  $.ajax({
+				    type: "post",
+				    url: "/image_upload.do",
+				    async: false,
+				    data: formData,
+				    processData: false,
+				    contentType: false,
+				    success: function (data) {
+				      imageURL = data;
+				      console.log(imageURL);
+				    },
+				    error: function (request, status, error) {
+				      alert(request + ", " + status + ", " + error);
+				    },
+				  });
+				  return imageURL;
+				}
+		</script>
+		<div class="stockDiv">
+			<div class="input-group mb-2" id="cgdiv">
 			<label class="input-group-text">카테고리</label>
 			<select name="category_id" id="category_id" class="category" required="required">
 				<th:block th:each="vo : ${cglist}">
@@ -178,24 +230,22 @@
 				</th:block>
 			</select>
 		</div>
-		<div id="editor"></div>
-		<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-		<script>
-			const editor = new toastui.Editor({
-				el: document.querySelector("#editor"),
-				previewStyle: 'vertical',
-				height: '270px',
-				width: '600px',
-				initialEditType: 'wysiwyg',
-				initialValue: '',
-				hideModeSwitch:true
-			});
-		</script>
+			<div class="input-group mb-2" id="discountDiv">
+				<label class="input-group-text" >재고</label>
+				<input type="number" name="product_stock" id="product_stock" required="required" min="0" max="99999" placeholder="수량입력"/>		
+			</div>
+			<div class="input-group mb-2" style="border: 1px solid #ebebeb;">
+				<label class="input-group-text" id="status">판매여부</label>
+				<label><input type="radio" name="product_status" checked="checked" value="Y"/>&nbsp;Y&nbsp;&nbsp;</label>
+				<label><input type="radio" name="product_status" value="N"/>&nbsp;N&nbsp;</label>
+			</div>
+		</div>
 		<div class="price">
 			<div class="input-group mb-2">
 				<input type="hidden" name="description" id="description"/>
 				<label class="input-group-text" style="font-size: 12pt;">정가</label>
 				<input type="number" name="product_price" id="product_price" onkeydown="price()" onsubmit="priceCheck()" required="required" min="0" max="9999999"/>
+				<span class="input-group-text">원</span>
 			</div>
 			<div class="input-group mb-2" id="discountDiv">
 				<label class="input-group-text" >할인율</label>
@@ -206,17 +256,6 @@
 				<label class="input-group-text">판매가</label>
 				<input type="number" readonly class="form-control-plaintext" id="totalprice" max="9999999"/>
 				<span class="input-group-text">원</span>
-			</div>
-		</div>
-		<div class="stockDiv">
-			<div class="input-group mb-2" id="discountDiv">
-				<label class="input-group-text" >재고</label>
-				<input type="number" name="product_stock" id="product_stock" required="required" min="0" max="99999" placeholder="수량입력"/>		
-			</div>
-			<div class="input-group mb-2" style="border: 1px solid #ebebeb;">
-				<label class="input-group-text" id="status">판매여부</label>
-				<label><input type="radio" name="product_status" checked="checked" value="Y"/>&nbsp;Y&nbsp;&nbsp;</label>
-				<label><input type="radio" name="product_status" value="N"/>&nbsp;N&nbsp;</label>
 			</div>
 		</div>
 		<div class="input-group mb-2">
