@@ -3451,10 +3451,10 @@ button:disabled{
 	margin-left: 13px;
 }
 .swal2-container {
-  z-index: 10000;
+  	z-index: 10000;
 }
 .small-title {
-        font-size: 18px; 
+    font-size: 18px; 
 }
 #description1 img {
 	width: 70px; height: 70px;

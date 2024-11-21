@@ -71,7 +71,7 @@ input, select {
 	margin-bottom: 15px;
 }
 .stockDiv {
-	width:400px;
+	width:700px;
 	display: flex;
 }
 #previewBox {	
@@ -92,7 +92,11 @@ input, select {
 	left: 70px;
 	color: #dddddd;
 }
-img {
+#savedFile img {
+	width: 90px; height: 90px;
+	border: 1px solid #ffffff;
+}
+#previewBox img {
 	width: 90px; height: 90px;
 	border: 1px solid #ffffff;
 }
