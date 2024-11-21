@@ -13,6 +13,7 @@
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="/css/admin/admin.css"/>
 <link rel="stylesheet" type="text/css" href="/css/admin/adminPdForm.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script type="text/javascript">
 	$(function() {
 		$("#upFile").on('change',function(){
@@ -69,6 +70,10 @@
 	    $("#discount").on('change',function() {
 	        $("#totalprice").val(Math.floor($("#product_price").val()*(1-$("#discount").val()/100)));
 	    });
+	    $("#submit").click(function(){
+			var content = editor.getHTML();
+			$("#description2").val(content);
+	    })
 	});
 	function productCheck(){
 		var product_name = $("#product_name").val();
@@ -97,6 +102,7 @@
 			value = value.replace(/^0+/, '');
 		}
 	}
+	
 </script>
 </head>
 <body>
@@ -170,12 +176,54 @@
 						</th:block>
 					</select>
 				</div>
-				<div class="form-floating mb-2">
-					<textarea class="form-control" name="description" id="description" th:text="${pd.description}" required="required"></textarea>
-					<label for="floatingInput" style="font-size: 10pt;">상세설명</label>
+				<div id="editor">
+					<input type="hidden" id="description1" th:value="${pd.description}" />
 				</div>
+				<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+				<script>
+					const editor = new toastui.Editor({
+						el: document.querySelector("#editor"),
+						previewStyle: 'vertical',
+						height: '230px',
+						width: '600px',
+						initialEditType: 'wysiwyg',
+						initialValue: $("#description1").val(),
+						hideModeSwitch:true,
+						
+						hooks: {
+						    addImageBlobHook: function (blob, callback) {
+						      const formData = new FormData();
+						      formData.append("image", blob);
+						      formData.append("uri", window.location.pathname);
+						      const imageURL = imageUpload(formData);
+						      callback(imageURL, "image");
+						    }
+						  }
+						});
+						function imageUpload(formData) {
+						  var imageURL;
+
+						  $.ajax({
+						    type: "post",
+						    url: "/image_upload.do",
+						    async: false,
+						    data: formData,
+						    processData: false,
+						    contentType: false,
+						    success: function (data) {
+						      imageURL = data;
+						      console.log(imageURL);
+						    },
+						    error: function (request, status, error) {
+						      alert(request + ", " + status + ", " + error);
+						    },
+						  });
+						  return imageURL;
+						}
+				</script>
 				<div class="price">
 					<div class="input-group mb-2">
+						<input type="hidden" name="description" id="description2"/>
 						<label class="input-group-text">정가</label>
 						<input type="number" name="product_price" id="product_price" onsubmit="priceCheck()" th:value="${pd.product_price}" required="required" min="0" max="9999999"/>
 						<span class="input-group-text">원</span>

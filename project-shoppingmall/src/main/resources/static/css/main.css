@@ -3455,4 +3455,7 @@ button:disabled{
 }
 .small-title {
         font-size: 18px; 
-    }
+}
+#description1 img {
+	width: 70px; height: 70px;
+}

@@ -113,8 +113,8 @@
 			}
 	}
 	function priceCheck(){
-		let value = $("#product_price").val();
-		let price_regex = /^[1-9]+[0-9]+$/;
+		var value = $("#product_price").val();
+		var price_regex = /^[1-9]+[0-9]+$/;
 		if(!price_regex.test(value)){ 
 			value = value.replace(/^0+/, '');
 		}
@@ -188,8 +188,38 @@
 				width: '600px',
 				initialEditType: 'wysiwyg',
 				initialValue: '',
-				hideModeSwitch:true
-			});
+				hideModeSwitch:true,
+				
+				hooks: {
+				    addImageBlobHook: function (blob, callback) {
+				      const formData = new FormData();
+				      formData.append("image", blob);
+				      formData.append("uri", window.location.pathname);
+				      const imageURL = imageUpload(formData);
+				      callback(imageURL, "image");
+				    }
+				  }
+				});
+				function imageUpload(formData) {
+				  var imageURL;
+
+				  $.ajax({
+				    type: "post",
+				    url: "/image_upload.do",
+				    async: false,
+				    data: formData,
+				    processData: false,
+				    contentType: false,
+				    success: function (data) {
+				      imageURL = data;
+				      console.log(imageURL);
+				    },
+				    error: function (request, status, error) {
+				      alert(request + ", " + status + ", " + error);
+				    },
+				  });
+				  return imageURL;
+				}
 		</script>
 		<div class="price">
 			<div class="input-group mb-2">
