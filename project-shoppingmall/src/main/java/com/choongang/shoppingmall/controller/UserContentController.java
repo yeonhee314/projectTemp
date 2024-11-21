@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.shoppingmall.service.OrderService;
+import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
+import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +26,8 @@ public class UserContentController {
     private UserService userService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private ProductService productService;
 	
     @GetMapping("/membership")
     public ModelAndView getMembershipContent(HttpSession session, Model model) throws SQLException {

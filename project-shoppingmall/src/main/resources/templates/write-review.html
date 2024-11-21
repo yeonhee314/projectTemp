@@ -1,3 +1,9 @@
-<tr>
-	<td colspan="2">[[${reviewCount}]]</td>
-</tr>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:each="info : ${infoList}">
+	<tr>
+		<td>
+			<img style="border:1px solid black; width: 100px; height: 100px;" th:src="'images/products/product' + ${info.product_id} + '/product-'+ ${info.product_id} + '-' + 1 + '.jpg'" alt="IMG-PRODUCT">
+		</td>
+		<td>ㅇㅇ</td>
+	</tr>
+</th:block>
