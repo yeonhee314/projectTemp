@@ -122,6 +122,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
 	@Override
+<<<<<<< HEAD
 	public OrdersVO selectOrderById(int order_id) {
 		OrdersVO ordersVO = null;
 		try {
@@ -141,5 +142,13 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}
 		return itemlist;
+=======
+	public void updateReviewStatus(int order_item_id) {
+		try {
+			orderDAO.updateReviewStatus(order_item_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+>>>>>>> d516dbe689b9b80d62a31ad37cd868cd4922d503
 	}
 }

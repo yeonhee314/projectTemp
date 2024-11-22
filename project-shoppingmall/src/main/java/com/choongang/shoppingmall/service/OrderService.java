@@ -16,6 +16,7 @@ public interface OrderService {
 	List<Order_ItemVO> selectOrderItemByOrderId(int order_id);
 	List<MyPageReviewInfo> selectByMyReview(int user_id);
 	int selectByMyReviewCount(int user_id);
+	void updateReviewStatus(int order_item_id);
 	void addToOrder(OrdersVO vo);
 	void addToOrderItems(Order_ItemVO vo);
 	Integer selectMaxOrderId();

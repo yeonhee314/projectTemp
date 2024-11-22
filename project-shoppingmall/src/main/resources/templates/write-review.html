@@ -54,8 +54,8 @@
 				<span class="txt_notice" th:text="'주문일 : ' + ${#dates.format(info.order_date, 'yyyy.MM.dd')}"></span>
 			</div>
 			<div class="btn-wrap stext-105">
-				<button class="write-review" onclick="console.log('리뷰작성하기')"><b>리뷰 작성하기</b></button>
-				<button class="hide" onclick="deleteProduct()">숨기기</button>
+				<button class="write-review" th:onclick="writeReview([[${info.order_item_id}]])"><b>리뷰 작성하기</b></button>
+				<button class="hide" th:onclick="deleteProduct([[${info.order_item_id}]])">숨기기</button>
 			</div>
 		</td>
 	</tr>
