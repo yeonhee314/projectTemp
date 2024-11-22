@@ -65,6 +65,7 @@ public class UserContentController {
  	    model.addAttribute("uservo", uservo);
 		model.addAttribute("reviewCount", reviewCount);
 		model.addAttribute("infoList", infoList);
+		model.addAttribute("productService", productService);
     	
         return new ModelAndView("write-review");
     }

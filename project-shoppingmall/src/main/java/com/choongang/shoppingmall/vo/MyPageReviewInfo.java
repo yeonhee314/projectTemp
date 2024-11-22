@@ -1,8 +1,6 @@
 package com.choongang.shoppingmall.vo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.choongang.shoppingmall.service.ProductService;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -12,11 +10,6 @@ public class MyPageReviewInfo {
 	private int product_id;
 	private int quantity;
 	private int order_price;
-	
-	@Autowired
-	private ProductService productService;
-	
-	public ProductVO getProductVO(int product_id) {
-		return productService.selectByProductId(product_id);
-	}
+	private Date order_date;
+	private String review_status;	// 리뷰를 쓸 수 있는 상태 : on, off
 }

@@ -54,8 +54,6 @@ public class MypageController {
 	@Autowired
 	private AddressService addressService;
 	@Autowired
-	private QuestionCommentService questionCommentService;
-	@Autowired
 	private OrderService orderService;
 
 	// 로그인 여부 확인

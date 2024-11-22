@@ -1,9 +1,63 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<style>
+	.tr-1{
+		position: relative;
+	}
+	.td-1{
+		height: 140px;
+		background: #ffffff;
+	}
+	.product-img{
+		width: 100px; 
+		height: 110px;
+		position: absolute;
+		top: 15px;
+		left: 40px;
+	}
+	.span-wrap{
+		width: 300px;
+		text-align: left;
+		margin-left: 170px;
+		margin-top: 12px;
+	}
+	.btn-wrap{
+		width: 200px;
+		height: 80px;
+		position: absolute;
+		top: 36px;
+		right: 10px;
+	}
+	.write-review{
+		width: 100px;
+		height: 35px;
+		color : #0D6EFD;
+		border: 1px solid #0D6EFD;
+	}
+	
+	.hide{
+		margin-top: 10px;
+		width: 100px;
+		height: 35px;
+		color : #0D6EFD;
+		font-size: 9pt;
+	}
+</style>
+
 <th:block th:each="info : ${infoList}">
-	<tr>
-		<td>
-			<img style="border:1px solid black; width: 100px; height: 100px;" th:src="'images/products/product' + ${info.product_id} + '/product-'+ ${info.product_id} + '-' + 1 + '.jpg'" alt="IMG-PRODUCT">
+	<tr class="tr-1">
+		<td colspan="2" class="td-1">
+			<img class="product-img" th:src="'images/products/product' + ${info.product_id} + '/product-'+ ${info.product_id} + '-' + 1 + '.jpg'" alt="IMG-PRODUCT">
+			<div class="span-wrap stext-105">
+				<b><span th:text="${@productService.selectByProductId(info.product_id).product_name} +','"></span>
+				<span th:text="${info.quantity} + '개'"></span><br /></b>
+				<span th:text="${#numbers.formatInteger(info.order_price, 3, 'COMMA') + ' ₩'}"></span><br /><br /><br />
+				<span class="txt_notice" th:text="'주문일 : ' + ${#dates.format(info.order_date, 'yyyy.MM.dd')}"></span>
+			</div>
+			<div class="btn-wrap stext-105">
+				<button class="write-review" onclick="console.log('리뷰작성하기')"><b>리뷰 작성하기</b></button>
+				<button class="hide" onclick="deleteProduct()">숨기기</button>
+			</div>
 		</td>
-		<td>ㅇㅇ</td>
 	</tr>
 </th:block>
+

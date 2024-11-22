@@ -51,17 +51,15 @@
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">
-		select o.order_id, oi.product_id, oi.quantity, oi.order_price
-		from orders o full outer join order_item oi
-		on o.order_id = oi.order_id
-		where o.user_id = #{user_id} and o.status='결제완료'
+		select o.order_id, oi.product_id, oi.quantity, oi.order_price, o.user_id, o.ORDER_DATE, oi.review_status
+		from orders o, order_item oi
+		where o.order_id = oi.order_id and oi.user_id=#{user_id} and o.status='결제완료'
 	</select>
 	<!-- 아이디별 주문 내역 갯수 -->
 	<select id="selectByMyReviewCount" parameterType="int" resultType="int">
 		select count(*)
-		from orders o full outer join order_item oi
-		on o.order_id = oi.order_id
-		where o.user_id = #{user_id} and o.status='결제완료'
+		from orders o, order_item oi
+		where o.order_id = oi.order_id and oi.user_id=#{user_id} and o.status='결제완료'
 	</select>
 	
 	<!-- 주문 테이블 저장 -->
