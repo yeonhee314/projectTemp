@@ -77,8 +77,8 @@
 	
 	<!-- 주문 상품 리스트 저장 -->
 	<insert id="addToOrderItems" parameterType="Order_ItemVO">
-   		insert into order_item(order_item_id, order_id, user_id, product_id, quantity, order_price)
-    	values(order_item_id_seq.nextval, #{order_id}, #{user_id}, #{product_id}, #{quantity}, #{order_price})
+   		insert into order_item(order_item_id, order_id, user_id, product_id, quantity, order_price, product_option)
+    	values(order_item_id_seq.nextval, #{order_id}, #{user_id}, #{product_id}, #{quantity}, #{order_price}, #{product_option})
 	</insert>
 	
 	<!-- 가장 큰 주문 번호 가져오기 -->

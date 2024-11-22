@@ -11,4 +11,5 @@ public class Order_ItemVO {
 	private int quantity;			// 수량
 	private int order_price;		// 주문 아이템 가격
 	private String review_status;	// 리뷰 가능한 상태 여부 : on, off
+	private String product_option;	// 상품 옵션
 }

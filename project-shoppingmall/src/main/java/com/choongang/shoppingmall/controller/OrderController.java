@@ -57,6 +57,7 @@ public class OrderController {
 			vo.setProduct_id((Integer)item.get("product_id"));
 			vo.setQuantity((Integer)item.get("quantity"));
 			vo.setOrder_price((Integer)item.get("price"));
+			vo.setProduct_option((String)item.get("product_option"));
 			vo.setReview_status("on");	// 기본 값은 'on' 상태로 저장한다.
 			orderService.addToOrderItems(vo);
 		}
