@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.OrderService;
@@ -56,8 +57,15 @@ public class OrderController {
 			vo.setProduct_id((Integer)item.get("product_id"));
 			vo.setQuantity((Integer)item.get("quantity"));
 			vo.setOrder_price((Integer)item.get("price"));
+			vo.setReview_status("on");	// 기본 값은 'on' 상태로 저장한다.
 			orderService.addToOrderItems(vo);
 		}
+	}
+	
+	@PostMapping("/updateReviewStatus")
+	@ResponseBody
+	public void updateReviewStatus(@RequestParam("order_item_id") int order_item_id) {
+		orderService.updateReviewStatus(order_item_id);
 	}
 }
 

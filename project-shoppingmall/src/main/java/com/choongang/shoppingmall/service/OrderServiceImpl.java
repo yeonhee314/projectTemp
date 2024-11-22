@@ -120,4 +120,13 @@ public class OrderServiceImpl implements OrderService{
 
         return orderStats;
     }
+
+	@Override
+	public void updateReviewStatus(int order_item_id) {
+		try {
+			orderDAO.updateReviewStatus(order_item_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

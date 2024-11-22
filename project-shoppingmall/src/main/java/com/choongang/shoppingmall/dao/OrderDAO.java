@@ -21,6 +21,8 @@ public interface OrderDAO {
 	List<MyPageReviewInfo> selectByMyReview(int user_id) throws SQLException;
 	// 마이페이지 리뷰관리 : 아이디별 주문 내역 갯수
 	int selectByMyReviewCount(int user_id) throws SQLException;
+	// 마이페이지 리뷰관리 : 리뷰 작성 숨기기 시 상태 변경
+	void updateReviewStatus(int order_item_id) throws SQLException;
 	
 	// 주문 테이블 저장
 	void addToOrder(OrdersVO vo) throws SQLException;

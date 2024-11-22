@@ -604,7 +604,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script type="text/javascript">
 	
-	function deleteProduct(){	
+	function deleteProduct(order_item_id){	
 		event.stopPropagation();
 		Swal.fire({
 			icon: 'question',
@@ -617,24 +617,23 @@
                 title: 'small-title'  
             }
 		}).then((result) => {
-			/* if(result.isConfirmed){
-				// AJAX 요청
+			 if(result.isConfirmed){
 				$.ajax({
-					url: '/deleteQuestion',
+					url: '/updateReviewStatus',
 					type: 'POST',
 					data: {
-						question_id: question_id
+						order_item_id : order_item_id
 					},
 					success: function(response){
-						console.log('삭제 완료');
+						console.log('숨기기 완료');
 						location.reload();
 					},
 					error: function(xhr, status, error){
-						Swal.fire('오류 발생', '삭제 중 문제가 발생했습니다.', 'error');
+						Swal.fire('오류 발생', '숨기기 중 문제가 발생했습니다.', 'error');
 					}
 				});
 				//location.href = '/deleteQuestion(question_id, user_id)';
-			} */
+			} 
 		});
 	}
 </script>
