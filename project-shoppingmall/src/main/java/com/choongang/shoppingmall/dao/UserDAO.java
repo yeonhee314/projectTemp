@@ -30,6 +30,7 @@ public interface UserDAO {
 	
 	// id로 유저 정보 확인
 	UserVO getUserById(int userId)throws SQLException;
+	UserVO selectUserById(int user_id) throws SQLException;
 	// 유저 정보 업데이트
 	void updateUser(UserVO userVO);
 	// 유저 포인트 증감

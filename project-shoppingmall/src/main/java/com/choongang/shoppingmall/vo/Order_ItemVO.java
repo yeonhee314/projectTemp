@@ -10,4 +10,11 @@ public class Order_ItemVO {
 	private int product_id;		// 제품 번호
 	private int quantity;		// 수량
 	private int order_price;	// 주문 아이템 가격
+	
+	// 조인참조컬럼
+	private String product_name;
+	private int product_price;
+	private int discount;
+	private String product_option;
+	private int sum; // 아이템별 총가격
 }

@@ -47,7 +47,14 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
-	
+	<!-- 주문아이디로 주문내역 가져오기 -->
+	<select id="selectOrderById" parameterType="int" resultType="OrdersVO">
+		select * from orders where order_id=#{order_id}
+	</select>
+	<!-- 주문아이디로 주문아이템 가져오기 -->
+	<select id="selectOrderItemByOrderId" parameterType="int" resultType="Order_ItemVO">
+		select o.ORDER_ITEM_ID, o.QUANTITY, p.PRODUCT_NAME, p.PRODUCT_PRICE, p.DISCOUNT, p.PRODUCT_OPTION,(PRODUCT_PRICE*QUANTITY) sum from order_item o join product p on o.product_id=p.product_id where o.order_id=#{order_id}
+	</select>
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">

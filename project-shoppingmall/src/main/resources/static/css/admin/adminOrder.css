@@ -47,7 +47,7 @@
 }
 .list {
 	background-color: white;
-	height: 60px;
+	height: 45px;
 	line-height: 30px;
 	font-size: 0.9rem;
 	border-bottom: 1px solid #ebebeb;
@@ -67,7 +67,7 @@
 }
 .pageList{
 	position: relative;
-	top: 200px;
+	top: 150px;
 	left: 0px;
 }
 

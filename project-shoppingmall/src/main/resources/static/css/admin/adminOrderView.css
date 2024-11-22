@@ -1,118 +1,187 @@
-.paging {
-	position: relative;
-	width: 1420px;
-	left: 300px;
-	top: 100px;
-	background-color: white;
-	border-radius: 10px;
+.bg {
+	overflow: scroll;
 }
-.orderbar {
+.orderInfo {
 	position: relative;
-	width:1420px; height: 50px;
-	line-height: 50px;
-	font-size: 13pt;
+	width: 600px; height: 60px;
+	left: 300px; top:60px;
+}
+.orderId {
+	font-size: 18pt;
 	font-weight: bold;
 	text-indent:10px;
-	left: 300px; top:100px;
-	background-color: white;
-	border-radius: 10px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.dd {
-	position: relative;
-	width:1420px; height: 60px;
-	line-height: 50px;
-	font-size: 13pt;
-	font-weight: bold;
-	text-indent:10px;
-	left: 300px; top:120px;
-	background-color: white;
-	border-radius: 10px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.orderDate {
+	font-size: 11pt;
+	text-indent:50px;
+	color: grey;
 }
+
 .orderbar a {
 	color: graytext;
 	margin-left: 15px;
 }
-.total {
-	height: 20px;
-	text-align: left;
+.bigBox {
+	position: relative;
+	width: 1300px;
+	height: 1100px;
+	left: 350px; top:70px;
+	display: flex;
+	justify-content: space-between;
 }
-.index {
-	height: 5px;
-	font-size: 1rem;
-	border-bottom: 1px solid grey;
-	text-indent: 30px;
-	line-height: 45px;
+.box1 {
+	width: 900px;
+
 }
-.list {
+.orderbar {
+	height: 50px;
+	line-height: 50px;
+	font-size: 13pt;
+	font-weight: bold;
+	text-indent:10px;
 	background-color: white;
-	height: 60px;
-	line-height: 30px;
-	font-size: 0.9rem;
-	border-bottom: 1px solid #ebebeb;
-	text-indent: 30px;
+	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+}
+.orderbar div:hover{
+	cursor: pointer;
+}
+.pdSet {
+	height: 500px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.pdSetInfo {
+	text-indent: 20px;
+	height: 70px;
+}
+.pdWait {
+	font-size: 16pt;
+	font-weight: bold;
+	line-height: 40px;
+}
+.orderUid span {
+	background-color: rgb(236,240,244,0.8);
+	border-radius: 10px;
+	font-size: 10pt;
 	
 }
-.list select {
-	background-color: white;
-	border: none;
+.pdTableBox {
+	width: 900px;
+	height: 70%;
+	margin-top: 0px;
+	
 }
-.list:hover {
+.pdTable {
+	margin: 30px;
+	text-indent: 20px;
+	
+}
+.list {
+	height: 60px;
+	margin-top: 10px;
 	background-color: whitesmoke;
 }
-.hide {
-	display: none;
+.pdShip {
+	height: 500px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.pageList{
-	position: relative;
-	top: 200px;
-	left: 0px;
+.pdShipInfo {
+	border: 1px solid black;
+	text-indent: 20px;
+	height: 70px;
+}
+.shipWait {
+	font-size: 16pt;
+	font-weight: bold;
+	line-height: 40px;
 }
 
-.orderSearch {
-	position: relative;
-	left: 800px; top: 200px;
-	height:30px;
-	width:320px;
-	line-height: 30px;
-	border: 0px solid black;
+
+
+
+.box2 {
+	width: 360px;
+}
+.payBox {
+	height: 250px;
+	line-height: 50px;
 	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.orderSearch2 {
-	position: relative;
-	top:10px;
-	height:30px;
-	width:400px;
-	margin-right:0px;
-	line-height: 30px;
-	border: 0px solid black;
+.pay1 {
+	height: 50px;
+	text-indent: 20px;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.pay2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 40px;
+}
+.pay3 {
+	height: 50px;
+	display: flex;
+	justify-content: space-around;
+}
+.pay3 span{
+	font-weight: bold;
+	font-size: 13pt;
+}
+
+.userBox {
+	height: 200px;
+	margin-top:20px;
 	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.orderSearch input,select{
-	border: none;
+.userInfo1 {
+	height: 50px;
+	line-height: 50px;
+	font-size: 14pt;
+	font-weight: bold;
+	text-indent: 20px;
 }
-.orderSearch2 input,select{
-	border: none;
+.userInfo2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 40px;
 }
+.userInfo3, .addr3 {
+	color: deepskyblue;
+}
+
+.addressBox {
+	height: 200px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.addr1 {
+	height: 50px;
+	line-height: 50px;
+	font-size: 14pt;
+	font-weight: bold;
+	text-indent: 20px;
+}
+.addr2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 35px;
+}
+
 input:focus {
 	outline: none;
-}
-
-#submit {
-	width:35px;
-	background-color: white;
-	background-image: url(/images/icons/icon-search.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	border: none;
-}
-#submit2 {
-	width:35px;
-	background-color: white;
-	background-image: url(/images/icons/icon-search.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	border: none;
 }

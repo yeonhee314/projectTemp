@@ -120,4 +120,26 @@ public class OrderServiceImpl implements OrderService{
 
         return orderStats;
     }
+
+	@Override
+	public OrdersVO selectOrderById(int order_id) {
+		OrdersVO ordersVO = null;
+		try {
+			ordersVO = orderDAO.selectOrderById(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ordersVO;
+	}
+
+	@Override
+	public List<Order_ItemVO> selectOrderItemByOrderId(int order_id) {
+		List<Order_ItemVO> itemlist = null;
+		try {
+			itemlist = orderDAO.selectOrderItemByOrderId(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return itemlist;
+	}
 }
