@@ -355,7 +355,6 @@
 				Home
 				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 			</a>
-			<!-- TODO : 주문상태에 따라 URL 분리 필요 -->
 			<a href="#" class="stext-109 cl8 hov-cl1 trans-04">
 				Order
 			</a>
@@ -730,7 +729,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		}
 		
 		// 결제하기
-		IMP.init("imp38374175"); 
+		IMP.init("imp38374175"); // TODO : 키값 보안 이슈. 깃에 올라가지않도록 따로 관리 필요
 		var product_name = '';
 		var product_price = 0;
 		var buyer_name = '';

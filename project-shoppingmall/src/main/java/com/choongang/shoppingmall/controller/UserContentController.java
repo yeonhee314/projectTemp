@@ -46,6 +46,8 @@ public class UserContentController {
         return new ModelAndView("points");
     }
     
+    ///////////////////////////////////////////////////////////////////////
+    // 마이페이지 : 후기 관리
     @GetMapping("/write-review")
     public ModelAndView getWriteReview(HttpSession session, Model model) {
     	 Integer userId = (Integer) session.getAttribute("userId");

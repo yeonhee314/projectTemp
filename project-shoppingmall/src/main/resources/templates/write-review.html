@@ -49,7 +49,8 @@
 			<img class="product-img" th:src="'images/products/product' + ${info.product_id} + '/product-'+ ${info.product_id} + '-' + 1 + '.jpg'" alt="IMG-PRODUCT">
 			<div class="span-wrap stext-105">
 				<b><span th:text="${@productService.selectByProductId(info.product_id).product_name} +','"></span>
-				<span th:text="${info.quantity} + '개'"></span><br /></b>
+				<span th:text="${info.quantity} + '개'"></span>
+				<span th:text="${'(' + info.product_option + ')'}"></span><br /></b>
 				<span th:text="${#numbers.formatInteger(info.order_price, 3, 'COMMA') + ' ₩'}"></span><br /><br /><br />
 				<span class="txt_notice" th:text="'주문일 : ' + ${#dates.format(info.order_date, 'yyyy.MM.dd')}"></span>
 			</div>

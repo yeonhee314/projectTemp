@@ -152,6 +152,19 @@ public class MypageController {
 
 		return "/my-reviewList.html";
 	}
+	
+	@GetMapping("/write-reviewPage.html")
+	public String writeReview(Model model, 
+							  @RequestParam("order_item_id") int order_item_id) {
+		if (!isUserLoggedin())
+			return "redirect:/login";
+		
+		UserVO userVO = getUserInfo();
+		model.addAttribute("uservo", userVO);
+		
+		return "write-reviewPage.html";
+	}
+	
 
 	// 문의 내역
 	@GetMapping("/my-question.html")

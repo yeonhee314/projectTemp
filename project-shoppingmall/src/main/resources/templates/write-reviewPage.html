@@ -374,17 +374,13 @@
 				</div>
 				<div class="card-order">
 					<div class="card-header">
-						<h5><b>후기 관리</b></h5>
+						<h5><b>리뷰 작성</b></h5>
 					</div>
 					<div class="card-body">
 						<table class="table table-striped">
-							<thead>
-								<tr class="table-menu">
-									<th style="width: 50%; text-align: center; padding: 10px;" id="tab-write" class="active tab-header" onclick="activateTab('write')">리뷰 작성 ([[${ableReviewCount}]])</th>
-									<th style="width: 50%; text-align: center; padding: 10px;" id="tab-wrote" class="tab-header" onclick="activateTab('wrote')">작성한 리뷰 (0)</th>
-								</tr>
-							</thead>
-								<tbody class="content-area"></tbody>
+							<tbody>
+								<!-- TODO : 리뷰작성 폼 작성 -->
+							</tbody>
 						</table>
 					</div>
 				</div>
@@ -548,99 +544,10 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script th:inline="javascript">
-	loadContent('write');
-	function activateTab(tabName) {
-		// 모든 탭의 활성화 상태 제거
-	    const tabs = document.querySelectorAll('.tab-header');
-	    tabs.forEach(tab => tab.classList.remove('active'));
-	    // 클릭된 탭에 활성화 클래스 추가
-	    const activeTab = document.getElementById(`tab-${tabName}`);
-	    activeTab.classList.add('active');
-
-	    // 콘텐츠 로드
-	    loadContent(tabName);
-	}
-	
-	var ableReviewCount = /*[[${ableReviewCount}]]*/;
-	var infoList = /*[[${infoList}]]*/;
-	
-	function loadContent(section) {
-	    // URL 설정
-	    let url = '';
-	    if (section === 'write') {
-	        url = '/api/write-review';
-	    } else if (section === 'wrote') {
-	        url = '/api/wrote-review';
-	    }
-
-	    // AJAX 요청
-	    fetch(url)
-	        .then(response => {
-	            if (!response.ok) {
-	                throw new Error('네트워크 응답에 문제가 있습니다.');
-	            }
-	            return response.text();
-	        })
-	        .then(data => {
-	            // 콘텐츠 영역 업데이트
-		        var contentArea =  document.querySelector('.content-area');
-		        contentArea.innerHTML = '';
-	            if(section === 'write'){
-					if(ableReviewCount == 0){
-						var emptyRow = '<tr><td colspan="2" class="text-center empty-tb">리뷰를 작성할 수 있는 상품이 없습니다.</td></tr>';
-						contentArea.innerHTML += emptyRow;
-						return;
-					}
-	            }
-	            contentArea.innerHTML += data;
-	        })
-	        .catch(error => {
-	            alert('데이터를 불러오는 중 문제가 발생했습니다:', error);
-	        });
-	}
-	</script>
 <!--===============================================================================================-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script type="text/javascript">
- 	function writeReview(order_item_id){
-		event.preventDefault();
-		window.location.href= '/write-reviewPage.html?order_item_id=' + order_item_id;
-	}
-	
-	
-	function deleteProduct(order_item_id){	
-		event.stopPropagation();
-		Swal.fire({
-			icon: 'question',
-			title: '숨기기한 구매후기는 추후 작성이 불가능합니다.\n이 상품을 숨기시겠습니까?\n',
-			showCancelButton: true,
-			confirmButtonText: '예',
-			cancelButtonText: '아니오',
-			reverseButtons: true,
-			customClass: {
-                title: 'small-title'  
-            }
-		}).then((result) => {
-			 if(result.isConfirmed){
-				$.ajax({
-					url: '/updateReviewStatus',
-					type: 'POST',
-					data: {
-						order_item_id : order_item_id
-					},
-					success: function(response){
-						console.log('숨기기 완료');
-						location.reload();
-					},
-					error: function(xhr, status, error){
-						Swal.fire('오류 발생', '숨기기 중 문제가 발생했습니다.', 'error');
-					}
-				});
-				//location.href = '/deleteQuestion(question_id, user_id)';
-			} 
-		});
-	}
-</script>
+ 	
+	</script>
 </body>
 </html>

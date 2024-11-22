@@ -60,7 +60,7 @@
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">
-		select o.order_id, oi.order_item_id, oi.product_id, oi.quantity, oi.order_price, o.user_id, o.ORDER_DATE, oi.review_status
+		select o.order_id, oi.order_item_id, oi.product_id, oi.quantity, oi.order_price, o.user_id, o.ORDER_DATE, oi.review_status, oi.product_option
 		from orders o, order_item oi
 		where o.order_id = oi.order_id and oi.user_id=#{user_id} and o.status='결제완료' and oi.review_status = 'on'
 	</select>
