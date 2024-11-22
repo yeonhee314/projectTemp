@@ -3,6 +3,7 @@ package com.choongang.shoppingmall.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.choongang.shoppingmall.vo.AdminOrderPagingVO;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
+
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService{
@@ -110,5 +112,47 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}
 		return count;
+	}
+	
+	@Override 
+	public Map<String, Object> getOrderStatsByUserId(int userId) {
+        Map<String, Object> orderStats = orderDAO.getOrderStatsByUserId(userId);
+
+        return orderStats;
+    }
+
+	@Override
+	public OrdersVO selectOrderById(int order_id) {
+		OrdersVO ordersVO = null;
+		try {
+			ordersVO = orderDAO.selectOrderById(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ordersVO;
+	}
+	
+	@Override
+	public List<Order_ItemVO> selectOrderItemByOrderId(int order_id) {
+		List<Order_ItemVO> itemlist = null;
+		try {
+			itemlist = orderDAO.selectOrderItemByOrderId(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return itemlist;
+	}
+	public void updateReviewStatus(int order_item_id) {
+		try {
+			orderDAO.updateReviewStatus(order_item_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public List<OrdersVO> getOrdersByUserId(int userId) {
+	    return orderDAO.getOrdersByUserId(userId);
 	}
 }

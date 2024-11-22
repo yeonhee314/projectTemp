@@ -14,21 +14,6 @@
 <link rel="stylesheet" type="text/css" href="../css/admin/admin.css"/>
 <link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
 <script type="text/javascript">
-//HTML 문서의 로딩이 완료되었을 때, 해당 함수를 실행
-document.addEventListener("DOMContentLoaded", function () {
- 
-  var modalBtn = document.getElementById("categorySet");
-  var modal = document.getElementById("myModal");
-  var closeBtn = document.getElementById("closeBtn");
-
-  function toggleModal() {
-    modal.classList.toggle("show");
-  }
-  closeBtn.addEventListener("click", toggleModal);
-  modalBtn.addEventListener("click", function () {
-      toggleModal();
-  });
-});
 //카테고리 중복확인하는 함수
 function categoryCheck(){
 	const category_name = $("#insertText").val(); // 입력한 카테고리읽기
@@ -94,8 +79,10 @@ $(function(){
 		$("#addBtn").show();
 		$("#updateBtn").hide();
 		$("#updateCloseBtn").hide();
-		$("#update").hide();
+		$("#updateText").hide();
 		$("#message").hide();
+		$(".popUpBg").hide();
+		$(".catePopup").fadeOut(200);
 	})
 	$("#addCloseBtn").click(function(){
 		$("#addBtn").show();
@@ -110,10 +97,11 @@ $(function(){
 		$("#saveBtn").hide();
 		$("#addBtn").hide();
 		$("#addCloseBtn").hide();
+		$("#closeBtn").hide();
 		$("#insertText").hide();
-		$("#update").show().focus();
+		$("#updateText").show().focus();
 		$("#updateId").val($(this).find(".category_id").val());
-		$("#update").val($(this).find(".category_name").val());
+		$("#updateText").val($(this).find(".category_name").val());
 		$("#categoryDeleteBtn").show();
 		$("#message").show();
 	})
@@ -123,8 +111,9 @@ $(function(){
 		$("#updateCloseBtn").hide();
 		$("#saveBtn").show();
 		$("#saveBtn").hide();
-		$("#update").hide();
+		$("#updateText").hide();
 		$("#message").hide();
+		$("#closeBtn").show();
 	})
 	$(".categorydiv > button").click(function(){
 		$("#update").hide();
@@ -185,6 +174,10 @@ $(function(){
 	  $("#stockClose").click(function(){
 		  $(".popUpBg").hide();
 		  $(".stockPopup").fadeOut(200);
+	  })
+	  $("#categorySet").click(function(){
+		$(".popUpBg").show();
+		$(".catePopup").fadeIn(200);
 	  })
 })
 $(document).ready(function(){
@@ -353,41 +346,40 @@ $(document).ready(function(){
 				</form>
 				</div>
 			</div>	
-	<!-- 카테고리 관리 모달팝업창 -->
-<div id="myModal" class="modal">
-  <div class="modal-dialog">
-  <div class="modal-content">
-    <div style="text-align: right;">
-    	<button type="button" id="addBtn" class="btn btn-outline-primary btn-sm">카테고리추가</button>
-    	<button type="button" class="btn btn-secondary btn-sm" id="addCloseBtn">취소</button>
-    </div>
-	    <table class="modalCategoryList" style="text-align: left;">
-			<tr>
-				<td style="color: blue; text-align: center; font-size: 1.3rem; height: 35px;">카테고리</td>
-			</tr>
-			<tr th:each="co: ${cv.list}">
-				<td class="categorydiv">
-					<form th:action="@{/deleteOk}" method="POST" class="deleteForm">
-						<input type="hidden" class="category_id" name="category_id" th:value="${co.category_id}"/>
-						<input type="text" class="category_name" th:value="${co.category_name}" readonly="readonly"/>
-						<button type="submit" id="categoryDeleteBtn" class="btn btn-outline-danger">X</button>
-			 		</form>
-				</td>
-			</tr>
-		</table>
-		<form th:action="@{/categoryOk}" method="POST" class="insertForm">
-			<input name="category_name" id="insertText" type="text" onkeyup="categoryCheck()" class="form-control" autocomplete="off" style="margin-top: 100px;"/>
-		  <div style="text-align: right;">
-		    <span id="message"></span>
-		  </div>
-			<div class="modalBtn">
-		    <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">나가기</button>
-		    <button type="submit" id="saveBtn" class="btn btn-success btn-sm">저장</button>
-	    </div>
-		</form>
+	<!-- 카테고리 관리 팝업 -->
+		<div class="catePopup">
+			<div class="inBox">
+			    <div style="text-align: right;">
+			    	<button type="button" id="addBtn" class="btn btn-outline-primary btn-sm">카테고리추가</button>
+			    	<button type="button" class="btn btn-secondary btn-sm" id="addCloseBtn">취소</button>
+			    </div>
+			    <table class="modalCategoryList" style="text-align: left;">
+					<tr>
+						<td style="color: blue; text-align: center; font-size: 1.3rem; height: 35px;">카테고리</td>
+					</tr>
+					<tr th:each="co: ${cv.list}">
+						<td class="categorydiv">
+							<form th:action="@{/deleteOk}" method="POST" class="deleteForm" style="display: flex;">
+								<input type="hidden" class="category_id" name="category_id" th:value="${co.category_id}"/>
+								<input type="text" class="category_name" th:value="${co.category_name}" readonly="readonly"/>
+								<button type="submit" id="categoryDeleteBtn" class="btn btn-outline-danger">X</button>
+					 		</form>
+						</td>
+					</tr>
+				</table>
+			<form th:action="@{/categoryOk}" method="POST" class="insertForm">
+				<input name="category_name" id="insertText" type="text" onkeyup="categoryCheck()" class="form-control" autocomplete="off" style="margin-top: 100px;"/>
+			  <div style="text-align: right;">
+			    <span id="message"></span>
+			  </div>
+			  <div class="modalBtn">
+			    <button type="button" class="btn btn-secondary btn-sm" id="closeBtn">나가기</button>
+			    <button type="submit" id="saveBtn" class="btn btn-success btn-sm">저장</button>
+		   	  </div>
+			</form>
 		<form th:action="@{/updateOk}" method="POST" class="updateForm">
 			<input type="hidden" name="category_id" id="updateId"/>
-			<input type="text" name="category_name" id="update" class="form-control" onkeyup="updateCheck()"/>
+			<input type="text" name="category_name" id="updateText" class="form-control" onkeyup="updateCheck()"/>
 			<div class="modalBtn">
 			    <button type="submit" id="updateBtn" class="btn btn-success btn-sm">수정</button>
 			    <button type="button" id="updateCloseBtn" class="btn btn-secondary btn-sm">취소</button>
@@ -395,7 +387,7 @@ $(document).ready(function(){
 	 	</form>
   </div>
 </div>
-</div>
+
 
 </body>
 </html>

@@ -755,6 +755,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			var productvo = /*[[${productvo}]]*/;
 			var name = productvo.product_name;
 			var count = /*[[${count}]]*/;
+			var product_option = /*[[${productoption}]]*/;
 			var price =  productvo.discount != 0 ? 
 					(productvo.product_price - (productvo.product_price * productvo.discount / 100)) * count : productvo.product_price * count;
 			merchant_uid = 'mid_' + new Date().getTime();
@@ -903,6 +904,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					 map.set('user_id', userId);
 					 map.set('product_id', cartItems[i].productId);
 					 map.set('quantity', cartItems[i].cartCount);
+					 map.set('product_option', cartItems[i].productOption);
 					 if(cartItems[i].discount != 0){
 						 map.set('price', (cartItems[i].productPrice - (cartItems[i].productPrice * cartItems[i].discount / 100)) * cartItems[i].cartCount);
 					 }else{
@@ -915,6 +917,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				 map.set('user_id', userId);
 				 map.set('product_id', productvo.product_id);
 				 map.set('quantity', count);
+				 map.set('product_option', product_option);
 				 if(productvo.discount != 0){
 					 map.set('price', (productvo.product_price - (productvo.product_price * productvo.discount / 100)) * count);
 				 }else{

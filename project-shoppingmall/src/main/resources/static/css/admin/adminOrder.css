@@ -1,15 +1,43 @@
 .paging {
 	position: relative;
 	width: 1420px;
-	left: 450px;
-	top: 0px;
+	left: 300px;
+	top: 100px;
+	background-color: white;
+	border-radius: 10px;
+}
+.orderbar {
+	position: relative;
+	width:1420px; height: 50px;
+	line-height: 50px;
+	font-size: 13pt;
+	font-weight: bold;
+	text-indent:10px;
+	left: 300px; top:100px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.dd {
+	position: relative;
+	width:1420px; height: 60px;
+	line-height: 50px;
+	font-size: 13pt;
+	font-weight: bold;
+	text-indent:10px;
+	left: 300px; top:120px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.orderbar a {
+	color: graytext;
+	margin-left: 15px;
 }
 .total {
 	height: 20px;
 	text-align: left;
 }
-
-
 .index {
 	height: 5px;
 	font-size: 1rem;
@@ -19,7 +47,7 @@
 }
 .list {
 	background-color: white;
-	height: 60px;
+	height: 45px;
 	line-height: 30px;
 	font-size: 0.9rem;
 	border-bottom: 1px solid #ebebeb;
@@ -37,17 +65,27 @@
 .hide {
 	display: none;
 }
-
 .pageList{
 	position: relative;
-	top: 20px;
-	left: 500px;
+	top: 150px;
+	left: 0px;
 }
+
 .orderSearch {
 	position: relative;
-	left: 850px; top: 0px;
+	left: 800px; top: 200px;
 	height:30px;
-	width:300px;
+	width:320px;
+	line-height: 30px;
+	border: 0px solid black;
+	background-color: white;
+}
+.orderSearch2 {
+	position: relative;
+	top:10px;
+	height:30px;
+	width:400px;
+	margin-right:0px;
 	line-height: 30px;
 	border: 0px solid black;
 	background-color: white;
@@ -55,11 +93,22 @@
 .orderSearch input,select{
 	border: none;
 }
+.orderSearch2 input,select{
+	border: none;
+}
 input:focus {
 	outline: none;
 }
 
 #submit {
+	width:35px;
+	background-color: white;
+	background-image: url(/images/icons/icon-search.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	border: none;
+}
+#submit2 {
 	width:35px;
 	background-color: white;
 	background-image: url(/images/icons/icon-search.png);

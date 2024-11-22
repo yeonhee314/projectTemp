@@ -40,6 +40,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 </head>
 <body class="animsition">
 	
@@ -401,6 +402,7 @@
 				
 				<div class="col-md-6 col-lg-5 p-b-30">
 					<div class="p-r-50 p-lr-0-lg">
+						<input type="hidden" th:value="${productvo.description}" id="pdDescription"/>
 					<!-- Review -->
 						<a th:href="@{product-review.html(product_id=${productvo.product_id}, category_id=${categoryvo.category_id})}" class="trans-04 td-none">
 							
@@ -420,11 +422,17 @@
 						<th:block th:if="${productvo.discount == 0}">
 							<span class="mtext-106 cl2" th:text="${#numbers.formatInteger(productvo.product_price, 3, 'COMMA')+ ' ₩'}"></span>
 						</th:block>
-						
-						<p class="stext-102 cl3 p-t-23">
-							[[${productvo.description}]]
-						</p>
-						
+						<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+						<script>
+							$(document).ready(function() {
+								const viewer = toastui.Editor.factory({
+						            el: document.querySelector("#description"),
+						            viewer: true,
+						            height: "200px",
+						            initialValue: $("#pdDescription").val(),
+						        });
+							})
+						</script>
 						<form id="cartForm" action="/cart/add" method="post">
 						<div class="p-t-33">
 							<div class="flex-w flex-r-m p-b-10">
@@ -450,6 +458,7 @@
 									</div>
 								</div>
 							</div>
+						
 									    <input type="hidden" name="productId" th:value="${productvo.product_id}"/>
 									    <input type="hidden" name="productPrice" th:value="${productvo.product_price}"/>
 									    <input type="hidden" name="categoryId" th:value="${categoryvo.category_id}"/>
@@ -567,10 +576,10 @@
 					<!-- Tab panes -->
 					<div class="tab-content p-t-43">
 						<!-- - -->
-						<div class="tab-pane fade show active" id="description" role="tabpanel">
+						<div class="tab-pane fade show active" id="description" role="tabpanel" style="text-align: center;">
 							<div class="how-pos2 p-lr-15-md">
 								<p class="stext-102 cl6">
-									[[${productvo.description}]]
+									
 								</p>
 							</div>
 						</div>

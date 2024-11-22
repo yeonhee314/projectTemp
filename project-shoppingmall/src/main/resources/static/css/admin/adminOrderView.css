@@ -1,0 +1,187 @@
+.bg {
+	overflow: scroll;
+}
+.orderInfo {
+	position: relative;
+	width: 600px; height: 60px;
+	left: 300px; top:60px;
+}
+.orderId {
+	font-size: 18pt;
+	font-weight: bold;
+	text-indent:10px;
+}
+.orderDate {
+	font-size: 11pt;
+	text-indent:50px;
+	color: grey;
+}
+
+.orderbar a {
+	color: graytext;
+	margin-left: 15px;
+}
+.bigBox {
+	position: relative;
+	width: 1300px;
+	height: 1100px;
+	left: 350px; top:70px;
+	display: flex;
+	justify-content: space-between;
+}
+.box1 {
+	width: 900px;
+
+}
+.orderbar {
+	height: 50px;
+	line-height: 50px;
+	font-size: 13pt;
+	font-weight: bold;
+	text-indent:10px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+}
+.orderbar div:hover{
+	cursor: pointer;
+}
+.pdSet {
+	height: 500px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.pdSetInfo {
+	text-indent: 20px;
+	height: 70px;
+}
+.pdWait {
+	font-size: 16pt;
+	font-weight: bold;
+	line-height: 40px;
+}
+.orderUid span {
+	background-color: rgb(236,240,244,0.8);
+	border-radius: 10px;
+	font-size: 10pt;
+	
+}
+.pdTableBox {
+	width: 900px;
+	height: 70%;
+	margin-top: 0px;
+	
+}
+.pdTable {
+	margin: 30px;
+	text-indent: 20px;
+	
+}
+.list {
+	height: 60px;
+	margin-top: 10px;
+	background-color: whitesmoke;
+}
+.pdShip {
+	height: 500px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.pdShipInfo {
+	border: 1px solid black;
+	text-indent: 20px;
+	height: 70px;
+}
+.shipWait {
+	font-size: 16pt;
+	font-weight: bold;
+	line-height: 40px;
+}
+
+
+
+
+.box2 {
+	width: 360px;
+}
+.payBox {
+	height: 250px;
+	line-height: 50px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.pay1 {
+	height: 50px;
+	text-indent: 20px;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.pay2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 40px;
+}
+.pay3 {
+	height: 50px;
+	display: flex;
+	justify-content: space-around;
+}
+.pay3 span{
+	font-weight: bold;
+	font-size: 13pt;
+}
+
+.userBox {
+	height: 200px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.userInfo1 {
+	height: 50px;
+	line-height: 50px;
+	font-size: 14pt;
+	font-weight: bold;
+	text-indent: 20px;
+}
+.userInfo2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 40px;
+}
+.userInfo3, .addr3 {
+	color: deepskyblue;
+}
+
+.addressBox {
+	height: 200px;
+	margin-top:20px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.addr1 {
+	height: 50px;
+	line-height: 50px;
+	font-size: 14pt;
+	font-weight: bold;
+	text-indent: 20px;
+}
+.addr2 {
+	height: 150px;
+	text-indent: 20px;
+	line-height: 35px;
+}
+
+input:focus {
+	outline: none;
+}

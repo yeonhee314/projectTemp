@@ -2,6 +2,7 @@ package com.choongang.shoppingmall.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +34,7 @@ import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.FileVO;
+import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
@@ -457,5 +461,41 @@ public class AdminController {
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
 			return "admin-orders";
+		}
+		// 주문 상세 페이지
+		@GetMapping("/admin/orders/view")
+		public String adminOrdersView(@ModelAttribute OrdersVO ordersVO,
+				@ModelAttribute UserVO userVO,
+				@ModelAttribute Order_ItemVO order_ItemVO ,
+				int order_id,int user_id, Model model) {
+			OrdersVO ov = orderService.selectOrderById(order_id);
+			UserVO uv = userService.selectUserById(user_id);
+			List<Order_ItemVO> iv = orderService.selectOrderItemByOrderId(order_id);
+			model.addAttribute("ov", ov);
+			model.addAttribute("uv", uv);
+			model.addAttribute("iv", iv);
+			return "admin-orders-view";
+		}
+		// 토스트 에디터 이미지 처리
+		@ResponseBody
+		@RequestMapping(value = "/image_upload.do", method = RequestMethod.POST)
+		public String imageUpload(@RequestParam("image")MultipartFile multipartFile,
+								  HttpServletRequest request) {
+			String projectDir = System.getProperty("user.dir");
+			String filePath = projectDir +  "/src/main/resources/static/images/products/toast";
+			File file = new File(filePath);
+			if(!file.exists()) file.mkdirs();
+			String fileName = multipartFile.getOriginalFilename();
+			int lastIndex = fileName.lastIndexOf(".");
+			String ext = fileName.substring(lastIndex, fileName.length());
+			String newFileName = LocalDate.now() + "_" + System.currentTimeMillis() + ext;
+
+			try {
+				File image = new File(filePath, newFileName);
+				multipartFile.transferTo(image);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			return "/images/products/toast/" + newFileName;
 		}
 }

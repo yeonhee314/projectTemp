@@ -47,20 +47,34 @@
 			rnum >= #{startNo}
 		]]>
 	</select>
-	
+	<!-- 주문아이디로 주문내역 가져오기 -->
+	<select id="selectOrderById" parameterType="int" resultType="OrdersVO">
+		select * from orders where order_id=#{order_id}
+	</select>
+	<!-- 주문아이디로 주문아이템 가져오기 -->
+	<select id="selectOrderItemByOrderId" parameterType="int" resultType="Order_ItemVO">
+		select o.ORDER_ITEM_ID, o.QUANTITY, p.PRODUCT_NAME, p.PRODUCT_PRICE, p.DISCOUNT, p.PRODUCT_OPTION,(PRODUCT_PRICE*QUANTITY) sum from order_item o join product p on o.product_id=p.product_id where o.order_id=#{order_id}
+	</select>
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">
-	 	select o.order_id, oi.product_id, oi.quantity, oi.order_price
+		select o.order_id, oi.order_item_id, oi.product_id, oi.quantity, oi.order_price, o.user_id, o.ORDER_DATE, oi.review_status
 		from orders o, order_item oi
-		where o.status='결제완료' and o.user_id=#{user_id}
+		where o.order_id = oi.order_id and oi.user_id=#{user_id} and o.status='결제완료' and oi.review_status = 'on'
 	</select>
 	<!-- 아이디별 주문 내역 갯수 -->
 	<select id="selectByMyReviewCount" parameterType="int" resultType="int">
 		select count(*)
 		from orders o, order_item oi
-		where o.status='결제완료' and o.user_id=#{user_id}
+		where o.order_id = oi.order_id and oi.user_id=#{user_id} and o.status='결제완료' and oi.review_status = 'on'
 	</select>
+	<!-- 리뷰작성 숨기기 시 상태변경 -->
+	<update id="updateReviewStatus" parameterType="int">
+		update order_item
+		set review_status='off'
+		where order_item_id=#{order_item_id}
+	</update>
+	<!-- /////////////////////////////////////////////////////////////////////////////////////// -->
 	
 	<!-- 주문 테이블 저장 -->
 	<insert id="addToOrder" parameterType="OrdersVO">
@@ -70,8 +84,8 @@
 	
 	<!-- 주문 상품 리스트 저장 -->
 	<insert id="addToOrderItems" parameterType="Order_ItemVO">
-   		insert into order_item(order_item_id, order_id, user_id, product_id, quantity, order_price)
-    	values(order_item_id_seq.nextval, #{order_id}, #{user_id}, #{product_id}, #{quantity}, #{order_price})
+   		insert into order_item(order_item_id, order_id, user_id, product_id, quantity, order_price, product_option)
+    	values(order_item_id_seq.nextval, #{order_id}, #{user_id}, #{product_id}, #{quantity}, #{order_price}, #{product_option})
 	</insert>
 	
 	<!-- 가장 큰 주문 번호 가져오기 -->
@@ -83,4 +97,21 @@
 	<select id="selectFirstOrdersId" resultType="Integer">
 		select order_id from orders
 	</select>
+	
+	<select id="getOrderStatsByUserId" resultType="java.util.Map">
+    SELECT 
+        COUNT(*) AS order_count, 
+        SUM(total_price) AS total_sum 
+    FROM orders 
+    WHERE user_id = #{userId}
+	</select>
+
+  <!--   특정 유저의 주문 상세정보(orders) 조회-->
+     <select id="getOrdersByUserId" parameterType="int" resultType="OrdersVO">
+        SELECT 
+            order_id, user_id, total_price, order_date,status
+        FROM orders
+        WHERE user_id = #{userId}
+    </select> 
+ 
 </mapper>

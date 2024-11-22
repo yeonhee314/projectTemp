@@ -63,6 +63,9 @@
 	<select id="getUserById" parameterType="int" resultType="UserVO">
 		select * from users where user_id=#{userId}
 	</select>
+	<select id="selectUserById" parameterType="int" resultType="UserVO">
+		select * from users where user_id=#{user_id}
+	</select>
 	
 	<!-- 사용자 정보 업데이트-->
 	<update id="updateUser" parameterType="UserVO">

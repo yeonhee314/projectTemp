@@ -19,6 +19,7 @@ public interface UserService extends UserDetailsService{
 	int selectCountByPhone(String phone);  // 핸드폰 중복확인
 	
 	UserVO getUserById(int userId) throws SQLException; //아이디로 회원정보 확인
+	UserVO selectUserById(int user_id);
 	UserVO updateUser(UserVO userVO) throws SQLException;
 	void pointUpdate(UserVO userVO);
 }
