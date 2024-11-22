@@ -92,5 +92,14 @@
         SUM(total_price) AS total_sum 
     FROM orders 
     WHERE user_id = #{userId}
-</select>
+	</select>
+
+  <!--   특정 유저의 주문 상세정보(orders) 조회-->
+     <select id="getOrdersByUserId" parameterType="int" resultType="OrdersVO">
+        SELECT 
+            order_id, user_id, total_price, order_date,status
+        FROM orders
+        WHERE user_id = #{userId}
+    </select> 
+ 
 </mapper>

@@ -18,6 +18,9 @@ public interface OrderService {
 	void addToOrderItems(Order_ItemVO vo);
 	Integer selectMaxOrderId();
 	Integer selectFirstOrdersId();
+	
 	Map<String, Object> getOrderStatsByUserId(int userId);
 	
+	List<OrdersVO> getOrdersByUserId(int userId);
+
 }

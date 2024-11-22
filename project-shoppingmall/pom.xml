@@ -141,7 +141,13 @@
 			<artifactId>osdt_core</artifactId>
 			<version>21.15.0.0</version>
 		</dependency>
-
+		<!--thymeleaf-extras-java8time 라이브러리 사용-->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-java8time</artifactId>
+		    <version>3.0.4.RELEASE</version>
+		</dependency>
+	
 	</dependencies>
 
 	<build>

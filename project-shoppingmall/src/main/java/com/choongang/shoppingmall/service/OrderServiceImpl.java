@@ -14,12 +14,11 @@ import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 
-
 @Service("orderService")
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDAO orderDAO;
-	
+
 	@Override
 	public void addToOrder(OrdersVO vo) {
 		try {
@@ -40,14 +39,13 @@ public class OrderServiceImpl implements OrderService{
 		return count;
 	}
 
-	
 	public void addToOrderItems(Order_ItemVO vo) {
 		try {
 			orderDAO.addToOrderItems(vo);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -76,19 +74,19 @@ public class OrderServiceImpl implements OrderService{
 		AdminOrderPagingVO<OrdersVO> ov = null;
 		try {
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("field", field == null || field.trim().length()==0 ? null : field);
-			map.put("search", search == null || search.trim().length()==0 ? null : search);
+			map.put("field", field == null || field.trim().length() == 0 ? null : field);
+			map.put("search", search == null || search.trim().length() == 0 ? null : search);
 			int totalCount = orderDAO.selectOrderCount(map);
 			ov = new AdminOrderPagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
-			if(totalCount > 0) {
-				map.put("startNo", ov.getStartNo()+"");
-				map.put("endNo", ov.getEndNo()+"");
+			if (totalCount > 0) {
+				map.put("startNo", ov.getStartNo() + "");
+				map.put("endNo", ov.getEndNo() + "");
 				List<OrdersVO> list = orderDAO.selectAdminOrderList(map);
 				ov.setList(list);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
 		return ov;
 	}
 
@@ -113,11 +111,18 @@ public class OrderServiceImpl implements OrderService{
 		}
 		return count;
 	}
-	
-	@Override 
-	public Map<String, Object> getOrderStatsByUserId(int userId) {
-        Map<String, Object> orderStats = orderDAO.getOrderStatsByUserId(userId);
 
-        return orderStats;
-    }
+	@Override
+	public Map<String, Object> getOrderStatsByUserId(int userId) {
+		Map<String, Object> orderStats = orderDAO.getOrderStatsByUserId(userId);
+		return orderStats;
+	}
+
+	@Override
+	public List<OrdersVO> getOrdersByUserId(int userId) {
+		
+	    return orderDAO.getOrdersByUserId(userId);
+	}
+
+
 }

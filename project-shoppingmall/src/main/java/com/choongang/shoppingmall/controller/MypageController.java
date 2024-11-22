@@ -35,6 +35,8 @@ import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
 import com.choongang.shoppingmall.vo.AddressVO;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
+import com.choongang.shoppingmall.vo.Order_ItemVO;
+import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
@@ -81,6 +83,7 @@ public class MypageController {
 	// 마이페이지
 	@GetMapping("/myPage.html")
 	public String myPage(Model model) {
+		 
 		boolean isLogin = isUserLoggedin();
 		UserVO userVO = getUserInfo();
 		if (!isLogin)
@@ -90,16 +93,22 @@ public class MypageController {
 		int userId = userVO.getUser_id(); // 사용자 ID 가져오기
 		Map<String, Object> orderStats = orderService.getOrderStatsByUserId(userId);
 		
+		//사용자 주문정보 가져오기 
+		List<OrdersVO> orders = orderService.getOrdersByUserId(userId);
+		model.addAttribute("orders", orders);
+		
 		if (orderStats == null) {
 		    orderStats = new HashMap<>();
 		    orderStats.put("ORDER_COUNT", 0);  // 기본값
-		    orderStats.put("TOTAL_SUM", 0.0);  // 기본값
+		    orderStats.put("TOTAL_SUM", 0);  // 기본값
 		}
 
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("order_count", orderStats.get("ORDER_COUNT"));
 		model.addAttribute("total_sum", orderStats.get("TOTAL_SUM"));
+	    
+	    
 
 
 		return "myPage";

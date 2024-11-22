@@ -31,5 +31,11 @@ public interface OrderDAO {
 	// 첫번째 주문 데이터 가져올때만 사용한다.
 	Integer selectFirstOrdersId() throws SQLException;
 	
+	//주문 횟수,총합 출력
 	Map<String, Object> getOrderStatsByUserId(int userId);
+	
+	//주문 정보 
+	List<OrdersVO> getOrdersByUserId(int userId);
+
+	 
 }

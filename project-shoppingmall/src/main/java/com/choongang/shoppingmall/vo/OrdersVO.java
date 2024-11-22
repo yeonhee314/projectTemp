@@ -1,7 +1,10 @@
 package com.choongang.shoppingmall.vo;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -16,5 +19,18 @@ public class OrdersVO {
 	private String status;			// 주문 상태(결제 완료, 배송중, 배송완료)
 	private String address;			// 주소
 	private String request_type;	// 요청 사항
-	private Date order_date;		// 주문 날짜
-}
+	private LocalDateTime order_date;		// 주문 날짜
+	
+	//포맷팅된 날짜 변환
+	   public String getFormattedOrderDate() {
+	        if (order_date != null) {
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	            return order_date.format(formatter);
+	        }
+	        return "";
+	    }
+
+			
+	}
+
+
