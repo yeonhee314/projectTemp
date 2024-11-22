@@ -46,7 +46,7 @@
 			<div class="orderId">
 				<a href="/admin/orders"><i class="bi bi-arrow-left"></i></a>  [[${ov.order_id}]]
 			</div>
-			<div class="orderDate">[[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 hh:mm')}]]</div>
+			<div class="orderDate">[[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 hh:mm')}]]</div>
 		</div>
 		<div class="bigBox">
 			<div class="box1">
@@ -59,7 +59,7 @@
 				<div class="pdSet">
 					<div class="pdSetInfo">
 						<div class="pdWait">상품준비</div>
-						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
+						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
 					</div>
 					<form action="">
 						<div class="pdTableBox">
@@ -96,7 +96,7 @@
 				<div class="pdShip">
 					<div class="pdShipInfo">
 						<div class="shipWait">배송중</div>
-						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
+						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
 					</div>
 					<form action="">
 					<div class="pdShip1">

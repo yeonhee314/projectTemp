@@ -74,7 +74,7 @@
                   <col width="10%" />
                   <col width="10%" />
                   <col width="10%" />
-                  <col width="10%" />
+                  <col width="15%" />
                 </colgroup>
 			<tr class="index">
 				<th><input type="checkbox" /></th>
@@ -95,7 +95,7 @@
 					<td>[[${#numbers.formatInteger(vo.total_price,3,'COMMA')}]]원</td>
 					<td>[[${vo.user_id}]]</td>
 					<td>[[${vo.payment_type}]]</td>
-					<td>[[${#dates.format(vo.order_date,'yy-MM-dd(E)')}]]</td>
+					<td>[[${#temporals.format(vo.order_date,'yyyy년 MM월 dd일')}]]</td>
 				</tr>
 			</th:block>
 		</table>
