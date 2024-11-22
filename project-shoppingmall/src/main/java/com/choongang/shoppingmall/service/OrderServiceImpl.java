@@ -150,4 +150,9 @@ public class OrderServiceImpl implements OrderService{
 		}
 
 	}
+
+	@Override
+	public List<OrdersVO> getOrdersByUserId(int userId) {
+	    return orderDAO.getOrdersByUserId(userId);
+	}
 }
