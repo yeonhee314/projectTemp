@@ -1,0 +1,143 @@
+@media ( max-width : 1600px) {
+	.container {
+		max-width: 1200px;
+	}
+}
+/* 페이지 크기 >>>>>>>>>>>>>>>>>>>>>>>>>>*/
+.container-menu-desktop {
+	height: auto;
+	width: 100%;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+/* 페이지 크기 <<<<<<<<<<<<<<<<<<<<<<<<<< */
+
+.header-v2 .container-menu-desktop {
+	height: 84px;
+}
+
+.header-v3 .container-menu-desktop {
+	height: auto;
+}
+
+.header-v4 .container-menu-desktop {
+	height: 124px;
+}
+
+.search_container {
+   /* border: 5px solid green; */
+    
+}
+
+
+.search_result {
+    display: flex; /* Flexbox 활성화 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 100px; /* 고정 높이 */
+    font-size: 1.5rem;
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px; /* 검색 결과 제목과 아래 컨텐츠 사이의 간격 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+  	position: relative; /* position 속성 추가 */
+}
+
+.search_result::after {
+    content: '';
+    display: block;
+    position: absolute; /* 절대 위치 지정 */
+    bottom: 0; /* 하단에 배치 */
+    left: 50%; /* 수평 중앙 정렬 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    width: 69%; /* 선의 길이 설정 */
+    border-bottom: 1px solid black; /* 선 적용 */
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap; /* 가로 공간 초과 시 줄바꿈 */
+    justify-content: flex-start; /* 상품들이 왼쪽 정렬되도록 설정 */
+    width: 100%; /* 부모 컨테이너의 가로폭 100% */
+    max-width: 1200px; /* 최대 가로 크기 제한 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+    margin-top: 20px; /* 상품 목록과 상단 컨텐츠 사이의 간격 추가 */
+    gap: 20px; /* 상품 간의 간격 설정 */
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    margin-bottom: 20px; /* 상품 간의 세로 여백 */
+    padding: 10px;
+    text-align: left;
+    width: calc(25% - 20px); /* 4개의 상품을 정확하게 맞추기 위해 25%로 설정, 간격 제외 */
+    box-sizing: border-box; /* 패딩, 마진을 포함한 크기 계산 */
+}
+
+/* 첫 번째 상품과 마지막 상품에만 여백 추가 */
+.product-item:first-child {
+    margin-left: 10px; /* 첫 번째 상품 왼쪽 여백 */
+}
+
+.product-item:last-child {
+    margin-right: 20px; /* 마지막 상품 오른쪽 여백 */
+}
+
+
+
+
+
+.product-item img {
+    width: 100%; /* 이미지의 가로 폭을 부모에 맞춤 */
+    border: 1px solid #ccc;
+    display: block;
+	overflow: hidden;
+    transition: transform 0.3s ease; /* 호버 시 확대 효과 */
+    -webkit-transition: transform 0.9s ease;
+    -o-transition: transform 0.9s ease;
+    -moz-transition: transform 0.9s ease;
+    transition: transform 0.9s ease;
+}
+
+.product-item:hover img {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
+.product-item {
+    display: flex;
+    flex-direction: column;  /* 세로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: left;
+}
+.product-name {
+    color: #333333;  /* 진한 회색으로 상품명 색상 설정 */
+    margin-bottom: 10px; /* 상품명과 가격 사이에 여백 추가 */
+    font-weight: bold; /* 상품명 두껍게 설정 */
+    width: calc(100% - 30px);
+}
+
+.product-price {
+	width: 30px;
+    color: black;  /* 상품 가격 색상 */
+    
+}
+
+
+footer {
+    /* border: 1px solid blue; */
+    width: 100%;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    padding: 10px 0; /* 위/아래 여백 추가 */
+    margin-top: auto; /* footer를 항상 화면 하단에 배치 */
+    background-color: lightgray;
+}

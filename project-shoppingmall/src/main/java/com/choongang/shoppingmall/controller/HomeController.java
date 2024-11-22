@@ -292,4 +292,9 @@ public class HomeController {
 		model.addAttribute("uservo", userVO);
 		return "orderComplete"; 
 	}
+	
+	@GetMapping("/searchResult")
+	public String searchResult(@RequestParam("query") String query, Model model) {
+	    return "searchResult";
+	}
 }
