@@ -600,5 +600,42 @@
 	        });
 	}
 	</script>
+<!--===============================================================================================-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script type="text/javascript">
+	
+	function deleteProduct(order_item_id){	
+		event.stopPropagation();
+		Swal.fire({
+			icon: 'question',
+			title: '숨기기한 구매후기는 추후 작성이 불가능합니다.\n이 상품을 숨기시겠습니까?\n',
+			showCancelButton: true,
+			confirmButtonText: '예',
+			cancelButtonText: '아니오',
+			reverseButtons: true,
+			customClass: {
+                title: 'small-title'  
+            }
+		}).then((result) => {
+			 if(result.isConfirmed){
+				$.ajax({
+					url: '/updateReviewStatus',
+					type: 'POST',
+					data: {
+						order_item_id : order_item_id
+					},
+					success: function(response){
+						console.log('숨기기 완료');
+						location.reload();
+					},
+					error: function(xhr, status, error){
+						Swal.fire('오류 발생', '숨기기 중 문제가 발생했습니다.', 'error');
+					}
+				});
+				//location.href = '/deleteQuestion(question_id, user_id)';
+			} 
+		});
+	}
+</script>
 </body>
 </html>

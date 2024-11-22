@@ -16,11 +16,16 @@ public interface OrderDAO {
 	int selectOrderCount(HashMap<String, String> map) throws SQLException;
 	// 한 페이지 얻기
 	List<OrdersVO> selectAdminOrderList(HashMap<String, String> map) throws SQLException;
-	
+	// 주문내역 하나 얻기
+	OrdersVO selectOrderById(int order_id) throws SQLException;
+	// 주문아이템 얻기
+	List<Order_ItemVO> selectOrderItemByOrderId(int order_id) throws SQLException;
 	// 마이페이지 리뷰관리 : 아이디별 주문 내역
 	List<MyPageReviewInfo> selectByMyReview(int user_id) throws SQLException;
 	// 마이페이지 리뷰관리 : 아이디별 주문 내역 갯수
 	int selectByMyReviewCount(int user_id) throws SQLException;
+	// 마이페이지 리뷰관리 : 리뷰 작성 숨기기 시 상태 변경
+	void updateReviewStatus(int order_item_id) throws SQLException;
 	
 	// 주문 테이블 저장
 	void addToOrder(OrdersVO vo) throws SQLException;

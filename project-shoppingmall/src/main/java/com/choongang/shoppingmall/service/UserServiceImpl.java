@@ -197,4 +197,15 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	@Override
+	public UserVO selectUserById(int user_id) {
+		UserVO uv = null;
+		try {
+			uv = userDAO.selectUserById(user_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return uv;
+	}
+
 }

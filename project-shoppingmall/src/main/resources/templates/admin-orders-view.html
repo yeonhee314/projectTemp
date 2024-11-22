@@ -9,12 +9,12 @@
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
-<link rel="stylesheet" type="text/css" href="../css/admin/admin.css">
-<link rel="stylesheet" type="text/css" href="../css/admin/adminOrderView.css">
+<link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
+<link rel="stylesheet" type="text/css" href="/css/admin/adminOrderView.css">
 </head>
 <body>
 	<header>
-		주문 내역
+		주문 상세
 	</header>
 	<nav>
 		<div class="menu-bar">
@@ -42,77 +42,93 @@
 		</div>
 	</nav>
 	<section class="bg">
-		<div class="orderbar">
-			<a href="/admin/orders">전체</a>
-			<a href="">결제대기</a>
-			<a href="">상품 준비중</a>
-			<a href="">배송대기</a>
-			<a href="">배송중</a>
-			<a href="">취소접수</a>
-			<a href="">반품접수</a>
+		<div class="orderInfo">
+			<div class="orderId">
+				<a href="/admin/orders"><i class="bi bi-arrow-left"></i></a>  [[${ov.order_id}]]
+			</div>
+			<div class="orderDate">[[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 hh:mm')}]]</div>
 		</div>
-		<div class="dd" style="display: flex; justify-content: space-between;">
-			전체 [[${ov.pageInfo}]]
-			<form th:action="@{/admin/orders}" method="get" class="orderSearch2">
-			<input type="hidden" name="p" th:value="${ppv.p}" />
-			<input type="hidden" name="s" th:value="${ppv.s}" />
-			<input type="hidden" name="b" th:value="${ppv.b}" />
-			<select name="field" id="field">
-				<option value="order_id">상품번호</option>
-				<option value="user_id">유저번호</option>
-				<option value="status">주문상태</option>
-			</select>
-			<input type="text" name="search" id="search" placeholder="검색"/>
-			<input type="submit" id="submit2" value=""/>
-		</form>
+		<div class="bigBox">
+			<div class="box1">
+				<div class="orderbar">
+					<div>전체</div>
+					<div>배송</div>
+					<div>취소</div>
+					<div>반품</div>
+				</div>
+				<div class="pdSet">
+					<div class="pdSetInfo">
+						<div class="pdWait">상품준비</div>
+						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
+					</div>
+					<div class="pdTableBox">
+						<form action="">
+							<table class="pdTable">
+							<colgroup>
+			                  <col width="5%" />
+			                  <col width="10%" />
+			                  <col width="50%" />
+			                  <col width="20%" />
+			                  <col width="22%" />
+			                </colgroup>
+								<tr style="height: 20px;">
+									<th><input type="checkbox" /></th>
+									<th>전체</th>
+								</tr>
+								<th:block>
+									<tr th:each="item : ${iv}" class="list">
+										<td><input type="checkbox" th:value="${item.order_item_id}"/></td>
+										<td><img src="" alt="" /></td>
+										<td>[[${item.product_name}]] <br />
+											<span style="font-size: 8pt;">[[${item.product_option}]]</span>
+										</td>
+										<td>[[${#numbers.formatInteger(item.product_price,3,'COMMA')}]] 원 X [[${item.quantity}]]</td>
+										<td>[[${#numbers.formatInteger(item.sum,3,'COMMA')}]]원</td>
+									</tr>
+								</th:block>
+							</table>
+							<div style="margin-top: 20px;">
+								<input type="submit" class="shipBtn" value="배송대기 처리"/>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="pdShip">
+					<div class="pdShipInfo">
+						<div class="shipWait">배송대기</div>
+						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#dates.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
+					</div>
+				
+				</div>
+			</div>
+			<div class="box2">
+				<div class="payBox">
+					<div class="pay1">결제정보</div>
+					<div class="pay2">주문 금액
+						<div>할인</div>
+					</div>
+					<div class="pay3">결제된 금액<span>[[${#numbers.formatInteger(ov.total_price,3,'COMMA')}]]원</span></div>
+				</div>
+				<div class="userBox">
+					<div class="userInfo1">구매자 정보</div>
+					<div class="userInfo2">[[${uv.username}]] ([[${uv.user_level}]])
+						<div class="userInfo3">[[${uv.phone}]]</div>
+						<div class="userInfo4">[[${uv.email}]]</div>
+					</div>
+				</div>
+				<div class="addressBox">
+					<div class="addr1">배송지 정보</div>
+					<div class="addr2">[[${uv.username}]]
+						<div class="addr3">[[${uv.phone}]]</div>
+						<div>[[${ov.address}]]</div>
+						<div th:if="${ov.request_type != null}" style="font-style: italic;">([[${ov.request_type}]])</div>
+						<div th:if="${ov.request_type == null}" style="color: grey;">배송 메모 없음</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<table class="paging">
-		<colgroup>
-                  <col width="3%" />
-                  <col width="10%" />
-                  <col width="12%" />
-                  <col width="25%" />
-                  <col width="20%" />
-                  <col width="8%" />
-                  <col width="10%" />     
-                </colgroup>
-			<tr class="index">
-				<th><input type="checkbox" /></th>
-				<th>주문번호</th>
-				<th>유저번호</th>
-				<th>가맹점고유번호</th>
-				<th>최종결제금액</th>
-				<th>주문상태</th>
-				<th>주문일</th>
-			</tr>
-			<th:block>
-				<tr th:each="vo: ${ov.list}" class="list" th:onclick="location.href='/admin/orders/view?order_id=[[${vo.order_id}]]'">
-					<td><input type="checkbox" /></td>
-					<td>[[${vo.order_id}]]</td>
-					<td>[[${vo.user_id}]]</td>
-					<td>[[${vo.merchant_uid}]]</td>
-					<td>[[${#numbers.formatInteger(vo.total_price,3,'COMMA')}]]원</td>
-					<td>[[${vo.status}]]</td>
-					<td>[[${#dates.format(vo.order_date,'yy-MM-dd(E)')}]]</td>
-					<td></td>
-				</tr>
-			</th:block>
-		</table>
-		<div class="pageList">
-			<div>[(${ov.pageList})]</div>
-		</div>
-		<form th:action="@{/admin/orders}" method="get" class="orderSearch">
-			<input type="hidden" name="p" th:value="${ppv.p}" />
-			<input type="hidden" name="s" th:value="${ppv.s}" />
-			<input type="hidden" name="b" th:value="${ppv.b}" />
-			<select name="field" id="field">
-				<option value="order_id">상품번호</option>
-				<option value="user_id">유저번호</option>
-				<option value="status">주문상태</option>
-			</select>
-			<input type="text" name="search" id="search"/>
-			<input type="submit" id="submit" value=""/>
-		</form>
+		
 	</section>
+	
 </body>
 </html>

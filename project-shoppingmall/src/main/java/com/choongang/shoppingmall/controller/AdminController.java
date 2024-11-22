@@ -34,6 +34,7 @@ import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.AdminUsersPagingVO;
 import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.FileVO;
+import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
 import com.choongang.shoppingmall.vo.ProductPagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
@@ -460,6 +461,20 @@ public class AdminController {
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
 			return "admin-orders";
+		}
+		// 주문 상세 페이지
+		@GetMapping("/admin/orders/view")
+		public String adminOrdersView(@ModelAttribute OrdersVO ordersVO,
+				@ModelAttribute UserVO userVO,
+				@ModelAttribute Order_ItemVO order_ItemVO ,
+				int order_id,int user_id, Model model) {
+			OrdersVO ov = orderService.selectOrderById(order_id);
+			UserVO uv = userService.selectUserById(user_id);
+			List<Order_ItemVO> iv = orderService.selectOrderItemByOrderId(order_id);
+			model.addAttribute("ov", ov);
+			model.addAttribute("uv", uv);
+			model.addAttribute("iv", iv);
+			return "admin-orders-view";
 		}
 		// 토스트 에디터 이미지 처리
 		@ResponseBody
