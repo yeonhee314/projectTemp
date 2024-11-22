@@ -16,6 +16,7 @@ public class Order_ItemVO {
 
 	// 조인참조컬럼
 	private String product_name;
+	private String status;
 	private int product_price;
 	private int discount;
 	private int sum; // 아이템별 총가격
