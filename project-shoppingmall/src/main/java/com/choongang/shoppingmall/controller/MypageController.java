@@ -57,6 +57,7 @@ public class MypageController {
 	private AddressService addressService;
 	@Autowired
 	private OrderService orderService;
+	private Order_ItemVO[] orderItems;
 
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -106,9 +107,6 @@ public class MypageController {
 		model.addAttribute("order_count", orderStats.get("ORDER_COUNT"));
 		model.addAttribute("total_sum", orderStats.get("TOTAL_SUM"));
 	    
-	    
-
-
 		return "myPage";
 	}
 

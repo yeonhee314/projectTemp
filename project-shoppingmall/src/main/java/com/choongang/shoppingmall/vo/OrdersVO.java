@@ -21,6 +21,9 @@ public class OrdersVO {
 	private String request_type;	// 요청 사항
 	private LocalDateTime order_date;		// 주문 날짜
 	
+	private List<Order_ItemVO> orderItems; // 주문 상품 리스트
+
+	
 	//포맷팅된 날짜 변환
 	   public String getFormattedOrderDate() {
 	        if (order_date != null) {

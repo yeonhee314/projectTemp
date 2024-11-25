@@ -108,12 +108,40 @@
     WHERE user_id = #{userId}
 	</select>
 
+  <!-- Result Mapping -->
+    <resultMap id="OrdersResultMap" type="OrdersVO">
+        <id property="order_id" column="order_id" />
+        <result property="user_id" column="user_id" />
+        <result property="total_price" column="total_price" />
+        <result property="order_date" column="order_date" />
+        <result property="status" column="status" />
+        <collection property="orderItems" ofType="Order_ItemVO">
+            <result property="product_id" column="product_id" />
+            <result property="product_name" column="product_name" />
+            <result property="quantity" column="quantity" />
+        </collection>
+    </resultMap>
+    
   <!--   특정 유저의 주문 상세정보(orders) 조회-->
-     <select id="getOrdersByUserId" parameterType="int" resultType="OrdersVO">
+     <select id="getOrdersByUserId" parameterType="int" resultMap="OrdersResultMap">
         SELECT 
-            order_id, user_id, total_price, order_date,status
-        FROM orders
-        WHERE user_id = #{userId}
-    </select> 
+            o.order_id,
+            o.user_id,
+            o.total_price,
+            o.order_date,
+            o.status,
+            oi.product_id,
+            p.product_name,
+            oi.quantity
+        FROM orders o
+        LEFT JOIN order_item oi 
+        ON o.order_id = oi.order_id
+        LEFT JOIN 
+    	product p
+    	ON 
+   		oi.product_id = p.product_id
+        WHERE o.user_id = #{userId}
+        ORDER BY o.order_date DESC
+    </select>
  
 </mapper>

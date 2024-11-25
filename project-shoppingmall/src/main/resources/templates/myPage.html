@@ -434,17 +434,27 @@
 							</thead>
 							<tbody>
 								<tr th:each="order : ${orders}">
+									<!-- 주문일자 -->
 									<td
 										th:text="${#temporals.format(order.order_date, 'yyyy-MM-dd')}"></td>
-									<td></td>
-									<td></td>
-									<td></td>
+
+									 <td>
+								         <img th:if="${!#lists.isEmpty(order.orderItems)}" 
+								         th:src="@{'images/products/product' + ${order.orderItems[0].product_id} + '/product-' + ${order.orderItems[0].product_id} + '-1.jpg'}"
+								         style= "width: 70px; height: auto;"
+								        />
+								    </td>
+									<td th:if="${!#lists.isEmpty(order.orderItems)}"
+										th:text="${order.orderItems[0].product_name}"></td>
+										
+									<td th:if="${!#lists.isEmpty(order.orderItems)}"
+										th:text="${order.orderItems[0].quantity}"></td>
 									<td
 										th:text="${#numbers.formatInteger(order.total_price, 3, 'COMMA') + '원'}"></td>
 									<td th:text="${order.status}"></td>
 									<td></td>
-								</tr>
 
+								</tr>
 							</tbody>
 
 						</table>

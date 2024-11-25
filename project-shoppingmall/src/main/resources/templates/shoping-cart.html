@@ -403,9 +403,9 @@ th {
 							<input type="checkbox" name="selectedItems" th:value="${item.cartId}" checked="checked" 
 							style="width:15px; height:15px;vertical-align:-3px;display:inline-block;">
 							-->
-							<td> 
-							<img th:src="@{${'/images/product-' + item.productId + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: auto;" /></td>
-							
+							 <td>
+					        <img th:src="@{'images/products/product' + ${item.productId} + '/product-' + ${item.productId} + '-1.jpg'}" style="width: 80px; height: auto;"  />	
+					    </td>
 							</th:block>
 							<td>
 							<a 
