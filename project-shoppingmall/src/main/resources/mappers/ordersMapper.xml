@@ -25,7 +25,7 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select * from orders
+				(select o.order_id, o.user_id, o.total_price, o.payment_type, o.status, o.order_date, u.username from orders o join users u on o.user_id=u.user_id
 				<where>
 					<choose>
 						<when test="search != null and search != '0'.toString()">
@@ -36,7 +36,7 @@
 						</when>
 					</choose>
 				</where>
-				order by order_id desc) Q
+				order by o.order_id desc) Q
 			where
 			<![CDATA[
 				rownum<=#{endNo}
@@ -53,10 +53,18 @@
 	</select>
 	<!-- 주문아이디로 주문아이템 가져오기 -->
 	<select id="selectOrderItemByOrderId" parameterType="int" resultType="Order_ItemVO">
-		select i.ORDER_ITEM_ID, i.QUANTITY, p.PRODUCT_ID, p.PRODUCT_NAME, p.PRODUCT_PRICE, p.DISCOUNT, i.PRODUCT_OPTION, o.STATUS , (PRODUCT_PRICE*QUANTITY) sum 
+		select i.ORDER_ITEM_ID, i.QUANTITY, p.PRODUCT_ID, p.PRODUCT_NAME, p.PRODUCT_PRICE, p.DISCOUNT, i.PRODUCT_OPTION, o.STATUS , (PRODUCT_PRICE*QUANTITY) bsum,(PRODUCT_PRICE*(1-discount/100.0)*QUANTITY) asum 
 		from order_item i join product p on i.product_id=p.product_id JOIN ORDERS o ON i.ORDER_ID=o.ORDER_ID 
 		where i.order_id=#{order_id}
 	</select>
+	<!-- 결제정보 주문금액 -->
+	<select id="paymentPriceInfo" parameterType="int" resultType="Order_ItemVO">
+		select COUNT(ORDER_ITEM_ID) itemcount, SUM((p.PRODUCT_PRICE*i.QUANTITY)) btotal, SUM((p.PRODUCT_PRICE*p.DISCOUNT/100.0 *i.QUANTITY)) dis from orders o JOIN ORDER_ITEM i ON o.ORDER_ID=i.ORDER_ID JOIN PRODUCT p ON i.PRODUCT_ID=p.PRODUCT_ID where o.order_id=#{order_id}
+	</select>
+	<!-- 주문상태 배송중 변경 -->
+	<update id="orderStatusUpdateShipping" parameterType="int">
+		update orders set status='배송중' where order_id=#{order_id}
+	</update>
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">

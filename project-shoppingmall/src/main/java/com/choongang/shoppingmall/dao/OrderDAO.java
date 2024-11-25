@@ -20,6 +20,10 @@ public interface OrderDAO {
 	OrdersVO selectOrderById(int order_id) throws SQLException;
 	// 주문아이템 얻기
 	List<Order_ItemVO> selectOrderItemByOrderId(int order_id) throws SQLException;
+	// 결제정보 금액 얻기
+	Order_ItemVO paymentPriceInfo(int order_id) throws SQLException;
+	// 주문상태 배송중으로 변경
+	void orderStatusUpdateShipping(int order_id) throws SQLException;
 	// 마이페이지 리뷰관리 : 아이디별 주문 내역
 	List<MyPageReviewInfo> selectByMyReview(int user_id) throws SQLException;
 	// 마이페이지 리뷰관리 : 아이디별 주문 내역 갯수

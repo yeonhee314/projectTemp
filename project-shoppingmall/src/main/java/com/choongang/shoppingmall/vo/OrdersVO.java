@@ -22,7 +22,7 @@ public class OrdersVO {
 	private LocalDateTime order_date;		// 주문 날짜
 	
 	private List<Order_ItemVO> orderItems; // 주문 상품 리스트
-
+	private String username;	// 조인컬럼
 	
 	//포맷팅된 날짜 변환
 	   public String getFormattedOrderDate() {

@@ -39,13 +39,12 @@
 	text-indent:10px;
 	background-color: white;
 	border-radius: 10px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	text-align: center;
 }
 .orderbar div {
-	width: 220px;
+	width: 225px;
 	border: 1px solid #ebebeb;
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -84,19 +83,26 @@
 	text-indent: 10px;
 	overflow: scroll;
 }
-.list {
+.orderList {
 	height: 60px;
 	margin-top: 10px;
 	border-top: 1px solid #ebebeb;
 	border-bottom: 1px solid #ebebeb;
+	font-weight: bold;
 }
 img {
 	width: 50px; height: 50px;
 	border-radius: 10px;
 }
 .span {
+	font-weight: normal;
 	font-size: 9pt;
 	background-color: #ebebeb;
+}
+.beforeSum {
+	font-size: 10pt;
+	text-decoration: line-through;
+	color: grey;
 }
 .shipBtnBox {
 	text-align: right;
@@ -157,16 +163,31 @@ img {
 	font-weight: bold;
 }
 .pay2 {
-	height: 150px;
+	height: 40px;
 	text-indent: 20px;
 	line-height: 40px;
+	margin-right: 20px;
+	display: flex;
+	justify-content: space-between;
 }
 .pay3 {
-	height: 50px;
+	height: 40px;
+	text-indent: 20px;
+	line-height: 40px;
+	margin-right: 20px;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 }
-.pay3 span{
+.pay4 {
+	height: 50px;
+	text-indent: 20px;
+	margin-right: 20px;
+	margin-top:60px;
+	border-top: 1px solid #ebebeb;
+	display: flex;
+	justify-content: space-between;
+}
+.pay4 span{
 	font-weight: bold;
 	font-size: 13pt;
 }

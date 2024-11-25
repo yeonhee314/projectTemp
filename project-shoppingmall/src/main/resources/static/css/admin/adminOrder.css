@@ -17,8 +17,13 @@
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	color: grey;
 }
-.dd {
+.orderbar div:hover {
+	cursor: pointer;
+	color: black;
+}
+.pagingBar {
 	position: relative;
 	width:1420px; height: 60px;
 	line-height: 50px;

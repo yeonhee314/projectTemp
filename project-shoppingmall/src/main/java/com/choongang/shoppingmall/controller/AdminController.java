@@ -445,7 +445,7 @@ public class AdminController {
 			model.addAttribute("user", usersBoardService.selectByID(rv.getUser_id()));
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
-			return "admin-review-view";
+			return "redirect:/admin-review-view";
 		}
 		// 주문 관리
 		@GetMapping("/admin/orders")
@@ -471,10 +471,22 @@ public class AdminController {
 			OrdersVO ov = orderService.selectOrderById(order_id);
 			UserVO uv = userService.selectUserById(user_id);
 			List<Order_ItemVO> iv = orderService.selectOrderItemByOrderId(order_id);
+			Order_ItemVO oiv = orderService.paymentPriceInfo(order_id);
 			model.addAttribute("ov", ov);
+			model.addAttribute("oiv", oiv);
 			model.addAttribute("uv", uv);
 			model.addAttribute("iv", iv);
 			return "admin-orders-view";
+		}
+		@GetMapping("/orderShipping")
+		public String adminOrderShippingGet() {			
+			return "admin-orders-view";
+		}
+		// 배송중 처리
+		@PostMapping("/orderShipping")
+		public String adminOrderShippingPost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.orderStatusUpdateShipping(order_id);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
 		}
 		// 토스트 에디터 이미지 처리
 		@ResponseBody

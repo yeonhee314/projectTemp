@@ -19,5 +19,10 @@ public class Order_ItemVO {
 	private String status;
 	private int product_price;
 	private int discount;
-	private int sum; // 아이템별 총가격
+	private int itemcount;
+	private int dis;
+	private int btotal;
+	private int bsum; // 할인 전 총가격
+	private int sum; // 할인 전 총가격
+	private int asum; // 할인 후 총가격
 }

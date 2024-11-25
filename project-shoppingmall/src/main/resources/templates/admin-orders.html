@@ -42,24 +42,24 @@
 		</div>
 	</nav>
 	<section class="bg">
-		<div class="orderbar">
-			<a href="/admin/orders">전체</a>
-			<a href="">결제완료</a>
-			<a href="">배송중</a>
-			<a href="">배송완료</a>
-			<a href="">취소접수</a>
-			<a href="">반품접수</a>
+		<div class="orderbar" style="display: flex;">
+			<div onclick="location.href='/admin/orders'" style="color: black;">전체</div>
+			<div onclick="location.href='/admin/orders?p=1&s=10&b=10&field=status&search=결제완료'">결제완료</div>
+			<div onclick="location.href='/admin/orders?p=1&s=10&b=10&field=status&search=배송중'">배송중</div>
+			<div onclick="location.href='/admin/orders?p=1&s=10&b=10&field=status&search=배송완료'">배송완료</div>
+			<div onclick="location.href='/admin/orders?p=1&s=10&b=10&field=status&search=취소접수'">취소접수</div>
+			<div onclick="location.href='/admin/orders?p=1&s=10&b=10&field=status&search=반품접수'">반품접수</div>
 		</div>
-		<div class="dd" style="display: flex; justify-content: space-between;">
+		<div class="pagingBar" style="display: flex; justify-content: space-between;">
 			전체 [[${ov.pageInfo}]]
 			<form th:action="@{/admin/orders}" method="get" class="orderSearch2">
 			<input type="hidden" name="p" th:value="${ppv.p}" />
 			<input type="hidden" name="s" th:value="${ppv.s}" />
 			<input type="hidden" name="b" th:value="${ppv.b}" />
 			<select name="field" id="field">
-				<option value="order_id">상품번호</option>
-				<option value="user_id">유저번호</option>
+				<option value="order_id">주문번호</option>
 				<option value="status">주문상태</option>
+				<option value="payment_type">결제수단</option>
 			</select>
 			<input type="text" name="search" id="search" placeholder="검색"/>
 			<input type="submit" id="submit2" value=""/>
@@ -68,8 +68,8 @@
 		<table class="paging">
 		<colgroup>
                   <col width="3%" />
-                  <col width="10%" />
-                  <col width="12%" />
+                  <col width="7%" />
+                  <col width="15%" />
                   <col width="25%" />
                   <col width="10%" />
                   <col width="10%" />
@@ -79,10 +79,10 @@
 			<tr class="index">
 				<th><input type="checkbox" /></th>
 				<th>주문번호</th>
+				<th>품목</th>
 				<th>주문상태</th>
-				<th>가맹점고유번호</th>
 				<th>최종결제금액</th>
-				<th>유저번호</th>
+				<th>구매자</th>
 				<th>결제수단</th>
 				<th>주문일</th>
 			</tr>
@@ -90,10 +90,10 @@
 				<tr th:each="vo: ${ov.list}" class="list" th:onclick="location.href='/admin/orders/view?order_id=[[${vo.order_id}]]&user_id=[[${vo.user_id}]]'">
 					<td><input type="checkbox" /></td>
 					<td>[[${vo.order_id}]]</td>
+					<td></td>
 					<td>[[${vo.status}]]</td>
-					<td>[[${vo.merchant_uid}]]</td>
 					<td>[[${#numbers.formatInteger(vo.total_price,3,'COMMA')}]]원</td>
-					<td>[[${vo.user_id}]]</td>
+					<td>[[${vo.username}]]</td>
 					<td>[[${vo.payment_type}]]</td>
 					<td>[[${#temporals.format(vo.order_date,'yyyy년 MM월 dd일')}]]</td>
 				</tr>

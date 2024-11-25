@@ -155,4 +155,26 @@ public class OrderServiceImpl implements OrderService{
 	public List<OrdersVO> getOrdersByUserId(int userId) {
 	    return orderDAO.getOrdersByUserId(userId);
 	}
+
+	@Override
+	public Order_ItemVO paymentPriceInfo(int order_id) {
+		Order_ItemVO oiv = null;
+		try {
+			oiv = orderDAO.paymentPriceInfo(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return oiv;
+	}
+
+
+	@Override
+	public void orderStatusUpdateShipping(int order_id) {
+		try {
+			orderDAO.orderStatusUpdateShipping(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
