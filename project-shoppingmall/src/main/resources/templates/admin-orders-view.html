@@ -8,17 +8,37 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="/webjars/axios/1.4.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <title>관리자 페이지</title>
 <link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
 <link rel="stylesheet" type="text/css" href="/css/admin/adminOrderView.css">
 <script type="text/javascript">
-$(function(){ 
-	$(".orderShipForm").submit(function(){
-		  if(!confirm('배송중으로 변경합니다')){
-			return false;
-		}
-	 });
-})
+	$(function(){ 
+		$(".orderShipForm").submit(function(){
+			  if(!confirm('배송중으로 변경합니다')){
+				return false;
+			}
+		 });
+		$(".deliveryForm").submit(function(){
+			if($("#invoice").val()!='') {
+			  if(!confirm('배송완료 처리하시겠습니까?')){
+				return false;
+				}
+			}else{
+				alert('운송장이 등록되지 않았습니다.');
+				return false;
+			}
+		 });
+		$(".invoiceBtn").click(function(){
+			$(".popUpBg").show();
+			$(".invoicePopupBox").show();
+		})
+		$(".closeBtn").click(function(){
+			$(".popUpBg").hide();
+			$(".invoicePopupBox").hide();
+		})
+		
+	})
 </script>
 </head>
 <body>
@@ -26,23 +46,23 @@ $(function(){
 		주문 상세
 	</header>
 	<nav>
-		<div class="menu-bar">
+		<div class="menu_bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
 			</div>
-			<div class="admin-users" onclick="location.href='/admin/users'">
+			<div class="admin_users" onclick="location.href='/admin/users'">
 				회원관리
 			</div>
-			<div class="admin-products" onclick="location.href='/admin/products'">
+			<div class="admin_products" onclick="location.href='/admin/products'">
 				상품관리
 			</div>
-			<div class="admin-qna" onclick="location.href='/admin/qna'">
+			<div class="admin_qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/review'">
+			<div class="admin_review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/orders'">
+			<div class="admin_orders" onclick="location.href='/admin/orders'" style="font-size: 16pt; background: #ebebeb;">
 				주문관리
 			</div>
 			<div onclick="location.href='/index.html'">
@@ -61,11 +81,11 @@ $(function(){
 			<div class="box1">
 				<div class="orderbar">
 					<div>전체 <span style="color: blue;">[[${oiv.itemcount}]]</span></div>
-					<div>배송</div>
-					<div>취소</div>
-					<div>반품</div>
+					<div>배송 <span style="color: blue;" th:if="${ov.status}=='배송중'or'배송완료'">[[${oiv.itemcount}]]</span></div>
+					<div>취소 <span style="color: blue;" th:if="${ov.status}=='취소접수'">[[${oiv.itemcount}]]</span></div>
+					<div>반품 <span style="color: blue;" th:if="${ov.status}=='반품접수'">[[${oiv.itemcount}]]</span></div>
 				</div>
-				<div class="pdSet">
+				<div class="pdSet" th:if="${ov.status}=='결제완료'">
 					<div class="pdSetInfo">
 						<div class="pdWait">상품준비 <span style="color: blue;">[[${oiv.itemcount}]]</span></div>
 						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
@@ -78,7 +98,7 @@ $(function(){
 							<colgroup>
 			                 <!--   <col width="5%" />-->
 			                  <col width="10%" />
-			                  <col width="48%" />
+			                  <col width="55%" />
 			                  <col width="20%" />
 			                  <col width="25%" />
 			                </colgroup>
@@ -102,32 +122,39 @@ $(function(){
 							</table>
 						</div>
 						<div class="shipBtnBox">
-							<input type="submit" th:if="${ov.status=='결제완료'}" class="shipBtn btn btn-dark" value="배송중 처리"/>
+							<input type="submit" class="shipBtn btn btn-dark" value="배송중 처리"/>
 						</div>
 					</form>
 				</div>
-				<div class="pdShip">
+				<div class="pdShip" th:if="${ov.status}=='배송중'">
 					<div class="pdShipInfo">
-						<div class="shipWait">배송중</div>
+						<div class="shipWait">배송중 <span style="color: blue;" th:if="${ov.status}=='배송중'">[[${oiv.itemcount}]]</span></div>
 						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
 					</div>
-					<form action="">
-					<div class="pdShip1">
+					<div class="invoiceBtnBox">
+						<div class="invoiceBtn btn btn-dark" th:if="${ov.invoice} == null">송장등록</div>
+					</div>
+					<div style="text-align: center; font-size: 14pt; font-weight: bold;" th:if="${ov.invoice}!=null"><a th:href="@{'https://trace.cjlogistics.com/web/detail.jsp?slipno='+${ov.invoice}}" target="_blank" style="color: deepskyblue;"><i class="bi bi-truck"></i> CJ대한통운  [[${ov.invoice}]]</a></div>
+					<form th:action="@{/deliveryOk}" method="post" class="deliveryForm">
+					<input type="hidden" name="order_id" th:value="${ov.order_id}"/>
+					<input type="hidden" name="user_id" th:value="${ov.user_id}"/>
+					<input type="hidden" name="invoice" id="invoice" th:value="${ov.invoice}"/>
+					<div class="pdShipBox">
 						<table class="pdShipTable">
 						<colgroup>
-		                  <col width="5%" />
+		               <!--  <col width="5%" /> -->  
 		                  <col width="10%" />
-		                  <col width="48%" />
+		                  <col width="55%" />
 		                  <col width="20%" />
 		                  <col width="25%" />
 		                </colgroup>
 							<tr style="height: 20px;">
-								<th><input type="checkbox" /></th>
+								<!-- <th><input type="checkbox" /></th> -->
 								<th>전체</th>
 							</tr>
 							<th:block>
-								<tr th:each="item : ${iv}" class="shipList" th:if="${item.status} =='배송중'">
-									<td><input type="checkbox" th:value="${item.order_item_id}"/></td>
+								<tr th:each="item : ${iv}" class="shipList">
+									<!-- <td><input type="checkbox" th:value="${item.order_item_id}"/></td> -->
 									<td><img th:src="@{'/images/products/product' + ${item.product_id} +'/product-'+ ${item.product_id} + '-1.jpg'}" alt="" /></td>
 									<td>[[${item.product_name}]] <br />
 										<span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="span"> [[${item.product_option}]]&nbsp; </span></span>
@@ -144,6 +171,41 @@ $(function(){
 							<input type="submit" class="shipOkBtn btn btn-dark" value="배송완료 처리"/>
 						</div>
 					</form>
+				</div>
+				<div class="shipComplete" th:if="${ov.status}=='배송완료'">
+					<div class="pdDeliveryInfo">
+						<div class="shipWait">배송완료 <span style="color: blue;" th:if="${ov.status}=='배송완료'">[[${oiv.itemcount}]]</span></div>
+						<div class="orderUid"><span> #[[${ov.merchant_uid}]] </span>&nbsp;&nbsp;<span> [[${#temporals.format(ov.order_date,'yyyy년 MM월 dd일 생성')}]] </span></div>
+					</div>
+					<div style="text-align: center; font-size: 14pt; font-weight: bold;" th:if="${ov.invoice}!=null"><a th:href="@{'https://trace.cjlogistics.com/web/detail.jsp?slipno='+${ov.invoice}}" target="_blank" style="color: deepskyblue;"><i class="bi bi-truck"></i> CJ대한통운  [[${ov.invoice}]]</a></div>
+					<div class="pdShipBox">
+						<table class="shipCompleteTable">
+						<colgroup>
+		               <!--  <col width="5%" /> -->  
+		                  <col width="10%" />
+		                  <col width="55%" />
+		                  <col width="20%" />
+		                  <col width="25%" />
+		                </colgroup>
+							<tr style="height: 20px;">
+								<!-- <th><input type="checkbox" /></th> -->
+								<th>전체</th>
+							</tr>
+							<th:block>
+								<tr th:each="item : ${iv}" class="deliveryList">
+									<!-- <td><input type="checkbox" th:value="${item.order_item_id}"/></td> -->
+									<td><img th:src="@{'/images/products/product' + ${item.product_id} +'/product-'+ ${item.product_id} + '-1.jpg'}" alt="" /></td>
+									<td>[[${item.product_name}]] <br />
+										<span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="span"> [[${item.product_option}]]&nbsp; </span></span>
+									</td>
+									<td>[[${#numbers.formatInteger(item.product_price * (1-item.discount/100.0) ,3,'COMMA')}]] 원 X [[${item.quantity}]] <br />
+										<span class="beforeSum">[[${#numbers.formatInteger(item.bsum,3,'COMMA')}]]원</span>
+									</td>
+									<td>[[${#numbers.formatInteger(item.asum,3,'COMMA')}]]원</td>
+								</tr>
+							</th:block>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="box2">
@@ -179,7 +241,20 @@ $(function(){
 				</div>
 			</div>
 		</div>
-		
+		<!-- 송장등록 팝업 -->
+		<div class="popUpBg"></div>
+		<div class="invoicePopupBox">
+			<div>
+				<div style="font-weight: bold; font-size: 18pt; margin: 10px;">송장등록</div>
+				<form th:action="@{/invoiceOk}" method="post" class="invoiceForm">
+					<input type="hidden" name="order_id" th:value="${ov.order_id}"/>
+					<input type="hidden" name="user_id" th:value="${ov.user_id}"/>
+					<input type="number" size="30" name="invoice" placeholder="운송장 번호 입력"/>
+					<input type="submit" class="btn btn-info btn-sm" value="저장"/>
+					<input type="button" class="closeBtn btn btn-light btn-sm" value="닫기"/>
+				</form>
+			</div>
+		</div>
 	</section>
 	
 </body>

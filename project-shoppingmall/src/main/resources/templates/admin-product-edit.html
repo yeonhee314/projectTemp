@@ -74,6 +74,11 @@
 			var content = editor.getHTML();
 			$("#description2").val(content);
 	    })
+	    $(".addForm").submit(function(){
+			  if(!confirm('확인을 누르면 저장합니다.')){
+				return false;
+			}
+		 });
 	});
 	function productCheck(){
 		var product_name = $("#product_name").val();
@@ -109,23 +114,23 @@
 		상품 수정
 	</header>
 	<nav>
-		<div class="menu-bar">
+		<div class="menu_bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
 			</div>
-			<div class="admin-users" onclick="location.href='/admin/users'">
+			<div class="admin_users" onclick="location.href='/admin/users'">
 				회원관리
 			</div>
-			<div class="admin-products" onclick="location.href='/admin/products'">
+			<div class="admin_products" onclick="location.href='/admin/products'" style="font-size: 16pt; background: #ebebeb;">
 				상품관리
 			</div>
-			<div class="admin-qna" onclick="location.href='/admin/qna'">
+			<div class="admin_qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/review'">
+			<div class="admin_review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/orders'">
+			<div class="admin_orders" onclick="location.href='/admin/orders'">
 				주문관리
 			</div>
 			<div onclick="location.href='/index.html'">
@@ -180,7 +185,7 @@
 						    ['code', 'codeblock'],		    
 						  ],
 						previewStyle: 'vertical',
-						height: '280px',
+						height: '500px',
 						width: '600px',
 						initialEditType: 'wysiwyg',
 						initialValue: $("#description1").val(),

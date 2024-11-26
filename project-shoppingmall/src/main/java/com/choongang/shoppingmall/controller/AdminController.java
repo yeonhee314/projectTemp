@@ -445,7 +445,7 @@ public class AdminController {
 			model.addAttribute("user", usersBoardService.selectByID(rv.getUser_id()));
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
-			return "redirect:/admin-review-view";
+			return "admin-review-view";
 		}
 		// 주문 관리
 		@GetMapping("/admin/orders")
@@ -486,6 +486,26 @@ public class AdminController {
 		@PostMapping("/orderShipping")
 		public String adminOrderShippingPost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
 			orderService.orderStatusUpdateShipping(order_id);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
+		}
+		@GetMapping("/deliveryOk")
+		public String adminOrderDeliveryGet() {			
+			return "admin-orders-view";
+		}
+		// 배송완료 처리
+		@PostMapping("/deliveryOk")
+		public String adminOrderDeliveryPost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.orderStatusUpdateDelivery(order_id);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
+		}
+		@GetMapping("/invoiceOk")
+		public String adminOrderInvoiceGet() {			
+			return "admin-orders-view";
+		}
+		// 송장번호 저장
+		@PostMapping("/invoiceOk")
+		public String adminOrderInvoicePost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.updateInvoice(ordersVO);
 			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
 		}
 		// 토스트 에디터 이미지 처리

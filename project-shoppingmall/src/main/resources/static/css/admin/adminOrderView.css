@@ -49,9 +49,6 @@
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.orderbar div:hover{
-	cursor: pointer;
-}
 .pdSet {
 	height: 500px;
 	margin-top:20px;
@@ -59,11 +56,11 @@
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.pdSetInfo {
+.pdSetInfo, .pdShipInfo, .pdDeliveryInfo {
 	text-indent: 20px;
 	height: 70px;
 }
-.pdWait {
+.pdWait, .shipWait {
 	font-size: 16pt;
 	font-weight: bold;
 	line-height: 40px;
@@ -83,7 +80,7 @@
 	text-indent: 10px;
 	overflow: scroll;
 }
-.orderList {
+.orderList, .shipList, .deliveryList {
 	height: 60px;
 	margin-top: 10px;
 	border-top: 1px solid #ebebeb;
@@ -104,47 +101,30 @@ img {
 	text-decoration: line-through;
 	color: grey;
 }
-.shipBtnBox {
+.shipBtnBox, .invoiceBtnBox {
 	text-align: right;
 }
-.shipBtn {
+.shipBtn, .invoiceBtn, .shipOkBtn {
 	margin-right: 15px;
 }
-.pdShip {
-	height: 500px;
+.pdShip, .shipComplete {
+	height: 550px;
 	margin-top:20px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.pdShipInfo {
-	text-indent: 20px;
-	height: 70px;
-}
-.shipWait {
-	font-size: 16pt;
-	font-weight: bold;
-	line-height: 40px;
-}
-.pdShip1 {
+.pdShipBox {
 	height: 350px;
 }
-.pdShipTable {
+.pdShipTable, .shipCompleteTable {
 	width: 850px;
 	margin: 20px;
 	text-indent: 10px;
 	overflow: scroll;
 }
-.shipList {
-	height: 60px;
-	border-top: 1px solid #ebebeb;
-	border-bottom: 1px solid #ebebeb;
-}
 .shipOkBtnBox {
 	text-align: right;
-}
-.shipOkBtn {
-	margin-right: 15px;
 }
 .box2 {
 	width: 360px;
@@ -237,4 +217,30 @@ img {
 
 input:focus {
 	outline: none;
+}
+.popUpBg {
+	position: fixed;
+	top:0; left:0;
+	width: 100%; height:100%;
+	z-index: 15;
+	background-color: rgba(0, 0, 0, 0.2);
+	display: none;
+}
+.invoicePopupBox {
+	position: fixed;
+	width: 420px; height: 130px;
+	top: 400px; left: 40%;
+	display: none;
+	z-index: 20;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.invoiceForm {
+	margin-left: 50px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

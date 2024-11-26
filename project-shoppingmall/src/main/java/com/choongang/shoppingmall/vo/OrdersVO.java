@@ -20,9 +20,11 @@ public class OrdersVO {
 	private String address;			// 주소
 	private String request_type;	// 요청 사항
 	private LocalDateTime order_date;		// 주문 날짜
+	private String invoice;			// 운송장번호
 	
 	private List<Order_ItemVO> orderItems; // 주문 상품 리스트
 	private String username;	// 조인컬럼
+	private int itemcount;
 	
 	//포맷팅된 날짜 변환
 	   public String getFormattedOrderDate() {

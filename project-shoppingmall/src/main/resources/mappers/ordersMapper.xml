@@ -25,7 +25,8 @@
 			select 
 				rownum rnum, Q.*
 			from
-				(select o.order_id, o.user_id, o.total_price, o.payment_type, o.status, o.order_date, u.username from orders o join users u on o.user_id=u.user_id
+				(select DISTINCT o.order_id, (SELECT COUNT(i.ORDER_ITEM_ID) FROM ORDER_ITEM i WHERE o.ORDER_ID=i.ORDER_ID) itemcount,
+				 o.user_id, o.total_price, o.payment_type, o.status, o.order_date, o.invoice, u.username from orders o join users u on o.user_id=u.user_id
 				<where>
 					<choose>
 						<when test="search != null and search != '0'.toString()">
@@ -64,6 +65,14 @@
 	<!-- 주문상태 배송중 변경 -->
 	<update id="orderStatusUpdateShipping" parameterType="int">
 		update orders set status='배송중' where order_id=#{order_id}
+	</update>
+	<!-- 주문상태 배송완료 변경 -->
+	<update id="orderStatusUpdateDelivery" parameterType="int">
+		update orders set status='배송완료' where order_id=#{order_id}
+	</update>
+	<!-- 송장번호 저장 -->
+	<update id="updateInvoice" parameterType="OrdersVO">
+		update orders set invoice=#{invoice} where order_id=#{order_id}
 	</update>
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
 	<!-- 아이디별 주문 내역 -->

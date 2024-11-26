@@ -16,6 +16,8 @@ public interface OrderService {
 	List<Order_ItemVO> selectOrderItemByOrderId(int order_id);
 	Order_ItemVO paymentPriceInfo(int order_id);
 	void orderStatusUpdateShipping(int order_id);
+	void orderStatusUpdateDelivery(int order_id);
+	void updateInvoice(OrdersVO ordersVO);
 	List<MyPageReviewInfo> selectByMyReview(int user_id);
 	int selectByMyReviewCount(int user_id);
 	void updateReviewStatus(int order_item_id);

@@ -175,6 +175,23 @@ public class OrderServiceImpl implements OrderService{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	@Override
+	public void orderStatusUpdateDelivery(int order_id) {
+		try {
+			orderDAO.orderStatusUpdateDelivery(order_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void updateInvoice(OrdersVO ordersVO) {
+		try {
+			orderDAO.updateInvoice(ordersVO);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
