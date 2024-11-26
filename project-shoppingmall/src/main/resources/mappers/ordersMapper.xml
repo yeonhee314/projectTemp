@@ -66,7 +66,6 @@
 	<update id="orderStatusUpdateShipping" parameterType="int">
 		update orders set status='배송중' where order_id=#{order_id}
 	</update>
-<<<<<<< HEAD
 	<!-- 주문상태 배송완료 변경 -->
 	<update id="orderStatusUpdateDelivery" parameterType="int">
 		update orders set status='배송완료' where order_id=#{order_id}
@@ -75,11 +74,7 @@
 	<update id="updateInvoice" parameterType="OrdersVO">
 		update orders set invoice=#{invoice} where order_id=#{order_id}
 	</update>
-	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우(현재 테스트 위해서 '결제완료'로 작업중) -->
-=======
-	
 	<!-- 마이페이지 리뷰관리 : status가 '배송완료'인 경우 -->
->>>>>>> f7658c7c21681f0e58c66a9d0dea0feca3c35f5f
 	<!-- 아이디별 주문 내역 -->
 	<select id="selectByMyReview" parameterType="int" resultType="MyPageReviewInfo">
 		select o.order_id, oi.order_item_id, oi.product_id, oi.quantity, oi.order_price, o.user_id, o.ORDER_DATE, oi.review_status, oi.product_option
