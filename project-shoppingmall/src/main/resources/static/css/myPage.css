@@ -224,6 +224,9 @@ th {
 	height: 150px;
 }
 .wr-review-prname{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	font-size: 12pt;
 	font-weight: bold;
 	display: block;
@@ -231,6 +234,7 @@ th {
 	height: 80px;
 	line-height: 80px;
 	padding-right: 300px;
+	
 }
 .fa-star{
 	font-size: 28pt;
