@@ -27,4 +27,6 @@ public interface ReviewService {
 	
 	// user id로 유저 정보 가져오기
 	UserVO selectUserId(int id);
+	// 리뷰 작성하기
+	void addToReview(ReviewVO vo);
 }

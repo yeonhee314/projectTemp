@@ -1,11 +1,13 @@
 package com.choongang.shoppingmall.controller;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -178,6 +180,7 @@ public class HomeController {
 		return "product-detail";
 	}
 
+	// 상품 상세 - 리뷰
 	@GetMapping("/product-review.html")
 	public String productReview(@ModelAttribute CommVO commVO, @RequestParam("product_id") int product_id,
 			@RequestParam("category_id") int category_id, Model model) {
@@ -195,6 +198,15 @@ public class HomeController {
 
 		return "product-review";
 	}
+	// 리뷰 등록
+	@PostMapping("/submitWriteReview")
+	public ResponseEntity<Map<String, String>> submitWriteReview(@ModelAttribute ReviewVO reviewVO){
+		reviewService.addToReview(reviewVO);
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "문의 접수 완료");
+		return ResponseEntity.ok(response);
+	}
+	
 
 	// 장바구니 목록 확인
 	@GetMapping("/shoping-cart.html")

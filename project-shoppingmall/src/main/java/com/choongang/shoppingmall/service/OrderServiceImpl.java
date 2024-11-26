@@ -194,4 +194,15 @@ public class OrderServiceImpl implements OrderService{
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public Order_ItemVO selectOrderItemByOrderItemId(int order_item_id) {
+		Order_ItemVO vo = null;
+		try {
+			vo = orderDAO.selectOrderItemByOrderItemId(order_item_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
 }

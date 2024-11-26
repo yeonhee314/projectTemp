@@ -164,4 +164,14 @@ public class ReviewServiceImpl implements ReviewService{
 			}
 		return count;
 	}
+
+	@Override
+	public void addToReview(ReviewVO vo) {
+		try {
+			reviewDAO.addToReview(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

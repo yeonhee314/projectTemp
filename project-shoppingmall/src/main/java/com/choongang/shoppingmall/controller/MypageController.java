@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.choongang.shoppingmall.service.QuestionCommentService;
 import com.choongang.shoppingmall.service.AddressService;
 import com.choongang.shoppingmall.service.OrderService;
+import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.QuestionService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
@@ -37,6 +38,7 @@ import com.choongang.shoppingmall.vo.AddressVO;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.Order_ItemVO;
 import com.choongang.shoppingmall.vo.OrdersVO;
+import com.choongang.shoppingmall.vo.ProductVO;
 import com.choongang.shoppingmall.vo.QuestionVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
@@ -58,6 +60,8 @@ public class MypageController {
 	@Autowired
 	private OrderService orderService;
 	private Order_ItemVO[] orderItems;
+	@Autowired
+	private ProductService productService;
 
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
@@ -151,14 +155,20 @@ public class MypageController {
 		return "/my-reviewList.html";
 	}
 	
+	// 후기 작성
 	@GetMapping("/write-reviewPage.html")
 	public String writeReview(Model model, 
 							  @RequestParam("order_item_id") int order_item_id) {
 		if (!isUserLoggedin())
 			return "redirect:/login";
 		
+		Order_ItemVO orderItemVO = orderService.selectOrderItemByOrderItemId(order_item_id);
+		ProductVO productVO = productService.selectByProductId(orderItemVO.getProduct_id());
+				
 		UserVO userVO = getUserInfo();
 		model.addAttribute("uservo", userVO);
+		model.addAttribute("orderItemVO", orderItemVO);
+		model.addAttribute("productvo", productVO);
 		
 		return "write-reviewPage.html";
 	}
