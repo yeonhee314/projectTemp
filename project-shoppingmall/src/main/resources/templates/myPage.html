@@ -337,7 +337,7 @@
 					<div class="card-body">
 						<div class="description01">
 							<span class="icon">★[[${uservo.user_level}]]★</span> <span><b>[[${uservo.name}]]</b>
-								님 <a href="/member/modify.html" class="btn btn-link">정보관리</a></span>
+								님 <a href="/my-modify.html" class="btn btn-link">정보관리</a></span>
 						</div>
 						<p class="myshop_benefit_display_no_benefit txt_notice">
 							<strong><span><br>1,000원 이상</span></strong> 구매시 <strong><span>1%</span></strong>을
@@ -424,12 +424,13 @@
 							<thead>
 								<tr>
 									<th>주문일자</th>
+									<th>주문번호</th>
 									<th>이미지</th>
-									<th>상품정보</th>
+									<th>주문정보</th>
 									<th>수량</th>
 									<th>총 상품 금액</th>
-									<th>주문처리상태</th>
-									<th>취소/교환/반품</th>
+									<th>진행상황</th>
+									<th>취소/교환</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -437,6 +438,8 @@
 									<!-- 주문일자 -->
 									<td
 										th:text="${#temporals.format(order.order_date, 'yyyy-MM-dd')}"></td>
+									<td
+										th:text="${order.order_id}" style= "width: 8%;"></td>
 
 									 <td>
 								         <img th:if="${!#lists.isEmpty(order.orderItems)}" 
@@ -445,7 +448,8 @@
 								        />
 								    </td>
 									<td th:if="${!#lists.isEmpty(order.orderItems)}"
-										th:text="${order.orderItems[0].product_name}"></td>
+										th:text="${order.orderItems.size() > 1 ? order.orderItems[0].product_name + ' 외 ' + (order.orderItems.size() - 1) + '개' : order.orderItems[0].product_name}"
+										style= "width: 17%;"></td>
 										
 									<td th:if="${!#lists.isEmpty(order.orderItems)}"
 										th:text="${order.orderItems[0].quantity}"></td>
