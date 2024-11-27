@@ -16,6 +16,10 @@
 	<select id="selectReviewCountByUserId" parameterType="int" resultType="int">
 		select count(*) from review where user_id=#{user_id}
 	</select>
+	<!-- 유저 아이디 별 후기 가져오기 -->
+	<select id="selectReviewByUserId" parameterType="int" resultType="ReviewVO">
+		select * from review where user_id=#{user_id}
+	</select>
 	<!-- 상품 id로 리뷰 가져오기 -->
 	<select id="selectReviewId" parameterType="int" resultType="ReviewVO">
 		select * from review where product_id=#{product_id}

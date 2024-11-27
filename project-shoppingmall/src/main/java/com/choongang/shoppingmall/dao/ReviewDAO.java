@@ -30,6 +30,8 @@ public interface ReviewDAO {
 	
 	// user id로 유저 정보 가져오기
 	UserVO selectUserId(int id) throws Exception;
+	// user id별 후기 가져오기
+	List<ReviewVO> selectReviewByUserId(int user_id) throws Exception;
 	
 	// 리뷰 작성하기
 	void addToReview(ReviewVO vo) throws Exception;

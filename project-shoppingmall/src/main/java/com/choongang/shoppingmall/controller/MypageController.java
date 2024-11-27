@@ -31,6 +31,7 @@ import com.choongang.shoppingmall.service.AddressService;
 import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.QuestionService;
+import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.service.WishService;
 import com.choongang.shoppingmall.vo.QuestionCommentVO;
@@ -62,7 +63,9 @@ public class MypageController {
 	private Order_ItemVO[] orderItems;
 	@Autowired
 	private ProductService productService;
-
+	@Autowired
+	private ReviewService reviewService;
+	
 	// 로그인 여부 확인
 	public boolean isUserLoggedin() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -146,11 +149,13 @@ public class MypageController {
 
 		List<MyPageReviewInfo> infoList = orderService.selectByMyReview(userVO.getUser_id());
 		int ableReviewCount = orderService.selectByMyReviewCount(userVO.getUser_id());
+		int wroteReviewCount = reviewService.selectReviewCountByUserId(userVO.getUser_id());
 
 		model.addAttribute("uservo", userVO);
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("ableReviewCount", ableReviewCount);
 		model.addAttribute("infoList", infoList);
+		model.addAttribute("wroteReviewCount", wroteReviewCount);
 
 		return "/my-reviewList.html";
 	}
