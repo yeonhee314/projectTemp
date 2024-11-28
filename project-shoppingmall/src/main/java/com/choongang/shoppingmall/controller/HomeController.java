@@ -294,7 +294,30 @@ public class HomeController {
 	}
 	
 	@GetMapping("/searchResult")
-	public String searchResult(@RequestParam("query") String query, Model model) {
-	    return "searchResult";
+	public String searchResult(@RequestParam("query") String query, 
+	            @RequestParam(value = "p", defaultValue = "1") int currentPage,
+	            @RequestParam(value = "s", defaultValue = "8") int sizeOfPage,
+	            @RequestParam(value = "b", defaultValue = "8") int sizeOfBlock,
+	            Model model) {
+
+	    // 제품 목록과 카테고리 목록 가져오기
+	    PagingVO<ProductVO> pv = productService.getProductList(currentPage, sizeOfPage, sizeOfBlock, query, null); 
+	    List<CategoryVO> categorylist = categoryService.selectCategory();
+
+	    // 로그인 여부와 사용자 정보 가져오기
+	    boolean isLogin = isUserLoggedin();
+	    UserVO userVO = getUserInfo();
+
+	    model.addAttribute("isLogin", isLogin);
+	    model.addAttribute("uservo", userVO);
+	    model.addAttribute("pv", pv);
+	    model.addAttribute("categorylist", categorylist);
+	    model.addAttribute("query", query);
+	    model.addAttribute("newLine", "\n");
+	    model.addAttribute("br", "<br>");
+
+	    return "searchResult"; 
 	}
+
+
 }

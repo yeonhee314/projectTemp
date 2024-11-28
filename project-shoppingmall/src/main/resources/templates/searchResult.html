@@ -273,41 +273,102 @@
 	<!-- 검색 결과  -->
 <body>
 	<section class="search_container">
+
 		<!-- 검색어 표시 -->
 		<div class="search_result">
-			<span style="font-weight: bold;" th:text="'‘' + ${keyword} + '’'"></span>에
-			대한 통합 검색 결과입니다.
+			<span style="font-weight: bold;">‘[[${keyword}]]’</span>에 대한 통합 검색
+			결과입니다.
 		</div>
 
+
 		<!-- 상품 목록 -->
-		<div class="product-list">
+		<div class="product-list" id="product-list">
 			<div class="product-item" th:each="product : ${products}">
-				<!-- 상품 이미지 -->
-				<img
-					th:src="@{'/images/products/product' + ${product.product_id} + '/product-' + ${product.product_id} + '-1.jpg'}"
-					alt="상품 이미지">
+				<!-- 상품 링크 -->
+				<div class="product-link"
+					th:onclick="'location.href=\'' + @{product-detail.html(product_id=${product.product_id}, category_id=${product.category_id})} + '\''">
 
-				<div class="product-info">
-						<!-- 상품명 (링크 추가) -->
-						<a class="product-name"
-							th:href="@{product-detail.html(product_id=${product.product_id}, category_id=${product.category_id})}">
-							<span th:text="${product.product_name}"></span>
-						</a>
+					<!-- 상품 이미지 -->
+					<img
+						th:src="@{'/images/products/product' + ${product.product_id} + '/product-' + ${product.product_id} + '-1.jpg'}"
+						alt="상품 이미지" class="product-image">
 
-						<!-- 상품 가격 (링크 추가) -->
-						<a class="product-price"
-							th:href="@{product-detail.html(product_id=${product.product_id}, category_id=${product.category_id})}">
-							<br>
-							<span
-							th:text="${formattedPrices != null && formattedPrices[product.product_id] != null ? formattedPrices[product.product_id] : '가격 정보 없음'}"></span>
-						</a>
+					<!-- 상품 정보 -->
+					<div class="product-info">
+						<!-- 상품명과 찜하기 버튼을 수평으로 배치 -->
+						<div class="product-name-wish">
+							<!-- 상품명 -->
+							<div class="product-name">
+								<span th:if="${product.product_stock > 0}"
+									th:text="${product.product_name}"></span> <span
+									th:if="${product.product_stock <= 0}"
+									th:text="'[품절] ' + ${product.product_name}"></span>
+							</div>
+						</div>
+						</div>
 					</div>
+					<!-- 가격 정보 -->
+					<th:block th:if="${product.discount > 0}">
+						<!-- 원래 가격 -->
+						<span class="price-original"
+							th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"
+							style="text-decoration: line-through;"></span>
+						<!-- 할인된 가격과 할인율 -->
+						<span class="price-discount"><span
+							class="discount-text"
+							th:text="' ↪ [' + ${product.discount} + '% 할인]' + ${#numbers.formatInteger(product.getDiscountPrice(product.product_price, product.discount), 3, 'COMMA') + ' ₩'}"></span>
+						</span>
+					</th:block>
 
+					<th:block th:if="${product.discount == 0}">
+						<!-- 할인되지 않은 경우 기본 가격만 표시 -->
+						<span
+							th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"></span>
+					</th:block>
 				</div>
+
 			</div>
 
+			<!-- 페이지네이션 -->
+			<div class="custom-pagination" id="custom-pagination">
+				<ul id="custom-pagination-list">
+					<!-- 첫 페이지로 이동 (1~10 그룹일 때 비활성화) -->
+					<li id="first-page"
+						th:classappend="${disableFirstPage ? 'disabled' : ''}"><a
+						th:href="@{/search(page=1, size=${size}, keyword=${keyword})}">&lt;&lt;</a>
+					</li>
+
+					<!-- 이전 페이지 버튼 -->
+					<li id="prev-page" th:classappend="${!showPrev ? 'disabled' : ''}"
+						th:if="${startPage > 10}"><a
+						th:href="@{/search(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">&lt;</a>
+					</li>
+
+
+					<!-- 페이지 번호들 -->
+					<li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+						th:classappend="${i == currentPage ? 'active' : ''}"><a
+						class="page-link"
+						th:href="@{/search(page=${i}, size=${size}, keyword=${keyword})}"
+						th:text="${i}"></a></li>
+
+					<!-- 다음 페이지 버튼 -->
+					<li id="next-page" th:classappend="${!showNext ? 'disabled' : ''}">
+						<a
+						th:href="@{/search(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">&#62;</a>
+					</li>
+
+					<!-- 마지막 페이지로 이동 -->
+					<li id="last-page" th:classappend="${!showLast ? 'disabled' : ''}">
+						<a
+						th:href="@{/search(page=${totalPages}, size=${size}, keyword=${keyword})}">&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
 	</section>
 </body>
+
+
 
 
 
@@ -584,7 +645,8 @@
 	</div>
 </div>
 
-<!--===============================================================================================-->
+
+
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="vendor/animsition/js/animsition.min.js"></script>
@@ -804,9 +866,90 @@
     form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
 }
 
+	<!--===============================================================================================-->
+	
+  document.addEventListener("DOMContentLoaded", function () {
+	    const prevButton = document.getElementById("prev");
+	    const nextButton = document.getElementById("next");
+	    const prev10Button = document.getElementById("prev-10");
+	    const next10Button = document.getElementById("next-10");
+	    const pageLinks = document.querySelectorAll(".custom-pagination-list .page-link");
+
+	    const totalPages = /*[[${totalPages}]]*/; // Thymeleaf에서 총 페이지 수 전달
+	    let currentPage = 1;
+
+	    function updatePagination() {
+	        // 페이지 번호 업데이트
+	        Array.from(pageLinks).forEach((page, index) => {
+	            page.classList.toggle("active", index + 1 === currentPage);
+	        });
+
+	        // 비활성화된 버튼 처리
+	        prevButton.classList.toggle("disabled", currentPage === 1);
+	        nextButton.classList.toggle("disabled", currentPage === totalPages);
+	        prev10Button.classList.toggle("disabled", currentPage <= 10);
+	        next10Button.classList.toggle("disabled", currentPage + 10 > totalPages);
+	    }
+
+	    function showPage(page) {
+	        currentPage = page;
+	        updatePagination();
+	        console.log(`Now showing page ${page}`);
+
+	        // 페이지 이동 후 스크롤을 상단으로 이동
+	        window.scrollTo({
+	            top: 0,  // 상단으로 스크롤
+	            behavior: 'smooth'  // 부드러운 스크롤 효과
+	        });
+	    }
+
+	    // 페이지 링크 클릭 시
+	    pageLinks.forEach((link) => {
+	        link.addEventListener("click", function () {
+	            const clickedPage = parseInt(this.dataset.page);
+	            if (clickedPage) {
+	                showPage(clickedPage);
+	            }
+	        });
+	    });
+
+	    // '이전 페이지' 버튼 클릭
+	    prevButton.addEventListener("click", function () {
+	        if (currentPage > 1) {
+	            showPage(currentPage - 1);
+	        }
+	    });
+
+	    // '다음 페이지' 버튼 클릭
+	    nextButton.addEventListener("click", function () {
+	        if (currentPage < totalPages) {
+	            showPage(currentPage + 1);
+	        }
+	    });
+
+	    // '이전 10페이지' 버튼 클릭
+	    prev10Button.addEventListener("click", function () {
+	        if (currentPage > 10) {
+	            showPage(currentPage - 10);
+	        }
+	    });
+
+	    // '다음 10페이지' 버튼 클릭
+	    next10Button.addEventListener("click", function () {
+	        if (currentPage + 10 <= totalPages) {
+	            showPage(currentPage + 10);
+	        }
+	    });
+
+	    // 초기 페이지 설정
+	    showPage(1);
+	});
+
 	</script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
 
 </body>
+
+
 </html>
