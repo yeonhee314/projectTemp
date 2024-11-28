@@ -1,6 +1,7 @@
 package com.choongang.shoppingmall.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -27,4 +28,8 @@ public interface ReviewService {
 	
 	// user id로 유저 정보 가져오기
 	UserVO selectUserId(int id);
+	// user id별 후기 가져오기
+	List<ReviewVO> selectReviewByUserId(int user_id);
+	// 리뷰 작성하기
+	void addToReview(ReviewVO vo);
 }

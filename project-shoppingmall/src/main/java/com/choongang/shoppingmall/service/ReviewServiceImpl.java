@@ -164,4 +164,25 @@ public class ReviewServiceImpl implements ReviewService{
 			}
 		return count;
 	}
+
+	@Override
+	public void addToReview(ReviewVO vo) {
+		try {
+			reviewDAO.addToReview(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public List<ReviewVO> selectReviewByUserId(int user_id) {
+		List<ReviewVO> vo = null;
+		try {
+			vo = reviewDAO.selectReviewByUserId(user_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
 }

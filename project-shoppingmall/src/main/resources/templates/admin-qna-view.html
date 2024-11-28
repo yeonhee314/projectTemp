@@ -31,23 +31,23 @@
 		1:1 문의 내역
 	</header>
 	<nav>
-		<div class="menu-bar">
+		<div class="menu_bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
 			</div>
-			<div class="admin-users" onclick="location.href='/admin/users'">
+			<div class="admin_users" onclick="location.href='/admin/users'">
 				회원관리
 			</div>
-			<div class="admin-products" onclick="location.href='/admin/products'">
+			<div class="admin_products" onclick="location.href='/admin/products'">
 				상품관리
 			</div>
-			<div class="admin-qna" onclick="location.href='/admin/qna'">
+			<div class="admin_qna" onclick="location.href='/admin/qna'" style="font-size: 16pt; background: #ebebeb;">
 				문의관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/review'">
+			<div class="admin_review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/orders'">
+			<div class="admin_orders" onclick="location.href='/admin/orders'">
 				주문관리
 			</div>
 			<div onclick="location.href='/index.html'">
@@ -71,6 +71,10 @@
 									<td><a th:href="@{/admin/user/details(user_id=${qna.user_id})}" style="font-weight: bold;">[[${user.username}]]</a></td>
 								</tr>
 								<tr>
+									<th>전화번호</th>
+									<td>[[${user.phone}]]</td>
+								</tr>
+								<tr>
 									<th>문의유형</th>
 									<td>[[${qna.inquiryType}]]</td>
 								</tr>
@@ -85,7 +89,7 @@
 								<tr>
 									<th>문의 내용</th>
 									<td class="multi_input_row">
-									<textarea cols="10" rows="7" id="contents" name="contents" maxlength="1000" style="width: 883px;  border: none;" readonly="readonly">[[${qna.question_content}]]</textarea>											
+									<textarea cols="9" rows="6" id="contents" name="contents" maxlength="1000" style="width: 883px;  border: none;" readonly="readonly">[[${qna.question_content}]]</textarea>											
 								</tr>
 								<tr>
 									<th>파일첨부</th>

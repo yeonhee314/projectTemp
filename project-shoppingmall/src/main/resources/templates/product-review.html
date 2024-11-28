@@ -381,7 +381,6 @@
 								<th:block th:if="${pv.totalCount} > 0">
 									<th:block th:each="vo:${pv.list}">
 										<tr class="table_row">
-										
 											<td class="column-1">
 												<div class="how-review p-t-30 p-b-30">
 													<div class="top-wrap" style="display: flex; width: 900px;">
@@ -393,13 +392,17 @@
 													 </div>
 													<span class="fs-18 cl11" th:utext="${productvo.getStarRating(vo.review_rating)}"></span>
 													<span class="stext-108 cl3 p-t-23" th:text="${vo.review_rating}"></span>
-													<img class="m-t-10" th:src="@{'images/review-imgs/' + ${vo.review_img}}" alt="IMG-REVIEW">
+													<th:block th:if="${vo.review_img != null}">
+														<img class="m-t-10" th:src="@{'images/review-imgs/' + ${vo.review_img}}" alt="IMG-REVIEW">
+													</th:block>
+													<th:block th:if="${vo.review_img == null}">
+														<div></div>
+													</th:block>
 												</div>
 											</td>
 											<td class="column-2">
-												<!-- TODO : 상품 옵션 -->
 												<div class="review-wrap" style="display: inline-block;">
-													<span style="color:#a9b6b7; font-size: 8pt; margin-bottom: 10px;" th:text="${productvo.product_name} + ', 옵션 : ' + 'TODO '"></span><br />
+													<span style="color:#a9b6b7; font-size: 8pt; margin-bottom: 10px;" th:text="${productvo.product_name} + ', (' + ${@orderService.selectOrderItemByOrderItemId(vo.order_item_id).product_option} +')'"></span><br />
 													<span class="mtext-103 cl3 p-b-100" style="margin-top: -50px; font-weight: bold;" th:text="${vo.review_title}"></span><br><br>
 													<span class="stext-117 cl3 p-b-50" th:text="${vo.review_text}"></span>
 												</div>

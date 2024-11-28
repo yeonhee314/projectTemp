@@ -1,3 +1,10 @@
-<tr>
-	<td colspan="2">TODO : 작성한 리뷰</td>
-</tr>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:each="review : ${reviewList}">
+	<tr>
+		<td colspan="2">
+			<span class="stext-105" th:text="${@productService.selectByProductId(review.product_id).product_name} + ', '"></span><br />
+			<b><span class="stext-105" th:text="${review.review_title}"></span></b>
+		</td>
+	</tr>
+</th:block>

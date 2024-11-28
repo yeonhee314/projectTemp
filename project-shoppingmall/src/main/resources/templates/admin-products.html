@@ -14,6 +14,26 @@
 <link rel="stylesheet" type="text/css" href="../css/admin/admin.css"/>
 <link rel="stylesheet" type="text/css" href="../css/admin/adminPD.css">
 <script type="text/javascript">
+$(document).ready(function(){
+	if(window.location.href.indexOf('Y') > -1) {
+		$("#1").css('fontWeight','normal');
+		$("#1").css('fontSize','12pt');
+		$("#2").css('fontWeight','bold');
+		$("#2").css('fontSize','13pt');
+	}
+	if(window.location.href.indexOf('N') > -1) {
+		$("#1").css('fontWeight','normal');
+		$("#1").css('fontSize','12pt');
+		$("#3").css('fontWeight','bold');
+		$("#3").css('fontSize','13pt');
+	}
+	if(window.location.href.indexOf('http://localhost/admin/products?p=1&s=10&b=10&field=product_stock&search=0') > -1) {
+		$("#1").css('fontWeight','normal');
+		$("#1").css('fontSize','12pt');
+		$("#4").css('fontWeight','bold');
+		$("#4").css('fontSize','13pt');
+	}
+})
 //카테고리 중복확인하는 함수
 function categoryCheck(){
 	const category_name = $("#insertText").val(); // 입력한 카테고리읽기
@@ -201,23 +221,23 @@ $(document).ready(function(){
 		상품 관리
 	</header>
 	<nav>
-		<div class="menu-bar">
+		<div class="menu_bar">
 			<div class="admin" onclick="location.href='/admin'">
 				ADMIN
 			</div>
-			<div class="admin-users" onclick="location.href='/admin/users'">
+			<div class="admin_users" onclick="location.href='/admin/users'">
 				회원관리
 			</div>
-			<div class="admin-products" onclick="location.href='/admin/products'">
+			<div class="admin_products" onclick="location.href='/admin/products'" style="font-size: 16pt; background: #ebebeb;">
 				상품관리
 			</div>
-			<div class="admin-qna" onclick="location.href='/admin/qna'">
+			<div class="admin_qna" onclick="location.href='/admin/qna'">
 				문의관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/review'">
+			<div class="admin_review" onclick="location.href='/admin/review'">
 				후기관리
 			</div>
-			<div class="admin-review" onclick="location.href='/admin/orders'">
+			<div class="admin_orders" onclick="location.href='/admin/orders'">
 				주문관리
 			</div>
 			<div onclick="location.href='/index.html'">
@@ -241,10 +261,10 @@ $(document).ready(function(){
 		</table>
 			<table class="pdStatus">
 				<tr style="justify-content: center;">
-					<th class="total" style="color:blue;"><a href="/admin/products" style="font-weight: bold;">전체</a>[[${pv.pageInfo}]]</th>
-					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=Y">판매중 </a>[[${yCount}]]</td>
-					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=N">미판매 </a>[[${nCount}]]</td>
-					<td style="color:blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_stock&search=0">품절 </a>[[${soldout}]]</td>
+					<td class="total" style="color: blue;"><a href="/admin/products" style="font-weight: bold; font-size: 13pt;" id="1">전체</a>[[${pv.pageInfo}]]</td>
+					<td style="color: blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=Y" id="2">판매중 </a>[[${yCount}]]</td>
+					<td style="color: blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_status&search=N" id="3">미판매 </a>[[${nCount}]]</td>
+					<td style="color: blue;"><a href="/admin/products?p=1&s=10&b=10&field=product_stock&search=0" id="4">품절 </a>[[${soldout}]]</td>
 					<th class="pdAdd">
 						<input type="button" value="추가" class="btn btn-primary btn-sm" style="font-size: 12pt;" onclick="location.href='/admin/products/form'"/>
 					</th>

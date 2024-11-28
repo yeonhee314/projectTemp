@@ -218,3 +218,63 @@ th {
 .question-content{
 	text-align: left;
 }
+
+.wr-review-thumb{
+	width: 140px;
+	height: 150px;
+}
+.wr-review-prname{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 12pt;
+	font-weight: bold;
+	display: block;
+	text-align: left;
+	height: 80px;
+	line-height: 80px;
+	padding-right: 300px;
+	
+}
+.fa-star{
+	font-size: 28pt;
+	color: #efd61f;
+}
+.star-wrap{
+	text-align: left;
+	height: 90px;
+	margin-top: -25px;
+	letter-spacing: -3px;
+}
+.review-title2{
+	width: 755px !important;
+	height: 35px;
+	margin-left: 36px;
+	margin-top: -1px;
+	
+}
+.review-content{
+	resize: none;
+	width: 95%;
+	height: 11em;
+	margin-left: 36px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.r-c-title1{
+	display: inline;
+	position: absolute;
+	left: 0;
+	top: 15px;
+}
+.r-c-title2{
+	display: inline;
+	position: absolute;
+	left: 0;
+	top: 120px;
+}
+.review-submit{
+	position: absolute;
+	top: 535px;
+	right: 0;
+}

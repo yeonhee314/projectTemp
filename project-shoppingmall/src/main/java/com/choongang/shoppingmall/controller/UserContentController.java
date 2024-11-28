@@ -12,9 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
+import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
 import com.choongang.shoppingmall.vo.MyPageReviewInfo;
 import com.choongang.shoppingmall.vo.ProductVO;
+import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,8 @@ public class UserContentController {
 	private OrderService orderService;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private ReviewService reviewService;
 	
     @GetMapping("/membership")
     public ModelAndView getMembershipContent(HttpSession session, Model model) throws SQLException {
@@ -73,7 +77,15 @@ public class UserContentController {
     }
     
     @GetMapping("/wrote-review")
-    public ModelAndView getWroteReview(HttpSession session) {
+    public ModelAndView getWroteReview(HttpSession session, Model model) {
+    	 Integer userId = (Integer) session.getAttribute("userId");
+  	    if (userId == null) {
+  	        throw new IllegalStateException("User not logged in");
+  	    }
+ 		
+ 		List<ReviewVO> reviewList = reviewService.selectReviewByUserId(userId);
+ 		model.addAttribute("reviewList",reviewList);
+ 		model.addAttribute("productService", productService);
         return new ModelAndView("wrote-review");
     }
 }

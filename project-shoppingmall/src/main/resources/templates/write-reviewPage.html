@@ -12,6 +12,7 @@
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	href="fonts/iconic/css/material-design-iconic-font.min.css">
@@ -375,14 +376,54 @@
 				<div class="card-order">
 					<div class="card-header">
 						<h5><b>리뷰 작성</b></h5>
+						<span class="txt_notice" style="line-height: 90%;">이 상품의 품질에 대해서 얼마나 만족하시나요?</span>
 					</div>
-					<div class="card-body">
-						<table class="table table-striped">
+					<form id="frmapply" name="frmapply" enctype="multipart/form-data">
+					<div class="card-body" style="position: relative;">
+						<table class="table">
 							<tbody>
-								<!-- TODO : 리뷰작성 폼 작성 -->
+								<tr class="tr-1">
+									<td class="td-1">
+										<img class="wr-review-thumb" th:src="'images/products/product' + ${productvo.product_id} + '/product-'+ ${productvo.product_id} + '-1.jpg'" alt="IMG-PRODUCT" />
+									</td>
+									<td class="td-1">
+										<span class="stext-105 wr-review-prname" th:text="${productvo.product_name}+', ' + ${orderItemVO.quantity} + '개(' + ${orderItemVO.product_option} + ')'"></span><br>
+										<!-- 기본 테두리 별 다섯개를 버튼으로 띄운다. -->
+										<div class="star-wrap">
+											<span class="stars">
+												<th:block th:each="num : ${#numbers.sequence(1, 5)}">
+													<a th:class="'starButton' + ${num}" class="review-star" th:onclick="inputStarScore([[${num}]])"><i class="change-star fa-regular fa-star"></i></a>
+												</th:block>
+											</span>
+											<span class="stext-105 star-score">(필수)<span style="color: red">*</span></span>
+											
+										</div>
+									</td>
+								</tr>
+								<tr class="tr-1">
+									<td><span class="stext-105">상세리뷰</span></td>
+									<td style="margin: 20px; position: relative;">
+										<p class="stext-105 r-c-title1">제목 </p><input class="review-title2" type="text" maxlength=50 style="text-align:left;" placeholder="제목을 입력하세요." required="required"/>
+										<p class="stext-105 r-c-title2">내용 </p><textarea class="review-content stext-105" rows="4" cols="50" placeholder="다른 고객님에게 도움이 되도록 상품에 대한 솔직한 평가를 남겨주세요." required="required"></textarea>
+									</td>
+								</tr>
+								<tr class="tr-1">
+									<td><span class="stext-105">사진첨부</span></td>
+									<td style="position: relative; height: 60px;">
+									<input type="file" id="fileUploadBtn" accept=".jpg,.png,.gif" style="display: none;" onchange="updateFileName()" />
+										
+										<span class="stext-105" id="fileName" style="position: absolute; top: 20px; left: 120px;">0 / 1</span>
+										<span class="txt_notice" style="position: absolute; top: 21px; left: 160px;">사진은 최대 10MB 이하의 JPG, PNG, GIF 파일 1장만 첨부 가능합니다.</span>
+									</td>
+								</tr>
 							</tbody>
 						</table>
+						<span class="txt_notice">· 상품 품질과 관계없는 내용은 비공개 처리될 수 있습니다.</span><br>
+						<span class="txt_notice">· 작성된 리뷰는 삭제 전까지 상품 리뷰에 공개되고, 마이페이지 > 후기관리에서 수정 및 삭제가 가능합니다.</span>
+						<button type="submit" class="btn btn-primary" style="position: absolute; bottom: 0; right: 10px;">등록</button>
 					</div>
+					</form>
+					<button class="btn btn-primary" style="position: absolute; top: 463px; left: 380px;" onclick="document.getElementById('fileUploadBtn').click();">파일 선택</button>
 				</div>
 			</div>
 		</div>
@@ -524,7 +565,9 @@
 	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
 		$('.js-pscroll').each(function(){
 			$(this).css('position','relative');
 			$(this).css('overflow','hidden');
@@ -538,6 +581,104 @@
 				ps.update();
 			})
 		});
+		
+		var starScore = 0;
+		// 별점 
+		function inputStarScore(index){
+			starScore = index;
+			for (let i = 1; i <= 5; i++) {
+				$('.starButton' + i + ' .change-star').removeClass('fa-solid').addClass('fa-regular');
+			}
+			for (let i = 1; i <= index; i++) {
+		        $('.starButton' + i + ' .change-star').removeClass('fa-regular').addClass('fa-solid');
+		    }
+			
+			var score_text = '';
+			switch(index){
+			case 1: score_text = '나쁨'; break;
+			case 2: score_text = '별로'; break;
+			case 3: score_text = '보통'; break;
+			case 4: score_text = '좋음'; break;
+			case 5: score_text = '최고'; break;
+			}
+			$('.star-score').html(score_text);
+		}
+		
+		var reviewImg = '';
+		function updateFileName(){
+			const fileInput = document.getElementById('fileUploadBtn');
+			 const fileNameSpan = document.getElementById('fileName');
+			const file = fileInput.files[0];
+			if (file) {
+	        	fileNameSpan.textContent = '1 / 1';
+	        	reviewImg = file.name;
+	    	} else {
+	        	fileNameSpan.textContent = '0 / 1'; 
+	    	}
+		}
+		
+		var userId = /*[[${uservo.user_id}]]*/;
+		var categoryId = /*[[${productvo.category_id}]]*/;
+		var productId = /*[[${productvo.product_id}]]*/;
+		var orderItemId = /*[[${orderItemVO.order_item_id}]]*/;
+		$('#frmapply').on('submit', function(e){
+			    e.preventDefault();
+			    console.log(starScore);
+			    if(starScore === 0)
+			    {
+			    	document.querySelector(".stars").focus();
+		            Swal.fire({
+		                icon: 'warning',
+		                title: '별점은 필수선택입니다.',
+		                text: '별점을 선택해주세요.',
+		                confirmButtonText: '확인'
+		            });
+		            return;
+			    }
+			    
+			    const formData = new FormData(this);
+			    formData.append('user_id', userId);
+			    formData.append('category_id', categoryId);
+			    formData.append('review_title', $('.review-title2').val());
+			    formData.append('review_text', $('.review-content').val());
+			    formData.append('review_rating', starScore);
+			    formData.append('review_img', reviewImg);
+			    formData.append('product_id', productId);
+			    formData.append('order_item_id', orderItemId);
+			    
+			 
+			    const fileInput = document.getElementById('fileUploadBtn');
+			    const uploadfile = fileInput.files[0];
+			    console.log('uploadfile : ' + uploadfile);
+			    if (uploadfile) {
+			        formData.append('uploadfile', uploadfile);
+			    } 
+			    
+			   $.ajax({
+			        url: '/submitWriteReview',
+			        type: 'POST',
+			        processData: false,
+			        contentType: false,
+			        data: formData,
+			        success: function(response) {
+			            Swal.fire({
+			                title: '후기가 작성되었습니다.',
+			                text: '상품과 관계없는 내용은 비공개 처리될 수 있습니다.',
+			                icon: 'success',
+			            }).then((willReload) => {
+			                if (willReload) {
+			                    window.location.href = '/my-reviewList.html';
+			                }
+			            });
+			        },
+			        error: function(xhr, status, error) {
+			            console.error('Error : ', error);
+			            alert('리뷰 작성에 실패했습니다.');
+			        }
+			    });
+			    
+			});
+		/*]]>*/
 	</script>
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
@@ -546,8 +687,5 @@
 	<script src="vendor/sweetalert/sweetalert.min.js"></script>
 <!--===============================================================================================-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script type="text/javascript">
- 	
-	</script>
 </body>
 </html>

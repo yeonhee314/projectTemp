@@ -471,10 +471,42 @@ public class AdminController {
 			OrdersVO ov = orderService.selectOrderById(order_id);
 			UserVO uv = userService.selectUserById(user_id);
 			List<Order_ItemVO> iv = orderService.selectOrderItemByOrderId(order_id);
+			Order_ItemVO oiv = orderService.paymentPriceInfo(order_id);
 			model.addAttribute("ov", ov);
+			model.addAttribute("oiv", oiv);
 			model.addAttribute("uv", uv);
 			model.addAttribute("iv", iv);
 			return "admin-orders-view";
+		}
+		@GetMapping("/orderShipping")
+		public String adminOrderShippingGet() {			
+			return "admin-orders-view";
+		}
+		// 배송중 처리
+		@PostMapping("/orderShipping")
+		public String adminOrderShippingPost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.orderStatusUpdateShipping(order_id);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
+		}
+		@GetMapping("/deliveryOk")
+		public String adminOrderDeliveryGet() {			
+			return "admin-orders-view";
+		}
+		// 배송완료 처리
+		@PostMapping("/deliveryOk")
+		public String adminOrderDeliveryPost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.orderStatusUpdateDelivery(order_id);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
+		}
+		@GetMapping("/invoiceOk")
+		public String adminOrderInvoiceGet() {			
+			return "admin-orders-view";
+		}
+		// 송장번호 저장
+		@PostMapping("/invoiceOk")
+		public String adminOrderInvoicePost(@ModelAttribute OrdersVO ordersVO,Integer order_id, Integer user_id) {
+			orderService.updateInvoice(ordersVO);
+			return "redirect:/admin/orders/view?order_id="+order_id +"&user_id="+user_id;
 		}
 		// 토스트 에디터 이미지 처리
 		@ResponseBody

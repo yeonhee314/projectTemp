@@ -16,6 +16,10 @@
 	<select id="selectReviewCountByUserId" parameterType="int" resultType="int">
 		select count(*) from review where user_id=#{user_id}
 	</select>
+	<!-- 유저 아이디 별 후기 가져오기 -->
+	<select id="selectReviewByUserId" parameterType="int" resultType="ReviewVO">
+		select * from review where user_id=#{user_id}
+	</select>
 	<!-- 상품 id로 리뷰 가져오기 -->
 	<select id="selectReviewId" parameterType="int" resultType="ReviewVO">
 		select * from review where product_id=#{product_id}
@@ -86,4 +90,9 @@
 	<select id="selectUserId" parameterType="int" resultType="UserVO">
 		select * from users where user_id = (select user_id from review where user_id=#{user_id})
 	</select>
+	
+	<!-- 리뷰 작성하기 -->
+	<insert id="addToReview" parameterType="ReviewVO">
+		insert into review values (review_id_seq.nextval, #{user_id}, #{category_id}, #{review_title}, #{review_text}, #{review_rating}, sysdate, #{review_img}, #{product_id}, #{order_item_id}) 
+	</insert>
 </mapper>  

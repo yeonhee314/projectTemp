@@ -417,8 +417,10 @@
 												<th>총 상품 금액</th>
 											</tr>
 											<th:block th:each="item:${cartItems}">
-												<tr>
-													<td style="text-align: center; border-bottom: 1px solid rgba(169, 169, 169, 0.5);"><img th:src="@{${'/images/product-' + item.productId + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: 120px;" /></td>
+												<tr>	
+													<td style="text-align: center; border-bottom: 1px solid rgba(169, 169, 169, 0.5);">
+														<img th:src="@{'images/products/product' + ${item.productId} + '/product-' + ${item.productId} + '-1.jpg'}" style="width: 100px; height: 120px;" />
+													</td>
 													<td style="border-bottom: 1px solid rgba(169, 169, 169, 0.5);">
 														<a class="stext-106" th:href="@{product-detail.html(product_id=${item.productId}, category_id=${item.productCategory})}" th:text="${item.productName}"></a><br><br>
 														<span class="txt_notice" th:text="${'옵션 : ' + item.productOption}"></span>
@@ -450,7 +452,9 @@
 												<th>총 상품 금액</th>
 											</tr>
 											<tr style="border-bottom: 1px solid rgba(169, 169, 169, 0.5);">
-												<td style="text-align: center;"><img th:src="@{${'/images/product-' + productvo.product_id + '-1.jpg'}}" alt="상품 이미지" style="width: 100px; height: auto;" /></td>
+												<td style="text-align: center;">
+													<img th:src="@{'images/products/product' + ${productvo.product_id} + '/product-' + ${productvo.product_id} + '-1.jpg'}" style="width: 100px; height: 120px;" />
+												</td>
 												<td style="padding: 20px;">
 													<a class="stext-106" th:href="@{product-detail.html(product_id=${productvo.product_id}, category_id=${productvo.category_id})}" th:text="${productvo.product_name}"></a><br><br>
 													<span class="txt_notice" th:text="${'옵션 : ' + productoption}"></span>
