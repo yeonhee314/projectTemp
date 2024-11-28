@@ -1,5 +1,6 @@
 package com.choongang.shoppingmall.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,11 +51,7 @@ public class ReviewServiceImpl implements ReviewService{
 			int totalCount = reviewDAO.selectReviewCount(id);
 			pv = new PagingVO<>(totalCount, currentPage, sizeOfPage, sizeOfBlock);
 			if(totalCount > 0) {
-				HashMap<String, Integer> map = new HashMap<>();
-				map.put("startNo", pv.getStartNo());
-				map.put("endNo", pv.getEndNo());
-				map.put("product_id", id);
-				pv.setList(reviewDAO.selectReviewList(map));
+				pv.setList(reviewDAO.selectReviewList(id));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,6 +165,26 @@ public class ReviewServiceImpl implements ReviewService{
 	@Override
 	public void addToReview(ReviewVO vo) {
 		try {
+			String projectDir = System.getProperty("user.dir");
+			String uploadDir = projectDir + "/src/main/resources/static/images/review-imgs";
+			
+			File dir = new File(uploadDir);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			if(vo.getUploadfile() != null && !vo.getUploadfile().isEmpty()) {
+				if(!dir.exists()) {
+					dir.mkdirs();
+				}
+				String fileName = vo.getUploadfile().getOriginalFilename();
+				File file = new File(uploadDir, fileName);
+				log.info("파일 저장 경로 : /images/review-imgs/" + fileName);
+				vo.getUploadfile().transferTo(file);
+				vo.setReview_img("/images/review-imgs/" + fileName);
+				
+			}else {
+				vo.setReview_img("N");
+			}
 			reviewDAO.addToReview(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,5 +201,44 @@ public class ReviewServiceImpl implements ReviewService{
 			e.printStackTrace();
 		}
 		return vo;
+	}
+
+	@Override
+	public void deleteToReview(int review_id) {
+		try {
+			reviewDAO.deleteToReview(review_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void updateToReview(ReviewVO vo) {
+		try {
+			String projectDir = System.getProperty("user.dir");
+			String uploadDir = projectDir + "/src/main/resources/static/images/review-imgs";
+			
+			File dir = new File(uploadDir);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			if(vo.getUploadfile() != null && !vo.getUploadfile().isEmpty()) {
+				if(!dir.exists()) {
+					dir.mkdirs();
+				}
+				String fileName = vo.getUploadfile().getOriginalFilename();
+				File file = new File(uploadDir, fileName);
+				log.info("파일 저장 경로 : /images/review-imgs/" + fileName);
+				vo.getUploadfile().transferTo(file);
+				vo.setReview_img("/images/review-imgs/" + fileName);
+				
+			}else {
+				vo.setReview_img("N");
+			}
+			reviewDAO.updateToReview(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

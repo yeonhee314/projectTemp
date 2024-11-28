@@ -373,6 +373,9 @@
 						</ul>
 					</div>
 				</div>
+				
+				<!-- 작성 -->
+				<th:block th:if="${reviewvo == null}">
 				<div class="card-order">
 					<div class="card-header">
 						<h5><b>리뷰 작성</b></h5>
@@ -388,7 +391,6 @@
 									</td>
 									<td class="td-1">
 										<span class="stext-105 wr-review-prname" th:text="${productvo.product_name}+', ' + ${orderItemVO.quantity} + '개(' + ${orderItemVO.product_option} + ')'"></span><br>
-										<!-- 기본 테두리 별 다섯개를 버튼으로 띄운다. -->
 										<div class="star-wrap">
 											<span class="stars">
 												<th:block th:each="num : ${#numbers.sequence(1, 5)}">
@@ -396,15 +398,17 @@
 												</th:block>
 											</span>
 											<span class="stext-105 star-score">(필수)<span style="color: red">*</span></span>
-											
 										</div>
 									</td>
 								</tr>
 								<tr class="tr-1">
 									<td><span class="stext-105">상세리뷰</span></td>
 									<td style="margin: 20px; position: relative;">
-										<p class="stext-105 r-c-title1">제목 </p><input class="review-title2" type="text" maxlength=50 style="text-align:left;" placeholder="제목을 입력하세요." required="required"/>
-										<p class="stext-105 r-c-title2">내용 </p><textarea class="review-content stext-105" rows="4" cols="50" placeholder="다른 고객님에게 도움이 되도록 상품에 대한 솔직한 평가를 남겨주세요." required="required"></textarea>
+										<p class="stext-105 r-c-title1">제목 </p>
+										<input class="review-title2" type="text" maxlength=50 style="text-align:left;" placeholder="제목을 입력하세요." required="required"/>
+										
+										<p class="stext-105 r-c-title2">내용 </p>
+										<textarea class="review-content stext-105" rows="4" cols="50" placeholder="다른 고객님에게 도움이 되도록 상품에 대한 솔직한 평가를 남겨주세요." required="required"></textarea>
 									</td>
 								</tr>
 								<tr class="tr-1">
@@ -425,6 +429,95 @@
 					</form>
 					<button class="btn btn-primary" style="position: absolute; top: 463px; left: 380px;" onclick="document.getElementById('fileUploadBtn').click();">파일 선택</button>
 				</div>
+				</th:block>
+				
+				<!-- 리뷰 수정 -->
+				<th:block th:if="${reviewvo != null}">
+					<div class="card-order">
+					<div class="card-header">
+						<h5><b>리뷰 수정</b></h5>
+						<span class="txt_notice" style="line-height: 90%;">이 상품의 품질에 대해서 얼마나 만족하시나요?</span>
+					</div>
+					<form id="frmmodify" name="frmapply" enctype="multipart/form-data">
+					<div class="card-body" style="position: relative;">
+						<table class="table">
+							<tbody>
+								<tr class="tr-1">
+									<td class="td-1">
+										<img class="wr-review-thumb" th:src="'images/products/product' + ${productvo.product_id} + '/product-'+ ${productvo.product_id} + '-1.jpg'" alt="IMG-PRODUCT" />
+									</td>
+									<td class="td-1">
+										<span class="stext-105 wr-review-prname" th:text="${productvo.product_name}+', ' + ${orderItemVO.quantity} + '개(' + ${orderItemVO.product_option} + ')'"></span><br>
+										<div class="star-wrap">
+											<span class="stars">
+												<th:block th:each="num : ${#numbers.sequence(1, 5)}">
+													<th:block th:if="${reviewvo != null}">
+														<script th:inline="javascript">
+															var star = /*[[${reviewvo.review_rating}]]*/;
+															for (let i = 1; i <= 5; i++) {
+																$('.starButton' + i + ' .change-star').removeClass('fa-solid').addClass('fa-regular');
+															}
+															for (let i = 1; i <= star; i++) {
+													   	     $('.starButton' + i + ' .change-star').removeClass('fa-regular').addClass('fa-solid');
+													   		}
+														</script>
+													</th:block>
+													<a th:class="'starButton' + ${num}" class="review-star" th:onclick="inputStarScore([[${num}]])"><i class="change-star fa-regular fa-star"></i></a>
+												</th:block>
+											</span>
+											<span class="stext-105 star-score"></span>
+											<th:block th:if="${reviewvo != null}">
+												<script th:inline="javascript">
+													var star = /*[[${reviewvo.review_rating}]]*/;
+													var score_text = '';
+													switch(star){
+													case '1': score_text = '나쁨'; break;
+													case '2': score_text = '별로'; break;
+													case '3': score_text = '보통'; break;
+													case '4': score_text = '좋음'; break;
+													case '5': score_text = '최고'; break;
+													}
+												$('.star-score').html(score_text);
+												</script>
+											</th:block>
+										</div>
+									</td>
+								</tr>
+								<tr class="tr-1">
+									<td><span class="stext-105">상세리뷰</span></td>
+									<td style="margin: 20px; position: relative;">
+										<p class="stext-105 r-c-title1">제목 </p>
+										<input class="review-title2" type="text" maxlength=50 style="text-align:left;" placeholder="제목을 입력하세요." th:value="${reviewvo.review_title}" required="required"/>
+										
+										<p class="stext-105 r-c-title2">내용 </p>
+										<textarea class="review-content stext-105" rows="4" cols="50" placeholder="다른 고객님에게 도움이 되도록 상품에 대한 솔직한 평가를 남겨주세요." th:value="${reviewvo.review_text}" required="required">[[${reviewvo.review_text}]]</textarea>
+									</td>
+								</tr>
+								<tr class="tr-1">
+									<td><span class="stext-105">사진첨부</span></td>
+									<td style="position: relative; height: 60px;">
+									<input type="file" id="fileUploadBtn" accept=".jpg,.png,.gif" style="display: none;" th:onchange="updateFileName()" />
+										<span class="stext-105" id="fileName" style="position: absolute; top: 20px; left: 120px;">
+											<th:block th:if="${reviewvo.review_img != 'N'}">
+												1 / 1
+											</th:block>
+											<th:block th:if="${reviewvo.review_img == 'N'}">
+												0 / 1
+											</th:block>
+										</span>
+										<span class="txt_notice" style="position: absolute; top: 21px; left: 160px;">사진은 최대 10MB 이하의 JPG, PNG, GIF 파일 1장만 첨부 가능합니다.</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<span class="txt_notice">· 상품 품질과 관계없는 내용은 비공개 처리될 수 있습니다.</span><br>
+						<span class="txt_notice">· 작성된 리뷰는 삭제 전까지 상품 리뷰에 공개되고, 마이페이지 > 후기관리에서 수정 및 삭제가 가능합니다.</span>
+						<button type="submit" class="btn btn-primary" style="position: absolute; bottom: 0; right: 10px;">등록</button>
+					</div>
+					</form>
+					<button class="btn btn-primary" style="position: absolute; top: 463px; left: 380px;" onclick="document.getElementById('fileUploadBtn').click();">파일 선택</button>
+				</div>
+				</th:block>
 			</div>
 		</div>
 	</div>
@@ -607,7 +700,7 @@
 		var reviewImg = '';
 		function updateFileName(){
 			const fileInput = document.getElementById('fileUploadBtn');
-			 const fileNameSpan = document.getElementById('fileName');
+			const fileNameSpan = document.getElementById('fileName');
 			const file = fileInput.files[0];
 			if (file) {
 	        	fileNameSpan.textContent = '1 / 1';
@@ -617,13 +710,14 @@
 	    	}
 		}
 		
+		var reviewId = /*[[${reviewvo.review_id}]]*/;
 		var userId = /*[[${uservo.user_id}]]*/;
 		var categoryId = /*[[${productvo.category_id}]]*/;
 		var productId = /*[[${productvo.product_id}]]*/;
 		var orderItemId = /*[[${orderItemVO.order_item_id}]]*/;
+		// 리뷰 작성
 		$('#frmapply').on('submit', function(e){
 			    e.preventDefault();
-			    console.log(starScore);
 			    if(starScore === 0)
 			    {
 			    	document.querySelector(".stars").focus();
@@ -635,7 +729,6 @@
 		            });
 		            return;
 			    }
-			    
 			    const formData = new FormData(this);
 			    formData.append('user_id', userId);
 			    formData.append('category_id', categoryId);
@@ -645,15 +738,13 @@
 			    formData.append('review_img', reviewImg);
 			    formData.append('product_id', productId);
 			    formData.append('order_item_id', orderItemId);
-			    
-			 
+			    formData.append('review_id', reviewId);
+			   
 			    const fileInput = document.getElementById('fileUploadBtn');
 			    const uploadfile = fileInput.files[0];
-			    console.log('uploadfile : ' + uploadfile);
 			    if (uploadfile) {
 			        formData.append('uploadfile', uploadfile);
-			    } 
-			    
+			    }
 			   $.ajax({
 			        url: '/submitWriteReview',
 			        type: 'POST',
@@ -676,7 +767,48 @@
 			            alert('리뷰 작성에 실패했습니다.');
 			        }
 			    });
-			    
+			});
+		
+		// 리뷰 수정
+		$('#frmmodify').on('submit', function(e){
+			    e.preventDefault();
+			    const formData = new FormData(this);
+			    formData.append('user_id', userId);
+			    formData.append('category_id', categoryId);
+			    formData.append('review_title', $('.review-title2').val());
+			    formData.append('review_text', $('.review-content').val());
+			    formData.append('review_rating', starScore);
+			    formData.append('review_img', reviewImg);
+			    formData.append('product_id', productId);
+			    formData.append('order_item_id', orderItemId);
+			    formData.append('review_id', reviewId);
+			    const fileInput = document.getElementById('fileUploadBtn');
+			    const uploadfile = fileInput.files[0];
+			    if (uploadfile) {
+			        formData.append('uploadfile', uploadfile);
+			    }
+			   $.ajax({
+			        url: '/updateToReview',
+			        type: 'POST',
+			        processData: false,
+			        contentType: false,
+			        data: formData,
+			        success: function(response) {
+			            Swal.fire({
+			                title: '후기가 수정되었습니다.',
+			                text: '상품과 관계없는 내용은 비공개 처리될 수 있습니다.',
+			                icon: 'success',
+			            }).then((willReload) => {
+			                if (willReload) {
+			                    window.location.href = '/my-reviewList.html';
+			                }
+			            });
+			        },
+			        error: function(xhr, status, error) {
+			            console.error('Error : ', error);
+			            alert('후기 수정에 실패했습니다.');
+			        }
+			    });
 			});
 		/*]]>*/
 	</script>

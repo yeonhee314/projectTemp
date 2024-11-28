@@ -159,25 +159,6 @@ public class MypageController {
 
 		return "/my-reviewList.html";
 	}
-	
-	// 후기 작성
-	@GetMapping("/write-reviewPage.html")
-	public String writeReview(Model model, 
-							  @RequestParam("order_item_id") int order_item_id) {
-		if (!isUserLoggedin())
-			return "redirect:/login";
-		
-		Order_ItemVO orderItemVO = orderService.selectOrderItemByOrderItemId(order_item_id);
-		ProductVO productVO = productService.selectByProductId(orderItemVO.getProduct_id());
-				
-		UserVO userVO = getUserInfo();
-		model.addAttribute("uservo", userVO);
-		model.addAttribute("orderItemVO", orderItemVO);
-		model.addAttribute("productvo", productVO);
-		
-		return "write-reviewPage.html";
-	}
-	
 
 	// 문의 내역
 	@GetMapping("/my-question.html")

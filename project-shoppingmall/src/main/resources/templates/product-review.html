@@ -392,11 +392,8 @@
 													 </div>
 													<span class="fs-18 cl11" th:utext="${productvo.getStarRating(vo.review_rating)}"></span>
 													<span class="stext-108 cl3 p-t-23" th:text="${vo.review_rating}"></span>
-													<th:block th:if="${vo.review_img != null}">
-														<img class="m-t-10" th:src="@{'images/review-imgs/' + ${vo.review_img}}" alt="IMG-REVIEW">
-													</th:block>
-													<th:block th:if="${vo.review_img == null}">
-														<div></div>
+													<th:block th:if="${vo.review_img != 'N'}">
+														<img class="m-t-10" th:src="@{${vo.review_img}}" alt="IMG-REVIEW">
 													</th:block>
 												</div>
 											</td>

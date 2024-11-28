@@ -40,22 +40,8 @@
 	</select>
 	
 	<!-- 상품 id별 리뷰 리스트 -->
-	<select id="selectReviewList" parameterType="hashmap" resultType="ReviewVO">
-		<![CDATA[
-		select 
-			R.*
-		from
-		(
-			select 
-				rownum rnum, Q.*
-			from
-				(select * from review order by product_id desc) Q
-			where
-				rownum<=#{endNo}
-		) R
-		where
-			rnum >= #{startNo} and product_id=#{product_id}
-		]]>
+	<select id="selectReviewList" parameterType="int" resultType="ReviewVO">
+		select * from review where product_id=#{product_id}
 	</select>
 	<!-- 5. 한 페이지 얻기 -->
 	<select id="selectReviewPage" parameterType="hashmap" resultType="ReviewVO">
@@ -95,4 +81,15 @@
 	<insert id="addToReview" parameterType="ReviewVO">
 		insert into review values (review_id_seq.nextval, #{user_id}, #{category_id}, #{review_title}, #{review_text}, #{review_rating}, sysdate, #{review_img}, #{product_id}, #{order_item_id}) 
 	</insert>
+	
+	<!-- 리뷰 수정하기 -->
+	<update id="updateToReview" parameterType="ReviewVO">
+		update review set review_title=#{review_title}, review_text=#{review_text}, review_rating=#{review_rating}, review_date=sysdate, review_img=#{review_img} where review_id=#{review_id}
+	</update>
+	
+	<!-- 리뷰 삭제하기 -->
+	<delete id="deleteToReview" parameterType="int">
+		delete from review where review_id=#{review_id}
+	</delete>
+	
 </mapper>  

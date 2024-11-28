@@ -563,6 +563,7 @@
 	}
 	
 	var ableReviewCount = /*[[${ableReviewCount}]]*/;
+	var wroteReviewCount = /*[[${wroteReviewCount}]]*/;
 	var infoList = /*[[${infoList}]]*/;
 	
 	function loadContent(section) {
@@ -592,6 +593,12 @@
 						contentArea.innerHTML += emptyRow;
 						return;
 					}
+	            }else if(section === 'wrote'){
+					if(wroteReviewCount == 0){
+						var emptyRow = '<tr><td colspan="2" class="text-center empty-tb">작성된 리뷰가 없습니다.</td></tr>';
+						contentArea.innerHTML += emptyRow;
+						return;
+					}
 	            }
 	            contentArea.innerHTML += data;
 	        })
@@ -608,7 +615,7 @@
 		window.location.href= '/write-reviewPage.html?order_item_id=' + order_item_id;
 	}
 	
-	
+ 	// 리뷰 작성 - 리뷰 숨기기
 	function deleteProduct(order_item_id){	
 		event.stopPropagation();
 		Swal.fire({
@@ -637,8 +644,45 @@
 						Swal.fire('오류 발생', '숨기기 중 문제가 발생했습니다.', 'error');
 					}
 				});
-				//location.href = '/deleteQuestion(question_id, user_id)';
 			} 
+		});
+	}
+ 	
+ 	// 작성한 리뷰 - 수정
+	function modifyReview(order_item_id, review_id){
+		event.preventDefault();
+		window.location.href= '/modify-reviewPage.html?order_item_id=' + order_item_id + '&' + 'review_id=' + review_id;
+	}
+	
+	// 작성한 리뷰 - 삭제
+	function deleteReview(review_id){
+		event.stopPropagation();
+		Swal.fire({
+			icon: 'question',
+			title: '삭제 시 복구나 재등록이 불가능합니다.\n정말 삭제하시겠습니까?',
+			showCancelButton: true,
+			confirmButtonText: '예',
+			cancelButtonText: '아니오',
+			reverseButtons: true,
+			customClass: {
+                title: 'small-title'  
+            }
+		}).then((result) => {
+			 if(result.isConfirmed){
+				$.ajax({
+					url: '/deleteToReview',
+					type: 'POST',
+					data: {
+						review_id : review_id
+					},
+					success: function(response){
+						location.reload();
+					},
+					error: function(xhr, status, error){
+						Swal.fire('오류 발생', '삭제 중 문제가 발생했습니다.', 'error');
+					}
+				});
+			}
 		});
 	}
 </script>

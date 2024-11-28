@@ -2,13 +2,11 @@ package com.choongang.shoppingmall.controller;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.shoppingmall.service.CartService;
 import com.choongang.shoppingmall.service.CategoryService;
-import com.choongang.shoppingmall.service.OrderService;
 import com.choongang.shoppingmall.service.ProductService;
 import com.choongang.shoppingmall.service.ReviewService;
 import com.choongang.shoppingmall.service.UserService;
@@ -33,7 +30,6 @@ import com.choongang.shoppingmall.vo.CategoryVO;
 import com.choongang.shoppingmall.vo.CommVO;
 import com.choongang.shoppingmall.vo.PagingVO;
 import com.choongang.shoppingmall.vo.ProductVO;
-import com.choongang.shoppingmall.vo.ReviewVO;
 import com.choongang.shoppingmall.vo.UserVO;
 import com.choongang.shoppingmall.vo.WishVO;
 
@@ -55,8 +51,6 @@ public class HomeController {
 	private UserService userService;
 	@Autowired
 	private CartService cartService;
-	@Autowired
-	private OrderService orderService;
 
 	private boolean isWish = false;
 
@@ -190,37 +184,6 @@ public class HomeController {
 		return "product-detail";
 	}
 
-	// 상품 상세 - 리뷰
-	@GetMapping("/product-review.html")
-	public String productReview(@ModelAttribute CommVO commVO, @RequestParam("product_id") int product_id,
-			@RequestParam("category_id") int category_id, Model model) {
-		PagingVO<ReviewVO> pv = reviewService.getReviewList(product_id, commVO.getCurrentPage(), commVO.getSizeOfPage(),
-				commVO.getSizeOfBlock());
-		ProductVO productVO = productService.selectByProductId(product_id);
-		CategoryVO categoryVO = categoryService.selectCategoryId(category_id);
-		UserVO userVO = getUserInfo();
-		
-		model.addAttribute("pv", pv);
-		model.addAttribute("productvo", productVO);
-		model.addAttribute("categoryvo", categoryVO);
-		model.addAttribute("uservo", userVO);
-		model.addAttribute("userService", userService);
-		model.addAttribute("orderService", orderService);
-		
-
-		return "product-review";
-	}
-	// 리뷰 등록
-	@PostMapping("/submitWriteReview")
-	public ResponseEntity<Map<String, String>> submitWriteReview(@ModelAttribute ReviewVO reviewVO){
-		reviewService.addToReview(reviewVO);
-		orderService.updateReviewStatus(reviewVO.getOrder_item_id());
-		Map<String, String> response = new HashMap<>();
-		response.put("message", "문의 접수 완료");
-		return ResponseEntity.ok(response);
-	}
-	
-
 	// 장바구니 목록 확인
 	@GetMapping("/shoping-cart.html")
 	public String shopingCart(HttpSession session, Model model) throws SQLException {
@@ -318,31 +281,29 @@ public class HomeController {
 		return "orderComplete"; 
 	}
 	
-	@GetMapping("/searchResult")
-	public String searchResult(@RequestParam("query") String query, 
-	            @RequestParam(value = "p", defaultValue = "1") int currentPage,
-	            @RequestParam(value = "s", defaultValue = "8") int sizeOfPage,
-	            @RequestParam(value = "b", defaultValue = "8") int sizeOfBlock,
-	            Model model) {
+    @GetMapping("/searchResult")
+    public String searchResult(@RequestParam("query") String query, 
+                @RequestParam(value = "p", defaultValue = "1") int currentPage,
+                @RequestParam(value = "s", defaultValue = "8") int sizeOfPage,
+                @RequestParam(value = "b", defaultValue = "8") int sizeOfBlock,
+                Model model) {
 
-	    // 제품 목록과 카테고리 목록 가져오기
-	    PagingVO<ProductVO> pv = productService.getProductList(currentPage, sizeOfPage, sizeOfBlock, query, null); 
-	    List<CategoryVO> categorylist = categoryService.selectCategory();
+        // 제품 목록과 카테고리 목록 가져오기
+        PagingVO<ProductVO> pv = productService.getProductList(currentPage, sizeOfPage, sizeOfBlock, query, null); 
+        List<CategoryVO> categorylist = categoryService.selectCategory();
 
-	    // 로그인 여부와 사용자 정보 가져오기
-	    boolean isLogin = isUserLoggedin();
-	    UserVO userVO = getUserInfo();
+        // 로그인 여부와 사용자 정보 가져오기
+        boolean isLogin = isUserLoggedin();
+        UserVO userVO = getUserInfo();
 
-	    model.addAttribute("isLogin", isLogin);
-	    model.addAttribute("uservo", userVO);
-	    model.addAttribute("pv", pv);
-	    model.addAttribute("categorylist", categorylist);
-	    model.addAttribute("query", query);
-	    model.addAttribute("newLine", "\n");
-	    model.addAttribute("br", "<br>");
+        model.addAttribute("isLogin", isLogin);
+        model.addAttribute("uservo", userVO);
+        model.addAttribute("pv", pv);
+        model.addAttribute("categorylist", categorylist);
+        model.addAttribute("query", query);
+        model.addAttribute("newLine", "\n");
+        model.addAttribute("br", "<br>");
 
-	    return "searchResult"; 
-	}
-
-
+        return "searchResult"; 
+    }
 }

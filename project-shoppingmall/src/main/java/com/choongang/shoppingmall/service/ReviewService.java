@@ -32,4 +32,8 @@ public interface ReviewService {
 	List<ReviewVO> selectReviewByUserId(int user_id);
 	// 리뷰 작성하기
 	void addToReview(ReviewVO vo);
+	// 리뷰 수정하기
+	void updateToReview(ReviewVO vo);
+	// 리뷰 삭제하기
+	void deleteToReview(int review_id);
 }

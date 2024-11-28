@@ -2,6 +2,8 @@ package com.choongang.shoppingmall.vo;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -18,8 +20,33 @@ public class ReviewVO {
 	private String review_img;		// 리뷰 사진
 	
 	private int totalCount;			// 상품별 리뷰 갯수
+	private MultipartFile uploadfile;// 업로드할 파일
 	
 	private String category_name;
 	private String username;
 	private String product_name;
+	
+	public String getStarRating(double rating) {
+		StringBuffer sb = new StringBuffer();
+		int fullStar = (int)Math.floor(rating);
+		boolean hasHalfStar = (rating - fullStar) >= 0.5;
+		int emptyStar = 5 - (int)fullStar - (hasHalfStar ? 1 : 0);
+		
+		for(int i = 0; i < fullStar; i++) {
+			sb.append("<i class='zmdi zmdi-star'>");
+			sb.append("</i>");
+		}
+		
+		if(hasHalfStar) {
+			sb.append("<i class='zmdi zmdi-star-half'>");
+			sb.append("</i>");
+		}
+		
+		for(int i = 0; i < emptyStar; i++) {
+			sb.append("<i class='zmdi zmdi-star-outline'>");
+			sb.append("</i>");
+		}
+		
+		return sb.toString();
+	}
 }

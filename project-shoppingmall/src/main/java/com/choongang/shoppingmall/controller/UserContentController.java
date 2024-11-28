@@ -86,6 +86,7 @@ public class UserContentController {
  		List<ReviewVO> reviewList = reviewService.selectReviewByUserId(userId);
  		model.addAttribute("reviewList",reviewList);
  		model.addAttribute("productService", productService);
+ 		model.addAttribute("orderService", orderService);
         return new ModelAndView("wrote-review");
     }
 }

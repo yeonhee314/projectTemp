@@ -1,10 +1,73 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<style>
+	img.p-img{
+		width: 50px;
+		height: auto;
+	}
+	img.r-img{
+		width: 200px;
+		height: auto;
+	}
+	td{
+		position: relative;
+	}
+	.product-info{
+		position: absolute;
+		top: 15px;
+		left: 20px; 
+	}
+	a>span{
+		padding-left: 10px;
+		font-size: 18px;
+	}
+	.button-wrap{
+		border: 1px solid #0D6EFD;
+		position: absolute;
+		top: 17px; 
+		left: 800px;
+		width: 100px;
+	}
+	button{
+		color : #0D6EFD;
+	}
+	.content-info{
+		text-align: left;
+		padding-left: 10px;
+		padding-bottom: 30px;
+	}
+</style>
+
 
 <th:block th:each="review : ${reviewList}">
 	<tr>
 		<td colspan="2">
-			<span class="stext-105" th:text="${@productService.selectByProductId(review.product_id).product_name} + ', '"></span><br />
-			<b><span class="stext-105" th:text="${review.review_title}"></span></b>
+		<div class="product-info">
+			<th:block th:with="product=${@productService.selectByProductId(review.product_id)}">
+				<img class="p-img" th:src="@{${'images/products/product' + product.product_id + '/product-' + product.product_id + '-1.jpg'}}" alt="product-image" />
+				<a th:href="@{product-detail.html(product_id=${product.product_id}, category_id=${product.category_id})}">
+					<span class="stext-105" th:text="${@productService.selectByProductId(review.product_id).product_name + ', ' 
+					+ orderService.selectOrderItemByOrderItemId(review.order_item_id).quantity + '개 ('
+					+ orderService.selectOrderItemByOrderItemId(review.order_item_id).product_option + ')'}"></span>
+				</a>
+			</th:block>
+			<div class="button-wrap">
+				<button class="stext-105" th:onclick="modifyReview([[${review.order_item_id}]], [[${review.review_id}]])">수정</button>
+				<span>|</span>
+				<button class="stext-105" th:onclick="deleteReview([[${review.review_id}]])">삭제</button>
+			</div>
+		</div>
+			<br /><br /><br />
+			<hr />
+		<div class="content-info">
+			<span class="fs-18 cl11" th:utext="${review.getStarRating(review.review_rating)}"></span>
+			<span class="txt_notice" th:text="${#dates.format(review.review_date, 'yyyy.MM.dd')}"></span>
+			<br /><br />
+			<th:block th:if="${review.review_img != 'N'}">
+				<img class="r-img" th:src="@{${review.review_img}}" alt="review-image" /><br /><br />
+			</th:block>
+			<b><span class="stext-117 r-title" th:text="${review.review_title}"></span></b><br /><br />
+			<span class="stext-105" th:text="${review.review_text}"></span>
+		</div>
 		</td>
 	</tr>
 </th:block>

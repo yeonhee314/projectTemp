@@ -22,7 +22,7 @@ public interface ReviewDAO {
 	int selectReviewCount(int id) throws Exception;
 	
 	// 상품 id별 리스트 가져오기
-	List<ReviewVO> selectReviewList(HashMap<String, Integer> map) throws Exception;
+	List<ReviewVO> selectReviewList(int product_id) throws Exception;
 	// 페이지 얻기
 	List<ReviewVO> selectReviewPage(HashMap<String, String> map) throws Exception;
 	// 평균 별점 계산해서 가져오기
@@ -35,4 +35,8 @@ public interface ReviewDAO {
 	
 	// 리뷰 작성하기
 	void addToReview(ReviewVO vo) throws Exception;
+	// 리뷰 수정하기
+	void updateToReview(ReviewVO vo) throws Exception;
+	// 리뷰 삭제하기
+	void deleteToReview(int review_id) throws Exception;
 }

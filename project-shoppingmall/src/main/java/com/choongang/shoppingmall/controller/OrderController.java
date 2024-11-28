@@ -62,12 +62,6 @@ public class OrderController {
 			orderService.addToOrderItems(vo);
 		}
 	}
-	
-	@PostMapping("/updateReviewStatus")
-	@ResponseBody
-	public void updateReviewStatus(@RequestParam("order_item_id") int order_item_id) {
-		orderService.updateReviewStatus(order_item_id);
-	}
 }
 
 
