@@ -710,11 +710,15 @@
 	    	}
 		}
 		
-		var reviewId = /*[[${reviewvo.review_id}]]*/;
 		var userId = /*[[${uservo.user_id}]]*/;
 		var categoryId = /*[[${productvo.category_id}]]*/;
 		var productId = /*[[${productvo.product_id}]]*/;
 		var orderItemId = /*[[${orderItemVO.order_item_id}]]*/;
+		var reviewvo = /*[[${reviewvo}]]*/;
+		var reviewId = 0;
+		if(reviewvo != null){
+			reviewId = reviewvo.review_id;
+		}
 		// 리뷰 작성
 		$('#frmapply').on('submit', function(e){
 			    e.preventDefault();
@@ -738,7 +742,6 @@
 			    formData.append('review_img', reviewImg);
 			    formData.append('product_id', productId);
 			    formData.append('order_item_id', orderItemId);
-			    formData.append('review_id', reviewId);
 			   
 			    const fileInput = document.getElementById('fileUploadBtn');
 			    const uploadfile = fileInput.files[0];
