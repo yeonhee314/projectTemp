@@ -3,28 +3,35 @@ li {
 }
 .bigbox {
 	position: relative;
-	left: 250px; top: 100px;
-	width: 1400px; height: 700px;
+	left: 250px; top: 80px;
+	width: 1300px; height: 700px;
 	display: flex;
 	justify-content: center;
 }
 .box1 {
-	width: 700px;
+	width: 600px;
 }
 .box2 {
-	width: 700px;
+	width: 800px;
 }
 .info {
 	border: 1px solid rgb(192, 192, 192);
-	width: 450px; height: 250px;
+	width: 500px; height: 250px;
 	position: relative;
 	margin: 50px;
+	text-indent: 20px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
+.info1 {
+	border-bottom: 1px solid grey;
+	height: 40px;
+	line-height: 40px;
+	text-indent: 20px;
+}
 .email {
 	border: 1px solid rgb(192, 192, 192);
-	width: 450px; height: 40px; line-height: 40px;
+	width: 500px; height: 40px; line-height: 40px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
@@ -32,9 +39,10 @@ li {
 }
 .history {
 	border: 1px solid rgb(192, 192, 192);
-	width: 450px; height: 180px;
+	width: 500px; height: 180px;
 	position: relative;
 	margin: 50px;
+	text-indent: 20px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
@@ -43,20 +51,32 @@ li {
 }
 .point {
 	border: 1px solid rgb(192, 192, 192);
-	width: 450px; height: 180px;
+	width: 500px; height: 200px;
 	position: relative;
 	margin: 50px;
+	text-indent: 20px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 .orderList {
 	border: 1px solid rgb(192, 192, 192);
-	width: 450px; height: 50px;
+	width: 500px; height: 300px;
 	line-height: 50px;
 	position: relative;
 	margin: 50px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+	overflow: scroll;
+}
+.otable {
+	width: 480px;
+}
+.olist {
+	text-indent: 20px;
+}
+.olist:hover {
+	cursor: pointer;
+	background-color: rgb(192, 192, 192, 0.2);
 }
 .back {
 	position: relative;
@@ -66,4 +86,7 @@ li {
 .back:hover{
 	font-weight: bold;
 	cursor: pointer;
+}
+label {
+	border-bottom: 1px solid black;
 }

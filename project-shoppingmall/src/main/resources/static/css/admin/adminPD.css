@@ -1,13 +1,13 @@
 .paging {
 	position: relative;
-	width: 1420px;
-	left: 450px;
+	width: 1300px;
+	left: 390px;
 	top: -190px;
 }
 .pdStatus {
 	position: relative;
-	width: 1420px;
-	left: 450px;
+	width: 1290px;
+	left: 400px;
 	top: -190px;
 }
 .stocktTh {
@@ -28,7 +28,7 @@
 }
 .pdAdd {
 	text-align: right;
-	width: 1120px;
+	width: 920px;
 }
 .popUpBg {
 	position: fixed;
@@ -93,8 +93,8 @@
 }
 .categoryList {
 	position: relative;
-	left: 250px; top: 130px;
-	width: 150px; height:200px;
+	left: 220px; top: 130px;
+	width: 120px; height:200px;
 	background-color: white;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
@@ -163,7 +163,7 @@
 }
 .productSearch {
 	position: relative;
-	left: 850px; top: -170px;
+	left: 750px; top: -170px;
 	height:30px;
 	width:300px;
 	line-height: 30px;

@@ -98,12 +98,14 @@ public class AdminController {
 		model.addAttribute("details", usersBoardService.selectByID(user_id));
 		model.addAttribute("qnaCount", questionService.selectQuestionCountByUserId(user_id));
 		model.addAttribute("reviewCount", reviewService.selectReviewCountByUserId(user_id));
+		model.addAttribute("olist", orderService.getOrdersByUserId(user_id));
 		return "admin-userdetails";
 	}
 	@GetMapping("/pointOk")
 	public String userPointOkGet() {
 		return "redirect:/admin/users";
 	}
+	// 회원 포인트 증감
 	@PostMapping("/pointOk")
 	public String userPointOkPost(@RequestParam (required = false, name = "pnm") String pnm,
 			@ModelAttribute UserVO userVO, Model model) {
@@ -135,7 +137,6 @@ public class AdminController {
 		model.addAttribute("br", "<br>");
 		return "admin-products";
 	}
-	
 	@GetMapping("/pdStatusOk")
 	public String pdStatusOkGet() {
 		return "redirect:/admin/products";
@@ -160,12 +161,11 @@ public class AdminController {
 		public String categoryCheck(@RequestParam(required = false, name = "category_name")String category_name) {
 			return categoryService.selectCountByCategoryName(category_name)+"";
 		}
-		
 		@GetMapping("/categoryOk")
 		public String categoryOkGet() {
 			return "redirect:/admin/products";
 		}
-
+		// 카테고리 저장
 		@PostMapping("/categoryOk")
 		public String categoryOkPost(@ModelAttribute(value = "vo") CategoryVO vo,
 				Model model) {
@@ -217,11 +217,11 @@ public class AdminController {
 		public String productNameCheck(@RequestParam(required = false, name = "product_name")String product_name) {
 			return productService.selectCountByProductName(product_name)+"";
 		}
-		// 상품등록 처리
 		@GetMapping("/pdAddOk")
 		public String pdAddOkGet() {
 			return "redirect:/admin/products";
 		}
+		// 상품등록
 		@PostMapping("/pdAddOk")
 		public String pdAddOkPost(
 				@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
@@ -274,7 +274,7 @@ public class AdminController {
 			model.addAttribute("list", list);
 			return "redirect:/admin/products";
 		}
-	// 상품 정보 수정
+	// 상품 정보 수정 페이지
 	@GetMapping("/admin/products/edit")
 	public String adminProductEdit(Model model, int product_id) {
 		List<CategoryVO> cglist = categoryService.selectCategory();
@@ -287,6 +287,7 @@ public class AdminController {
 	public String pdUpdateOkGet() {
 		return "redirect:/admin/products";
 	}
+	// 상품 수정
 	@PostMapping("/pdUpdateOk")
 	public String pdUpdateOkPost(
 			@RequestParam(required = false, name = "upFile") MultipartFile[] upFile,
@@ -441,7 +442,7 @@ public class AdminController {
 			model.addAttribute("review_id", review_id);
 			model.addAttribute("reviewVO", reviewVO);
 			model.addAttribute("rv", reviewService.selectReviewByReviewId(review_id));
-			model.addAttribute("pdname", productService.selectProductNameById(rv.getCategory_id()));
+			model.addAttribute("pdname", productService.selectProductNameById(rv.getProduct_id()));
 			model.addAttribute("user", usersBoardService.selectByID(rv.getUser_id()));
 			model.addAttribute("newLine", "\n");
 			model.addAttribute("br", "<br>");
@@ -480,7 +481,7 @@ public class AdminController {
 		}
 		@GetMapping("/orderShipping")
 		public String adminOrderShippingGet() {			
-			return "admin-orders-view";
+			return "redirect:/admin/orders";
 		}
 		// 배송중 처리
 		@PostMapping("/orderShipping")
@@ -490,7 +491,7 @@ public class AdminController {
 		}
 		@GetMapping("/deliveryOk")
 		public String adminOrderDeliveryGet() {			
-			return "admin-orders-view";
+			return "redirect:/admin/orders";
 		}
 		// 배송완료 처리
 		@PostMapping("/deliveryOk")
@@ -500,7 +501,7 @@ public class AdminController {
 		}
 		@GetMapping("/invoiceOk")
 		public String adminOrderInvoiceGet() {			
-			return "admin-orders-view";
+			return "redirect:/admin/orders";
 		}
 		// 송장번호 저장
 		@PostMapping("/invoiceOk")

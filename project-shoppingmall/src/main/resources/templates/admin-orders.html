@@ -93,7 +93,6 @@
 		<table class="paging">
 		<colgroup>
                   <col width="3%" />
-                  <col width="8%" />
                   <col width="10%" />
                   <col width="10%" />
                   <col width="15%" />
@@ -105,7 +104,6 @@
 			<tr class="index">
 				<th><input type="checkbox" /></th>
 				<th>주문번호</th>
-				<th>품목</th>
 				<th>주문상태</th>
 				<th>송장번호</th>
 				<th>최종결제금액</th>
@@ -117,7 +115,6 @@
 				<tr th:each="vo: ${ov.list}" class="list" th:onclick="location.href='/admin/orders/view?order_id=[[${vo.order_id}]]&user_id=[[${vo.user_id}]]'">
 					<td><input type="checkbox" /></td>
 					<td>[[${vo.order_id}]]</td>
-					<td>[[${vo.itemcount}]]<i class="bb bi bi-caret-down"></i></td>
 					<td>[[${vo.status}]]</td>
 					<td>[[${vo.invoice}]]</td>
 					<td>[[${#numbers.formatInteger(vo.total_price,3,'COMMA')}]]원</td>

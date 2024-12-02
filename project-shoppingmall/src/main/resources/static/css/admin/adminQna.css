@@ -1,7 +1,7 @@
 .paging {
 	position: relative;
 	width: 1400px;
-	left: 350px;
+	left: 250px;
 	top: 100px;
 }
 .total {
@@ -33,7 +33,7 @@
 }
 .QuestionSearch {
 	position: relative;
-	left: 800px; top: 130px;
+	left: 700px; top: 130px;
 	width:320px;
 	height:30px;
 	line-height: 30px;
