@@ -1,7 +1,7 @@
 .paging {
 	position: relative;
 	width: 1200px;
-	left: 400px; top: 100px;
+	left: 350px; top: 100px;
 }
 .total {
 	height: 20px;
@@ -27,11 +27,11 @@
 .pageList{
 	position: relative;
 	top: 30px;
-	left: 500px;
+	left: 450px;
 }
 .userSearch {
 	position: relative;
-	left: 800px; top:130px;
+	left: 700px; top:130px;
 	width:300px;
 	height:30px;
 	line-height: 30px;
