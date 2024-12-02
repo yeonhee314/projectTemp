@@ -233,49 +233,6 @@
 }
 /* 페이지 넘버 스타일 */
 
-/* 위시 리스트 */
-
-/* 찜 아이콘 컨테이너 */
-.wish-icon {
-	flex-shrink: 0;
-}
-
-/* 찜 버튼 */
-.btn-addwish-b2 {
-	display: inline-block;
-	width: 22px;
-	height: 22px;
-	cursor: pointer;
-}
-
-/* 찜 아이콘 */
-.icon-heart {
-	position: absolute;
-	top: 0;
-	left: 0;
-	transition: opacity 0.3s ease;
-	z-index: 10; /* z-index 추가 */
-}
-
-.icon-heart1 {
-	opacity: 1;
-	z-index: 1;
-}
-
-.icon-heart2 {
-	opacity: 0;
-	z-index: 2;
-}
-
-.btn-addwish-b2:hover .icon-heart1 {
-	opacity: 0; /* 호버 시 빈 하트 숨김 */
-}
-
-.btn-addwish-b2:hover .icon-heart2 {
-	opacity: 1; /* 호버 시 채운 하트 표시 */
-}
-
-/* 위시 리스트 */
 
 /* 푸터 스타일 */
 footer {
