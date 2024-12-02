@@ -304,67 +304,85 @@
 									th:if="${product.product_stock <= 0}"
 									th:text="'[품절] ' + ${product.product_name}"></span>
 							</div>
-						</div>
+
+							<div class="wish-icon">
+								<a href="#"
+									class="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
+									th:data-product-id="${product.product_id}"
+									onclick="handleWishlistClick(event, this)"> <!-- 빈 하트 --> <img
+									class="custom-icon-heart custom-icon-heart1 dis-block trans-04"
+									src="images/icons/icon-heart-01.png" alt="빈 하트"
+									th:classappend="${uservo != null && uservo.wishList != null && uservo.wishList.contains(product) ? ' d-none' : ''}" />
+
+									<!-- 채운 하트 --> <img
+									class="custom-icon-heart custom-icon-heart2 dis-block trans-04 ab-t-l"
+									src="images/icons/icon-heart-02.png" alt="채운 하트"
+									th:classappend="${uservo != null && uservo.wishList != null && uservo.wishList.contains(product) ? '' : ' d-none'}" />
+								</a>
+							</div>
+
 						</div>
 					</div>
-					<!-- 가격 정보 -->
-					<th:block th:if="${product.discount > 0}">
-						<!-- 원래 가격 -->
-						<span class="price-original"
-							th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"
-							style="text-decoration: line-through;"></span>
-						<!-- 할인된 가격과 할인율 -->
-						<span class="price-discount"><span
-							class="discount-text"
-							th:text="' ↪ [' + ${product.discount} + '% 할인]' + ${#numbers.formatInteger(product.getDiscountPrice(product.product_price, product.discount), 3, 'COMMA') + ' ₩'}"></span>
-						</span>
-					</th:block>
-
-					<th:block th:if="${product.discount == 0}">
-						<!-- 할인되지 않은 경우 기본 가격만 표시 -->
-						<span
-							th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"></span>
-					</th:block>
 				</div>
 
+				<!-- 가격 정보 -->
+				<th:block th:if="${product.discount > 0}">
+					<!-- 원래 가격 -->
+					<span class="price-original"
+						th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"
+						style="text-decoration: line-through;"></span>
+					<!-- 할인된 가격과 할인율 -->
+					<span class="price-discount"><span class="discount-text"
+						th:text="' ↪ [' + ${product.discount} + '% 할인]' + ${#numbers.formatInteger(product.getDiscountPrice(product.product_price, product.discount), 3, 'COMMA') + ' ₩'}"></span>
+					</span>
+				</th:block>
+
+				<th:block th:if="${product.discount == 0}">
+					<!-- 할인되지 않은 경우 기본 가격만 표시 -->
+					<span
+						th:text="${#numbers.formatInteger(product.product_price, 3, 'COMMA') + ' ₩'}"></span>
+				</th:block>
 			</div>
-
-			<!-- 페이지네이션 -->
-			<div class="custom-pagination" id="custom-pagination">
-				<ul id="custom-pagination-list">
-					<!-- 첫 페이지로 이동 (1~10 그룹일 때 비활성화) -->
-					<li id="first-page"
-						th:classappend="${disableFirstPage ? 'disabled' : ''}"><a
-						th:href="@{/search(page=1, size=${size}, keyword=${keyword})}">&lt;&lt;</a>
-					</li>
-
-					<!-- 이전 페이지 버튼 -->
-					<li id="prev-page" th:classappend="${!showPrev ? 'disabled' : ''}"
-						th:if="${startPage > 10}"><a
-						th:href="@{/search(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">&lt;</a>
-					</li>
+		</div>
 
 
-					<!-- 페이지 번호들 -->
-					<li th:each="i : ${#numbers.sequence(startPage, endPage)}"
-						th:classappend="${i == currentPage ? 'active' : ''}"><a
-						class="page-link"
-						th:href="@{/search(page=${i}, size=${size}, keyword=${keyword})}"
-						th:text="${i}"></a></li>
 
-					<!-- 다음 페이지 버튼 -->
-					<li id="next-page" th:classappend="${!showNext ? 'disabled' : ''}">
-						<a
-						th:href="@{/search(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">&#62;</a>
-					</li>
+		<!-- 페이지네이션 -->
+		<div class="custom-pagination" id="custom-pagination">
+			<ul id="custom-pagination-list">
+				<!-- 첫 페이지로 이동 (1~10 그룹일 때 비활성화) -->
+				<li id="first-page"
+					th:classappend="${disableFirstPage ? 'disabled' : ''}"><a
+					th:href="@{/search(page=1, size=${size}, keyword=${keyword})}">&lt;&lt;</a>
+				</li>
 
-					<!-- 마지막 페이지로 이동 -->
-					<li id="last-page" th:classappend="${!showLast ? 'disabled' : ''}">
-						<a
-						th:href="@{/search(page=${totalPages}, size=${size}, keyword=${keyword})}">&gt;&gt;</a>
-					</li>
-				</ul>
-			</div>
+				<!-- 이전 페이지 버튼 -->
+				<li id="prev-page" th:classappend="${!showPrev ? 'disabled' : ''}"
+					th:if="${startPage > 10}"><a
+					th:href="@{/search(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">&lt;</a>
+				</li>
+
+
+				<!-- 페이지 번호들 -->
+				<li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+					th:classappend="${i == currentPage ? 'active' : ''}"><a
+					class="page-link"
+					th:href="@{/search(page=${i}, size=${size}, keyword=${keyword})}"
+					th:text="${i}"></a></li>
+
+				<!-- 다음 페이지 버튼 -->
+				<li id="next-page" th:classappend="${!showNext ? 'disabled' : ''}">
+					<a
+					th:href="@{/search(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">&#62;</a>
+				</li>
+
+				<!-- 마지막 페이지로 이동 -->
+				<li id="last-page" th:classappend="${!showLast ? 'disabled' : ''}">
+					<a
+					th:href="@{/search(page=${totalPages}, size=${size}, keyword=${keyword})}">&gt;&gt;</a>
+				</li>
+			</ul>
+		</div>
 	</section>
 </body>
 
@@ -694,113 +712,141 @@
 <script src="vendor/sweetalert/sweetalert.min.js"></script>
 
 <script th:inline="javascript">
-	<!-- 찜 버튼 클릭 시 -->
-	/*<![CDATA[*/
-	function setWishList(productId, event, element){
-		event.preventDefault();
-		var userId = /*[[${uservo.user_id}]]*/;
-		
-		fetch('/setWish', {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/json',
-	        },
-	        
-	        body: JSON.stringify({ user_id: userId, product_id: productId }),
-	    })
-	    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    /*<![CDATA[*/
+    // 찜 목록에 추가/삭제
+    function setWishList(productId, event, element) {
+        event.preventDefault(); // 기본 동작 차단 (특히 부모 링크 이동 방지)
+        event.stopPropagation(); // 부모 요소 이벤트 전파 방지 (상품 링크)
+
+        var userId = /*[[${uservo.user_id}]]*/;
+
+        fetch('/setWish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userId, product_id: productId }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text(); // 서버 응답을 텍스트로 변환
+        })
+        .then(data => {
+            const isAdded = data === 'true'; // 서버 응답에 따라 상태 결정
+
+            const productElement = $(element).closest('.product-item');
+            const heartIconEmpty = productElement.find('.icon-heart1');
+            const heartIconFilled = productElement.find('.icon-heart2');
+
+            // 아이콘 상태 업데이트
+            if (isAdded) {
+                heartIconEmpty.css('visibility', 'hidden'); // 빈 하트 숨기기
+                heartIconFilled.css('visibility', 'visible'); // 채운 하트 보이기
+            } else {
+                heartIconEmpty.css('visibility', 'visible'); // 빈 하트 보이기
+                heartIconFilled.css('visibility', 'hidden'); // 채운 하트 숨기기
+            }
+
+            const nameProduct = productElement.find('.js-name-b2').html();
+
+            swal({
+                title: nameProduct,
+                text: isAdded ? '상품을 찜 목록에 담았습니다!' : '상품을 찜 목록에서 삭제했습니다!',
+                icon: isAdded ? 'success' : 'error',
+            }).then(willReload => {
+                if (willReload) {
+                    window.location.reload(); // 페이지 새로고침
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', 'Error : 찜 목록에 담지 못했습니다.');
+        });
+
+        // UI 업데이트
+        $(element).addClass('js-addedwish-b2');
+        $(element).off('click');
+    }
+
+    // 찜 버튼 클릭 시 호출될 함수
+    function handleWishlistClick(event, element) {
+        const productId = $(element).data('product-id');
+        setWishList(productId, event, element);
+    }
+
+    // 찜 버튼 클릭 이벤트 등록
+    $('.js-addwish-b2').on('click', function(e) {
+        e.preventDefault(); // 기본 동작 차단
+        e.stopPropagation(); // 부모 이벤트 차단 (상품 링크)
+
+        const isLogin = /*[[${isLogin}]]*/;
+
+        if (!isLogin) {
+            const result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
+            if (result) {
+                window.location.href = '/login';
+            }
+        } else {
+            const productId = $(this).data('product-id');
+            setWishList(productId, e, this);
         }
-        return response.text(); // 응답을 텍스트로 변환
-    })
-	    .then(data => {
-	    	var nameProduct = $(element).parent().parent().find('.js-name-b2').html();
-	    	data = data == 'true';
-	    	if(!data){
-	    		swal({
-					 title: nameProduct,
-			            text: '상품을 찜 목록에서 삭제했습니다!',
-			            icon: 'error',
-			        }).then((willReload) => {
-			            if (willReload) {
-			                window.location.reload();
-			            }
-					});
-	    	}else{
-	    		swal({
-					 title: nameProduct,
-			            text: '상품을 찜 목록에 담았습니다!',
-			            icon: 'success',
-			        }).then((willReload) => {
-			            if (willReload) {
-			                window.location.reload();
-			            }
-					});
-	    	}
-	    	
-	    })
-	    .catch(error => {
-	        console.error('Error:', 'Error : 찜 목록에 담지 못했습니다.');
-	    });
-		
-		$(this).addClass('js-addedwish-b2');
-		$(this).off('click');	
-	}
-	
-		$('.js-addwish-b2').on('click', function(e){
-			e.preventDefault();
-			var isLogin = /*[[${isLogin}]]*/;
-			
-			if (!isLogin){
-				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
-				if(result){
-					window.location.href= '/login';
-				}
-			}else{
-				var productId = $(this).data('product-id');
-				setWishList(productId, e, this);
-			}
-		});
-		
-		// 고객센터는 로그인해야만 이동할 수 있다.
-		// TODO : 1:1문의 외 추가기능을 넣는다면 수정해야한다. 
-		$('.customer').on('click', function(e){
-			e.preventDefault();
-			var isLogin = /*[[${isLogin}]]*/;
-			if (!isLogin){
-				let result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
-				if(result){
-					window.location.href= '/login';
-				}
-			}else{
-				window.location.href= '/question.html';
-			}
-		});
-		
-		/*]]>*/
-		
-		$('.js-addwish-detail').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+    });
 
-			$(this).on('click', function(){
-				swal(nameProduct, "상품을 찜 목록에 담았습니다!", "success");
+    // 고객센터 이동 버튼
+    $('.customer').on('click', function(e) {
+        e.preventDefault(); // 기본 동작 차단
+        const isLogin = /*[[${isLogin}]]*/;
+        if (!isLogin) {
+            const result = confirm('로그인 후 이용해 주세요.\n로그인 하시겠습니까?');
+            if (result) {
+                window.location.href = '/login';
+            }
+        } else {
+            window.location.href = '/question.html';
+        }
+    });
 
-				$(this).addClass('js-addedwish-detail');
-				$(this).off('click');
-			});
-		});
+    // 상세 페이지 찜 버튼
+    $('.js-addwish-detail').each(function() {
+        const nameProduct = $(this).closest('.product-item').find('.js-name-detail').html();
 
-		/*---------------------------------------------*/
+        $(this).on('click', function(e) {
+            e.preventDefault();
+            swal(nameProduct, '상품을 찜 목록에 담았습니다!', 'success');
 
-		$('.js-addcart-detail').each(function(){
-			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
-	
-	</script>
+            $(this).addClass('js-addedwish-detail');
+            $(this).off('click');
+        });
+    });
+
+    // 장바구니 추가 버튼
+    $('.js-addcart-detail').each(function() {
+        const nameProduct = $(this).closest('.product-item').find('.js-name-detail').html();
+
+        $(this).on('click', function(e) {
+            e.preventDefault();
+            swal(nameProduct, 'is added to cart!', 'success');
+        });
+    });
+
+    // 빈 하트 아이콘에 마우스 오버 시 채움 하트로 변경
+$('.custom-icon-heart1').hover(
+    function() { // 마우스 오버 시
+        $(this).css('opacity', '0'); // 빈 하트 숨기기
+        $(this).siblings('.custom-icon-heart2').css('opacity', '1'); // 채운 하트 보이기
+    },
+    function() { // 마우스 아웃 시
+        $(this).css('opacity', '1'); // 빈 하트 보이기
+        $(this).siblings('.custom-icon-heart2').css('opacity', '0'); // 채운 하트 숨기기
+    }
+);
+
+    /*]]>*/
+</script>
+
+
 <!--===============================================================================================-->
 <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>

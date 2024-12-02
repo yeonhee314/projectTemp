@@ -1,133 +1,131 @@
 /* 미디어 쿼리 - 화면 크기에 따라 최대 너비 조정 */
-@media (max-width: 1600px) {
-    .container {
-        max-width: 1200px;
-    }
+@media ( max-width : 1600px) {
+	.container {
+		max-width: 1200px;
+	}
 }
 
 /* 페이지 크기 설정 */
 .container-menu-desktop {
-    height: auto;
-    width: 100%;
-    position: relative;
-    transition: all 0.3s;
+	height: auto;
+	width: 100%;
+	position: relative;
+	transition: all 0.3s;
 }
 
 /* 헤더 크기 설정 */
 .header-v2 .container-menu-desktop {
-    height: 84px;
+	height: 84px;
 }
 
 .header-v3 .container-menu-desktop {
-    height: auto;
+	height: auto;
 }
 
 .header-v4 .container-menu-desktop {
-    height: 124px;
+	height: 124px;
 }
 
 /* 검색 결과 스타일 */
 .search_result {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    font-size: 1.5rem;
-    width: 100%;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    text-align: center;
-    position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
+	font-size: 1.5rem;
+	width: 100%;
+	margin-top: 100px;
+	margin-bottom: 50px;
+	text-align: center;
+	position: relative;
 }
 
 .search_result::after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 75%;
-    border-bottom: 1px solid black;
-    
-    
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 75%;
+	border-bottom: 1px solid black;
 }
 /* 상품 목록 **********************************/
 .product-list {
-    display: grid; /* 그리드 레이아웃 사용 */
-    grid-template-columns: repeat(5, 1fr); /* 6개 열로 나누기 */
-    gap: 15px; /* 상품 간격 */
-    padding: 10px 200px 10px 250px;
-    width: 100%;
-    height: 1500px;
-    max-height: 1500px;
-    margin-top: -50px; /* 위로 이동 */
-    /* border: 1px solid green; */
+	display: grid; /* 그리드 레이아웃 사용 */
+	grid-template-columns: repeat(5, 1fr); /* 6개 열로 나누기 */
+	gap: 15px; /* 상품 간격 */
+	padding: 10px 200px 10px 250px;
+	width: 100%;
+	height: 1500px;
+	max-height: 1500px;
+	margin-top: -50px; /* 위로 이동 */
+	/* border: 1px solid green; */
 }
 
 /* 개별 상품 */
 .product-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 상품 텍스트 왼쪽 정렬 */
-    text-align: left; /* 상품 텍스트 왼쪽 정렬 */
-    width: 100%; 
-    max-width: 250px;
-    margin-top: 10px;
-    padding: 10px; /* 간격을 줄이기 */
-    height: 400px;
- /* border: 1px solid green; */
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start; /* 상품 텍스트 왼쪽 정렬 */
+	text-align: left; /* 상품 텍스트 왼쪽 정렬 */
+	width: 100%;
+	max-width: 250px;
+	margin-top: 10px;
+	padding: 10px; /* 간격을 줄이기 */
+	height: 400px;
+	/* border: 1px solid green; */
 }
 
 /* 상품 이미지 */
 .product-item img {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: contain;
-    display: block;
-    margin-bottom: 15px;
+	width: 100%;
+	height: auto;
+	max-width: 100%;
+	object-fit: contain;
+	display: block;
+	margin-bottom: 15px;
 }
 
 /* 상품명 */
 .product-name-wish {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 0px;
 }
 
 /* 상품명 스타일 */
 .product-name {
-    color: black;
-    margin-bottom: 5px;
-    flex-grow: 1; /* 찜하기 버튼과의 간격을 늘려줌 */
-    text-align: left;
+	color: black;
+	margin-bottom: 5px;
+	flex-grow: 1; /* 찜하기 버튼과의 간격을 늘려줌 */
+	text-align: left;
 }
 
 /* 상품 링크 스타일 */
 .product-link {
-    cursor: pointer;
-    display: block;
-    text-decoration: none;
-    color: inherit;
+	cursor: pointer;
+	display: block;
+	text-decoration: none;
+	color: inherit;
 }
 /* 할인가 적용 **************/
 
 /* 원래 가격에 취소선 추가 */
 .price-original {
-    text-decoration: line-through;
-    text-align: left; /* 상품 가격 왼쪽 정렬 */
-    color: black;  /* 회색으로 표시 */
-    margin-right: 10px;
+	text-decoration: line-through;
+	text-align: left; /* 상품 가격 왼쪽 정렬 */
+	color: black; /* 회색으로 표시 */
+	margin-right: 10px;
 }
 
 /* 할인된 가격과 할인율 표시 */
 .price-discount {
-    display: inline; /* 한 줄로 표시되도록 설정 */
-    color: black;
-    font-size: 1em; /* 기본 폰트 크기 설정 */
+	display: inline; /* 한 줄로 표시되도록 설정 */
+	color: black;
+	font-size: 1em; /* 기본 폰트 크기 설정 */
 	width: 400px;
 	/* border: 1px solid red; */
 }
@@ -144,107 +142,146 @@
 
 /* 상품 목록 **********************************/
 
-
 /* 페이지 넘버 스타일 */
 .custom-pagination {
-    margin: 40px 0;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+	margin: 40px 0;
+	display: flex;
+	justify-content: center;
+	width: 100%;
 }
 
 #custom-pagination-list {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
+	list-style-type: none;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
 }
 
 #custom-pagination-list li {
-    margin: 0 5px;
-    cursor: pointer;
+	margin: 0 5px;
+	cursor: pointer;
 }
 
 #custom-pagination-list li span {
-    font-size: 22px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    color: black;
-    background-color: transparent;
-    transition: all 0.3s ease;
+	font-size: 22px;
+	padding: 8px 12px;
+	border-radius: 5px;
+	color: black;
+	background-color: transparent;
+	transition: all 0.3s ease;
 }
 
 #custom-pagination-list li span:hover {
-    cursor: pointer;
-    background-color: #f0f0f0;
+	cursor: pointer;
+	background-color: #f0f0f0;
 }
 
 #custom-pagination-list li.active span {
-    font-weight: bold;
-    color: black;
-    background-color: #e0e0e0;
+	font-weight: bold;
+	color: black;
+	background-color: #e0e0e0;
 }
 
 .custom-pagination li.active a {
-    font-weight: bold;
-    color: black;
+	font-weight: bold;
+	color: black;
 }
 
 /* 이전, 다음 버튼 스타일 */
 .custom-pagination li:not(.disabled) {
-    cursor: pointer;
-    color: black;
+	cursor: pointer;
+	color: black;
 }
 
 .custom-pagination li:not(.disabled) a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 /* 비활성화된 버튼 */
 .custom-pagination li.disabled {
-    display:none;
-    pointer-events: none; /* 클릭 불가능 */
+	display: none;
+	pointer-events: none; /* 클릭 불가능 */
 }
 
 /* '<<', '<', '>', '>>' 버튼 색상 */
-.custom-pagination li#first-page span,
-.custom-pagination li#last-page span,
-.custom-pagination li#prev-page span,
-.custom-pagination li#next-page span {
-    color: black;
-    font-weight: bold;
+.custom-pagination li#first-page span, .custom-pagination li#last-page span,
+	.custom-pagination li#prev-page span, .custom-pagination li#next-page span
+	{
+	color: black;
+	font-weight: bold;
 }
 
 /* 페이지 번호들 */
 .custom-pagination li a {
-    padding: 8px 12px;
-    display: inline-block;
-    text-decoration: none;
-    color: gray;
+	padding: 8px 12px;
+	display: inline-block;
+	text-decoration: none;
+	color: gray;
 }
 
 /* 활성화된 페이지 번호 */
 .custom-pagination li.active a {
-    color: black;
-    font-weight: bold;
+	color: black;
+	font-weight: bold;
 }
 /* 비활성화된 버튼 숨기기 */
 .custom-pagination li.disabled {
-    display: none;
-    pointer-events: none;
+	display: none;
+	pointer-events: none;
 }
 /* 페이지 넘버 스타일 */
 
+/* 위시 리스트 */
 
+/* 찜 아이콘 컨테이너 */
+.wish-icon {
+	flex-shrink: 0;
+}
 
+/* 찜 버튼 */
+.btn-addwish-b2 {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+}
+
+/* 찜 아이콘 */
+.icon-heart {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transition: opacity 0.3s ease;
+	z-index: 10; /* z-index 추가 */
+}
+
+.icon-heart1 {
+	opacity: 1;
+	z-index: 1;
+}
+
+.icon-heart2 {
+	opacity: 0;
+	z-index: 2;
+}
+
+.btn-addwish-b2:hover .icon-heart1 {
+	opacity: 0; /* 호버 시 빈 하트 숨김 */
+}
+
+.btn-addwish-b2:hover .icon-heart2 {
+	opacity: 1; /* 호버 시 채운 하트 표시 */
+}
+
+/* 위시 리스트 */
 
 /* 푸터 스타일 */
 footer {
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: auto;
-    background-color: lightgray;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0;
+	margin-top: auto;
+	background-color: lightgray;
 }
