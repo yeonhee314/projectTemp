@@ -208,4 +208,20 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return count;
 	}
+	
+	public PagingVO<ProductVO> searchProducts(int page, int size, String keyword) {
+        // 상품 목록을 PagingVO로 가져오기
+        return getProductList(page, size, 10, "product_name", keyword);
+    }
+
+    public List<ProductVO> paginateProducts(List<ProductVO> productList, int page, int size, int totalCount) {
+        // 페이지네이션 처리 (페이지에 맞게 상품 목록을 자른다)
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalCount);
+        return productList.subList(startIndex, endIndex);
+    }
+
+    public int calculateTotalPages(int totalCount, int size) {
+        return (int) Math.ceil((double) totalCount / size);
+    }
 }

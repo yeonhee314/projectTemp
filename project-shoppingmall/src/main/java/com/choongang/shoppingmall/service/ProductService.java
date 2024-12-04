@@ -1,6 +1,7 @@
 package com.choongang.shoppingmall.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.choongang.shoppingmall.vo.AdminProductsPagingVO;
 import com.choongang.shoppingmall.vo.PagingVO;
@@ -26,4 +27,8 @@ public interface ProductService {
 	void delete(int product_id);
 	void updateStatus(ProductVO productVO);
 	void updateStock(ProductVO productVO);
+	
+	PagingVO<ProductVO> searchProducts(int page, int size, String keyword);
+	List<ProductVO> paginateProducts(List<ProductVO> productList, int page, int size, int totalCount);
+	int calculateTotalPages(int totalCount, int size);
 }

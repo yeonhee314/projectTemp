@@ -74,12 +74,6 @@ public class ProductController {
             @RequestParam(value = "size", defaultValue = "24") int size, // 페이지당 24개 상품
             @RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
         try {
-            // 실제 상품 데이터를 가져옴
-            HashMap<String, String> searchMap = new HashMap<>();
-            searchMap.put("keyword", keyword);
-            searchMap.put("page", String.valueOf(page));
-            searchMap.put("size", String.valueOf(size));
-
             // 상품 목록을 PagingVO로 가져옴
             PagingVO<ProductVO> pagingVO = productService.getProductList(page, size, 10, "product_name", keyword);
 
@@ -88,20 +82,14 @@ public class ProductController {
 
             // 총 상품 개수
             int totalCount = pagingVO.getTotalCount();
-
-            // 페이지네이션 처리 (페이지에 맞게 상품 목록을 자른다)
-            int startIndex = (page - 1) * size; // 시작 인덱스
-            int endIndex = Math.min(startIndex + size, totalCount); // 끝 인덱스
-            List<ProductVO> paginatedProducts = productList.subList(startIndex, endIndex);
-
-            // 가격 포맷팅 처리
-            HashMap<Integer, String> formattedPrices = new HashMap<>();
-            for (ProductVO product : paginatedProducts) {
-                formattedPrices.put(product.getProduct_id(), formatPrice(product.getProduct_price()));
+            if(productList != null) {
+                // 페이지네이션 처리 (페이지에 맞게 상품 목록을 자른다)
+                List<ProductVO> paginatedProducts = productService.paginateProducts(productList, page, size, totalCount);
+                model.addAttribute("products", paginatedProducts);
             }
 
             // 총 페이지 수 계산
-            int totalPages = (int) Math.ceil((double) totalCount / size);
+            int totalPages = productService.calculateTotalPages(totalCount, size);
 
             // 현재 페이지 그룹의 시작과 끝을 계산 (예: 1~10, 11~20)
             int pageGroupSize = 10;
@@ -129,13 +117,11 @@ public class ProductController {
             }
 
             // 모델에 데이터 추가
-            model.addAttribute("products", paginatedProducts);
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
             model.addAttribute("keyword", keyword);
-            model.addAttribute("formattedPrices", formattedPrices);
             model.addAttribute("uservo", userVO);
             model.addAttribute("showPrev", showPrev);
             model.addAttribute("showNext", showNext);
@@ -150,11 +136,5 @@ public class ProductController {
             model.addAttribute("error", "상품 목록을 불러오는 데 실패했습니다.");
         }
         return "searchResult"; // 검색 결과 페이지로 이동
-    }
-
-    // 가격 포맷팅 처리
-    private String formatPrice(int price) {
-        NumberFormat numberFormat = NumberFormat.getInstance(Locale.KOREA);
-        return numberFormat.format(price) + " \\"; // 가격 뒤에 원화 기호 추가
     }
 }
